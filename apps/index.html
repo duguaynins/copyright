@@ -197,6 +197,7 @@
     }
 
     .feature-item {
+      position: relative;
       flex: 1 1 calc(25% - 1rem);
       min-width: 200px;
       /*background-color: #f5f5f5;*/
@@ -341,26 +342,24 @@
                     <!--button disabled="">Coming Soon</button-->
                     <!--button>Go</button-->
                   </div>
-                  <div class="feature-item" disabled="" style="background:#222222; color:white;">
-                    <h2 translate="no">Developing</h2>
-                    <p>Don't miss it... Coming soon.</p>
-                    <!--button disabled="">Coming Soon</button-->
-                    <!--button>Go</button-->
-                  </div>
-                  <div class="feature-item" onclick="openEncoding()" style="">
+                  <div class="feature-item" onclick="openApp(repo='beta', file='encoding.html')" style="">
+                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
                     <h2 translate="no">Encoding</h2>
                     <p>Don't miss it... Coming soon.</p>
                     <!--button disabled="">Coming Soon</button-->
                     <!--button>Go</button-->
                   </div>
-                  <div class="feature-item" onclick="openDecoding()" style="">
+                  <div class="feature-item" onclick="openApp(repo='beta', file='decoding.html')" style="">
                     <h2 translate="no">Decoding</h2>
+                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
                     <p>Use the camera to decode the graphics code.</p>
                     <!--button disabled="">Coming Soon</button-->
                     <!--button>Go</button-->
                   </div>
-                  <div class="feature-item main" onclick="openTransing()" style="">
+                  <div class="feature-item main" onclick="openApp(repo='beta', file='transing.html')" style="">
                     <h2 translate="no">Transing</h2>
+                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
+                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
                     <p>Use chat channels to easily start communicating with anyone.</p>
                     <!--button disabled="">Coming Soon</button-->
                     <!--button>Go</button-->
@@ -389,21 +388,25 @@
       // 字體大小
       ///const size = 16;
       ///document.body.style.fontSize = `${size}px`;
+      ///event.preventDefault(); // 阻止原本的跳轉  // 將先執行 onclick，再依據 href 跳轉
       // 按鈕方法
+      
+      function openApp(repo, file) {
+        const href = "https://" + repo + ".nins.jpgt.one/apps/" + file;
+        window.open(href, "_blank", "noopener,noreferrer");
+      }
       function openEncoding(event, el) {
-        const href = "/apps/encoding.html";
+        const href = "https://beta.nins.jpgt.one/apps/encoding.html";
         window.open(href, "_blank", "noopener,noreferrer");
       }
       function openDecoding(event, el) {
-        const href = "/apps/decoding.html";
+        const href = "https://beta.nins.jpgt.one/apps/decoding.html";
         window.open(href, "_blank", "noopener,noreferrer");
       }
       // 按鈕方法
       function openTransing(event, el) {
-        ///event.preventDefault(); // 阻止原本的跳轉  // 將先執行 onclick，再依據 href 跳轉
-        ///const href = "https://duguaynins-allninsone.hf.space/transing";
-        ///const href = "/transing/";  // 2025/07/20
-        const href = "/apps/transing.html";
+        ///const href = "/apps/transing.html";
+        const href = "https://beta.nins.jpgt.one/apps/transing.html";
         window.open(href, "_blank", "noopener,noreferrer");
       }
     </script>
