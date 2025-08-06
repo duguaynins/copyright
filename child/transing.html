@@ -333,7 +333,7 @@
           
           
           <label id="ButtonDL" >📷（camera）<input style="display:none;" type="button" value="📷" onclick="DUGUAYNINS()" /></label><br>
-          <label id="ButtonLK" >🔗（link）<input style="display:none;" type="button" value="🔗" onclick="document.getElementById('DialogShare').showModal()"  /></label><br>
+          <!--label id="ButtonLK" >🔗（link）<input style="display:none;" type="button" value="🔗" onclick="document.getElementById('DialogShare').showModal()"  /></label><br-->
           <!--label for="InputFile">📦（file）<input type="button" id="InputFile" value="📦" style="display: none;" onclick="" /></label-->
           <label id="ButtonCM" >💾（save）<input style="display:none;" type="button" value="💾" onclick="downloadChat()" /></label><br>
           <p id="ButtonMike" >🎙️（mike）<input style="display:none;" type="button" value="🎙️" /></p>
@@ -768,14 +768,16 @@
         console.log("同步初始化，視窗高度：" + window.innerHeight + " px");
         console.log("同步初始化，視窗寬度：" + window.innerWidth + " px");
         document.getElementById('chatbox').textContent = "After using the 'Send Connection' button and successfully establishing the connection, you can use 'Send Message' to communicate.";    
-    });
+        document.getElementById('chatbox').textContent = "Currently, only the *WORLD* channel is available. The limit will be removed soon.";
+      });
     
     // 初始化
     document.addEventListener('DOMContentLoaded', async function () {
         console.log("非同步初始化，視窗高度：" + window.innerHeight + " px");
         console.log("非同步初始化，視窗寬度：" + window.innerWidth + " px");
         document.getElementById('chatbox').textContent = "After using the 'Send Connection' button and successfully establishing the connection, you can use 'Send Message' to communicate.";    
-    });
+        document.getElementById('chatbox').textContent = "Currently, only the *WORLD* channel is available. The limit will be removed soon.";
+      });
     
     // 初始化：默認掃描連線
     
@@ -1382,7 +1384,7 @@
     // 處理文字轉語音****
     // 的按鈕點擊事件****
     function handleTTS(id, lang = "") {
-        document.getElementById(id).style.display = "";
+        ///document.getElementById(id).style.display = "";
         
         // 移除再加上 class，確保每次點擊都能觸發動畫
         document.getElementById(id).classList.remove('breathe');
@@ -1439,11 +1441,23 @@
         } else if (!speechSynthesis.speaking) {
             window.speechSynthesis.speak(msg);  // ✅ 播放語音
         }
+
+        // 20250805
+        // 製作拼音
+        // 新增庫：src="https://cdn.jsdelivr.net/npm/pinyin-util@latest/dist/pinyin-util.min.js"
+        if (document.getElementById(id).style.display === "none") {
+            document.getElementById(id).style.display = "";
+            // 如果是隱藏才執行
+            if (language.slice(0, 2) === "ja") { }
+            if (language.slice(0, 2) === "zh") {
+                const pinyin = pinyinUtil.getPinyin(content, ' ', true);
+                document.getElementById(id).innerHTML += "（" + pinyin + "）";
+            }
+        }
     }
-    
-    
-    
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/pinyin-util@latest/dist/pinyin-util.min.js"></script>
+
   
     <script>
     // 語音轉文字
