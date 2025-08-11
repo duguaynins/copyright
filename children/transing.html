@@ -284,7 +284,7 @@
       <!--button onclick="document.getElementById('DialogTool').close()" class="text-red-600 mt-3">❌</button-->
       <!--br><br-->
       <span style="width:100%;">You can set the display text size.</span>
-      <input type="range" id="fontSlider" min="10" max="44" value="16" style="width:100%;" /><br>
+      <input type="range" id="fontSlider" min="18" max="44" value="18" style="width:100%;" /><br>
       <div style="width:100%;" translate="no">
       
           <label id="ButtonTool" translate="no" >📺（<input style="display:none;" type="button" value="📺" /></label>
@@ -522,7 +522,10 @@
         ///document.getElementById("NINS").style.padding = (window.innerWidth / 66) + "px";  //QR
         ///document.getElementById("NINS").style.width = (window.innerHeight / 2) + "px";  //QR
     }*/
-    function updateWindowSize() {}
+    function updateWindowSize() {
+        const size = document.getElementById("fontSlider").value;
+        document.getElementById("chatbox").style.fontSize = `${size}px`;
+    }
     ///window.addEventListener('resize', () => {});
     window.addEventListener("resize", updateWindowSize);  // 視窗持續監聽
     ///window.addEventListener("keydown", updateWindowSize);  // 按鈕持續監聽
