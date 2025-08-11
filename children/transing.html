@@ -1357,11 +1357,11 @@
           p.innerHTML = `
             
             <span id="${randomID}_T" style="color:black;" translate="no">${msgTime}</span>
-            <span id="${randomID}_2" style="color:black;" translate="">（🔄${msgtTextr}）</span>
             <label  translate="no" style="color:black;">👂sl:${msgtLangs}<input style="display:none;" type="button" value="👂${msgtLangs}" onclick="handleTTS('${randomID}_0')" /></label>
             <label  translate="no" style="color:black;">👂il:${msgtLangm}<input style="display:none;" type="button" value="👂${msgtLangm}" onclick="handleTTS('${randomID}_1')" /></label>
             <label  translate="no" style="color:black;">👂rl:${msgtLangr}<input style="display:none;" type="button" value="👂${msgtLangr}" onclick="handleTTS('${randomID}_9')" /></label>
             <!--p id="${randomID}_S" translate="no" >（🎯???）</p--><br>
+            <span id="${randomID}_2" translate="yes" style="display:block; color:gray;">（🔄${msgtTextr}）</span>
             <p id="${randomID}_0" translate="no" style="display:none; color:gray;">（🔣${msgtTexts}👄${msgtLangs}）</p>
             <p id="${randomID}_1" translate="no" style="display:none; color:gray;">（🤖${msgtTextm}👄${msgtLangm}）</p>
             <p id="${randomID}_9" translate="no" style="display:none; color:gray;">（👻${msgtTextr}👄${msgtLangr}）</p>
