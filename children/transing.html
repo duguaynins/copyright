@@ -530,7 +530,8 @@
     window.addEventListener("resize", updateWindowSize);  // 視窗持續監聽
     ///window.addEventListener("keydown", updateWindowSize);  // 按鈕持續監聽
     ///window.addEventListener("scroll", updateWindowSize);  // 滾動持續監聽
-    document.addEventListener('DOMContentLoaded', () => {document.getElementById("fontSlider").value = window.innerWidth / 66;});  // 載入監聽
+
+    ///document.addEventListener('DOMContentLoaded', () => {document.getElementById("fontSlider").value = window.innerWidth / 66;});  // 載入監聽
     document.addEventListener('DOMContentLoaded', updateWindowSize);  // 載入監聽
     // AND
     // 字體***根據拉條大小自動****
