@@ -13,6 +13,22 @@
     <script src="https://unpkg.com/@zxing/library@0.19.1/umd/index.min.js"></script>
 
     <style>
+        .skiptranslate {
+            display: none !important;   /* 避免 display:none 影響內容顯示 */
+            position: static !important;   /* 防止位置異常 */
+            width: 0px !important;
+            height: 0px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            background: none !important;
+            /*font-size: inherit !important;*/
+        }
+        iframe {
+            display: none !important;
+        }
+    </style>
+    <style>
     input, textarea, button, select {
       /*font-size: inherit; /* 主動繼承 body 字體大小 */
       font-size: 18px;
@@ -107,7 +123,7 @@
           
                   <div id="result-display"  style="width:100%;">
                       <p id="status-message">Scanning stopped.</p>
-                      <p id="scan-result"></p>
+                      <p id="scan-result" translate="no"></p>
                       <!--pre id="post-result"></pre-->
                   </div>
                   
@@ -353,7 +369,7 @@
             ///startButton.disabled = true;
             ///stopButton.disabled = false;
         } catch (e) {
-            showMessageBox('啟動攝影機失敗，請確認權限及裝置是否可用。');
+            ///showMessageBox('啟動攝影機失敗，請確認權限及裝置是否可用。');
             ///statusMessage.innerText = '啟動攝影機失敗。';
             statusMessage.innerText = 'ALARM: ' + e;
         }
@@ -388,5 +404,47 @@
         await startScanning();
     });
 </script>
+
+
+<script type="text/javascript">  // google.js
+      // GOOGLE TRANSLATE
+      // 自動翻譯***
+      ///document.cookie = "googtrans=/en/zh-TW; path=/";
+      ///location.reload();
+    
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+          pageLanguage: 'en',  ///'en', 改為根據中間語言(ilang) 或 頁面語言(locale)  ///鼓勵輸入中間語言，翻譯必定可以顯示英文。
+          includedLanguages: '',  ///zh-TW,ja,ko,en,hi,zh-CN
+          autoDisplay: false,
+          ///layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_element');
+      }
+      
+    
+      function autoTranslate(lang) {
+        const tryTranslate = () => {
+          const combo = document.querySelector('.goog-te-combo');
+          if (combo) {
+            combo.value = lang;
+            combo.dispatchEvent(new Event('change'));
+          } else {
+            setTimeout(tryTranslate, 300); // 遞迴檢查
+          }
+        };
+        tryTranslate();
+      }
+    
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          const tlang = navigator.language || navigator.userLanguage || "en-US";
+          autoTranslate(tlang);
+          
+          ///document.getElementById(":1.container").style.display = "";
+        }, 1500);
+      });
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 </body>
 </html>
