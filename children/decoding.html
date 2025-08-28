@@ -122,10 +122,10 @@
               <div id="Container" style="background:white; color:black;">
           
                   <div id="result-display" style="width:100%;">
-                      <p translate="no" id="status-message">Scanning stopped.</p>
+                      <p translate="yes" id="status-message">Scanning stopped.</p>
                       <p translate="no" id="scan-result"></p>
+                      <p translate="no" id="post-result" style="color:#cdcdcd;"></p>
                       <!--pre id="post-result"></pre-->
-                      <pre translate="no" id="post-result" style="color:#cdcdcd;"></pre>
                   </div>
                   
                   <div id="scanner-container"  >
@@ -335,12 +335,18 @@
                 videoPreview,
                 async (result, err) => {   // <-- 這裡改成 async 函式，取消將無法運行。
                     ///if (!result) {statusMessage.innerText = '運行中';}
-                    if (!result) {statusMessage.innerText = 'Running~';}
+                    if (!result) {
+                        if (!isRunning) { statusMessage.innerText = 'Running~'; }
+                        isRunning = true;
+                    }
                     if (result) {
+                        if (isRunning) { statusMessage.innerText = '1D/2D Code detected!'; }
+                        isRunning = false;
+
                         const html = text2html(result.text)
                         scanResult.innerHTML = html;
                         ///statusMessage.innerText = '已偵測到條碼／QR Code！';
-                        statusMessage.innerText = 'Barcode/QR Code detected!';
+                        
                         ///postResult.innerText = result.format;  // types
                         postResult.innerText = result.getBarcodeFormat().getName();
                         ///statusMessage.innerText = result.barcodeFormat;  // types
