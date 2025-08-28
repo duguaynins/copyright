@@ -121,10 +121,11 @@
           
               <div id="Container" style="background:white; color:black;">
           
-                  <div id="result-display"  style="width:100%;">
+                  <div id="result-display" style="width:100%;">
                       <p id="status-message">Scanning stopped.</p>
                       <p id="scan-result" translate="no"></p>
                       <!--pre id="post-result"></pre-->
+                      <pre id="post-result" style="color:#cdcdcd;"></pre>
                   </div>
                   
                   <div id="scanner-container"  >
@@ -141,13 +142,7 @@
                       <p id="messageText"></p>
                       <button id="closeMessageBox" aria-label="Close message box" style="display:none;">OK</button>
                   </div>
-          
-                  <div style="display:none;" id="result-display">
-                      <!--p id="status-message">Scanning stopped.</p-->
-                      <!--p id="scan-result"></p-->
-                      <pre id="post-result"></pre>
-                  </div>
-          
+
               </div>
           
           </div>
@@ -182,6 +177,15 @@
     }
 </script>
 <script>
+    /*
+    // 字體***大小手動****
+    document.querySelectorAll("input").forEach(el => {
+      ///el.style.fontSize = `${size}px`;
+    });
+    document.querySelectorAll("span").forEach(el => {
+      ///el.style.fontSize = `${size}px`;
+    });
+    // AND
     // 字體***根據視窗大小自動****
     function updateWindowSize() {
         ///document.getElementById("fontSlider").value = window.innerWidth / 66;  //44
@@ -191,12 +195,17 @@
         const size = document.getElementById("fontSlider").value;
         document.body.style.fontSize = `${size}px`;
         const resize = parseInt(size) + 6;
-        //document.getElementById("InputRoom").style.fontSize = `${resize}px`;
-        //document.getElementById("ButtonRoom").style.fontSize = `${resize}px`;
-        //document.getElementById("InputMsg").style.fontSize = `${resize}px`;
-        //document.getElementById("ButtonMsg").style.fontSize = `${resize}px`;
-        document.getElementById("Container").style.padding = (window.innerWidth / 66) + "px";  //QR
+        document.getElementById("InputRoom").style.fontSize = `${resize}px`;
+        document.getElementById("ButtonRoom").style.fontSize = `${resize}px`;
+        document.getElementById("InputMsg").style.fontSize = `${resize}px`;
+        document.getElementById("ButtonMsg").style.fontSize = `${resize}px`;
+        ///document.getElementById("Container").style.padding = (window.innerWidth / 66) + "px";  //QR
         ///document.getElementById("NINS").style.padding = (window.innerWidth / 66) + "px";  //QR
+        ///document.getElementById("NINS").style.width = (window.innerHeight / 2) + "px";  //QR
+    }*/
+    function updateWindowSize() {
+        ///const size = document.getElementById("fontSlider").value;
+        ///document.getElementById("chatbox").style.fontSize = `${size}px`;
     }
     
     ///window.addEventListener('resize', () => {});
@@ -332,8 +341,8 @@
                         scanResult.innerHTML = html;
                         ///statusMessage.innerText = '已偵測到條碼／QR Code！';
                         statusMessage.innerText = 'Barcode/QR Code detected!';
-                        statusMessage.innerText = result.format;  // types
-                        statusMessage.innerText = result.getBarcodeFormat().getName();
+                        ///postResult.innerText = result.format;  // types
+                        postResult.innerText = result.getBarcodeFormat().getName();
                         ///statusMessage.innerText = result.barcodeFormat;  // types
                         
                         // 掃描到結果後，可選擇停止掃描，這邊示範停止
