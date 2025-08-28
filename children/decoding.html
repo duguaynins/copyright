@@ -326,6 +326,7 @@
         ///statusMessage.innerText = '正在啟動攝影機';
         statusMessage.innerText = 'Starting the camera~';
         scanResult.innerText = '';
+        let isRunning = false;
 
         try {
             await codeReader.decodeFromVideoDevice(
