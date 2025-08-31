@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -253,6 +254,7 @@
         <input class="main" id="InputMsg"  type="text" name="noMemory" autocomplete="off" placeholder="input message text..." style="width:100%; text-align: center;"/>
         <button id="ButtonRoom" onclick="sendSocket()" style="width:100%;" class="button" >📶Send connection</button>
         <button id="ButtonMsg" onclick="sendMessage()" style="width:100%;" class="button" >🚀Send Message</button>
+        
         <!--strong></strong-->
         <div style="background: #FF3B00; color: white;" translate="yes">
         <div style="margin: 10px;" onclick="">
@@ -294,6 +296,8 @@
           ）</span><br-->
           
           <!--span style="width:100%;" id="copyright">© 2024 NINS. 👻（👻，👻）🏠</span><br-->
+          <label id="ButtonGT" >🔄（translate）<input style="display:none;" type="button" value="🔄" onclick="openTranslate()" /></label><br>
+
           <span id="stateConnection">💬（Connection）</span><br>
           <span id="stateTTS">👄（TTS＃0）</span><br>
           <!--label id="ButtonHear" >👂<input style="display:none;" type="button" value="👂" /></label-->
@@ -332,10 +336,10 @@
           
           
           
-          <label id="ButtonDL" >📷（camera）<input style="display:none;" type="button" value="📷" onclick="DUGUAYNINS()" /></label><br>
+          <label id="ButtonCM" >📷（camera）<input style="display:none;" type="button" value="📷" onclick="DUGUAYNINS()" /></label><br>
           <!--label id="ButtonLK" >🔗（link）<input style="display:none;" type="button" value="🔗" onclick="document.getElementById('DialogShare').showModal()"  /></label><br-->
           <!--label for="InputFile">📦（file）<input type="button" id="InputFile" value="📦" style="display: none;" onclick="" /></label-->
-          <label id="ButtonCM" >💾（save）<input style="display:none;" type="button" value="💾" onclick="downloadChat()" /></label><br>
+          <label id="ButtonDL" >💾（save）<input style="display:none;" type="button" value="💾" onclick="downloadChat()" /></label><br>
           <p id="ButtonMike" >🎙️（mike）<input style="display:none;" type="button" value="🎙️" /></p>
           
           <span style="width:100%; color:red;" translate="no" id="copyright" >👻（channels, users）</span><br>
@@ -378,11 +382,17 @@
     window.open(href, "_blank", "noopener,noreferrer");
   }
   */
-  
   function openLink(event, el) {
     ///event.preventDefault(); // 阻止原本的跳轉  // 將先執行 onclick，再依據 href 跳轉
     const href = document.getElementById("linkText").getAttribute("href");
     window.open(href, "_blank", "noopener,noreferrer");
+  }
+
+  function openTranslate(event, el) {
+    ///event.preventDefault(); // 阻止原本的跳轉  // 將先執行 onclick，再依據 href 跳轉
+    const value = document.getElementById("InputMsg").value;
+    const url = "https://translate.google.com/?hl=&sl=auto&tl=zh-TW&op=translate&text=" + encodeURIComponent(value);
+    window.open(url, "_blank", "noopener,noreferrer");
   }
   </script>
   <script>
