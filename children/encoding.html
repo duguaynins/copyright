@@ -325,8 +325,12 @@
                 bcid:        bcid,     // 條碼格式
                 text:        text,     // 條碼內容  // "Hello world!"
                 scale:       4,
-                ///includetext: true,
                 alttext:     bcid,     // ✅ 替代顯示的文字
+                ///backgroundcolor: 'FFFFFF',  // 增加這行來設定白色底色
+                ///padding: 10, // 增加 10 像素的背景填充
+                
+                ///textcolor: '000000',
+                ///includetext: true,
             });
             document.getElementById(bcid).style.margin = "1em 0";
             document.getElementById(bcid).style.display = "block";
