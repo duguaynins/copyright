@@ -258,6 +258,32 @@
           </div></div>
     </div>
     
+  <script>
+    const allThumbCanvases = document.querySelectorAll('canvas.thumb');
+
+    // 為每個選取的 canvas 元素添加點擊事件監聽器
+    allThumbCanvases.forEach(canvas => {
+      canvas.addEventListener('click', () => {
+        // 取得圖片資料
+        const imageUrl = canvas.toDataURL('image/png');
+
+        // 創建一個隱藏的 <a> 連結
+        const link = document.createElement('a');
+
+        // 取得內容文字
+        const value = document.getElementById('InputRoom').value; 
+        
+        // 設定連結的下載檔名。使用元素的 ID 作為檔名會更具體
+        // 這裡我們將檔名設定為 "id.png"
+        link.download = `${canvas.id}.png`;
+        ///link.download = `${canvas.id}_${value}.png`;
+        link.href = imageUrl;
+
+        // 模擬點擊連結來觸發下載
+        link.click();
+      });
+    });
+  </script>
     <!-- 載入 bwip-js 函式庫 -->
     <!--script src="https://unpkg.com/bwip-js/dist/bwip-js-min.js"></script-->
      
