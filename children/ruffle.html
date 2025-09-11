@@ -2,33 +2,60 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>Ruffle Flash 遊戲範例</title>
+  <title>nins/flash</title>
   <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
   <style>
     body {
-      background: #222;
+      background: #111;
+      color: white;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
     }
-    .flash-container {
-      width: 800px;   /* 遊戲寬度 */
-      height: 600px;  /* 遊戲高度 */
-      border: 3px solid #fff;
+    #flash-container {
+      width: 800px;  /* 可依遊戲調整 */
+      height: 600px;
+      border: 3px solid white;
       border-radius: 10px;
-      background: #000;
-      overflow: hidden;
+      background: black;
+      display: none; /* 預設隱藏，等點擊後才顯示 */
+    }
+    button {
+      font-size: 20px;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 8px;
+      border: none;
+      background: #4caf50;
+      color: white;
+    }
+    button:hover {
+      background: #45a049;
     }
   </style>
 </head>
 <body>
-  <div class="flash-container">
-    <embed src="Client.swf" width="100%" height="100%">
-    <!--embed src="http://mole.61.com/Client.swf" width="100%" height="100%"-->
-  </div>
+  <h1>Ruffle Flash</h1>
+  <button id="start">START</button>
+  <div id="flash-container"></div>
+
+  <script>
+    document.getElementById("start").addEventListener("click", () => {
+      // 點擊後才初始化 Ruffle (解決 AudioContext 問題)
+      let ruffle = window.RufflePlayer.newest();
+      let player = ruffle.createPlayer();
+      let container = document.getElementById("flash-container");
+
+      container.style.display = "block";
+      container.innerHTML = ""; // 清空，避免重複建立
+      container.appendChild(player);
+
+      // 載入本地 SWF (避免 CORS)
+      player.load("Client.swf");
+    });
+  </script>
 </body>
 </html>
-
-
