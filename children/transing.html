@@ -1395,7 +1395,16 @@
           document.getElementById("chatbox").prepend(p); // 加在最上層，但因為 column-reverse 是「視覺底部」。
           box.scrollTop = box.scrollHeight;
 
-          document.getElementById(`${randomID}_tl`).click();
+          // 取得 select 元素
+          var Playtlang = document.getElementById("Playtlang").value;
+
+          // 讀取選取的值
+          ///var value = select.value;
+
+          // 讀取選取的文字
+          ///var text = select.options[select.selectedIndex].text;
+          
+          if (Playtlang === "1") { document.getElementById(`${randomID}_tl`).click(); }
         });
         
         
