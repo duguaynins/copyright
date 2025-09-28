@@ -1374,9 +1374,9 @@
           p.innerHTML = `
             
             <span id="${randomID}_T" style="color:black;" translate="no">${msgTime}</span><br>
-            <label  translate="no" style="color:black;">👂sl:${msgtLangs}<input style="display:none;" type="button" value="👂${msgtLangs}" onclick="handleTTS('${randomID}_0')" /></label>
-            <label  translate="no" style="color:black;">👂il:${msgtLangm}<input style="display:none;" type="button" value="👂${msgtLangm}" onclick="handleTTS('${randomID}_1')" /></label>
-            <label  translate="no" style="color:black;">👂rl:${msgtLangr}<input style="display:none;" type="button" value="👂${msgtLangr}" onclick="handleTTS('${randomID}_9')" /></label>
+            <label id="${randomID}_sl" translate="no" style="color:black;">👂sl:${msgtLangs}<input style="display:none;" type="button" value="👂${msgtLangs}" onclick="handleTTS('${randomID}_0')" /></label>
+            <label id="${randomID}_tl" translate="no" style="color:black;">👂tl:${msgtLangm}<input style="display:none;" type="button" value="👂${msgtLangm}" onclick="handleTTS('${randomID}_1')" /></label>
+            <label id="${randomID}_il" translate="no" style="color:black;">👂il:${msgtLangr}<input style="display:none;" type="button" value="👂${msgtLangr}" onclick="handleTTS('${randomID}_9')" /></label>
             <!--p id="${randomID}_S" translate="no" >（🎯???）</p--><br>
             <span id="${randomID}_2" translate="yes" style="display:block; color:gray;">（🔄${msgtTextr}）</span>
             <p id="${randomID}_0" translate="no" style="display:none; color:gray;">（🔣${msgtTexts}👄${msgtLangs}）</p>
@@ -1389,6 +1389,8 @@
           //document.getElementById("chatbox").appendChild(p);  // 取消CCS時，改用此。
           document.getElementById("chatbox").prepend(p); // 加在最上層，但因為 column-reverse 是「視覺底部」。
           box.scrollTop = box.scrollHeight;
+
+          document.getElementById(`${randomID}_tl`).click();
         });
         
         
