@@ -308,7 +308,7 @@
 
           <a id="LinkAbly" rel="noopener noreferrer" href="https://ably.com/">🔑</a><span>（ably.com）</span><br>
           <!--a id="LinkMail" rel="noopener noreferrer" href="mailto:duguaynins@gmail.com">💌</a><span>（duguaynins@gmail.com）</span><br-->
-          <!--a id="LinkNins" rel="noopener noreferrer" href="https://nins.jpgt.one">🌐</a><span>（nins.jpgt.one）</span><br-->
+          <!--a id="LinkNins" rel="noopener noreferrer" href="https://nins.world">🌐</a><span>（nins.world）</span><br-->
           
           <!--a id="LinkTrans" href="https://translate.google.com/?sl=auto&tl=en&op=translate&text=">💬🔄📱📢</a><span></span-->
           <!--button id="ButtonMike">🎙️</button-->
@@ -1379,12 +1379,17 @@
           const functionName = `handleTTS_${randomID}`;  // 定義專屬函式名稱
           
           // 使用模板字串，插入 randomID 到 HTML 字串中**
-          p.innerHTML = `
+
+          ///const p = document.createElement('p');
+          const div = document.createElement("div");
+          div.innerHTML = `
             
             <span id="${randomID}_T" style="color:black;" translate="no">${msgTime}</span><br>
+            <span style="color:black;">（
             <label id="${randomID}_sl" translate="no" style="color:black;">👂sl:${msgtLangs}<input style="display:none;" type="button" value="👂${msgtLangs}" onclick="handleTTS('${randomID}_0')" /></label>
             <label id="${randomID}_tl" translate="no" style="color:black;">👂tl:${msgtLangm}<input style="display:none;" type="button" value="👂${msgtLangm}" onclick="handleTTS('${randomID}_1')" /></label>
             <label id="${randomID}_il" translate="no" style="color:black;">👂il:${msgtLangr}<input style="display:none;" type="button" value="👂${msgtLangr}" onclick="handleTTS('${randomID}_9')" /></label>
+            ）</span>
             <!--p id="${randomID}_S" translate="no" >（🎯???）</p--><br>
             <span id="${randomID}_2" translate="yes" style="display:block; color:gray;">（🔄${msgtTextr}）</span>
             <p id="${randomID}_0" translate="no" style="display:none; color:gray;">（🔣${msgtTexts}👄${msgtLangs}）</p>
@@ -1395,7 +1400,7 @@
           `;
           
           //document.getElementById("chatbox").appendChild(p);  // 取消CCS時，改用此。
-          document.getElementById("chatbox").prepend(p); // 加在最上層，但因為 column-reverse 是「視覺底部」。
+          document.getElementById("chatbox").prepend(div); // 加在最上層，但因為 column-reverse 是「視覺底部」。
           box.scrollTop = box.scrollHeight;
 
           // 取得 select 元素
@@ -1702,35 +1707,90 @@
     </script>
     <script>
     ///20220623
+    // 互動式檔案下載
+    function downloadHTML(filename) {
+      // 複製一份完整 HTML
+      const clone = document.documentElement.cloneNode(true);
+
+      // 移除所有 <script> 標籤
+      ///clone.querySelectorAll('script').forEach(el => el.remove());
+      clone.querySelectorAll("script").forEach(s => {
+        if (s.textContent.includes("DOMContentLoaded")) {
+          const text = s.textContent;
+          if (text.includes("視窗高度")) { s.remove(); }
+          ///s.remove();
+        }
+      });
+
+      // 插入你想保留的 JS 方法（新增 handleTTS 函式）
+      const ttsScript = document.createElement("script");
+      ttsScript.textContent = `
+        ///function handleTTS(id, lang = "") {}
+      `;
+      clone.querySelector("body").appendChild(ttsScript);
+
+      // 組合成完整 HTML
+      const dt = document.doctype;
+      const doctypeStr = dt ? "<!DOCTYPE " + dt.name + ">\n" : "";
+      const html = doctypeStr + clone.outerHTML;
+
+      // 建立並下載
+      const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    // 文字檔案下載
+    function downloadTXT(filename) {
+      ///const chatContent = document.getElementById("chatbox").innerText;  // display不被讀取***
+      const chatContent = document.getElementById("chatbox").textContent;
+      ///const blob = new Blob([chatContent], { type: "text/plain;charset=utf-8" });
+      // OR 
+      const BOM = "\uFEFF";  // 加入 UTF-8 BOM 解亂碼
+      const blob = new Blob([BOM + chatContent], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      
+      // 時間****
+      const nowUTC = new Date().toISOString();
+      const filetimestamp = nowUTC.replace(/[-:.]/g, '_');
+      console.log(filetimestamp); // 例如：2025-07-02T06-56-31-400Z
+      
+      // 檔案名稱****
+      const a = document.createElement("a");
+      a.href = url;
+      ///a.download = uuid_user + ".txt";
+      ///a.download = "NINS_TRANSING_" + filetimestamp + ".txt";
+      a.download = filename;
+      
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+
+    }
+
     // 檔案下載
-      function downloadChat() {
-        ///const chatContent = document.getElementById("chatbox").innerText;  // display不被讀取***
-        const chatContent = document.getElementById("chatbox").textContent;
-        ///const blob = new Blob([chatContent], { type: "text/plain;charset=utf-8" });
-        // OR 
-        const BOM = "\uFEFF";  // 加入 UTF-8 BOM 解亂碼
-        const blob = new Blob([BOM + chatContent], { type: "text/plain;charset=utf-8" });
-        const url = URL.createObjectURL(blob);
-        
-        // 時間****
-        const nowUTC = new Date().toISOString();
-        const filetimestamp = nowUTC.replace(/[-:.]/g, '_');
-        console.log(filetimestamp); // 例如：2025-07-02T06-56-31-400Z
-        
-        // 檔案名稱****
-        const a = document.createElement("a");
-        a.href = url;
-        ///a.download = uuid_user + ".txt";
-        a.download = "NINS_TRANSING_" + filetimestamp + ".txt";
-        
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      }
-      function DUGUAYNINS() {
-        window.open("https://jpgt.one/", "_blank", "noopener,noreferrer");
-      }
+    function downloadChat() {
+      // 時間****
+      const nowUTC = new Date().toISOString();
+      const filetimestamp = nowUTC.replace(/[-:.]/g, '_');
+      console.log(filetimestamp); // 例如：2025-07-02T06-56-31-400Z
+      const filename = "NINS_TRANSING_" + filetimestamp;
+
+      downloadTXT(filename + ".txt");
+      downloadHTML(filename + ".html");
+    }
+
+    function DUGUAYNINS() {
+      window.open("https://jpgt.xyz/", "_blank", "noopener,noreferrer");
+    }
       
     </script>
     
