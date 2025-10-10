@@ -245,14 +245,19 @@
         <div style="margin: 10px;" onclick="">
         TRNASING
         </div></div>
-        <div style="display: flex; flex-direction: row; border: 1px solid #cdcdcd;" translate="no">
-        <button onclick="document.getElementById('DialogShare').showModal()">🔗</button>
-        <button onclick="document.getElementById('DialogTool').showModal()">🧰</button>
-        <button onclick="downloadChat()">💾</button>
-        <button onclick="DUGUAYNINS()" >👻</button>
+        <div style="margin: 0vw; display: flex; flex-direction: row; border: 1px solid #cdcdcd;" translate="no">
+            <button onclick="document.getElementById('DialogShare').showModal()">🔗</button>
+            <button onclick="document.getElementById('DialogTool').showModal()">🧰</button>
+            <button onclick="downloadChat()">💾</button>
+            <button onclick="DUGUAYNINS()" >👻</button>
         </div>
         
+        <!--div style="margin: 0.2vw; display: flex; flex-direction: row; border: 0px solid #cdcdcd;" translate="no">
+            <span id="SemanticDistance" style="font-size:1vw; width:100%; text-align:center; color:black;">（Semantic Distance）</span>
+        </div-->
+        
         <div id="chatbox" style="border:1px solid #ccc; overflow:auto; width:100%; text-align:left; flex:1;">init</div>
+        
         <input class="main" id="InputRoom" type="text" name="noMemory" autocomplete="off" placeholder="input connection number..." style="width:100%; text-align: center;"/>
         <input class="main" id="InputMsg"  type="text" name="noMemory" autocomplete="off" placeholder="input message text..." style="width:100%; text-align: center;"/>
         <button id="ButtonRoom" onclick="sendSocket()" style="width:100%;" class="button" >📶Send connection</button>
@@ -1050,13 +1055,15 @@
         const result = (emoji_clock + nowUTC) + ("🔄" + rmsg) + ("🤖" + imsg) + ("🔣" + smsg) + ("👄" + ilang + "|" + slang);/// + ("🆔" + randomID);  //???
         // 發送訊息
         channel.publish('message', result);
-        input.value = '';
+        ///input.value = '';  // 最前方已經執行過了
         
         // 語意距離
         const distance = await semantic({ "smsg": smsg, "rmsg": rmsg }); // duguaynins/SemanticDistance
         ///channel.publish('message', result);
         //////alert(distance);
         
+        // 顯示比對
+        ///document.getElementById("SemanticDistance").textContent = "（" + "🎯" + distance + "）";
         input.placeholder = "（" + "👄" + slang + ", " + "🎯" + distance + "）";
         input.setAttribute("translate", "no");
     }
@@ -1390,12 +1397,13 @@
             <label id="${randomID}_tl" translate="no" style="color:black;">👂tl:${msgtLangm}<input style="display:none;" type="button" value="👂${msgtLangm}" onclick="handleTTS('${randomID}_1')" /></label>
             <label id="${randomID}_il" translate="no" style="color:black;">👂il:${msgtLangr}<input style="display:none;" type="button" value="👂${msgtLangr}" onclick="handleTTS('${randomID}_9')" /></label>
             ）</span>
-            <!--p id="${randomID}_S" translate="no" >（🎯???）</p--><br>
+            
             <span id="${randomID}_2" translate="yes" style="display:block; color:gray;">（🔄${msgtTextr}）</span>
             <p id="${randomID}_0" translate="no" style="display:none; color:gray;">（🔣${msgtTexts}👄${msgtLangs}）</p>
             <p id="${randomID}_1" translate="no" style="display:none; color:gray;">（🤖${msgtTextm}👄${msgtLangm}）</p>
             <p id="${randomID}_9" translate="no" style="display:none; color:gray;">（👻${msgtTextr}👄${msgtLangr}）</p>
-            
+            <!--p id="${randomID}_S" translate="no" >（🎯???）</p><br-->
+
             <!--span id="${randomID}_2" translate="">（🔄${msgtTextm}）</span><br-->
           `;
           
