@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>蒸神女菜單 | Steam Goddess Menu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* 🔥 邊框閃爍動畫 */
+    @keyframes glow-border {
+        0% { box-shadow: 0 0 0px rgba(255, 0, 0, 0.0); border-color: rgba(255, 0, 0, 0.3); }
+        50% { box-shadow: 0 0 12px rgba(255, 0, 0, 0.7); border-color: rgba(255, 0, 0, 0.9); }
+        100% { box-shadow: 0 0 0px rgba(255, 0, 0, 0.0); border-color: rgba(255, 0, 0, 0.3); }
+    }
+    .animate-glow {
+        border-width: 2px;
+        border-radius: 1rem; /* 同 Tailwind rounded-2xl */
+        animation: glow-border 1.5s infinite ease-in-out;
+    }
+
+    /* 閃爍紅點 */
+    .blink-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background-color: red;
+        border-radius: 50%;
+        margin-left: 5px;
+        animation: blink 1.5s infinite;
+    }
+    @keyframes blink {
+        0%, 50%, 100% { opacity: 1; }
+        25%, 75% { opacity: 0; }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+  <!-- Header -->
+  <header class="bg-white shadow-md py-6 px-4 text-center z-10 relative" translate="no">
+    <h1 class="text-3xl font-bold text-red-600">蒸神女 | Steam Goddess</h1><br>
+    <p class="text-sm mt-1">🗺️ 台中市清水區中華路426號 | Taichung City, Zhonghua Rd. No.426 🗺️</p>
+    <p class="text-sm mt-1">🕰️ 營業時間 | Opening Hours：11:30–14:00、16:00–21:00（週日公休 | Closed on Sunday）🕰️</p>
+    <p class="text-sm mt-1">📞 預定專線 | Reservation Hotline：0900-549-260 📞</p>
+    <div class="flex justify-center space-x-4 mt-3">
+      <a href="#" class="text-green-600 hover:underline">Line</a>
+      <a href="#" class="text-purple-600 hover:underline">Threads</a>
+      <a href="#" class="text-blue-600 hover:underline">Facebook</a>
+    </div>
+  </header>
+  
+  <!-- 固定在頂部的 footer -->
+  <footer class="fixed top-0 w-full bg-white shadow-md py-4 px-6 flex justify-between items-center z-0">
+    <div>
+        <h1 class="text-lg font-bold text-red-600">蒸神女 | Steam Goddess</h1>
+        <!--p class="text-sm">🗺️ 台中市清水區中華路426號</p-->
+        <p class="text-black-600">若價格有變動，以現場菜單為準。 | In case of price changes, the printed on-site menu shall prevail.</p>
+    </div>
+    <div class="flex space-x-4">
+        <a href="#" class="text-green-600 hover:underline">Line</a>
+        <a href="#" class="text-purple-600 hover:underline">Threads</a>
+        <a href="#" class="text-blue-600 hover:underline">Facebook</a>
+    </div>
+  </footer>
+
+  <!-- Main Content (single column) -->
+  <main class="max-w-3xl mx-auto p-4 flex flex-col space-y-6 mt-6">
+  <!--main class="max-w-3xl mx-auto p-4 flex flex-col space-y-6 mt-6 pb-28"-->
+
+  <!--main class="max-w-5xl mx-auto p-4 grid md:grid-cols-2 gap-6 mt-6"-->
+
+    <!-- 鴨血臭豆腐 Duck Blood & Stinky Tofu -->
+    <section class="bg-white rounded-2xl shadow p-5 animate-glow">
+      <h2 class="text-xl font-semibold text-red-500 mb-2">鴨血臭豆腐 Duck Blood & Stinky Tofu</h2>
+      <ul class="space-y-1">
+        <li>麻奶 Spicy Milk – NT$150</li>
+        <li>乳香起司 Cheese – NT$140</li>
+        <li>椒麻 Peppercorn – NT$100</li>
+        <li>紅燒 Soy Braised – NT$90</li>
+        <li>當歸 Herbal – NT$110</li>
+        <li>泡菜 Kimchi – NT$110</li>
+      </ul>
+    </section>
+
+    <!-- 套餐升級 Combo Upgrade -->
+    <section class="bg-white rounded-2xl shadow p-5 animate-glow">
+      <h2 class="text-xl font-semibold text-red-500 mb-2">套餐升級 Combo Upgrade（限臭豆腐系列 For Stinky Tofu Series）</h2>
+      <ul class="space-y-1">
+        <!--li>A. 菜菜餐 Veggie Set +NT$25（高麗菜 Cabbage）</li-->
+        <li>
+            B. 菜菜餐 vegetable Set
+            <ul class="ml-6 list-disc text-gray-700" style="color: #ff5100;">
+                <li>高麗菜 Cabbage +NT$25</li>
+            </ul>
+        </li>
+        <!--li>B. 飽飽餐 Full Set +NT$25（白飯 Rice/王子麵/豆皮/金針菇 任選2樣）</li-->
+        <li>
+            B. 飽飽餐 Full Set（選二 Select 2 from 4）
+            <ul class="ml-6 list-disc text-gray-700" style="color: #ff5100;">
+                <li>白飯 Rice +NT$25</li>
+                <li>王子麵 Prince Noodles +NT$25</li>
+                <li>豆皮 Tofu Skin +NT$25</li>
+                <li>金針菇 Enoki Mushrooms +NT$25</li>
+            </ul>
+        </li>
+        <!--li>C. 肉肉餐 Meat Set（豬肉山 Pork +NT$139 / 豬牛山 Pork & Beef +NT$149 / 牛肉山 Beef +NT$159）</li-->
+        <li>
+            C. 肉肉餐 Meat Set（選一 Select 1 from 3）
+            <ul class="ml-6 list-disc text-gray-700" style="color: #ff5100;">
+                <li>豬肉山 Pork +NT$139</li>
+                <li>豬牛山 Pork & Beef +NT$149</li>
+                <li>牛肉山 Beef +NT$159</li>
+            </ul>
+        </li>
+      </ul>
+    </section>
+
+    
+    <!-- 鴨血煲 Duck Blood Pot -->
+    <section class="bg-white rounded-2xl shadow p-5">
+      <h2 class="text-xl font-semibold text-red-500 mb-2">鴨血煲 Duck Blood Pot</h2>
+      <ul class="space-y-1">
+        <li>麻奶 Spicy Milk – NT$135</li>
+        <li>乳香起司 Cheese – NT$125</li>
+        <li>椒麻 Peppercorn – NT$85</li>
+        <li>紅燒 Soy Braised – NT$75</li>
+        <li>當歸 Herbal – NT$95</li>
+        <li>泡菜 Kimchi – NT$95</li>
+      </ul>
+    </section>
+
+    <!-- 素食 Vegetarian -->
+    <section class="bg-white rounded-2xl shadow p-5">
+      <h2 class="text-xl font-semibold text-red-500 mb-2">素食 Vegetarian</h2>
+      <ul class="space-y-1">
+        <li>紅燒 Soy Braised – NT$85</li>
+        <li>當歸 Herbal – NT$105</li>
+        <li>泡菜 Kimchi – NT$105</li>
+      </ul>
+    </section>
+
+    <!-- 咖飯即麵 Rice & Noodle -->
+    <section class="bg-white rounded-2xl shadow p-5">
+      <h2 class="text-xl font-semibold text-red-500 mb-2">呷飯呷麵 Rice & Noodle</h2>
+      <ul class="space-y-1">
+        <li>紅麴滷肉飯 Red Yeast Pork Rice – NT$55</li>
+        <li>紅麴肉燥麵 Red Yeast Minced Pork Noodle – NT$50</li>
+        <li>椒麻肉燥拌麵 Spicy Minced Pork Noodle – NT$55</li>
+        <li>鼎太公豬腳 Braised Pork Knuckle – NT$50</li>
+      </ul>
+      <!--p class="text-sm text-gray-600 mt-2">鼎太公豬腳 Braised Pork Knuckle (1 圓 piece) – NT$50</p-->
+    </section>
+
+    <!-- 現煮麵 Fresh Noodles -->
+    <section class="bg-white rounded-2xl shadow p-5">
+      <h2 class="text-xl font-semibold text-red-500 mb-2">現煮麵 Fresh Noodles</h2>
+      <p class="text-sm text-gray-600 mb-2">麵體可選 Noodle Options：王子麵 Prince Noodles / 拉麵 Ramen / 鍋燒意麵 Yi Mian</p>
+
+      <h3 class="font-semibold mt-2">豬肉 Pork</h3>
+      <ul class="space-y-1 mb-2">
+        <li>麻奶 Spicy Milk – NT$140</li>
+        <li>乳香起司 Cheese – NT$130</li>
+        <li>椒麻 Peppercorn – NT$90</li>
+        <li>紅燒 Soy Braised – NT$80</li>
+        <li>當歸 Herbal – NT$100</li>
+        <li>泡菜 Kimchi – NT$100</li>
+      </ul>
+
+      <h3 class="font-semibold mt-2">牛肉 Beef</h3>
+      <ul class="space-y-1">
+        <li>麻奶 Spicy Milk – NT$140</li>
+        <li>乳香起司 Cheese – NT$130</li>
+        <li>椒麻 Peppercorn – NT$90</li>
+        <li>紅燒 Soy Braised – NT$80</li>
+        <li>當歸 Herbal – NT$100</li>
+        <li>泡菜 Kimchi – NT$100</li>
+      </ul>
+    </section>
+
+    <!-- 單點 Side Dishes -->
+    <section class="bg-white rounded-2xl shadow p-5">
+      <h2 class="text-xl font-semibold text-red-500 mb-2">單點 Side Dishes</h2>
+      <ul class="space-y-1">
+        <li>白飯 Rice – NT$15</li>
+        <li>王子麵 Prince Noodles – NT$15</li>
+        <li>拉麵 Ramen – NT$20</li>
+        <li>豆皮 Tofu Skin – NT$20</li>
+        <li>豬肉片 Pork Slices – NT$40</li>
+        <li>酸菜 Pickled Cabbage – NT$15</li>
+        <li>金針菇 Enoki Mushroom – NT$20</li>
+        <li>蔬菜 Vegetables – NT$35</li>
+        <li>鈴鈴卷 Ring Roll – NT$30</li>
+        <li>豬肉片 Pork Slices – NT$40</li>
+        
+        <li>100%純鴨血 100% Pure Duck Blood (2 pcs) – NT$25</li>
+        <li>天然臭豆腐 Natural Stinky Tofu (3 pcs) – NT$25</li>
+
+        <li>手工旗魚大黑輪 Handmade Swordfish Fish Cake Stick (1 pcs) – NT$50 <span class="blink-dot"></span></li>
+        <li>手工甜不辣 Handmade Tempura (1 pcs) – NT$30 <span class="blink-dot"></span></li>
+      </ul>
+    </section>
+
+    <!-- 紅麴滷味 Red Yeast Delicacies -->
+    <section class="bg-white rounded-2xl shadow p-5">
+      <h2 class="text-xl font-semibold text-red-500 mb-2">紅麴滷味 Red Yeast Delicacies（冷凍真空包 Frozen Packs）</h2>
+      <ul class="space-y-1">
+        <li>紅麴鴨翅 Red Yeast Duck Wing – NT$175</li>
+        <li>紅麴大雞爪 Red Yeast Chicken Feet – NT$120</li>
+        <li>紅麴二節翅 Red Yeast Mid Wing – NT$100</li>
+        <li>紅麴翅小腿 Red Yeast Drumette – NT$100</li>
+        <li>紅麴雞胗 Red Yeast Gizzard – NT$100</li>
+        <li>紅麴豆腐 Red Yeast Tofu – NT$100</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="text-center text-gray-500 text-sm py-6">
+    © 2025 蒸神女 Steam Goddess. All Rights Reserved.
+    In case of price changes, the on-site menu shall prevail.
+  </footer>
+
+  <!-- 固定底部區塊 -->
+  <!--footer class="fixed bottom-0 w-full bg-white shadow-md py-4 px-6 flex justify-between items-center">
+    <div>
+        <h1 class="text-lg font-bold text-red-600">蒸神女 | Steam Goddess</h1>
+        <p class="text-sm">🗺️ 台中市清水區中華路426號</p>
+        <p>© 2025 蒸神女 Steam Goddess. All Rights Reserved.</p>
+        <p class="text-red-600">In case of price changes, the on-site menu shall prevail.</p>
+    </div>
+    <div class="flex space-x-4">
+        <a href="#" class="text-green-600 hover:underline">Line</a>
+        <a href="#" class="text-purple-600 hover:underline">Threads</a>
+        <a href="#" class="text-blue-600 hover:underline">Facebook</a>
+    </div>
+  </footer-->
+
+</body>
+</html>
