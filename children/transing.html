@@ -318,12 +318,12 @@
           <!--a id="LinkTrans" href="https://translate.google.com/?sl=auto&tl=en&op=translate&text=">💬🔄📱📢</a><span></span-->
           <!--button id="ButtonMike">🎙️</button-->
           <div translate="no">
-              <label for="Playslang">▶️（sl-play: </label>
+              <!--label for="Playslang">▶️（sl-play: </label>
               <select id="Playslang">
                 <option value="1">open</option>
                 <option value="0">close</option>
-                <!--option value="auto">auto</option-->
-              </select>）<br>
+                <!--option value="auto">auto</option>
+              </select>）<br-->
               <label for="Selectslang">🔣（sl-in: </label>
               <select id="Selectslang">
                 <!--option value="auto">auto*</option-->
@@ -333,12 +333,11 @@
                 <option value="zh-TW">繁體中文</option>
               </select>）<br>
 
-              <label for="Playtlang">▶️（tl-play: </label>
+              <!--label for="Playtlang">▶️（tl-play: </label>
               <select id="Playtlang">
                 <option value="1">open</option>
                 <option value="0">close</option>
-                <!--option value="auto">auto</option-->
-              </select>）<br>
+              </select>）<br-->
               <label for="Selectilang">🤖（tl-out: </label>
               <select id="Selectilang">
                 <!--option value="auto">auto*</option-->
@@ -348,16 +347,23 @@
                 <option value="zh-TW">繁體中文</option>
               </select>）<br>
 
-              <label for="Playilang">▶️（il-play: </label>
+              <!--label for="Playilang">▶️（il-play: </label>
               <select id="Playilang" disabled="">
-                <!--option value="1">open</option-->
+                <option value="1">open</option>
                 <option value="0">close</option>
-                <!--option value="auto">auto</option-->
-              </select>）<br>
+              </select>）<br-->
               <label for="Selecttlang">👻（il-out: </label>
               <select id="Selecttlang">
                 <option value="auto">auto*</option>
                 <!--option value="auto">auto</option-->
+              </select>）<br>
+
+              <label for="Playxlang">▶️（auto-play: </label>
+              <select id="Playxlang">
+                <option value="3">source language</option>
+                <option value="2">traget language</option>
+                <option value="1">intermediate language</option>
+                <option value="0">close</option>
               </select>）<br>
           </div>
           
@@ -1426,17 +1432,14 @@
           box.scrollTop = box.scrollHeight;
 
           // 取得 select 元素
-          var Playslang = document.getElementById("Playslang").value;
-          var Playtlang = document.getElementById("Playtlang").value;
-
-          // 讀取選取的值
-          ///var value = select.value;
+          var Playxlang = document.getElementById("Playxlang").value;
 
           // 讀取選取的文字
           ///var text = select.options[select.selectedIndex].text;
-          if (Playslang === "1") { Playtlang = "0"; document.getElementById("Playtlang").value = "0"; }
-          if (Playslang === "1") { document.getElementById(`${randomID}_sl`).click(); }
-          if (Playtlang === "1") { document.getElementById(`${randomID}_tl`).click(); }
+          if (Playxlang === "3") { document.getElementById(`${randomID}_sl`).click(); }
+          if (Playxlang === "2") { document.getElementById(`${randomID}_tl`).click(); }
+          if (Playxlang === "1") { document.getElementById(`${randomID}_il`).click(); }
+          if (Playxlang === "0") {  }
         });
         
         
