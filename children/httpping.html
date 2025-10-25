@@ -127,6 +127,8 @@
                   <div class="flex flex-col items-center justify-center space-y-4 mb-6">
                       <input type="text" id="urlInput" placeholder="https://www.google.com" value=""
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                      <input type="password" id="tokenInput" placeholder="Enter API Token or Key (e.g., Bearer token)" value=""
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                       <button id="pingButton" translate="no"
                               class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition-all duration-300 ease-in-out transform active:scale-95">
                           Start Ping
@@ -156,6 +158,7 @@
 
         function startPing() {
             const urlInput = document.getElementById('urlInput').value.trim();
+            const tokenInput = document.getElementById('tokenInput').value.trim();
             const resultDiv = document.getElementById('result');
             const loadingDiv = document.getElementById('loading');
 
@@ -172,10 +175,21 @@
 
             const startTime = new Date().getTime();
             const testUrl = urlInput.startsWith('http') ? urlInput : `https://${urlInput}`;
-
+            
+            // 🔑 Prepare headers for the request
+            const headers = {};
+            if (tokenInput) {
+                // Standard Authorization header with Bearer scheme
+                headers['Authorization'] = `Bearer ${tokenInput}`; 
+                
+                // Alternatively, if the API uses a custom header (e.g., for an API Key):
+                // headers['X-API-Key'] = tokenInput; 
+            }
+            
             fetch(testUrl, {
                 mode: 'no-cors',
                 cache: 'no-store'
+                headers: headers,  // 🔑 Include the headers in the request
             })
             .then(() => {
                 const endTime = new Date().getTime();
