@@ -1,121 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
 <head>
-    <title>nins/ffmpeg.wasm</title>
-    <style>
-        body { font-family: sans-serif; padding: 20px; }
-        #message { margin-top: 15px; color: blue; }
-        button { padding: 10px 20px; cursor: pointer; }
-    </style>
+  <meta charset="UTF-8" />
+  <title>FFmpeg UMD 版本</title>
 </head>
 <body>
+  <h2>🎬 FFmpeg WebAssembly (UMD) Demo</h2>
+  <input type="file" id="uploader" accept="video/*" />
+  <button id="convertBtn">轉成 MP3</button>
+  <p id="status"></p>
+  <a id="downloadLink" style="display:none;">下載 MP3</a>
 
-    <h1>在瀏覽器中進行影片轉檔 (MP4 轉 WebM)</h1>
+  <!-- ✅ 使用傳統 script 引入 -->
+  <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.10.0/dist/ffmpeg.min.js"></script>
 
-    <input type="file" id="uploader" accept="video/mp4,video/quicktime,video/avi" />
-    <button onclick="transcodeVideo()" id="runButton" disabled>開始轉檔</button>
-    
-    <p id="message">請上傳一個檔案</p>
-    
-    <hr>
-    
-    <h2>轉檔結果</h2>
-    <video id="output-video" controls style="max-width: 600px; display: none;"></video>
-    
-    <script type="module">
-        // 從 CDN 導入 FFmpeg 函式庫
-        // @ffmpeg/ffmpeg 是主要的 JS API
-        // @ffmpeg/core 包含了 WebAssembly 核心檔案
-        ///import { createFFmpeg, fetchFile } from 'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.15/dist/esm/index.js';
-        // 初始化 FFmpeg 實例
-        // log: true 會在瀏覽器控制台中輸出 FFmpeg 的執行日誌
-        ///const ffmpeg = createFFmpeg({ log: true });
+  <script>
+    const { createFFmpeg, fetchFile } = FFmpeg;
+    const ffmpeg = createFFmpeg({
+      corePath: 'https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js',
+        log: true,
+        ///noWorker: true,  // ⚠️ 禁用多線程
+    });
 
-        // 1. 導入 FFmpeg 類別 (從 @ffmpeg/ffmpeg)
-        import { FFmpeg } from 'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.15/dist/esm/index.js';
-        ///import { FFmpeg } from './js/ffmpeg.js';
-        // 2. 導入 fetchFile 函式 (從 @ffmpeg/util)
-        import { fetchFile } from 'https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js'; 
-        ///import { fetchFile } from './js/ffmpeg-util.js';
-        // 3. 使用 new FFmpeg() 建立實例
-        const ffmpeg = new FFmpeg({ log: true });
+    const uploader = document.getElementById('uploader');
+    const convertBtn = document.getElementById('convertBtn');
+    const status = document.getElementById('status');
+    const downloadLink = document.getElementById('downloadLink');
 
-        // 取得頁面元素
-        const uploader = document.getElementById('uploader');
-        const runButton = document.getElementById('runButton');
-        const message = document.getElementById('message');
-        const outputVideo = document.getElementById('output-video');
+    convertBtn.onclick = async () => {
+      if (!uploader.files.length) return alert('請先選擇影片檔！');
+      const file = uploader.files[0];
 
-        let inputFile = null; // 用來儲存使用者選取的檔案
+      status.textContent = '⏳ 載入 FFmpeg...';
+      await ffmpeg.load();
 
+      status.textContent = '📥 寫入檔案中...';
+      ffmpeg.FS('writeFile', 'input.mp4', await fetchFile(file));
 
-        // 監聽檔案選擇事件
-        uploader.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                inputFile = e.target.files[0];
-                runButton.disabled = false;
-                message.innerHTML = `已選取檔案: ${inputFile.name}。請點擊「開始轉檔」`;
-            }
-        });
+      status.textContent = '🎧 轉檔中...';
+      await ffmpeg.run('-i', 'input.mp4', 'output.mp3');
 
-        // 轉檔主函式
-        window.transcodeVideo = async () => {
-            if (!inputFile) {
-                message.innerHTML = '請先上傳檔案！';
-                return;
-            }
+      status.textContent = '✅ 完成！';
 
-            outputVideo.style.display = 'none'; // 隱藏舊影片
-            runButton.disabled = true;
-            message.innerHTML = '正在載入 FFmpeg 核心... (第一次載入可能較久)';
+      const data = ffmpeg.FS('readFile', 'output.mp3');
+      const blob = new Blob([data.buffer], { type: 'audio/mpeg' });
+      const url = URL.createObjectURL(blob);
 
-            try {
-                // 1. 載入 FFmpeg 核心
-                if (!ffmpeg.loaded) {
-                ///if (!ffmpeg.isLoaded()) {
-                    await ffmpeg.load();
-                }
-
-                const inputName = 'input.' + inputFile.name.split('.').pop(); // 保持副檔名
-                const outputName = 'output.webm';
-                
-                message.innerHTML = '正在寫入檔案系統...';
-                
-                // 2. 將輸入檔案寫入 FFmpeg 的虛擬檔案系統
-                // fetchFile 會將 File/Blob 轉換成 FFmpeg 可讀取的格式
-                ffmpeg.FS('writeFile', inputName, await fetchFile(inputFile));
-
-                message.innerHTML = '正在執行轉檔命令... 請稍候...';
-
-                // 3. 運行 FFmpeg 命令
-                // -i <input> <options> <output>
-                // 這裡的命令是：將 input 檔案轉成 output.webm (使用 VP8/VP9 影音編碼)
-                await ffmpeg.run(
-                    '-i', inputName,         // 輸入檔案
-                    '-c:v', 'libvpx',      // 視訊編碼器 (WebM)
-                    outputName               // 輸出檔案名稱
-                );
-
-                message.innerHTML = '正在讀取輸出檔案...';
-
-                // 4. 從虛擬檔案系統讀取輸出檔案
-                const data = ffmpeg.FS('readFile', outputName);
-
-                message.innerHTML = '轉檔成功！';
-
-                // 5. 將輸出資料轉換為 Blob 並建立 URL 供 video 元素播放
-                const blob = new Blob([data.buffer], { type: 'video/webm' });
-                outputVideo.src = URL.createObjectURL(blob);
-                outputVideo.style.display = 'block';
-
-            } catch (error) {
-                message.innerHTML = `轉檔失敗：${error.message}`;
-                console.error(error);
-            } finally {
-                runButton.disabled = false;
-            }
-        };
-    </script>
-
+      downloadLink.href = url;
+      downloadLink.download = 'output.mp3';
+      downloadLink.style.display = 'inline';
+      downloadLink.textContent = '⬇️ 下載 MP3';
+    };
+  </script>
 </body>
 </html>
