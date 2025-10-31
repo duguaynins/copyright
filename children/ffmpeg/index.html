@@ -17,9 +17,10 @@
   <script>
     const { createFFmpeg, fetchFile } = FFmpeg;
     const ffmpeg = createFFmpeg({
-      corePath: 'https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js',
+      ///corePath: 'https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js',
+      corePath: 'https://app.unpkg.com/@ffmpeg/core@0.12.10/files/dist/esm/ffmpeg-core.js',
         log: true,
-        ///noWorker: true,  // ⚠️ 禁用多線程
+        noWorker: true,  // ⚠️ 禁用多線程
     });
 
     const uploader = document.getElementById('uploader');
