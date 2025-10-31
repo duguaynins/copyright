@@ -2,14 +2,13 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <title>FFmpeg UMD 版本</title>
+  <title>nins/FFmpeg</title>
 </head>
 <body>
-  <h2>🎬 FFmpeg WebAssembly (UMD) Demo</h2>
   <input type="file" id="uploader" accept="video/*" />
-  <button id="convertBtn">轉成 MP3</button>
+  <button id="convertBtn">to MP3</button>
   <p id="status"></p>
-  <a id="downloadLink" style="display:none;">下載 MP3</a>
+  <a id="downloadLink" style="display:none;">dl MP3</a>
 
   <!-- ✅ 使用傳統 script 引入 -->
   <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.10.0/dist/ffmpeg.min.js"></script>
@@ -17,8 +16,8 @@
   <script>
     const { createFFmpeg, fetchFile } = FFmpeg;
     const ffmpeg = createFFmpeg({
-      ///corePath: 'https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js',
-      corePath: 'https://app.unpkg.com/@ffmpeg/core@0.12.10/files/dist/esm/ffmpeg-core.js',
+      corePath: 'https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js',
+      ///corePath: 'https://app.unpkg.com/@ffmpeg/core@0.12.10/files/dist/esm/ffmpeg-core.js',
         log: true,
         noWorker: true,  // ⚠️ 禁用多線程
     });
