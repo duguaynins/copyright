@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>正在轉址到郵件客戶端...</title>
+</head>
+<body>
+    <h1>正在準備您的郵件...</h1>
+    <p id="message">如果沒有自動跳轉，請檢查您的瀏覽器是否允許開啟電子郵件客戶端。</p>
+
+    <script>
+        // 1. 取得 URL 參數
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // 2. 讀取 'to' 參數作為收件人 ID
+        const recipient = urlParams.get('to');
+        
+        // 讀取 'subject' 和 'body' 參數
+        const subject = urlParams.get('subject');
+        const body = urlParams.get('body');
+
+        if (recipient) {
+            // 3. 構建 mailto 連結
+            let mailtoUrl = `mailto:${recipient}`;
+
+            // 檢查是否有主旨或內文參數，如果有則加入
+            const params = [];
+            if (subject) {
+                // 將特殊字元編碼，確保在 URL 中安全傳輸
+                params.push(`subject=${encodeURIComponent(subject)}`);
+            }
+            if (body) {
+                params.push(`body=${encodeURIComponent(body)}`);
+            }
+
+            // 如果有額外參數，則以 '?' 開頭加入
+            if (params.length > 0) {
+                mailtoUrl += '?' + params.join('&');
+            }
+
+            // 4. 執行重新導向
+            // 這是觸發 mailto 協定的關鍵步驟
+            window.location.href = mailtoUrl;
+
+            // 提示使用者
+            document.getElementById('message').innerText = `郵件將寄給：${recipient}。請確認您的郵件客戶端已開啟。`;
+        } else {
+            // 如果缺少必要的參數 (收件人 ID)
+            document.getElementById('message').innerHTML = '錯誤：缺少收件人郵件地址 (`?to=...`) 參數。';
+        }
+    </script>
+</body>
+</html>
