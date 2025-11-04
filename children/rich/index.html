@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .board {
+            display: grid;
+            grid-template-columns: 100px repeat(4, 80px) 100px; /* 100 + 80*4 + 100 = 520px */
+            grid-template-rows: 100px repeat(4, 80px) 100px;     /* 100 + 80*4 + 100 = 520px */
+            width: 520px;
+            height: 520px;
+            border: 5px solid #2d3748;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            margin: 20px auto;
+            position: relative;
+            box-sizing: border-box;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+        .square {
+            border: 1px solid #a0aec0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 10px;
+            background-color: #f7fafc;
+            position: relative;
+            box-sizing: border-box;
+            padding: 2px;
+            color: #2d3748;
+            font-weight: 500;
+        }
+        .corner { font-size: 14px; font-weight: bold; background-color: #bee3f8; color: #2b6cb0; }
+        .property::before {
+            content: "";
+            position: absolute;
+            background-color: #ecc94b;
+        }
+
+        .property.top::before { top: 0; left: 0; width: 100%; height: 15px; border-bottom: 1px solid #a0aec0; }
+        .property.left::before { top: 0; left: 0; width: 15px; height: 100%; border-right: 1px solid #a0aec0; }
+        .property.bottom::before { bottom: 0; left: 0; width: 100%; height: 15px; border-top: 1px solid #a0aec0; }
+        .property.right::before { top: 0; right: 0; width: 15px; height: 100%; border-left: 1px solid #a0aec0; }
+        #square-0 { background-color: #c6f6d5; color: #276749; grid-area: 1 / 6 / 2 / 7; } /* 右上角 */
+        #square-4 { background-color: #fed7d7; color: #9b2c2c; grid-area: 1 / 1 / 2 / 2; } /* 左上角 */
+        #square-15 { background-color: #fed7d7; color: #9b2c2c; grid-area: 6 / 1 / 7 / 2; }
+        #square-11 { background-color: #c3dafe; color: #3182ce; grid-area: 6 / 6 / 7 / 7; }
+        #square-1 { grid-area: 1 / 5 / 2 / 6; }
+        #square-2 { grid-area: 1 / 4 / 2 / 5; }
+        #square-3 { grid-area: 1 / 3 / 2 / 4; }
+        #square-19 { grid-area: 2 / 1 / 3 / 2; }
+        #square-18 { grid-area: 3 / 1 / 4 / 2; }
+        #square-17 { grid-area: 4 / 1 / 5 / 2; }
+        #square-16 { grid-area: 5 / 1 / 6 / 2; }
+        #square-14 { grid-area: 6 / 2 / 7 / 3; }
+        #square-13 { grid-area: 6 / 3 / 7 / 4; }
+        #square-12 { grid-area: 6 / 4 / 7 / 5; }
+        #square-10 { grid-area: 5 / 6 / 6 / 7; }
+        #square-9 { grid-area: 4 / 6 / 5 / 7; }
+        #square-8 { grid-area: 3 / 6 / 4 / 7; }
+        #square-7 { grid-area: 2 / 6 / 3 / 7; }
+        .center-area { grid-area: 2 / 2 / 6 / 6; background-color: #fff; }
+        
+        .player-token { width: 28px; height: 28px; border-radius: 50%; color: white; display: flex; justify-content: center; align-items: center; font-size: 14px; font-weight: 700; position: absolute; transition: all 0.7s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4); z-index: 10; }
+        
+
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center m-0 p-0">
+
+    <div class="board">
+        <div class="square corner start" id="square-0">起點</div>
+        <div class="square property top" id="square-1">地產 1</div>
+        <div class="square property top" id="square-2">地產 2</div>
+        <div class="square card top" id="square-3">玩家交易</div>
+        <div class="square corner jail" id="square-4">監獄 / 只是拜訪</div>
+        <div class="square property left" id="square-7">地產 12</div>
+        <div class="square property left" id="square-8">地產 13</div>
+        <div class="square card left" id="square-9">命運</div>
+        <div class="square property left" id="square-10">地產 14</div>
+        <div class="square corner goto-jail" id="square-11">去監獄</div>
+        <div class="square utility bottom" id="square-12">公共事業</div>
+        <div class="square tax bottom" id="square-13">禁地罰金</div>
+        <div class="square property bottom" id="square-14">地產 15</div>
+        <div class="square corner parking" id="square-15">免費停車</div>
+        <div class="square property right" id="square-16">地產 5</div>
+        <div class="square card right" id="square-17">機會</div>
+        <div class="square property right" id="square-18">地產 4</div>
+        <div class="square property right" id="square-19">地產 3</div>
+        <!--div class="square property right" id="square-5">命令</div-->
+        <!--div class="square property right" id="square-6">請求</div-->
+        
+        <div class="center-area p-8 flex flex-col justify-around items-center rounded-lg shadow-inner">
+            <h2 id="status" class="text-xl font-semibold text-gray-700">玩家 1 的回合</h2>
+            <div id="dice-result" class="text-5xl font-extrabold text-indigo-600 my-4">🎲</div>
+            <button id="roll-dice" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105">擲骰子</button>
+            <div id="system" class="mt-4 text-sm text-gray-500">（點擊按鈕移動 P1 或 P2）</div>
+        </div>
+        <div class="player-token" id="player-1-token" style="background-color: #f56565;">P1</div>
+        <div class="player-token" id="player-2-token" style="background-color: #4299e1;">P2</div>
+    </div>
+
+    <script>
+        /*
+        let currentPlayer = 1;
+        let playerPositions = { 1: 0, 2: 0 };
+        const numSquares = 20;
+        const rollDiceButton = document.getElementById('roll-dice');
+        const diceResultDiv = document.getElementById('dice-result');
+        const statusDiv = document.getElementById('status');
+        const player1Token = document.getElementById('player-1-token');
+        const player2Token = document.getElementById('player-2-token');*/
+        const cornerSize = 100;
+        const normalSize = 80;
+        const boardSize = 620;
+
+        /*
+        const getSquareCenter = (index) => {
+            let x = 0, y = 0;
+            if (index >= 0 && index <= 4) {
+                y = cornerSize / 2;
+                x = boardSize - cornerSize - (index === 0 ? 0 : index * normalSize) + normalSize / 2;
+            } else if (index >= 7 && index <= 10) {
+                x = boardSize - cornerSize / 2;
+                y = (index - 6) * normalSize + cornerSize / 2;
+            } else if (index >= 11 && index <= 15) {
+                y = boardSize - cornerSize / 2;
+                x = cornerSize / 2 + (index - 15) * normalSize;
+            } else if (index >= 16 && index <= 19) {
+                x = cornerSize / 2;
+                y = boardSize - cornerSize - (index - 16) * normalSize + normalSize / 2;
+            }
+            return { x, y };
+        };*/
+        // 範例棋盤設定
+
+        /**
+         * 根據格子索引計算棋子中心座標
+         * @param {number} index - 格子索引 0~19
+         * @returns {{x: number, y: number}}
+         */
+
+        /*
+        function getSquareCenter(index) {
+            let x, y;
+
+            if (index >= 0 && index <= 4) { // 上側
+                y = cornerSize / 2;
+                if (index === 0) x = boardSize - cornerSize / 2;          // 右上角
+                else if (index === 4) x = cornerSize / 2;                 // 左上角
+                else x = boardSize - cornerSize - (index - 1) * normalSize - normalSize / 2; // 中間
+            }
+            else if (index >= 5 && index <= 10) { // 右側
+                x = boardSize - cornerSize / 2;
+                if (index === 10) y = boardSize - cornerSize / 2;         // 右下角
+                else y = cornerSize + (index - 5) * normalSize + normalSize / 2; // 中間格
+            }
+            else if (index >= 11 && index <= 15) { // 下側
+                y = boardSize - cornerSize / 2;
+                if (index === 11) x = boardSize - cornerSize / 2;        // 右下角
+                else if (index === 15) x = cornerSize / 2;               // 左下角
+                else x = cornerSize + (index - 12) * normalSize + normalSize / 2; // 中間
+            }
+            else if (index >= 16 && index <= 19) { // 左側
+                x = cornerSize / 2;
+                if (index === 16) y = boardSize - cornerSize / 2;        // 左下角
+                else y = boardSize - cornerSize - (index - 17) * normalSize - normalSize / 2; // 中間
+            }
+
+            return { x, y };
+        }*/
+       
+        /*
+        const squareCenters = [
+            {x: 420, y: 420}, // 起點
+            {x: 360, y: 420}, // 地產1
+            {x: 300, y: 420}, // 地產2
+            {x: 240, y: 420}, // 地產3
+            {x: 180, y: 420}, // 地產4
+            {x: 120, y: 360}, // 機會
+            {x: 120, y: 300}, // 免費停車
+            {x: 120, y: 240}, // 地產5
+            {x: 120, y: 180}, // 地產6
+            {x: 180, y: 120}, // 地產7
+            {x: 240, y: 120}, // 機會
+            {x: 300, y: 120}, // 地產8
+            {x: 360, y: 120}, // 地產9
+            {x: 420, y: 120}, // 命運
+            {x: 420, y: 180}, // 地產10
+            {x: 420, y: 240}, // 去監獄
+            {x: 420, y: 300}, // 公共事業
+            {x: 420, y: 360}, // 稅金
+            {x: 360, y: 360}, // 地產15
+            {x: 300, y: 360}, // 監獄/只是拜訪
+        ];
+
+        function getSquareCenter(index) {
+            return squareCenters[index % 20];
+        }*/
+        /*
+        function getSquareCenter(index) {
+            let x, y;
+
+            // 上邊 (右上到左上)
+            if (index >= 0 && index <= 4) {
+                y = 50; // 上邊角格一半
+                switch(index) {
+                    case 0: x = 570; break; // 起點
+                    case 1: x = 490; break;
+                    case 2: x = 410; break;
+                    case 3: x = 330; break;
+                    case 4: x = 50; break; // 左上角
+                }
+            }
+            // 左邊 (上左到下左)
+            else if (index >= 5 && index <= 10) {
+                x = 50; // 左側角格
+                y = 50 + (index - 5 + 1) * 80 - 40; // 每格中心
+                if(index === 10) y = 570; // 左下角
+            }
+            // 下邊 (左下到右下)
+            else if (index >= 11 && index <= 15) {
+                y = 570; // 下邊角格
+                x = 50 + (index - 11 + 1) * 80 - 40;
+                if(index === 11) x = 50; // 左下角
+                if(index === 15) x = 570; // 右下角
+            }
+            // 右邊 (下右到上右)
+            else if (index >= 16 && index <= 19) {
+                x = 570; // 右側角格
+                y = 50 + (19 - index + 1) * 80 - 40;
+                if(index === 16) y = 330;
+                if(index === 19) y = 50;
+            }
+
+            return { x, y };
+        }*/
+
+        /*// v0
+        const movePlayerToken = (player, newPos) => {
+            const token = (player === 1) ? player1Token : player2Token;
+            const coords = getSquareCenter(newPos);
+            const tokenHalf = 14;
+            const offset = (player === 2) ? 14 : -14;
+            token.style.left = `${coords.x - tokenHalf + offset/2}px`;
+            token.style.top = `${coords.y - tokenHalf}px`;
+        };*/
+        /*// v1
+        const movePlayerToken = (player, newPos) => {
+            const token = player === 1 ? player1Token : player2Token;
+            const coords = getSquareCenter(newPos);
+            const offsetX = player === 1 ? -14 : 14; // 玩家1/2 左右偏移
+            token.style.left = `${coords.x - 14 + offsetX}px`;
+            token.style.top = `${coords.y - 14}px`;
+        };*/
+        let currentPlayer = 1;
+        let playerPositions = { 1: 0, 2: 0 };
+        // The HTML defines 18 squares: 0, 1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
+        // To fix the move path, we must use the actual number of squares defined.
+        // The indices are 0-4 (5), 7-10 (4), 11-15 (5), 16-19 (4) -> Total 18 squares.
+        // **IMPORTANT:** Since your existing `rollDice` uses indices 0-19 with modulo 20, 
+        // the easiest fix is to change the square-ID mapping so it's consecutive (0-17).
+        // However, if we must stick to the existing HTML IDs, we need to map them.
+
+        // Let's create a *correct* ordered list of square IDs for a counter-clockwise path,
+        // starting from 'square-0' (Start/右上角).
+        const correctSquareOrder = [
+            'square-0', 'square-7', 'square-8', 'square-9', 'square-10', // Right Side (0-4)
+            'square-11', // Right-Bottom Corner (5)
+            'square-12', 'square-13', 'square-14', // Bottom Side (6-8)
+            'square-15', // Left-Bottom Corner (9)
+            'square-16', 'square-17', 'square-18', 'square-19', // Left Side (10-13)
+            'square-4', // Left-Top Corner (14)
+            'square-3', 'square-2', 'square-1' // Top Side (15-17)
+        ];
+        const numSquares = correctSquareOrder.length; // Will be 18
+
+        const rollDiceButton = document.getElementById('roll-dice');
+        const diceResultDiv = document.getElementById('dice-result');
+        const statusDiv = document.getElementById('status');
+        const player1Token = document.getElementById('player-1-token');
+        const player2Token = document.getElementById('player-2-token');
+
+        /**
+         * 根據格子在 correctSquareOrder 中的索引計算棋子中心座標
+         * @param {number} pathIndex - 在 correctSquareOrder 中的索引 (0 到 17)
+         * @returns {{x: number, y: number}} 相對於 .board 容器的中心座標
+         */
+        function getSquareCenter(pathIndex) {
+            const squareId = correctSquareOrder[pathIndex];
+            const squareElement = document.getElementById(squareId);
+
+            if (squareElement) {
+                // center of the square is its offset + half of its current size
+                // For corner squares (0, 4, 11, 15), size is 100px. For others, it's 80px.
+                const size = (squareElement.classList.contains('corner') || squareId === 'square-0') ? 100 : 80;
+
+                // Get the center point of the square relative to the board
+                const x = squareElement.offsetLeft + size / 2;
+                const y = squareElement.offsetTop + size / 2;
+                return { x, y };
+            }
+            // Fallback for safety, though should not happen with correctSquareOrder
+            return { x: 260, y: 260 }; 
+        }
+
+        // 由於您的 HTML 只定義了 18 個格子 (0-4, 7-10, 11-15, 16-19)，
+        // 我會將 `numSquares` 改為 18，或者您需要補充 square-5 和 square-6 的 HTML 和 CSS。
+        // **建議您在 <script> 標籤中將 numSquares = 20 改為 numSquares = 18。**
+        // const numSquares = 18; // 修正格子總數
+
+        /**
+         * 移動棋子到新的位置中心，並為多個玩家提供微小偏移
+         * @param {number} player - 玩家編號 1 或 2
+         * @param {number} newPos - 新的格子索引 (在 correctSquareOrder 中的索引)
+         */
+        const movePlayerToken = (player, newPos) => {
+            const token = (player === 1) ? player1Token : player2Token;
+            const coords = getSquareCenter(newPos);
+            const tokenHalf = 14; // 棋子寬度/2 (28px / 2)
+            
+            // 玩家 1 向左微調，玩家 2 向右微調，使其在同一格時稍微錯開
+            // Horizontal offset: -5 for P1, 5 for P2
+            const offsetX = (player === 1) ? -5 : 5; 
+
+            // `coords.x - tokenHalf` is the center point, then add offsetX for player separation
+            token.style.left = `${coords.x - tokenHalf + offsetX}px`;
+            token.style.top = `${coords.y - tokenHalf}px`;
+        };
+
+        const rollDice = () => {
+            rollDiceButton.disabled = true;
+            rollDiceButton.textContent = '擲骰中...';
+            const diceRoll = Math.floor(Math.random() * 6) + 1;
+            diceResultDiv.textContent = '🎲';
+            let rollCount = 0;
+            const interval = setInterval(() => {
+                diceResultDiv.textContent = `🎲 ${Math.floor(Math.random() * 6) + 1}`;
+                rollCount++;
+                if (rollCount > 10) {
+                    clearInterval(interval);
+                    ///diceResultDiv.textContent = `擲出: ${diceRoll}`;
+                    document.getElementById('dice-result').textContent = "🎲";  ///new
+                    
+                    let currentPos = playerPositions[currentPlayer];
+                    let newPos = (currentPos + diceRoll);
+                    
+                    // Pass Go logic
+                    
+                    if (newPos >= numSquares) { 
+                        ///statusDiv.textContent = `玩家 ${currentPlayer} 經過起點！領取獎勵！`; 
+                        document.getElementById('system').textContent = `玩家 ${currentPlayer} 經過起點！領取獎勵！`;  ///new
+                    }
+                    newPos = newPos % numSquares; // Use the correct numSquares (18)
+                    
+                    playerPositions[currentPlayer] = newPos;
+                    movePlayerToken(currentPlayer, newPos);
+
+                    setTimeout(() => {
+                        const squareId = correctSquareOrder[newPos];
+                        const squareText = document.getElementById(squareId)?.textContent.trim() || '未知格';
+                        
+                        currentPlayer = (currentPlayer === 1) ? 2 : 1;
+                        ///statusDiv.textContent = `玩家 ${currentPlayer} 的回合 (${squareText})`;
+                        statusDiv.textContent = `玩家 ${currentPlayer} 的回合`;  ///new
+                        document.getElementById('system').textContent = `(上次有人擲出「${diceRoll}」踩到「${squareText}」)`;  ///new
+
+                        rollDiceButton.disabled = false;
+                        rollDiceButton.textContent = '擲骰子';
+                    }, 1000);
+
+
+                }
+            }, 100);
+        };
+
+        window.onload = function () {
+            rollDiceButton.addEventListener('click', rollDice);
+            // Start position is path index 0
+            movePlayerToken(1, 0); 
+            movePlayerToken(2, 0);
+        };
+    </script>
+</body>
+</html>
