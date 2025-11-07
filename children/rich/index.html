@@ -88,7 +88,7 @@
 
         <div class="square card top" id="square-3" style="background-color:#cdcdcd;">即時自訂1</div>
         
-        <div class="square railroad top property" id="square-5" style="background-color:#cdcdcd;">即時自訂2</div> <div class="square corner jail" id="square-4">監獄 / 只是拜訪</div>
+        <div class="square railroad top property" id="square-5" style="background-color:#cdcdcd;">即時自訂2</div> <div class="square corner jail" id="square-4">投票任務</div>
         
         <div class="square property left" id="square-19">地產 3</div>
         <div class="square property left" id="square-18">地產 4</div>
@@ -100,7 +100,7 @@
         <div class="square tax bottom" id="square-13" style="background-color:#666666; color:white;">禁地罰金</div>
         <div class="square utility bottom" id="square-12" style="background-color:#666666; color:white;">公共事業</div>
         
-        <div class="square utility bottom property" id="square-6" style="background-color:#cdcdcd;">即時自訂3</div> <div class="square corner goto-jail" id="square-11">去監獄</div>
+        <div class="square utility bottom property" id="square-6" style="background-color:#cdcdcd;">即時自訂3</div> <div class="square corner goto-jail" id="square-11">魔王任務</div>
         
         <div class="square property right" id="square-10">地產 14</div>
         <div class="square card right" id="square-9">命運</div>
@@ -111,7 +111,7 @@
             <h2 id="status" class="text-xl font-semibold text-gray-700">玩家 1 的回合</h2>
             <div id="dice-result" class="text-5xl font-extrabold text-indigo-600 my-4">🎲</div>
             <button id="roll-dice" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105">擲骰子</button>
-            <div id="system" class="mt-4 text-sm text-gray-500">（點擊按鈕移動 P1 或 P2）</div>
+            <div id="system" class="mt-4 text-sm text-gray-500">（在行動裝置上時請橫置螢幕遊玩。）</div>
         </div>
         <div class="player-token" id="player-1-token" style="background-color: #f56565;">P1</div>
         <div class="player-token" id="player-2-token" style="background-color: #4299e1;">P2</div>
@@ -213,8 +213,13 @@
                     let currentPos = playerPositions[currentPlayer];
                     let newPos = (currentPos + diceRoll);
                     
+                    if (true) {
+                        const squareId = correctSquareOrder[currentPos];
+                        const squareText = document.getElementById(squareId)?.textContent.trim() || '未知格';
+                        document.getElementById('system').textContent = `(上次有人來自「${squareText}」！`;  ///(上次有人
+                    }
                     if (newPos >= numSquares) { 
-                        document.getElementById('system').textContent = `玩家 ${currentPlayer} 經過起點！領取獎勵！`;
+                        ///document.getElementById('system').textContent = `玩家 ${currentPlayer} 經過起點！領取獎勵！`;
                     }
                     newPos = newPos % numSquares; 
                     
@@ -227,7 +232,7 @@
                         
                         currentPlayer = (currentPlayer === 1) ? 2 : 1;
                         statusDiv.textContent = `玩家 ${currentPlayer} 的回合`;
-                        document.getElementById('system').textContent = `(上次有人擲出「${diceRoll}」踩到「${squareText}」)`;
+                        document.getElementById('system').textContent += `擲出「${diceRoll}」踩到「${squareText}」。)`;
 
                         rollDiceButton.disabled = false;
                         rollDiceButton.textContent = '擲骰子';
