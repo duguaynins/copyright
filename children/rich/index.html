@@ -67,36 +67,6 @@
         
         .player-token { width: 28px; height: 28px; border-radius: 50%; color: white; display: flex; justify-content: center; align-items: center; font-size: 14px; font-weight: 700; position: absolute; transition: all 0.7s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4); z-index: 10; }
         
-        
-        /* 5. 手機直向模式下的強制旋轉 (修正後的穩健代碼) */
-        @media screen and (orientation: portrait) {
-            body {
-                /* 覆寫 Tailwind 樣式，確保旋轉定位生效 */
-                display: block !important;
-                min-height: auto !important; 
-                align-items: flex-start !important; /* 確保 flex 屬性被重置 */
-                justify-content: flex-start !important;
-
-                /* 設置旋轉的基礎屬性 */
-                position: absolute;
-                top: 0;
-                left: 0;
-                
-                /* 旋轉後的寬高互換 */
-                width: 100vh;
-                height: 100vw;
-                
-                /* 設置旋轉原點在左上角 (0, 0) */
-                transform-origin: top left;
-                
-                /* 旋轉 90 度後，需要將內容往上平移 100% 的自身高度 (即 100vw) */
-                /* 使用百分比確保彈性，並修正了上一輪的錯誤定位 */
-                transform: rotate(90deg) translate(0, -100%);
-                
-                /* 隱藏旋轉後可能產生的滾動條
-                overflow: hidden;  */
-            }
-        }
 
     </style>
     
@@ -129,7 +99,7 @@
             <h2 id="status" class="text-xl font-semibold text-gray-700">玩家 1 的回合</h2>
             <div id="dice-result" class="text-5xl font-extrabold text-indigo-600 my-4">🎲</div>
             <button id="roll-dice" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105">擲骰子</button>
-            <div id="system" class="mt-4 text-sm text-gray-500">（點擊按鈕移動 P1 或 P2）</div>
+            <div id="system" class="mt-4 text-sm text-gray-500">（在行動裝置上橫屏遊玩）</div>
         </div>
         <div class="player-token" id="player-1-token" style="background-color: #f56565;">P1</div>
         <div class="player-token" id="player-2-token" style="background-color: #4299e1;">P2</div>
