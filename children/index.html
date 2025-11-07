@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -7,7 +8,7 @@
   <!--link rel="icon" type="image/png" sizes="48x48" href="/favicon.png"-->
   <!--link rel="shortcut icon" href="/favicon.ico"-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <title translate="no">nins/index</title>
+  <title translate="no">nins/children</title>
   <style>
     input, textarea, button, select {
       /*font-size: inherit; /* 主動繼承 body 字體大小 */
@@ -331,7 +332,7 @@
               <div class="feature-grid">
               
                   <div class="feature-item" disabled="" style="background:#444444; color:white;">
-                    <h2 translate="no">Notice</h2>
+                    <h2 translate="no">📌 Notice 📌</h2>
                     <p>By using any of the services, it means you have agreed to any content and all content!</p>
                     <!--button disabled="">Coming Soon</button-->
                     <!--button>Go</button-->
@@ -343,30 +344,57 @@
                     <!--button disabled="">Coming Soon</button-->
                     <!--button>Go</button-->
                   </div>
-                  <div class="feature-item" onclick="openApp(repo='copyright', file='preview.html')" style="">
-                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
-                    <h2 translate="no">Preview</h2>
-                    <p>Select and display any downloaded HTML file.</p>
+                  <div class="feature-item main" onclick="openApp(repo='uris', file='', dir='')" style="">
+                    <h2 translate="no">🌐 nins/URIs 🌐</h2>
+                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
+                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⭐</div>
+                    <p>Quickly create your own contact URL in HTTPS.</p>
                   </div>
-                  <div class="feature-item main" onclick="openApp(repo='copyright', file='transing.html')" style="">
-                    <h2 translate="no">Transing</h2>
+                  <div class="feature-item main" onclick="openApp(repo='smsto', file='', dir='')" style="">
+                    <h2 translate="no">💬 nins/smsto 💬</h2>
+                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
+                    <!--div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div-->
+                    <p  style="margin-bottom: 0;">Quickly create your own contact URL in HTTPS.</p>
+                    <p  style="margin-top: 0;">(For sms use)</p>
+                  </div>
+                  <div class="feature-item main" onclick="openApp(repo='mailto', file='', dir='')" style="">
+                    <h2 translate="no">📧 nins/mailto 📧</h2>
+                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
+                    <!--div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div-->
+                    <p  style="margin-bottom: 0;">Quickly create your own contact URL in HTTPS.</p>
+                    <p  style="margin-top: 0;">(For mail use)</p>
+                  </div>
+                  <div class="feature-item main" onclick="openApp(repo='telto', file='', dir='')" style="">
+                    <h2 translate="no">📞 nins/telto 📞</h2>
+                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
+                    <!--div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div-->
+                    <p  style="margin-bottom: 0;">Quickly create your own contact URL in HTTPS.</p>
+                    <p  style="margin-top: 0;">(For tel/mobile use)</p>
+                  </div>
+                  <div class="feature-item main" onclick="openApp(repo='copyright', file='transing')" style="">
+                    <h2 translate="no">🔣 nins/Transing 🔣</h2>
                     <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
                     <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
                     <p>Use chat channels to easily start communicating with anyone.</p>
                   </div>
-                  <div class="feature-item" onclick="openApp(repo='copyright', file='encoding.html')" style="">
+                  <div class="feature-item" onclick="openApp(repo='copyright', file='preview')" style="">
                     <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
-                    <h2 translate="no">Encoding</h2>
+                    <h2 translate="no">👀 nins/Preview 👀</h2>
+                    <p>Select and display any downloaded HTML file.</p>
+                  </div>
+                  <div class="feature-item" onclick="openApp(repo='copyright', file='encoding')" style="">
+                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
+                    <h2 translate="no">🔐 nins/Encoding 🔐</h2>
                     <p>Enter content and get barcode.</p>
                   </div>
-                  <div class="feature-item" onclick="openApp(repo='copyright', file='decoding.html')" style="">
-                    <h2 translate="no">Decoding</h2>
+                  <div class="feature-item" onclick="openApp(repo='copyright', file='decoding')" style="">
+                    <h2 translate="no">🔓 nins/Decoding 🔓</h2>
                     <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
                     <p>Use the camera to decode the graphics code.</p>
                   </div>
                   <div class="feature-item" onclick="location.href='mailto:duguaynins@gmail.com'" style="width:auto; background:#444444; color:white;">
                   <!--div class="feature-item" onclick="window.open('https://sites.google.com/view/nins/', '_blank', 'noopener,noreferrer');" style="width:auto; background:#cdcdcd;"-->
-                    <h2 translate="no">Admins</h2>
+                    <h2 translate="no">📌 Admins 📌</h2>
                     <p>duguaynins@gmail.com</p>
                     <!--p>IMPORTANT!</p-->
                     <!--button disabled="">Coming Soon</button-->
@@ -391,9 +419,9 @@
       ///event.preventDefault(); // 阻止原本的跳轉  // 將先執行 onclick，再依據 href 跳轉
       // 按鈕方法
       
-      function openApp(repo, file) {
+      function openApp(repo, file, dir = "/children/") {
         ///const href = "https://" + repo + ".nins.jpgt.one/apps/" + file;
-        const href = "https://duguaynins.github.io/" + repo + "/children/" + file;console.log(href);
+        const href = "https://duguaynins.github.io/" + repo + dir + file;console.log(href);
         window.open(href, "_blank", "noopener,noreferrer");
       }
       // 按鈕方法
