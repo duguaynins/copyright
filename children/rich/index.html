@@ -67,8 +67,39 @@
         
         .player-token { width: 28px; height: 28px; border-radius: 50%; color: white; display: flex; justify-content: center; align-items: center; font-size: 14px; font-weight: 700; position: absolute; transition: all 0.7s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4); z-index: 10; }
         
+        
+        /* 5. 手機直向模式下的強制旋轉 (修正後的穩健代碼) */
+        @media screen and (orientation: portrait) {
+            body {
+                /* 覆寫 Tailwind 樣式，確保旋轉定位生效 */
+                display: block !important;
+                min-height: auto !important; 
+                align-items: flex-start !important; /* 確保 flex 屬性被重置 */
+                justify-content: flex-start !important;
+
+                /* 設置旋轉的基礎屬性 */
+                position: absolute;
+                top: 0;
+                left: 0;
+                
+                /* 旋轉後的寬高互換 */
+                width: 100vh;
+                height: 100vw;
+                
+                /* 設置旋轉原點在左上角 (0, 0) */
+                transform-origin: top left;
+                
+                /* 旋轉 90 度後，需要將內容往上平移 100% 的自身高度 (即 100vw) */
+                /* 使用百分比確保彈性，並修正了上一輪的錯誤定位 */
+                transform: rotate(90deg) translate(0, -100%);
+                
+                /* 隱藏旋轉後可能產生的滾動條
+                overflow: hidden;  */
+            }
+        }
 
     </style>
+    
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center m-0 p-0">
 
