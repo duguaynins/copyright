@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -259,8 +260,6 @@
       from { opacity: 1; }
       to { opacity: 0; }
     }
-    
-    
     @keyframes hardBlink {
       0%, 100% { border-color: red; }
       50%      { border-color: transparent; }
@@ -282,6 +281,11 @@
         /*opacity: 0.6; /* 可選：顯示為灰色 */
         background:#000000;
         color:white;
+    }
+  </style>
+  <style>
+    body {
+      overflow: hidden;
     }
   </style>
 </head>
@@ -339,17 +343,17 @@
               <div class="feature-grid">
               
                   <div class="feature-item" disabled="" style="background:#444444; color:white;">
-                    <h2 translate="no">📌 Notice 📌</h2>
-                    <p>By using any of the services, it means you have agreed to any content and all content!</p>
-                    <!--button disabled="">Coming Soon</button-->
-                    <!--button>Go</button-->
+                    <h2 translate="no">⚠️ Notice ⚠️</h2>
+                    <!--p>By using any of the services, it means you have agreed to any content and all content!</p-->
+                    <p  style="margin-bottom: 0;">By using any of the services, it means you have agreed to any content and all content!</p>
+                    <p  style="margin-top: 0; color: white;" translate="no">(© 2024 NINS (by JPGT). 👻👻👻)</p>
                   </div>
-                  <div class="feature-item disabled" style="background:#000000; color:white;">
-                    <h2 translate="no">Developing</h2>
-                    <p>Don't miss it... Coming soon.</p>
-                    <!--p>Don't miss it... Released now!</p-->
-                    <!--button disabled="">Coming Soon</button-->
-                    <!--button>Go</button-->
+
+                  <div class="feature-item" onclick="openApp(repo='copyright', file='preview')" style="">
+                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
+                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
+                    <h2 translate="no">👀 nins/Preview 👀</h2>
+                    <p>Select and display any downloaded HTML file.</p>
                   </div>
                   <div class="feature-item main" onclick="openApp(repo='copyright', file='transing')" style="">
                     <h2 translate="no">🔣 nins/Transing 🔣</h2>
@@ -363,6 +367,34 @@
                     <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⭐</div>
                     <p>Quickly create your own contact URL in HTTPS.</p>
                   </div>
+
+                  <div class="feature-item" onclick="openApp(repo='copyright', file='encoding')" style="">
+                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
+                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
+                    <h2 translate="no">🔐 nins/Encoding 🔐</h2>
+                    <p>Enter content and get barcode.</p>
+                  </div>
+                  <div class="feature-item" onclick="openApp(repo='copyright', file='decoding')" style="">
+                    <h2 translate="no">🔓 nins/Decoding 🔓</h2>
+                    <!--div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div-->
+                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
+                    <p>Use the camera to decode the graphics code.</p>
+                  </div>
+
+                  
+                  <div class="feature-item disabled" style="background:#000000; color:white;">
+                    <h2 translate="no">⚠️ Developing ⚠️</h2>
+                    <!--div> 標記 
+                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🧪</div>
+                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🧪</div>
+                    </div-->
+                    <!--p>Don't miss it... Released now!</p-->
+                    <!--button disabled="">Coming Soon</button-->
+                    <!--button>Go</button-->
+                    <p  style="margin-bottom: 0;">Don't miss it... Coming soon.</p>
+                    <p  style="margin-top: 0; color: red;">(Don't miss it... Coming soon.)</p>
+                  </div>
+
                   <div class="feature-item disabled" onclick="openApp(repo='mailto', file='', dir='')" style="">
                     <h2 translate="no">📧 nins/mailto 📧</h2>
                     <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
@@ -384,28 +416,13 @@
                     <p  style="margin-bottom: 0;">Quickly create your own contact URL in HTTPS.</p>
                     <p  style="margin-top: 0;">(For sms use, but simpler!)</p>
                   </div>
-                  <div class="feature-item" onclick="openApp(repo='copyright', file='preview')" style="">
-                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
-                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
-                    <h2 translate="no">👀 nins/Preview 👀</h2>
-                    <p>Select and display any downloaded HTML file.</p>
-                  </div>
-                  <div class="feature-item" onclick="openApp(repo='copyright', file='encoding')" style="">
-                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
-                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
-                    <h2 translate="no">🔐 nins/Encoding 🔐</h2>
-                    <p>Enter content and get barcode.</p>
-                  </div>
-                  <div class="feature-item" onclick="openApp(repo='copyright', file='decoding')" style="">
-                    <h2 translate="no">🔓 nins/Decoding 🔓</h2>
-                    <!--div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div-->
-                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
-                    <p>Use the camera to decode the graphics code.</p>
-                  </div>
+
                   <div class="feature-item" onclick="location.href='mailto:duguaynins@gmail.com'" style="width:auto; background:#444444; color:white;">
                   <!--div class="feature-item" onclick="window.open('https://sites.google.com/view/nins/', '_blank', 'noopener,noreferrer');" style="width:auto; background:#cdcdcd;"-->
-                    <h2 translate="no">📌 Admins 📌</h2>
-                    <p>duguaynins@gmail.com</p>
+                    <h2 translate="no">⚠️ Admins ⚠️</h2>
+                    <!--p>duguaynins@gmail.com</p-->
+                    <p  style="margin-bottom: 0;">duguaynins@gmail.com</p>
+                    <p  style="margin-top: 0; color: white;" translate="no">(© 2024 NINS (by JPGT). 👻👻👻)</p>
                     <!--p>IMPORTANT!</p-->
                     <!--button disabled="">Coming Soon</button-->
                     <!--button>Go</button-->
