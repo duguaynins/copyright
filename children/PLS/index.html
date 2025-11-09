@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Location System</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <style>
+        /* 必須設置，否則無法排列進設定面板 */
+        /* 样式模态对话框背景 */
+        .modal {
+            display: none;      /* 默认隐藏模态框 */
+            position: fixed;    /* 固定在视口 */
+            z-index: 1;         /* 确保在其他内容之上 */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;     /* 如果内容过多，可以滚动 */
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        /* 样式模态对话框内容 */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            display: flex;
+            /*flex-direction: column;*/
+            align-items: center; /* 水平居中内容 */
+            justify-content: center; /* 垂直居中内容 */
+        }
+        /* 样式关闭按钮 */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+    <style>
+        .container {
+            display: grid;
+            place-items: center; /* 水平和垂直居中 */
+            width: 80%;
+            height: 80%;
+            margin: 0 auto;
+            text-align: center;
+            border: 1px solid #000;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        #output {
+            text-align: left;
+        }
+        pre {
+            /*text-align: left;*/
+        }
+        h1, a {            
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+    </style>
+    <style>
+        /* 自定義的樣式，模擬文件選擇按鈕外觀 */
+        .custom-file-input {
+            display: inline-block;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+            text-align: center;
+            color: #000000;
+            background-color: #ffffff;
+            border: 1px solid #000000;
+            cursor: pointer;
+        }
+    
+        /* 按鈕激活樣式 */
+        .custom-file-input:hover {
+            transition-duration: 1.0s;
+            background-color: #000000;
+            color: #ffffff;
+            border: 1px solid #000000;
+        }
+    
+        input:hover, button:hover {
+            transition-duration: 1.0s;
+            background-color: #000000;
+            color: #FFFFFF;
+            border: 1px solid #000000;
+        }
+    
+        select, input, button {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+            text-align: center;
+            color: #000000;
+            background-color: #ffffff;
+            border: 1px solid #000000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body style="background-color: #f7f7f7;">
+    <div class="container">
+        <h1>商品定位系統</h1>
+        <br><br><br>
+        <button id="settingButton">SETTING</button>
+        <br><br><br>
+        <div class="grid">
+            <a style="font-weight: bold;">status: </a>
+            <pre id="status" style="font-size: 22px;"> </pre>
+            <a style="font-weight: bold;">output: </a>
+            <pre id="output" style="font-size: 58px;"> </pre>
+        </div>
+    </div>
+    <!-- 模态对话框 -->
+    <div id="settingModal" class="modal">
+        <span class="close">&times;</span>
+        <div class="modal-content">
+            <button id="connect">Connect to Serial</button>
+            <button id="disconnect">Disconnect from Serial</button>
+            <select id="sheetNamesDropdown"></select>
+            <input type="file" id="fileInput" accept=".xlsx" style="display: none;" onchange="updateFileName()">
+            <label for="fileInput" class="custom-file-input">選擇文件</label>
+            <div id="fileName">請選擇文件！</div>
+        </div>
+    </div>
+
+
+    
+    <script>/*模組視窗使用*/
+        
+        // 获取模态对话框
+        var modal = document.getElementById("settingModal");
+
+        // 获取按钮，打开模态对话框
+        var btn = document.getElementById("settingButton");
+
+        // 获取 <span> 元素，关闭模态对话框
+        var span = document.getElementsByClassName("close")[0];
+
+        // 当点击按钮时，打开模态对话框
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        // 当点击 <span> (x)，关闭模态对话框
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // 当点击模态对话框之外的地方，关闭模态对话框
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+    <script>/*選擇文件使用*/
+        function updateFileName() {
+            var fileInput = document.getElementById("fileInput");
+            var fileNameDisplay = document.getElementById("fileName");
+
+            if (fileInput.files.length > 0) {
+                fileNameDisplay.innerHTML   = "已選擇文件：<br>" + fileInput.files[0].name + "<br><br>";
+            } else {
+                fileNameDisplay.innerHTML   = "未選擇文件";
+            }
+        }
+    </script>
+
+    <script>/*選擇表格使用*/
+        const sheetNamesDropdownElement = document.getElementById('sheetNamesDropdown');
+        const fileInputElement = document.getElementById('fileInput');
+
+        fileInputElement.addEventListener('input', () => {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                sheetNamesDropdownElement.innerHTML = '';
+                alert('Please select an Excel file first.');
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                const data = new Uint8Array(event.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheetNames = workbook.SheetNames;
+
+                // 清空下拉菜单
+                sheetNamesDropdownElement.innerHTML = '';
+
+                // 输出表格数据到控制台和页面上
+                console.log(sheetNames);
+
+                // 填充下拉菜单
+                sheetNames.forEach(name => {
+                    const option = document.createElement('option');
+                    option.value = name;
+                    option.textContent = name;
+                    sheetNamesDropdownElement.appendChild(option);
+                });
+            };
+
+            reader.readAsArrayBuffer(file);
+        });
+    </script>
+
+    <script>/*選擇表格使用*/
+        let buf = "";
+        let port = null; // Initialize port as null
+        let reader = null;
+
+        const connectButton = document.getElementById('connect');
+        const disconnectButton = document.getElementById('disconnect');
+        const statusElement = document.getElementById('status');
+        const outputElement = document.getElementById('output');
+
+        statusElement.textContent = "JPGT";
+        outputElement.textContent = "";
+
+        /*
+        function Animation() {
+            // 要顯示的點數模式
+            const dots = ['.', '..', '...'];
+            let index = 0;
+
+            // 設置間隔時間（每500毫秒更新一次）
+            const interval = 1000;
+
+            // 使用 setInterval 來持續更新
+            const timer = setInterval(() => {
+                // 更新動畫元素的內容
+                statusElement.textContent = dots[index];
+
+                // 更新索引以顯示下一個模式
+                index = (index + 1) % dots.length;
+            }, interval);
+            
+            // 取消動畫的方式（例如：按鍵或其他事件）
+            document.addEventListener('keydown', () => {
+                clearInterval(timer);
+                statusElement.textContent = 'Animation stopped.';
+            });
+        }*/
+
+
+       function findPositonInExcel(barcode) {
+            const fileInput = document.getElementById('fileInput');
+            if (fileInput.files.length === 0) {
+                alert('Please upload an Excel file.');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = (event) => {
+                const data = new Uint8Array(event.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheetName = sheetNamesDropdownElement.value;  //workbook.SheetNames[0]; // 获取第一个工作表名称
+                const sheet = workbook.Sheets[sheetName];
+
+                // 将工作表转换为JSON格式
+                const jsonData = XLSX.utils.sheet_to_json(sheet);
+                
+                // 查询特定列的值，例如根据 'BARCODE' 查询 'PLACE'
+                const barcodeToSearch = barcode;  //prompt("Enter barcode to search:");  //test
+                const result = jsonData.find(row => row.BARCODE === barcodeToSearch);
+
+                const outputElement = document.getElementById('output');
+                if (result) {
+                    outputElement.textContent = "  BARCODE:  " + barcode + "\r\n" + "  POSITION: "+ result.POSITION + "\r\n";
+                } else {
+                    outputElement.textContent = "  BARCODE:  " + barcode + "\r\n" + `  POSITION: not found` + "\r\n";  //'${barcodeToSearch}' 
+                }
+            };
+            
+            reader.readAsArrayBuffer(file);
+       }
+            
+        connectButton.addEventListener('click', async () => {
+            try {
+                // 請求串行設備
+                port = await navigator.serial.requestPort();  //const
+                // 打開串行設備
+                await port.open({ baudRate: 9600 });  //await port.close();
+
+                statusElement.textContent = "Connected!";
+                outputElement.textContent = "";
+                
+                reader = port.readable.getReader();  //const
+
+                while (true) {
+                    const { value, done } = await reader.read();
+                    if (done) {
+                        // 允許 reader 釋放鎖定
+                        reader.releaseLock();
+                        statusElement.textContent = "Reader released lock";
+                        break;
+                    }
+                    // 顯示讀取到的數據
+                    if (parseInt(value,10) === 10) {buf="";}  //outputElement.textContent = "";
+                    buf += new TextDecoder().decode(value);  //value;
+                    ////outputElement.textContent = buf;
+                    /*
+                    setTimeout(() => {
+                        console.log('1 second later');
+                    }, 1000); // 1000毫秒 = 1秒*/
+                    // 查找分隔符的位置
+                    const startIndex = buf.indexOf('：');
+                    const endIndex = buf.indexOf('.');
+
+                    // 检查是否找到分隔符和换行符
+                    if (startIndex === -1) {
+                        //Animation();
+                        console.error("Delimiter '：' not found.");
+                    } else if (endIndex === -1) {
+                        //nimation();
+                        console.error("Newline character '.' not found.");
+                    } else {
+                        const barcode = buf.substring(startIndex + 1, endIndex).trim(); // 提取子字符串并去掉多余的空格
+                        //console.log(startIndex);
+                        //console.log(endIndex);
+                        
+                        // 輸出
+                        buf = "";
+                        outputElement.textContent = "";
+                        console.log(barcode);
+                        findPositonInExcel(barcode);  //查詢表格
+
+                        // 使用 setInterval 來持續更新
+                        const interval = 3000;
+                        const timer = setInterval(() => {
+                            // 更新動畫元素的內容
+                            outputElement.textContent = "";
+                            clearInterval(timer);
+                        }, interval);  // 設置間隔時間（每 interval 毫秒更新一次）
+                    }
+                }
+            } catch (error) {
+                if (error.message.includes('No port selected by the user')) {
+                    //statusElement.textContent = 'No port selected by the user.';
+                } else if (error.message.includes('The port is already open')) {
+                    statusElement.textContent = 'Connected! The port is already open.';
+                } else {
+                    statusElement.textContent = `Error: ${error.message}`;
+                }
+                console.error('Error: ', error);
+                //statusElement.textContent = `Error: ${error.message}`;
+            }
+        });
+
+        //OK
+        disconnectButton.addEventListener('click', async () => {
+            if (port) {
+                const shouldDisconnect = confirm('Are you sure you want to disconnect from the serial port?');
+                if (shouldDisconnect) {
+                    try {
+                        // Release the reader lock before closing the port
+                        if (reader) {
+                            await reader.cancel();
+                            reader.releaseLock();
+                            reader = null;
+                        }
+                        
+                        // Close the port
+                        await port.close();
+                        port = null;
+                        statusElement.textContent = 'Disconnected from serial port.';
+                    } catch (error) {
+                        console.error('Error: ', error);
+                        statusElement.textContent = 'Error: ' + error.message;
+                    }
+                }
+            } else {
+                statusElement.textContent = 'No serial port to disconnect.';
+            }
+        });
+    </script>
+</body>
+</html>
