@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nins/serial</title><style>
+        /* 全域樣式 */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5; /* 淺灰色背景 */
+        }
+
+        /* 基礎按鈕和輸入框樣式 */
+        input, button {
+            display: block;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            border: 2px solid #007bff; /* 品牌色邊框 */
+            border-radius: 6px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            background-color: white;
+            color: #007bff;
+        }
+
+        button { background-color: #007bff; color: #FFFFFF; }
+        button:hover {
+            background-color: #000000;
+            color: #FFFFFF;
+            border-color: #007bff;
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+        }
+
+        input {
+            padding: 12px;
+            border: 1px solid #ccc;
+            color: #333;
+            background-color: white;
+        }
+
+        input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+            outline: none;
+        }
+
+
+        /* LOG 顯示區域的容器 */
+        #logContainer {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* 標題 */
+        h1 {
+            color: #333;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* 狀態列 */
+        .status-line {
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            color: #555;
+            padding: 10px;
+            background-color: #fff3cd; /* 提示色 */
+            border: 1px solid #ffeeba;
+            border-radius: 4px;
+        }
+        #status {
+            color: #007bff;
+            font-weight: 700;
+        }
+
+        /* LOG 輸出區域 (美化為終端機風格) */
+        #outputLog {
+            white-space: pre-wrap;
+            font-size: 18px; /* 調整字體大小，避免過大 */
+            font-family: 'Consolas', 'Courier New', monospace; /* 等寬字體 */
+            color: #333;
+            background-color: #ffffff; /* 白色背景 */
+            min-height: 300px; /* 最小高度 */
+            max-height: calc(100vh - 350px); /* 限制最大高度，避免溢出 */
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 傳送控制項的 Flexbox 排版 */
+        .send-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .send-controls input {
+            flex-grow: 1; /* 輸入框佔滿剩餘空間 */
+            margin-bottom: 0;
+        }
+        .send-controls button {
+            width: 120px; /* 固定 SEND 按鈕寬度 */
+            margin-bottom: 0;
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        .send-controls button:hover {
+            background-color: #0056b3;
+        }
+
+        /* 斷線按鈕 */
+        #disconnect {
+            width: 100%;
+            background-color: #dc3545; /* 警告紅色 */
+            color: white;
+            border-color: #dc3545;
+            font-size: 18px;
+        }
+        #disconnect:hover {
+            background-color: #c82333;
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+        }
+        
+
+        /* 初始連線按鈕的特殊樣式 */
+        #initialConnectContainer {
+            display: flex; /* 使用 Flexbox 讓內容置中 */
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* 佔滿視窗高度 */
+            width: 100vw; /* 佔滿視窗寬度 */
+            position: fixed; /* 固定位置，確保在頂層 */
+            top: 0;
+            left: 0;
+        }
+        
+        #initialConnectButton {
+            width: 100%;
+            height: 100%;
+            font-size: 36px; /* 放大字體 */
+            padding: 0;
+            margin: 0;
+            border: none; /* 移除邊框 */
+            border-radius: 0; /* 移除圓角 */
+            background-color: #2196F3; /* 醒目的背景色 */
+            color: white;
+        }
+
+        #initialConnectButton:hover {
+            background-color: #0d47a1; /* Hover 時的顏色 */
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1></h1>
+
+    <div id="initialConnectContainer">
+        <button id="initialConnectButton">CONNECT</button>
+    </div>
+
+    <div id="logContainer">
+        <div class="status-line">Status: <span id="status">Disconnected</span></div>
+        <div class="status-line">Output:</div>
+        <pre id="outputLog">Waiting for serial data...</pre>
+        <br>
+        <div style="margin-top: 20px;">
+            <input type="text" id="sendDataInput" placeholder="輸入要傳送的資料" style="width: calc(100% - 0px); display: inline-block;">
+            <button id="sendDataButton" style="width: 100%; display: inline-block;">SEND</button>
+        </div>
+        
+        <button id="disconnect">Disconnect</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    
+    <script>
+        let buf = "";
+        let port = null; // 串行埠物件
+        let reader = null; // 讀取器物件
+
+        const initialConnectButton = document.getElementById('initialConnectButton');
+        const disconnectButton = document.getElementById('disconnect');
+        const initialConnectContainer = document.getElementById('initialConnectContainer');
+        const logContainer = document.getElementById('logContainer');
+        const statusElement = document.getElementById('status');
+        const outputElement = document.getElementById('outputLog'); // 已改名為 outputLog
+
+        // 模擬查詢 Excel 的函式（原程式碼中的部分功能）
+        function queryEXCEL(barcode) {
+            // 注意：Web環境下無法直接讀取本地文件 (example.xlsx)，
+            // 此函式僅為保留原邏輯結構。實際應用需透過網路請求或其他方式載入數據。
+            
+            // 由於無法讀取 'example.xlsx'，這裡僅返回一個模擬的位置
+            const mockData = {
+                "1234567890123": "A區 3排 貨架2",
+                "0987654321098": "B區 1排 貨架5"
+            };
+            return mockData[barcode] || "POSITION NOT FOUND";
+        }
+            
+        // 核心連線邏輯
+        async function connectSerial() {
+            try {
+                // 請求串行設備（會跳出 COM 選單）
+                port = await navigator.serial.requestPort();
+                // 打開串行設備
+                await port.open({ baudRate: 9600 });
+
+                statusElement.textContent = "Connected";
+                outputElement.textContent = "Ready to receive data...\r\n";
+                
+                // 隱藏連線按鈕，顯示 LOG 區域
+                initialConnectContainer.style.display = 'none';
+                logContainer.style.display = 'block';
+
+                reader = port.readable.getReader();
+
+                while (true) {
+                    const { value, done } = await reader.read();
+                    if (done) {
+                        // 允許 reader 釋放鎖定
+                        reader.releaseLock();
+                        // 這裡不應該發生，除非斷開連接
+                        statusElement.textContent = "Disconnected (Reader released lock)"; 
+                        break;
+                    }
+
+                    // 處理接收到的數據
+                    // 檢查換行符 (ASCII 10, \n) 來重置緩衝區 (原程式碼邏輯)
+                    if (parseInt(value, 10) === 10) { buf = ""; } 
+                    buf += new TextDecoder().decode(value);
+
+                    // 查找分隔符 '：' 和結束符 '.' (原程式碼邏輯)
+                    const startIndex = buf.indexOf('：');
+                    const endIndex = buf.indexOf('.');
+
+                    if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
+                        const barcode = buf.substring(startIndex + 1, endIndex).trim();
+                        buf = ""; // 清空緩衝區
+
+                        // 查詢表格
+                        const position = queryEXCEL(barcode);
+
+                        // 顯示 LOG
+                        outputElement.textContent = "--- RECEIVED ---\r\n";
+                        outputElement.textContent += `BARCODE:  ${barcode}\r\n`;
+                        outputElement.textContent += `POSITION: ${position}\r\n`;
+                        outputElement.textContent += "----------------\r\n";
+
+                        // 設定 3 秒後清空 LOG
+                        const interval = 3000;
+                        setTimeout(() => {
+                            outputElement.textContent = "Ready to receive data...\r\n";
+                        }, interval);
+
+                        console.log(`Received Barcode: ${barcode}, Position: ${position}`);
+                    } else if (buf.length > 500) { 
+                        // 安全機制：如果緩衝區過大，可能是數據格式錯誤，清空它。
+                        buf = "";
+                        console.error("Buffer overflow, clearing buffer.");
+                    }
+                }
+            } catch (error) {
+                if (error.message.includes('No port selected by the user')) {
+                    statusElement.textContent = 'Connection Cancelled by User';
+                } else if (error.message.includes('The port is already open')) {
+                    statusElement.textContent = 'Connected! The port is already open.';
+                    // 連線失敗時，要確保 UI 回到初始狀態
+                    initialConnectContainer.style.display = 'flex';
+                    logContainer.style.display = 'none';
+                } else {
+                    statusElement.textContent = `Error: ${error.message}`;
+                    // 連線失敗時，要確保 UI 回到初始狀態
+                    initialConnectContainer.style.display = 'flex';
+                    logContainer.style.display = 'none';
+                }
+                console.error('Error in connectSerial: ', error);
+            }
+        }
+
+        // 斷線邏輯
+        async function disconnectSerial() {
+            if (port) {
+                try {
+                    // 釋放讀取器鎖定
+                    if (reader) {
+                        // reader.cancel() 才能讓 reader.read() 停止等待並拋出錯誤
+                        await reader.cancel(); 
+                        reader.releaseLock();
+                        reader = null;
+                    }
+                    
+                    // 關閉串行埠
+                    await port.close();
+                    port = null;
+                    statusElement.textContent = 'Disconnected.';
+                    outputElement.textContent = "";
+                    
+                    // 顯示連線按鈕，隱藏 LOG 區域
+                    initialConnectContainer.style.display = 'flex';
+                    logContainer.style.display = 'none';
+
+                } catch (error) {
+                    console.error('Error during disconnection: ', error);
+                    statusElement.textContent = 'Error: ' + error.message;
+                }
+            } else {
+                statusElement.textContent = 'No serial port to disconnect.';
+            }
+        }
+
+        // 綁定事件
+        initialConnectButton.addEventListener('click', connectSerial);
+        disconnectButton.addEventListener('click', disconnectSerial);
+    </script>
+</body>
+</html>
