@@ -1,333 +1,274 @@
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>nins/serial</title><style>
-        /* 全域樣式 */
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5; /* 淺灰色背景 */
-        }
+<head translate="yes">
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/x-icon" sizes="48x48" href="data:image/x-icon;base64,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">
+  <!--link rel="icon" type="image/x-icon" sizes="48x48" href="https://duguaynins-allninsone.hf.space/favicon.ico"-->
+  <!--link rel="icon" type="image/png" sizes="48x48" href="/favicon.png"-->
+  <!--link rel="shortcut icon" href="/favicon.ico"-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title translate="no">nins/serial</title>
+  <style>
+    input, textarea, button, select {
+      /*font-size: inherit; /* 主動繼承 body 字體大小 */
+      font-size: 18px;
+    }
+    html, body { font-size: 14px; }
+    html, body {
+      margin: 0;
+      /*font-family: Arial, sans-serif;*/
+      background-color: #ffffff;
+      background-color: #000000;
+      background-color: #cdcdcd;
+      color: #333;
+      user-select: none;
+    }
 
-        /* 基礎按鈕和輸入框樣式 */
-        input, button {
-            display: block;
-            padding: 12px 20px;
-            font-size: 16px;
-            font-weight: 600;
-            text-align: center;
-            border: 2px solid #007bff; /* 品牌色邊框 */
-            border-radius: 6px;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-sizing: border-box;
-            background-color: white;
-            color: #007bff;
-        }
+    header {
+      text-align: center;
+      padding: 2rem 1rem;
+      border-bottom: 1px solid #ddd;
+    }
 
-        button { background-color: #007bff; color: #FFFFFF; }
-        button:hover {
-            background-color: #000000;
-            color: #FFFFFF;
-            border-color: #007bff;
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
-        }
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
 
-        input {
-            padding: 12px;
-            border: 1px solid #ccc;
-            color: #333;
-            background-color: white;
-        }
+    .intro {
+      text-align: center;
+      padding: 1rem 2rem;
+      max-width: 700px;
+      margin: auto;
+    }
+  </style>
+  
+  <style>
+  
+    @keyframes blink {
+      0% { border-color: black; }
+      50% { border-color: transparent; }
+      100% { border-color: black; }
+    }
+    
+    #BOTTOM {
+        height: 100vh;  /* 視窗高度可改成你需要的高度 */
+        width: 100vw;
+        background-color: #000000;
+        background-color: #cdcdcd;
+        color: #333;
+    }
+    .container {
+      position: relative;  /* 父容器設定為 relative，以便子元素的 absolute 定位能相對於它 */
+      width: 100%;
+      height: 100%;
+      background: #eee;
+      color: black;
+    }
+  </style>
+  <style>
+      .skiptranslate {
+        display: none !important;   /* 避免 display:none 影響內容顯示 */
+        position: static !important;   /* 防止位置異常 */
+        width: 0px !important;
+        height: 0px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        background: none !important;
+        /*font-size: inherit !important;*/
+      }
+      iframe {
+        display: none !important;
+      }
+  </style>
 
-        input:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-            outline: none;
-        }
-
-
-        /* LOG 顯示區域的容器 */
-        #logContainer {
-            display: none;
-            width: 100%;
-            min-height: 100vh;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        /* 標題 */
-        h1 {
-            color: #333;
-            margin-top: 0;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        /* 狀態列 */
-        .status-line {
-            font-weight: 600;
-            margin-bottom: 15px;
-            font-size: 1.1em;
-            color: #555;
-            padding: 10px;
-            background-color: #fff3cd; /* 提示色 */
-            border: 1px solid #ffeeba;
-            border-radius: 4px;
-        }
-        #status {
-            color: #007bff;
-            font-weight: 700;
-        }
-
-        /* LOG 輸出區域 (美化為終端機風格) */
-        #outputLog {
-            white-space: pre-wrap;
-            font-size: 18px; /* 調整字體大小，避免過大 */
-            font-family: 'Consolas', 'Courier New', monospace; /* 等寬字體 */
-            color: #333;
-            background-color: #ffffff; /* 白色背景 */
-            min-height: 300px; /* 最小高度 */
-            max-height: calc(100vh - 350px); /* 限制最大高度，避免溢出 */
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            padding: 15px;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* 傳送控制項的 Flexbox 排版 */
-        .send-controls {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-        .send-controls input {
-            flex-grow: 1; /* 輸入框佔滿剩餘空間 */
-            margin-bottom: 0;
-        }
-        .send-controls button {
-            width: 120px; /* 固定 SEND 按鈕寬度 */
-            margin-bottom: 0;
-            background-color: #007bff;
-            color: white;
-            border-color: #007bff;
-        }
-        .send-controls button:hover {
-            background-color: #0056b3;
-        }
-
-        /* 斷線按鈕 */
-        #disconnect {
-            width: 100%;
-            background-color: #dc3545; /* 警告紅色 */
-            color: white;
-            border-color: #dc3545;
-            font-size: 18px;
-        }
-        #disconnect:hover {
-            background-color: #c82333;
-            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
-        }
-        
-
-        /* 初始連線按鈕的特殊樣式 */
-        #initialConnectContainer {
-            display: flex; /* 使用 Flexbox 讓內容置中 */
-            justify-content: center;
-            align-items: center;
-            height: 100vh; /* 佔滿視窗高度 */
-            width: 100vw; /* 佔滿視窗寬度 */
-            position: fixed; /* 固定位置，確保在頂層 */
-            top: 0;
-            left: 0;
-        }
-        
-        #initialConnectButton {
-            width: 100%;
-            height: 100%;
-            font-size: 36px; /* 放大字體 */
-            padding: 0;
-            margin: 0;
-            border: none; /* 移除邊框 */
-            border-radius: 0; /* 移除圓角 */
-            background-color: #2196F3; /* 醒目的背景色 */
-            color: white;
-        }
-
-        #initialConnectButton:hover {
-            background-color: #0d47a1; /* Hover 時的顏色 */
-            color: white;
-        }
-    </style>
+  <style>
+    @keyframes fadeGradient {
+      from {
+        background: linear-gradient(white, white);
+      }
+      to {
+        background: linear-gradient(white, transparent);
+      }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    
+    
+    @keyframes hardBlink {
+      0%, 100% { border-color: red; }
+      50%      { border-color: transparent; }
+    }
+    .main {
+        border: 2px solid red;
+        padding: 8px;
+        /**animation: blinkBorder 1s infinite;  //===*/
+        /* 呼吸式動畫：平滑過渡 */
+        /**animation: blinkBorder 1s ease-in-out infinite;  //===*/
+        /* 閃爍式動畫：瞬間切換 */
+        animation: hardBlink 1.0s steps(1, start) infinite;
+    }
+    
+    input:hover {
+      background-color: #cdcdcd;    ///FF3B00;
+      color: black;///gray;
+    }
+    input:active {
+      background-color: #222222;  ///#004080;
+      color: white;///gray;
+    }
+    input:focus {
+      outline: none;              /* 移除預設藍色邊框 */
+      /* border: 2px solid #4CAF50;  改為綠色邊框 */
+      /* box-shadow: 0 0 5px #4CAF50; */
+      border: 2px solid red;       /* 或使用 #f44336 */
+      box-shadow: 0 0 5px red;
+    }
+    .twod {
+      /*width: 100vmin;
+      height: 100vmin;*/
+    }
+    .oned {
+      /*width: 100vmin;
+      height: 10vmin;*/
+    }
+    .thumb { 
+      /*width: 87vw;*/
+      width: 100px;
+      height: 60px;
+      margin: 0.5em;
+      padding: 0.5em; /* 這裡增加5像素的內距離 */
+      cursor: pointer;
+      border: 1px solid #ccc;
+      object-fit: contain;
+      display: none;
+      flex-shrink: 0;        /* 防止被壓縮 */
+    }
+  </style>
 </head>
 <body>
-    <h1></h1>
-
-    <div id="initialConnectContainer">
-        <button id="initialConnectButton">CONNECT</button>
+    <div id="google_translate_element" style="display:none;"></div>
+  
+    
+    <button disabled="" id="disabled" style="
+      position: fixed;
+      bottom: 0;
+      top: 0; /* 距離頂部 0 */
+      left: 0; /* 距離左側 0 */
+      right: 0; /* 距離右側 0 */
+      width: 100%;
+      height: 100%;
+      border: none;
+      padding: 0;
+      margin: 0;
+      /*opacity: 0;  /*不透明度*/
+      /*background: transparent;  /*不透明度？*/
+      cursor: default;
+      z-index: 99999;  /* 確保在最高層 */
+      /*background: linear-gradient(white, transparent);*/
+      background: white;
+      animation: fadeOut 3s forwards;
+      pointer-events: none;  /* 動畫期間不阻擋互動（可選）*/
+    "></button>
+    
+    
+    <div style="
+      position: fixed;
+      bottom: 0;
+      top: 0; /* 距離頂部 0 */
+      left: 0; /* 距離左側 0 */
+      right: 0; /* 距離右側 0 */
+      background: #777777;
+      background: #FF3B00;
+      background: white;
+      color: white;
+      text-align: center;
+      /*padding: 10px;*/
+      box-sizing: border-box;
+      word-break: break-word;
+      z-index: 9998;
+      
+      display: flex;
+      flex-direction: column;
+    ">
+          <div style="background: #FFFFFF; color: black;" translate="no">
+          <div style="margin: 10px;" onclick="document.getElementById('DialogShare').showModal()">
+          nins/zero
+          </div></div>
+          
+              <!-- 放置你原有的布局 -->
+              <div id="content" style="background: #FFFFFF; overflow:auto; width:100%; flex:1; border: 1px solid #ccc;">
+              </div>
+              <!-- 放置你原有的布局 -->
+            
+          <!--strong></strong-->
+          <div style="background: #FF3B00; color: white;" translate="yes">
+          <div style="margin: 10px;" onclick="document.getElementById('DialogTool').showModal()">
+          By sending a message to this service, it means you have agreed to any content and all content!
+          </div></div>
     </div>
+    
+    <!-- 放置你原有的布局 -->
+    <!-- 放置你原有的布局 -->
 
-    <div id="logContainer">
-        <div class="status-line">Status: <span id="status">Disconnected</span></div>
-        <div class="status-line">Output:</div>
-        <pre id="outputLog">Waiting for serial data...</pre>
-        <br>
-        <div style="margin-top: 20px;">
-            <input type="text" id="sendDataInput" placeholder="輸入要傳送的資料" style="width: calc(100% - 0px); display: inline-block;">
-            <button id="sendDataButton" style="width: 100%; display: inline-block;">SEND</button>
-        </div>
-        
-        <button id="disconnect">Disconnect</button>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script type="text/javascript">  // google.js
+      // GOOGLE TRANSLATE
+      // 自動翻譯***
+      ///document.cookie = "googtrans=/en/zh-TW; path=/";
+      ///location.reload();
+    
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+          pageLanguage: 'en',  ///'en', 改為根據中間語言(ilang) 或 頁面語言(locale)  ///鼓勵輸入中間語言，翻譯必定可以顯示英文。
+          includedLanguages: '',  ///zh-TW,ja,ko,en,hi,zh-CN
+          autoDisplay: false,
+          ///layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_element');
+      }
+      
+    
+      function autoTranslate(lang) {
+        const tryTranslate = () => {
+          const combo = document.querySelector('.goog-te-combo');
+          if (combo) {
+            combo.value = lang;
+            combo.dispatchEvent(new Event('change'));
+          } else {
+            setTimeout(tryTranslate, 300); // 遞迴檢查
+          }
+        };
+        tryTranslate();
+      }
+    
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          const tlang = navigator.language || navigator.userLanguage || "en-US";
+          autoTranslate(tlang);
+          
+          ///document.getElementById(":1.container").style.display = "";
+        }, 1500);
+      });
+    </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     
     <script>
-        let buf = "";
-        let port = null; // 串行埠物件
-        let reader = null; // 讀取器物件
-
-        const initialConnectButton = document.getElementById('initialConnectButton');
-        const disconnectButton = document.getElementById('disconnect');
-        const initialConnectContainer = document.getElementById('initialConnectContainer');
-        const logContainer = document.getElementById('logContainer');
-        const statusElement = document.getElementById('status');
-        const outputElement = document.getElementById('outputLog'); // 已改名為 outputLog
-
-        // 模擬查詢 Excel 的函式（原程式碼中的部分功能）
-        function queryEXCEL(barcode) {
-            // 注意：Web環境下無法直接讀取本地文件 (example.xlsx)，
-            // 此函式僅為保留原邏輯結構。實際應用需透過網路請求或其他方式載入數據。
-            
-            // 由於無法讀取 'example.xlsx'，這裡僅返回一個模擬的位置
-            const mockData = {
-                "1234567890123": "A區 3排 貨架2",
-                "0987654321098": "B區 1排 貨架5"
-            };
-            return mockData[barcode] || "POSITION NOT FOUND";
-        }
-            
-        // 核心連線邏輯
-        async function connectSerial() {
-            try {
-                // 請求串行設備（會跳出 COM 選單）
-                port = await navigator.serial.requestPort();
-                // 打開串行設備
-                await port.open({ baudRate: 9600 });
-
-                statusElement.textContent = "Connected";
-                outputElement.textContent = "Ready to receive data...\r\n";
-                
-                // 隱藏連線按鈕，顯示 LOG 區域
-                initialConnectContainer.style.display = 'none';
-                logContainer.style.display = 'block';
-
-                reader = port.readable.getReader();
-
-                while (true) {
-                    const { value, done } = await reader.read();
-                    if (done) {
-                        // 允許 reader 釋放鎖定
-                        reader.releaseLock();
-                        // 這裡不應該發生，除非斷開連接
-                        statusElement.textContent = "Disconnected (Reader released lock)"; 
-                        break;
-                    }
-
-                    // 處理接收到的數據
-                    // 檢查換行符 (ASCII 10, \n) 來重置緩衝區 (原程式碼邏輯)
-                    if (parseInt(value, 10) === 10) { buf = ""; } 
-                    buf += new TextDecoder().decode(value);
-
-                    // 查找分隔符 '：' 和結束符 '.' (原程式碼邏輯)
-                    const startIndex = buf.indexOf('：');
-                    const endIndex = buf.indexOf('.');
-
-                    if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
-                        const barcode = buf.substring(startIndex + 1, endIndex).trim();
-                        buf = ""; // 清空緩衝區
-
-                        // 查詢表格
-                        const position = queryEXCEL(barcode);
-
-                        // 顯示 LOG
-                        outputElement.textContent = "--- RECEIVED ---\r\n";
-                        outputElement.textContent += `BARCODE:  ${barcode}\r\n`;
-                        outputElement.textContent += `POSITION: ${position}\r\n`;
-                        outputElement.textContent += "----------------\r\n";
-
-                        // 設定 3 秒後清空 LOG
-                        const interval = 3000;
-                        setTimeout(() => {
-                            outputElement.textContent = "Ready to receive data...\r\n";
-                        }, interval);
-
-                        console.log(`Received Barcode: ${barcode}, Position: ${position}`);
-                    } else if (buf.length > 500) { 
-                        // 安全機制：如果緩衝區過大，可能是數據格式錯誤，清空它。
-                        buf = "";
-                        console.error("Buffer overflow, clearing buffer.");
-                    }
-                }
-            } catch (error) {
-                if (error.message.includes('No port selected by the user')) {
-                    statusElement.textContent = 'Connection Cancelled by User';
-                } else if (error.message.includes('The port is already open')) {
-                    statusElement.textContent = 'Connected! The port is already open.';
-                    // 連線失敗時，要確保 UI 回到初始狀態
-                    initialConnectContainer.style.display = 'flex';
-                    logContainer.style.display = 'none';
-                } else {
-                    statusElement.textContent = `Error: ${error.message}`;
-                    // 連線失敗時，要確保 UI 回到初始狀態
-                    initialConnectContainer.style.display = 'flex';
-                    logContainer.style.display = 'none';
-                }
-                console.error('Error in connectSerial: ', error);
-            }
+        function loadContent(url) {
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    // 將取得的 HTML 內容放入指定的 div 裡
+                    document.getElementById('content').innerHTML = html;
+                })
+                .catch(error => console.error('導入內容失敗:', error));
         }
 
-        // 斷線邏輯
-        async function disconnectSerial() {
-            if (port) {
-                try {
-                    // 釋放讀取器鎖定
-                    if (reader) {
-                        // reader.cancel() 才能讓 reader.read() 停止等待並拋出錯誤
-                        await reader.cancel(); 
-                        reader.releaseLock();
-                        reader = null;
-                    }
-                    
-                    // 關閉串行埠
-                    await port.close();
-                    port = null;
-                    statusElement.textContent = 'Disconnected.';
-                    outputElement.textContent = "";
-                    
-                    // 顯示連線按鈕，隱藏 LOG 區域
-                    initialConnectContainer.style.display = 'flex';
-                    logContainer.style.display = 'none';
-
-                } catch (error) {
-                    console.error('Error during disconnection: ', error);
-                    statusElement.textContent = 'Error: ' + error.message;
-                }
-            } else {
-                statusElement.textContent = 'No serial port to disconnect.';
-            }
-        }
-
-        // 綁定事件
-        initialConnectButton.addEventListener('click', connectSerial);
-        disconnectButton.addEventListener('click', disconnectSerial);
+        // 頁面加載完成後，導入 content.html
+        loadContent('content.html'); 
     </script>
+    
 </body>
 </html>
