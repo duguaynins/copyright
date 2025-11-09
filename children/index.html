@@ -12,6 +12,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title translate="no">nins/children</title>
   <style>
+    body {
+      overflow: hidden;
+    }
+  </style>
+  <style>
     input, textarea, button, select {
       /*font-size: inherit; /* 主動繼承 body 字體大小 */
       font-size: 18px;
@@ -283,11 +288,6 @@
         color:white;
     }
   </style>
-  <style>
-    body {
-      overflow: hidden;
-    }
-  </style>
 </head>
 <body>
     <div id="google_translate_element" style="display:none;"></div>
@@ -349,6 +349,12 @@
                     <p  style="margin-top: 0; color: white;" translate="no">(© 2024 NINS (by JPGT). 👻👻👻)</p>
                   </div>
 
+                  <!--dialog></dialog-->
+                  <!--details>
+                    <summary style="color: black;">Issued!</summary>
+                    <p>內容 1</p>
+                  </details-->
+
                   <div class="feature-item" onclick="openApp(repo='copyright', file='preview')" style="">
                     <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
                     <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
@@ -383,7 +389,7 @@
 
                   
                   <div class="feature-item disabled" style="background:#000000; color:white;">
-                    <h2 translate="no">⚠️ Developing ⚠️</h2>
+                    <h2 translate="no">⚠️ Issued ⚠️</h2>
                     <!--div> 標記 
                     <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🧪</div>
                     <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🧪</div>
@@ -391,27 +397,29 @@
                     <!--p>Don't miss it... Released now!</p-->
                     <!--button disabled="">Coming Soon</button-->
                     <!--button>Go</button-->
-                    <p  style="margin-bottom: 0;">Don't miss it... Coming soon.</p>
-                    <p  style="margin-top: 0; color: red;">(Don't miss it... Coming soon.)</p>
+                    <p  style="margin-bottom: 0; color: red;">This designated background color indicates ...</p>
+                    <!--p  style="margin-top: 0; color: red;">(Black background indicates completed but unpublished.)</p-->
+                    <p  style="margin-top: 0; color: red;">(Searchable, link pending, will be based on user feedback.)</p>
+                    <!--p  style="margin-top: 0; color: green;">(All published.)</p-->
                   </div>
 
                   <div class="feature-item disabled" onclick="openApp(repo='mailto', file='', dir='')" style="">
                     <h2 translate="no">📧 nins/mailto 📧</h2>
-                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
+                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⏳</div>
                     <!--div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div-->
                     <p  style="margin-bottom: 0;">Quickly create your own contact URL in HTTPS.</p>
                     <p  style="margin-top: 0;">(For mail use, but simpler!)</p>
                   </div>
                   <div class="feature-item disabled" onclick="openApp(repo='telto', file='', dir='')" style="">
                     <h2 translate="no">📞 nins/telto 📞</h2>
-                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
+                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⏳</div>
                     <!--div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div-->
                     <p  style="margin-bottom: 0;">Quickly create your own contact URL in HTTPS.</p>
                     <p  style="margin-top: 0;">(For tel/mobile use, but simpler!)</p>
                   </div>
                   <div class="feature-item disabled" onclick="openApp(repo='smsto', file='', dir='')" style="">
                     <h2 translate="no">💬 nins/smsto 💬</h2>
-                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
+                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⏳</div>
                     <!--div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div-->
                     <p  style="margin-bottom: 0;">Quickly create your own contact URL in HTTPS.</p>
                     <p  style="margin-top: 0;">(For sms use, but simpler!)</p>
