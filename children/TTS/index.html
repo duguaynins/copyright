@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>nins/TTS</title>
+  <style>
+    :root{font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial;}
+
+    .select,.input[type=text],input[type=url],input[type=number]{padding:8px;border-radius:8px;border:1px solid #ddd}
+    .input[type=range]{width:200px}
+    #controls{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
+    .body{max-width:980px;margin:28px auto;padding:18px;background:#fbfbfd;color:#111}
+    .textarea{width:100%;min-height:120px;padding:10px;border-radius:8px;border:1px solid #ddd;resize:vertical}
+    
+
+    h1{font-size:20px;margin-bottom:6px}
+    
+    .grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .grid{display:flex;grid-template-columns:1fr 0px;gap:16px}
+    
+    .card {
+      background: white;
+      border: 1px solid #eee;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(20, 20, 40, 0.03);
+    }
+    .card{background:white;border:1px solid #eee;padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(20,20,40,0.03)}
+    
+    label{display:block;margin:10px 0 6px;font-weight:600}
+    .row{display:flex;gap:12px;align-items:center}
+    
+    button{background:#0066ff;color:white;border:none;padding:10px 12px;border-radius:10px;cursor:pointer}
+    button.secondary{background:#444}
+    .muted{color:#666;font-size:13px}
+    .small{font-size:13px}
+    footer{margin-top:12px;color:#666;font-size:13px}
+    @media (max-width:880px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="">
+    <h1>文字轉語音（TTS） — Web API 範例</h1>
+    <!--p class="muted">此頁提供兩種模式：使用瀏覽器內建的 <strong>Web Speech API</strong>（無需伺服器）或呼叫任意第三方 TTS Web API（例如返回音訊檔的 REST API）。請在右側輸入 API 資訊（若不填則使用瀏覽器語音）。</p-->
+
+    <div class="">
+      <div>
+        <label for="voiceSelect">文字輸入框</label>
+        <textarea style="width: 100%;" id="txt" placeholder="在此輸入要轉語音的文字..."></textarea>
+        <!-- 您好，這是一段測試文字。您可以切換到 Web API 模式，將文字送到後端生成音訊，或直接使用瀏覽器的語音合成功能。 -->
+        <div class="controls">
+          <div>
+            <label for="voiceSelect">瀏覽器語音（Web Speech API）</label>
+            <select id="voiceSelect"></select>
+            <div class="small muted">語速: <span id="rateLabel">1</span> 音高: <span id="pitchLabel">1</span></div>
+            <div style="margin-top:6px">
+              <input id="rate" type="range" min="0.5" max="2" step="0.1" value="1"> <input id="pitch" type="range" min="0.5" max="2" step="0.1" value="1">
+            </div>
+          </div><br>
+          
+          <div>
+            <label>執行</label>
+            <div class="row">
+              <button id="speakBtn">播放 / 產生</button>
+              <button id="stopBtn" class="secondary">停止</button>
+              <button id="downloadBtn" class="secondary">下載音檔</button>
+            </div>
+            <!--div class="muted small" style="margin-top:6px">播放會先嘗試呼叫 Web API（若已啟用並填入 URL），否則自動使用瀏覽器語音。</div-->
+          </div>
+        </div><br>
+
+        <footer>
+          <!--span><strong>注意：</strong>若使用第三方 Web API，請確認該 API 支援跨來源 (CORS) 並返回音訊檔（e.g. audio/wav, audio/mp3），或回傳 base64 編碼的音訊。</span-->
+        </footer>
+      </div>
+
+      <aside style="display: none;">
+        <div>
+          <label><input type="checkbox" id="useApi"> 使用 Web API（若勾選，將以 API 生成音訊）</label>
+          <div style="margin-top:10px">
+            <label for="apiUrl">API URL</label>
+            <input id="apiUrl" type="url" placeholder="https://api.example.com/tts" style="width:100%">
+          </div>
+
+          <div style="margin-top:10px">
+            <label for="apiKey">API Key / Bearer（選填）</label>
+            <input id="apiKey" type="text" placeholder="輸入 API Key（若有）" style="width:100%">
+          </div>
+
+          <div style="margin-top:10px">
+            <label for="apiFormat">回傳格式（選填）</label>
+            <select id="apiFormat" style="width:100%">
+              <option value="audio">audio/* (binary)</option>
+              <option value="base64">json {"audio":"base64..."}</option>
+            </select>
+          </div>
+
+          <div style="margin-top:10px">
+            <label for="apiVoice">API 參數：語音/聲線（選填）</label>
+            <input id="apiVoice" type="text" placeholder="例如：zh-TW-Wavenet-A 或 female" style="width:100%">
+          </div>
+
+          <div style="margin-top:10px">
+            <label class="small muted">HTTP 方法（部分 API 需要 GET 或 POST）</label>
+            <select id="apiMethod" style="width:100%"><option>POST</option><option>GET</option></select>
+          </div>
+
+          <div style="margin-top:12px">
+            <label class="muted small">回傳狀態 / debug</label>
+            <pre id="log" style="max-height:160px;overflow:auto;padding:8px;border-radius:8px;border:1px solid #eee;background:#fafafa"></pre>
+          </div>
+
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    // DOM
+    const txt = document.getElementById('txt');
+    const speakBtn = document.getElementById('speakBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const voiceSelect = document.getElementById('voiceSelect');
+    const rate = document.getElementById('rate');
+    const pitch = document.getElementById('pitch');
+    const rateLabel = document.getElementById('rateLabel');
+    const pitchLabel = document.getElementById('pitchLabel');
+    const useApi = document.getElementById('useApi');
+    const apiUrl = document.getElementById('apiUrl');
+    const apiKey = document.getElementById('apiKey');
+    const apiFormat = document.getElementById('apiFormat');
+    const apiVoice = document.getElementById('apiVoice');
+    const apiMethod = document.getElementById('apiMethod');
+    const logEl = document.getElementById('log');
+
+    function log(...args){
+      const s = args.map(a => (typeof a === 'object')?JSON.stringify(a,null,2):String(a)).join(' ');
+      logEl.textContent = (new Date()).toLocaleTimeString() + ' — ' + s + '\n' + logEl.textContent;
+    }
+
+    // 目前播放用的物件（當用 API 回傳音訊時）
+    let currentAudio = null;
+
+    // --- Web Speech API 初始化 ---
+    function populateVoices(){
+      const voices = speechSynthesis.getVoices();
+      voiceSelect.innerHTML = '';
+      voices.forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = v.name;
+        opt.textContent = `${v.name} — ${v.lang}${v.default? ' (default)':''}`;
+        voiceSelect.appendChild(opt);
+      });
+      if(!voices.length){
+        const opt = document.createElement('option'); opt.textContent = '（瀏覽器未提供語音）'; voiceSelect.appendChild(opt);
+      }
+    }
+    populateVoices();
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = populateVoices;
+    }
+
+    rate.addEventListener('input', ()=> rateLabel.textContent = rate.value);
+    pitch.addEventListener('input', ()=> pitchLabel.textContent = pitch.value);
+
+    // 停止播放
+    stopBtn.addEventListener('click', () => {
+      if(currentAudio){ currentAudio.pause(); currentAudio = null; }
+      if(speechSynthesis.speaking || speechSynthesis.pending) speechSynthesis.cancel();
+    });
+
+    // 下載已生成的音檔（若為 blob）
+    downloadBtn.addEventListener('click', () => {
+      if(!currentAudio || !currentAudio.src){ alert('目前沒有可下載的音檔（請先用 API 產生或播放）。'); return; }
+      const a = document.createElement('a');
+      a.href = currentAudio.src;
+      a.download = 'tts_output.wav';
+      document.body.appendChild(a); a.click(); a.remove();
+    });
+
+    // 主流程：點擊播放/產生
+    speakBtn.addEventListener('click', async () => {
+      const text = txt.value.trim();
+      if(!text){ alert('請輸入文字。'); return; }
+
+      // 優先使用 Web API（若勾選）
+      if(useApi.checked && apiUrl.value.trim()){ 
+        log('使用 Web API：', apiUrl.value);
+        try{
+          await callTtsApiAndPlay(apiUrl.value.trim());
+        }catch(e){
+          log('API 呼叫失敗：', e);
+          // fallback to browser TTS
+          speakWithBrowser(text);
+        }
+      }else{
+        // 使用瀏覽器語音
+        speakWithBrowser(text);
+      }
+    });
+
+    // 使用瀏覽器內建 TTS
+    function speakWithBrowser(text){
+      if(!('speechSynthesis' in window)){
+        alert('此瀏覽器不支援 Web Speech API。請使用支援的瀏覽器或啟用 API 模式。');
+        return;
+      }
+      if(speechSynthesis.speaking || speechSynthesis.pending) speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      // 選擇聲音
+      const vname = voiceSelect.value;
+      const voices = speechSynthesis.getVoices();
+      const v = voices.find(x => x.name === vname);
+      if(v) utter.voice = v;
+      utter.rate = parseFloat(rate.value);
+      utter.pitch = parseFloat(pitch.value);
+
+      utter.onstart = () => log('瀏覽器 TTS 開始');
+      utter.onend = () => log('瀏覽器 TTS 結束');
+      utter.onerror = (e) => log('瀏覽器 TTS 發生錯誤', e);
+      speechSynthesis.speak(utter);
+    }
+
+    // 呼叫第三方 TTS API，支援 binary audio 或 JSON base64
+    async function callTtsApiAndPlay(url){
+      const method = (apiMethod.value || 'POST').toUpperCase();
+      const bodyData = {
+        text: txt.value,
+      };
+      if(apiVoice.value.trim()) bodyData.voice = apiVoice.value.trim();
+      // 設定 headers
+      const headers = { 'Accept': '*/*' };
+      if(apiKey.value.trim()){ headers['Authorization'] = 'Bearer ' + apiKey.value.trim(); }
+      // 如果是 GET，附帶 query string
+      let fetchOpts = { method, headers };
+      if(method === 'POST'){
+        // 有些 API 需要 JSON，有些需要 form-data；此範例使用 JSON
+        headers['Content-Type'] = 'application/json';
+        fetchOpts.body = JSON.stringify(bodyData);
+      }
+
+      log('發送請求：', method, url, bodyData, headers);
+      const resp = await fetch(url, fetchOpts);
+      log('HTTP', resp.status, resp.headers.get('content-type'));
+      if(!resp.ok){
+        const txtErr = await resp.text();
+        throw new Error('非 2xx 回應: ' + resp.status + ' / ' + txtErr);
+      }
+
+      const ct = resp.headers.get('content-type') || '';
+      // 情境 A: API 直接回傳音訊檔（audio/*）
+      if(ct.startsWith('audio/')){
+        const blob = await resp.blob();
+        playBlob(blob);
+        log('接收到二進位音訊 (audio/*), 長度=', blob.size);
+        return;
+      }
+
+      // 情境 B: API 回傳 JSON，內含 base64 字串（例如 {"audio":"...base64..."}）
+      const j = await resp.json();
+      if(j && typeof j.audio === 'string'){
+        // 若是在 base64 中包含 data:audio/...;base64, 先處理
+        const b64 = j.audio;
+        let base64String = b64;
+        let mime = 'audio/wav';
+        const m = b64.match(/^data:(audio\/[a-z0-9+.\-]+);base64,(.*)$/i);
+        if(m){ mime = m[1]; base64String = m[2]; }
+        const ab = base64ToArrayBuffer(base64String);
+        const blob = new Blob([ab], { type: mime });
+        playBlob(blob);
+        log('接收到 JSON(base64) 音訊，長度=', blob.size);
+        return;
+      }
+
+      // 其他可能：API 回傳 URL
+      if(j && j.url){
+        // 直接播放該 URL
+        log('API 回傳音訊 URL，嘗試播放：', j.url);
+        playUrl(j.url);
+        return;
+      }
+
+      throw new Error('無法辨識回傳內容（請確認 API 是否回傳 audio/* 或 JSON 包含 base64 或 url）');
+    }
+
+    // 將 base64 轉成 ArrayBuffer
+    function base64ToArrayBuffer(base64){
+      const binary_string = atob(base64);
+      const len = binary_string.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binary_string.charCodeAt(i);
+      }
+      return bytes.buffer;
+    }
+
+    // 播放 Blob 音訊
+    function playBlob(blob){
+      if(currentAudio){ currentAudio.pause(); currentAudio = null; }
+      const url = URL.createObjectURL(blob);
+      const a = new Audio();
+      a.src = url;
+      a.onended = () => { log('音檔播放結束'); /* 釋放 URL */ URL.revokeObjectURL(url); };
+      a.onplay = () => log('開始播放音檔');
+      a.onerror = (e) => log('播放錯誤', e);
+      currentAudio = a;
+      a.play();
+    }
+
+    // 播放遠端 URL
+    function playUrl(url){
+      if(currentAudio){ currentAudio.pause(); currentAudio = null; }
+      const a = new Audio(url);
+      a.onended = () => log('音檔播放結束');
+      a.onplay = () => log('開始播放遠端音檔');
+      a.onerror = (e) => log('播放遠端音檔錯誤', e);
+      currentAudio = a;
+      a.play();
+    }
+
+    // 預設示範：若要快速測試，您可以填入 public demo API（注意 CORS 與 API Key）
+    // 範例：若您使用自家伺服器，請接受 POST JSON {text,voice}，回傳 audio/wav 或 JSON {audio: 'base64...'}。
+
+  </script>
+
+  <script>
+    // 取得 URL 參數中的 data 值
+    const urlParams = new URLSearchParams(window.location.search);
+    const dataValue = urlParams.get('data');
+    console.log(dataValue);
+
+    // 顯示在 infoBox 中
+    const infoBox = document.getElementById('txt');
+    infoBox.textContent = dataValue ? `${dataValue}` : '未找到 data 參數';
+
+    let text = dataValue;
+    speakWithBrowser(text);
+  </script>
+</body>
+</html>
