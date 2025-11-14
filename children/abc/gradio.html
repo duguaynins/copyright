@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gradio Client Example</title>
+</head>
+<body>
+  <h1>Gradio Client 測試</h1>
+  <button id="run">Run Prediction</button>
+  
+  <script type="module">
+  import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js";
+
+  async function run() {
+    const client = await Client.connect("duguaynins/TextMining");
+    const result = await client.predict("/predict", { new_text: "Hello!!" });
+    console.log(result.data);
+  }
+
+  run();
+</script>
+
+  <!--script type="module">
+    import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client/dist/gradio-client.min.js";
+
+    const client = await Client.connect("duguaynins/TextMining");
+
+    document.getElementById("run").addEventListener("click", async () => {
+        const result = await client.predict("/predict", { new_text: "Hello!!" });
+        console.log(result.data);
+        alert("結果已印到 console");
+    });
+  </script-->
+  
+  <!--script>
+    const token_nins = "YOUR_HF_TOKEN_HERE"; // 替換成你的 Hugging Face Token
+    const url = "https://duguaynins-textmining.hf.space/api/predict/";
+
+    async function sendText(text) {
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${token_nins}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ data: [text] }) // Hugging Face Spaces API 預設需要放在 data 陣列中
+        });
+
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        const result = await response.json();
+        console.log("API 回傳:", result);
+        return result;
+      } catch(err) {
+        console.error("Fetch failed:", err);
+        return null;
+      }
+    }
+
+    document.getElementById("run").addEventListener("click", async () => {
+      const result = await sendText("text");
+      console.log(result);
+    });
+  </script-->
+</body>
+</html>
