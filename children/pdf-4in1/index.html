@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PDF 4-up Smart Layout Tool</title>
+    <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
+</head>
+<body>
+    <h2>📁 PDF 4-up Smart Layout Tool</h2>
+    <p>The program automatically determines the landscape or portrait orientation of the new page based on the orientation majority of every four pages.</p>
+    <input type="file" id="pdfFile" accept=".pdf">
+    <button id="processBtn" onclick="processPdf()" disabled>Start 4-up Layout and Download</button>
+    <div id="status">Please select a PDF file...</div>
+
+    <script>
+        const { PDFDocument } = PDFLib;
+
+        // Define standard A4 dimensions (Width, Height)
+        const A4_PORTRAIT_WIDTH = 595.28;
+        const A4_PORTRAIT_HEIGHT = 841.89;
+        const A4_LANDSCAPE_WIDTH = A4_PORTRAIT_HEIGHT;
+        const A4_LANDSCAPE_HEIGHT = A4_PORTRAIT_WIDTH;
+
+        // Listen for file selection event
+        document.getElementById('pdfFile').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const button = document.getElementById('processBtn');
+            button.disabled = !file;
+            document.getElementById('status').textContent = file ? `✅ File selected: ${file.name}` : 'Please select a PDF file...';
+        });
+
+        async function processPdf() {
+            const fileInput = document.getElementById('pdfFile');
+            const statusDiv = document.getElementById('status');
+            const processBtn = document.getElementById('processBtn');
+
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            processBtn.disabled = true;
+            statusDiv.textContent = '⏳ Processing, please wait...';
+
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                const existingPdfDoc = await PDFDocument.load(arrayBuffer);
+                const newPdfDoc = await PDFDocument.create();
+
+                const pages = existingPdfDoc.getPages();
+                const numPages = pages.length;
+
+                // 1. Embed all pages
+                const importedPages = [];
+                statusDiv.textContent = `⏳ Embedding ${numPages} original pages...`;
+                
+                for (const page of pages) {
+                    const embeddedPage = await newPdfDoc.embedPage(page);
+                    importedPages.push(embeddedPage);
+                }
+                
+                statusDiv.textContent = '⏳ Smartly laying out 4-up...';
+                
+                // 2. Perform 4-up grouping and drawing
+                for (let i = 0; i < numPages; i += 4) {
+                    const groupPages = importedPages.slice(i, i + 4);
+                    
+                    // --- Smartly determine new page orientation ---
+                    let portraitCount = 0;
+                    for (const page of groupPages) {
+                        // Determine page orientation: Height > Width is considered Portrait
+                        if (page.height > page.width) {
+                            portraitCount++;
+                        }
+                    }
+
+                    // Set new page dimensions based on the majority page orientation
+                    const isPortrait = portraitCount >= groupPages.length / 2;
+                    let newPageWidth, newPageHeight;
+                    
+                    if (isPortrait) {
+                        newPageWidth = A4_PORTRAIT_WIDTH;
+                        newPageHeight = A4_PORTRAIT_HEIGHT;
+                    } else {
+                        newPageWidth = A4_LANDSCAPE_WIDTH;
+                        newPageHeight = A4_LANDSCAPE_HEIGHT;
+                    }
+                    
+                    const newPage = newPdfDoc.addPage([newPageWidth, newPageHeight]);
+                    
+                    // Recalculate grid dimensions
+                    const cellWidth = newPageWidth / 2;
+                    const cellHeight = newPageHeight / 2;
+
+                    // Define the drawing position for each small page (Top-Left is the origin 0, 0)
+                    const positions = [
+                        { x: 0, y: cellHeight },       // Top-Left (Original Page 1)
+                        { x: cellWidth, y: cellHeight },// Top-Right (Original Page 2)
+                        { x: 0, y: 0 },                  // Bottom-Left (Original Page 3)
+                        { x: cellWidth, y: 0 }           // Bottom-Right (Original Page 4)
+                    ];
+
+                    // --- Draw Pages ---
+                    for (let j = 0; j < 4; j++) {
+                        const originalPageIndex = i + j;
+                        
+                        if (originalPageIndex < numPages) { 
+                            const originalPage = importedPages[originalPageIndex]; 
+                            const { x, y } = positions[j];
+
+                            const originalWidth = originalPage.width;
+                            const originalHeight = originalPage.height;
+                            
+                            // Calculate scaling factor to ensure content fits completely within the cell's width or height
+                            const scaleX = cellWidth / originalWidth;
+                            const scaleY = cellHeight / originalHeight;
+                            const scale = Math.min(scaleX, scaleY); // Ensure it does not exceed the cell boundary
+                            
+                            const scaledWidth = originalWidth * scale;
+                            const scaledHeight = originalHeight * scale;
+
+                            // Center the content within the grid (Optional: for a better layout)
+                            const offsetX = x + (cellWidth - scaledWidth) / 2;
+                            const offsetY = y + (cellHeight - scaledHeight) / 2;
+
+                            // Draw the page
+                            newPage.drawPage(originalPage, { 
+                                x: offsetX,
+                                y: offsetY,
+                                width: scaledWidth,
+                                height: scaledHeight,
+                            });
+                        }
+                    }
+                }
+
+                // 3. Output and download the new PDF document
+                const pdfBytes = await newPdfDoc.save();
+                
+                const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `rearranged_4up_smart_${file.name}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                statusDiv.textContent = '✅ Layout complete! Download has started.';
+
+            } catch (error) {
+                console.error('An error occurred while processing the PDF:', error);
+                statusDiv.textContent = `❌ Processing failed. Error message: ${error.message}`;
+            } finally {
+                processBtn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
