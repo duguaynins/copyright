@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<body style="font-family: sans-serif;">
+
+<h2>圖片 → 產生網址（# Base64 編碼）</h2>
+
+<input type="file" id="fileInput" accept="image/*">
+<br><br>
+
+<div id="preview"></div>
+<br>
+
+<button id="copyBtn" style="display:none;">複製網址</button>
+<br><br>
+
+<textarea id="urlOutput" style="width:100%; height:120px;" readonly></textarea>
+
+<script>
+document.getElementById("fileInput").onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // 顯示預覽
+    document.getElementById("preview").innerHTML = "載入中…";
+
+    // 1️⃣ 讀取圖片成 Base64
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = () => {
+        const originalBase64 = reader.result;
+
+        // 在頁面上顯示預覽圖片
+        document.getElementById("preview").innerHTML =
+            `<img src="${originalBase64}" style="max-width:300px;"><br>`;
+
+        // 2️⃣ encodeURIComponent，避免網址壞掉
+        const encoded = encodeURIComponent(originalBase64);
+
+        // 3️⃣ 產生可用的網址
+        const url =
+            location.origin +
+            location.pathname +
+            "#" +
+            encoded;
+
+        // 放到 textarea
+        document.getElementById("urlOutput").value = url;
+        document.getElementById("copyBtn").style.display = "inline-block";
+    };
+};
+
+// 4️⃣ 一鍵複製
+document.getElementById("copyBtn").onclick = () => {
+    const ta = document.getElementById("urlOutput");
+    ta.select();
+    document.execCommand("copy");
+    alert("已複製網址！");
+};
+</script>
+
+</body>
+</html>
