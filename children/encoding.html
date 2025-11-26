@@ -515,5 +515,32 @@
     </script>
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     
+    <script>
+      ///const canvas = document.getElementById("qrcode");
+      ///const canvases = document.querySelectorAll("canvas");  // 論巡
+
+      document.querySelectorAll("canvas").forEach(canvas => {  // 論巡
+        canvas.addEventListener("click", async () => {
+          // 若尚未進入全螢幕 → 請求全螢幕
+          if (!document.fullscreenElement) {
+            try {
+              canvas.style.background = "white"; // ← 進入全螢幕時套用白色背景
+              await canvas.requestFullscreen();
+              // 強制橫向顯示（支援的瀏覽器才有效）
+              if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock("landscape").catch(() => {});
+              }
+            } catch (e) {
+              console.log(e);
+            }
+          } else {
+            // 若已在全螢幕 → 退出
+            document.exitFullscreen();
+            canvas.style.background = ""; // ← 退出後恢復
+          }
+        });
+      });
+    
+    </script>
 </body>
 </html>
