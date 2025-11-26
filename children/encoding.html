@@ -207,6 +207,20 @@
           
             <div style="background: #FFFFFF; overflow:auto; width:100%; flex:1; border: 1px solid #ccc;">
                 <!--img id="linkCode" onclick="openLink()" alt='QR Code' style="width:100%;"-->
+                <div id="result" style="
+                    display: flex;
+                    justify-content: center;
+                ">
+                    <canvas class="preview" id="show" style="
+                        width: auto;
+                        height: min(80vw, 80vh);
+                        /*object-fit: contain;*/
+                        /*margin: auto;*/
+                        margin: 1em 0;
+                        display: none;
+
+                      " /></canvas><br>
+                </div>
                 
                 <div id="code-slider" style="
                     display: flex;
@@ -236,20 +250,6 @@
                     <canvas class="thumb oned" id="codabar"></canvas>
                     <canvas class="thumb oned" id="msi"></canvas>
                     
-                </div>
-                <div id="result" style="
-                    display: flex;
-                    justify-content: center;
-                ">
-                    <canvas class="preview" id="show" style="
-                        width: auto;
-                        height: min(80vw, 80vh);
-                        /*object-fit: contain;*/
-                        /*margin: auto;*/
-                        margin: 1em 0;
-                        display: none;
-
-                      " /></canvas><br>
                 </div>
             </div>
             
