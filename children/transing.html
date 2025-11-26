@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -375,7 +376,7 @@
               </select>）<br>
 
               <label for="Playxlang">🌐（skip-form: </label>
-              <input type="checkbox" id="skipForm">）<br>
+              <input type="checkbox" id="skipForm" checked="">）<br>
           </div>
           
           
@@ -459,7 +460,8 @@
     // 翻譯****
     const params = new URLSearchParams(window.location.search);
     
-    const uuid_user = randomAlphaString(64);  // 生成64字元
+    const uuid_user = randomAlphaString(32);  // 生成32字元
+    ///const uuid_user = randomAlphaString(64);  // 生成64字元
     let ably; // 連線介面
     let channel = null;  // 根據房間連線
     
@@ -1080,19 +1082,30 @@
         const hourUTC = new Date(nowUTC).getUTCHours();  // 取得 UTC 小時（0-23）
         
         const emoji_clock = EmojisClock[hourUTC];
-        const emoji_texti = '🔄';  //🔣🤖
-        const emoji_texts = '🔣';  //🔣🤖
-        const emoji_lang = '👄';  //👄👂
+        const emoji_textrl = '🔄';
+        const emoji_textil = '🤖';
+        const emoji_textsl = '🔣';
+        const emoji_langxl = '👄';  //👂
         const result = (emoji_clock + nowUTC) + ("🔄" + rmsg) + ("🤖" + imsg) + ("🔣" + smsg) + ("👄" + ilang + "|" + slang);/// + ("🆔" + randomID);  //???
-        // 發送訊息
-        channel.publish('message', result);
-        ///input.value = '';  // 最前方已經執行過了
+        // 穩定：發送訊息
+        ///channel.publish('message', result);
         
         // 語意距離
         const distance = await semantic({ "smsg": smsg, "rmsg": rmsg }); // duguaynins/SemanticDistance
         console.log("語意距離：" + distance + "***");
-        ///channel.publish('message', result);
-        //////alert(distance);
+
+        // 測試：統一顯示語意距離
+        ///channel.subscribe
+        channel.publish('message', {
+          time: (emoji_clock + nowUTC),
+          rl_text: rmsg, ///("🔄" + rmsg),
+          il_text: imsg, ///("🤖" + imsg),
+          sl_text: smsg, ///("🔣" + smsg),
+          tl_lang: ilang, ///("👄" + ilang),
+          sl_lang: slang, ///("👄" + slang),
+          dist: distance, ///("📏" + distance),
+        });
+        
         
         // 顯示比對
         ///document.getElementById("SemanticDistance").textContent = "（" + "🎯" + distance + "）";
@@ -1352,7 +1365,7 @@
             console.log(`${member.clientId} has entered.`);
             channel.presence.get((err, members) => {
               const p = document.createElement('p');
-              p.innerHTML = `${emoji_clock}${nowUTC}（🟢${member.clientId || 'USER'}）`;p.style.color = 'green';
+              p.innerHTML = `${emoji_clock}${nowUTC}<br>（🟢${member.clientId || 'USER'}）`;p.style.color = 'green';
               p.setAttribute('translate', 'no');  //???
               document.getElementById("chatbox").prepend(p);
               if (!err) { console.log('Members:', members.length);document.getElementById("copyright").innerHTML = `👻（${room}, ${members.length}）`; }
@@ -1369,7 +1382,7 @@
             console.log(`${member.clientId} has left.`);
             channel.presence.get((err, members) => {
               const p = document.createElement('p');
-              p.innerHTML = `${emoji_clock}${nowUTC}（🔴${member.clientId || 'USER'}）`;p.style.color = 'red';
+              p.innerHTML = `${emoji_clock}${nowUTC}<br>（🔴${member.clientId || 'USER'}）`;p.style.color = 'red';
               p.setAttribute('translate', 'no');  //???
               document.getElementById("chatbox").prepend(p);
               if (!err) { console.log('Members:', members.length);document.getElementById("copyright").innerHTML = `👻（${room}, ${members.length}）`; }
@@ -1379,6 +1392,7 @@
         
         
         // 立即註冊訂閱監聽
+        ///channel.publish
         channel.subscribe('message', function(msg) {
           console.log("接收到的訊息:", msg);
           
@@ -1386,51 +1400,32 @@
           const box = document.getElementById('chatbox');
           const p = document.createElement('p');
           ///p.textContent = msg.data;
-          
-          // 切割段落***
-          ///const result = emoji_clock + nowUTC + emoji_texti + imsg + emoji_texts + smsg + emoji_lang + tlang;
-          ///const result = (emoji_clock + nowUTC) + ("🔄" + imsg) + ("🔣" + smsg) + ("👄" + ilang + "|" + slang);  //???
-          ///const result = (emoji_clock + nowUTC) + ("🔄" + rmsg) + ("🤖" + imsg) + ("🔣" + smsg) + ("👄" + ilang + "|" + slang);  //???
-          let index = null;  // 根據索引**
-          let before = null;
-          let after = null;
+
           // 初始化**
-          after = null;
-          before = msg.data;
-          // 取得語言**
-          index = before.lastIndexOf("👄");
-          after = before.substring(index + "👄".length);
-          before = before.substring(0, index);
-          index = after.lastIndexOf("|");
-          const msgtLangs = after.substring(index + "|".length);
-          const msgtLangm = after.substring(0, index);
+          const obj = msg.data;
+          // 取得語言代號**
+          const msgtLangs = obj.sl_lang;
+          const msgtLangm = obj.tl_lang;  // 一起學習的語言
           const msgtLangr = "en";
           console.log("👄sl:", msgtLangs);
           console.log("👄il:", msgtLangm);
           console.log("👄rl:", msgtLangr);
           // 取得原文語言**
-          index = before.lastIndexOf("🔣");
-          after = before.substring(index + "🔣".length);
-          before = before.substring(0, index);
-          const msgtTexts = after;
-          console.log("🔣", msgtTexts);
+          const msgtTexts = obj.sl_text;  ///smsg
+          console.log("🔣sl", msgtTexts);
           // 取得中間語言**
-          index = before.lastIndexOf("🤖");
-          after = before.substring(index + "🤖".length);
-          before = before.substring(0, index);
-          const msgtTextm = after;
-          console.log("🤖", msgtTextm);
-          // 取得顯示語言**
-          index = before.lastIndexOf("🔄");
-          after = before.substring(index + "🔄".length);
-          before = before.substring(0, index);
-          const msgtTextr = after;
-          console.log("🔄", msgtTextr);
+          const msgtTextm = obj.il_text;  ///imsg
+          console.log("🔄il", msgtTextm);
+          // 取得學習語言**  // 顯示語言？結果語言？
+          const msgtTextr = obj.rl_text;  ///rmsg
+          console.log("🤖rl", msgtTextr);
           // 取得時間**
-          after = before.substring(0, before.length);  //"🕛".length
-          before = before.substring(0 + "🕛".length);
-          const msgTime = after;
-          console.log("🕛", msgTime.slice("🕛".length));
+          const msgTime = obj.time;
+          console.log("🕛tm", msgTime);
+          // 取得距離**
+          const msgDist = obj.dist;  ///distance
+          console.log("📏ds", msgDist);
+
           
           // 顯示結果***
           ///const result = (index !== -1) ? msg.data.substring(0, index) : msg.data;
@@ -1438,12 +1433,27 @@
           const randomID = "id_" + Math.random().toString(36).substring(2, 8);  // 產生短隨機 ID
           const functionName = `handleTTS_${randomID}`;  // 定義專屬函式名稱
           
-          // 使用模板字串，插入 randomID 到 HTML 字串中**
+          
+          // 用模板字串生成完整 URL**
+          const baseURL = "https://docs.google.com/forms/d/e/1FAIpQLSdhEtDT6iin8qox8si8eWufXwCiDWNBjSr6AFGIQEfjoXjpIQ/viewform?usp=pp_url";
 
-          ///const p = document.createElement('p');
+          const var1 = msgtTextm;
+          const var2 = msgtTexts;
+          const var3 = msgtTextr;
+          const var4 = msgDist;
+          const fullURL = `${baseURL}&entry.2108432241=${encodeURIComponent(var1)}&entry.108198120=${encodeURIComponent(var2)}&entry.2008598079=${encodeURIComponent(var3)}&entry.1461710493=${encodeURIComponent(var4)}`;
+          
+          // 綁定按鈕打開表單
+          const checkbox = document.getElementById("skipForm");
+          if (!checkbox.checked) {
+              ///window.open(fullURL, "_blank", "noopener,noreferrer");
+              ///window.open('${fullURL}', '_blank', 'noopener,noreferrer');
+          } 
+          
+          // 使用模板字串，插入 randomID 到 HTML 字串中**
+          ///const p = document.createElement('p');  // 棄用此行
           const div = document.createElement("div");
           div.innerHTML = `
-            
             <span id="${randomID}_T" style="color:black;" translate="no">${msgTime}</span><br>
             <span style="color:black;">（
             <label id="${randomID}_sl" translate="no" style="color:black;">👂sl:${msgtLangs}<input style="display:none;" type="button" value="👂${msgtLangs}" onclick="handleTTS('${randomID}_0')" /></label>
@@ -1455,9 +1465,10 @@
             <p id="${randomID}_0" translate="no" style="display:none; color:gray;">（🔣${msgtTexts}👄${msgtLangs}）</p>
             <p id="${randomID}_1" translate="no" style="display:none; color:gray;">（🤖${msgtTextm}👄${msgtLangm}）</p>
             <p id="${randomID}_9" translate="no" style="display:none; color:gray;">（👻${msgtTextr}👄${msgtLangr}）</p>
-            <!--p id="${randomID}_S" translate="no" >（🎯???）</p><br-->
 
-            <!--span id="${randomID}_2" translate="">（🔄${msgtTextm}）</span><br-->
+            <span style="color:black;">（
+            <label id="${randomID}_ds" translate="no" style="color:black;">🎯ds:${msgtLangr}&${msgtLangs}=${msgDist}<input style="display:none;" type="button" value="👂${0}" onclick="window.open('${fullURL}', '_blank', 'noopener,noreferrer')" /></label>
+            ）</span>
           `;
           
           //document.getElementById("chatbox").appendChild(p);  // 取消CCS時，改用此。
