@@ -241,7 +241,7 @@
                     display: flex;
                     justify-content: center;
                 ">
-                    <canvas class="" id="show" style="
+                    <canvas class="preview" id="show" style="
                         width: auto;
                         height: min(80vw, 80vh);
                         /*object-fit: contain;*/
@@ -263,8 +263,9 @@
     </div>
     
   <script>
-    const allThumbCanvases = document.querySelectorAll('canvas.thumb');
-
+    ///const allThumbCanvases = document.querySelectorAll('canvas.thumb');
+    const allThumbCanvases = document.querySelectorAll('canvas.preview');
+      
     // 為每個選取的 canvas 元素添加點擊事件監聽器
     allThumbCanvases.forEach(canvas => {
       canvas.addEventListener('click', () => {
