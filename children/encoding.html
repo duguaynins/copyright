@@ -286,14 +286,38 @@
     </div>
 
     <script>
-    document.getElementById("code-bgcolor").addEventListener("input", function(e) {
-        ///document.getElementById("CONTENT").style.background = e.target.value;
-        ///document.querySelectorAll(".CONTENT").style.background = e.target.value;
-        document.querySelectorAll(".thumb").forEach(element => {
-            element.style.backgroundColor = e.target.value;
-        });
-    });
+      function downloadPNG(canvas) {
+        const imageUrl = canvas.toDataURL('image/png');  // 取得圖片資料
+        const link = document.createElement('a');  // 創建一個隱藏的 <a> 連結
+        const value = document.getElementById('InputRoom').value;  // 取得內容文字
+
+        // 時間****
+        const nowUTC = new Date().toISOString();
+        const filetimestamp = nowUTC.replace(/[-:.]/g, '_');
+        console.log(filetimestamp); // 例如：2025-07-02T06-56-31-400Z
+
+        // 連結****
+        ///link.download = `${canvas.id}.png`;
+        link.download = `${canvas.id}_${filetimestamp}.png`;
+        link.href = imageUrl;
+        link.click();  // 模擬點擊連結來觸發下載
+      }
     </script>
+
+    <script>
+      document.getElementById("code-bgcolor").addEventListener("input", function(e) {
+          ///document.getElementById("CONTENT").style.background = e.target.value;
+          ///document.querySelectorAll(".CONTENT").style.background = e.target.value;
+          document.querySelectorAll(".thumb").forEach(element => {
+              element.style.backgroundColor = e.target.value;
+          });
+      });
+    </script>
+
+
+
+
+
   <script>
     ///const allThumbCanvases = document.querySelectorAll('canvas.thumb');
     const allThumbCanvases = document.querySelectorAll('canvas.preview');
@@ -572,6 +596,7 @@
             // 若已在全螢幕 → 退出
             document.exitFullscreen();
             ///canvas.style.background = "transparent"; // ← 退出後恢復
+            downloadPNG(canvas);
           }
         });
       });
