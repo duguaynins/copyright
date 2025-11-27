@@ -102,8 +102,16 @@
       from { opacity: 1; }
       to { opacity: 0; }
     }
-    
-    
+    /* 動畫定義：呼吸一次 */
+    @keyframes breatheBlink {
+        0%   { border-color: #cdcdcd; }
+        50%  { border-color: #FF3B00; }  /* red */
+        100% { border-color: #cdcdcd; }
+    }
+    .hot {
+        animation: breatheBlink 1.5s ease-in-out infinite alternate;
+        border: 2px;
+    }
     @keyframes hardBlink {
       0%, 100% { border-color: red; }
       50%      { border-color: transparent; }
@@ -240,8 +248,8 @@
                   bottom: 0;
               ">
               
-                  <canvas class="thumb oned" id="code39" style="border: 2px solid #FF3B00;"></canvas>
-                  <canvas class="thumb twod" id="qrcode" style="border: 2px solid #FF3B00;"></canvas>
+                  <canvas class="thumb oned hot" id="code39"></canvas>
+                  <canvas class="thumb twod hot" id="qrcode"></canvas>
 
                   <canvas class="thumb twod" id="pdf417"></canvas>
                   <canvas class="thumb twod" id="datamatrix"></canvas>
