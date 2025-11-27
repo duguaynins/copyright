@@ -205,58 +205,62 @@
           <div style="margin: 10px;" onclick="document.getElementById('DialogShare').showModal()">
           nins/encoding
           </div></div>
-          
-            <div style="background: #FFFFFF; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; position: relative;">
-                <!--img id="linkCode" onclick="openLink()" alt='QR Code' style="width:100%;"-->
-                <div id="code-result" style="
-                    display: flex;
-                    justify-content: center;
-                    flex: 1;
-                ">
-                    <canvas class="preview" id="show" style="
-                        width: min(80vw, 80vh);
-                        height: auto;
-                        /*object-fit: contain;*/
-                        /*margin: auto;*/
-                        margin: 1em 0;
-                        display: none;
+          <input id="CONTENT-bgcolor" type="color" value="#cdcdcd" style="width:100%;">
 
-                      " /></canvas><br>
-                </div>
-                
-                <div id="code-slider" style="
-                    display: flex;
-                    /*flex-direction: row;  /* 上下==column */
-                    justify-content: flex-start;  /* 左對齊較符合滾動預期 center 不符合 */
-                    flex-shrink: 0
-                    align-items: center;  /* 水平置中 canvas */
-                    overflow-y: auto;     /* 可垂直滾動 */
-                    overflow-x: auto;     /* 可水平滾動 */
+          <div id="CONTENT" style="background: #FFFFFF; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; position: relative;">
+              <!--img id="linkCode" onclick="openLink()" alt='QR Code' style="width:100%;"-->
+              
 
-                    position: absolute;
-                    bottom: 0;
-                ">
-                
-                    <canvas class="thumb oned" id="code39" style="border: 2px solid #FF3B00;"></canvas>
-                    <canvas class="thumb twod" id="qrcode" style="border: 2px solid #FF3B00;"></canvas>
+              <div id="code-result" style="
+                  display: flex;
+                  justify-content: center;
+                  flex: 1;
+              ">
+                  <canvas class="preview" id="show" style="
+                      width: auto; /*min(80vw, 80vh)*/
+                      height: auto;
+                      /*object-fit: contain;*/
+                      /*margin: auto;*/
+                      margin: 1em 0;
+                      display: none;
 
-                    <canvas class="thumb twod" id="pdf417"></canvas>
-                    <canvas class="thumb twod" id="datamatrix"></canvas>
-                    <canvas class="thumb twod" id="azteccode"></canvas>
-                    <canvas class="thumb twod" id="maxicode"></canvas>
-                    
-                    <canvas class="thumb oned" id="ean13"></canvas>
-                    <canvas class="thumb oned" id="ean8"></canvas>
-                    <canvas class="thumb oned" id="upca"></canvas>
-                    <canvas class="thumb oned" id="code128"></canvas>
-                    <!--canvas class="thumb oned" id="code39"></canvas-->
-                    <canvas class="thumb oned" id="itf14"></canvas>
-                    <canvas class="thumb oned" id="codabar"></canvas>
-                    <canvas class="thumb oned" id="msi"></canvas>
-                    
-                </div>
-            </div>
+                    " /></canvas><br>
+              </div>
+              
+              <div id="code-slider" style="
+                  display: flex;
+                  /*flex-direction: row;  /* 上下==column */
+                  justify-content: flex-start;  /* 左對齊較符合滾動預期 center 不符合 */
+                  flex-shrink: 0
+                  align-items: center;  /* 水平置中 canvas */
+                  overflow-y: auto;     /* 可垂直滾動 */
+                  overflow-x: auto;     /* 可水平滾動 */
+
+                  position: absolute;
+                  bottom: 0;
+              ">
+              
+                  <canvas class="thumb oned" id="code39" style="border: 2px solid #FF3B00;"></canvas>
+                  <canvas class="thumb twod" id="qrcode" style="border: 2px solid #FF3B00;"></canvas>
+
+                  <canvas class="thumb twod" id="pdf417"></canvas>
+                  <canvas class="thumb twod" id="datamatrix"></canvas>
+                  <canvas class="thumb twod" id="azteccode"></canvas>
+                  <canvas class="thumb twod" id="maxicode"></canvas>
+                  
+                  <canvas class="thumb oned" id="ean13"></canvas>
+                  <canvas class="thumb oned" id="ean8"></canvas>
+                  <canvas class="thumb oned" id="upca"></canvas>
+                  <canvas class="thumb oned" id="code128"></canvas>
+                  <!--canvas class="thumb oned" id="code39"></canvas-->
+                  <canvas class="thumb oned" id="itf14"></canvas>
+                  <canvas class="thumb oned" id="codabar"></canvas>
+                  <canvas class="thumb oned" id="msi"></canvas>
+                  
+              </div>
+          </div>
             
+          
           <input class="main" id="InputRoom" type="text" name="noMemory" autocomplete="off" placeholder="input content and get barcode" style="width:100%; text-align: center;"/>
             
           <!--strong></strong-->
@@ -265,7 +269,12 @@
           By sending a message to this service, it means you have agreed to any content and all content!
           </div></div>
     </div>
-    
+
+    <script>
+    document.getElementById("CONTENT-bgcolor").addEventListener("input", function(e) {
+        document.getElementById("CONTENT").style.background = e.target.value;
+    });
+    </script>
   <script>
     ///const allThumbCanvases = document.querySelectorAll('canvas.thumb');
     const allThumbCanvases = document.querySelectorAll('canvas.preview');
@@ -530,6 +539,8 @@
           if (!document.fullscreenElement) {
             try {
               canvas.style.background = "white"; // ← 進入全螢幕時套用白色背景
+              canvas.style.background = document.getElementById('CONTENT-bgcolor').value;
+
               await canvas.requestFullscreen();
               // 強制橫向顯示（支援的瀏覽器才有效）
               if (screen.orientation && screen.orientation.lock) {
