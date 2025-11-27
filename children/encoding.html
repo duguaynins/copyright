@@ -541,9 +541,22 @@
           } else {
             // 若已在全螢幕 → 退出
             document.exitFullscreen();
-            canvas.style.background = "transparent"; // ← 退出後恢復
+            ///canvas.style.background = "transparent"; // ← 退出後恢復
           }
         });
+      });
+
+      // 🔥 通用事件：只執行一次
+      document.addEventListener("fullscreenchange", () => {
+        const fsElem = document.fullscreenElement; // 目前全螢幕的元素
+
+        // 若退出全螢幕（fsElem = null）
+        if (!fsElem) {
+          // 找到 *剛剛* 進入全螢幕的 canvas
+          document.querySelectorAll("canvas").forEach(c => {
+            c.style.background = "transparent";  // 全部還原透明
+          });
+        }
       });
     
     </script>
