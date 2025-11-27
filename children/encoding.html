@@ -152,6 +152,7 @@
       object-fit: contain;
       display: none;
       flex-shrink: 0;        /* 防止被壓縮 */
+      background-color: transparent;
     }
   </style>
 </head>
@@ -205,7 +206,7 @@
           nins/encoding
           </div></div>
           
-            <div style="background: #FFFFFF; overflow:auto; width:100%; flex:1; border: 1px solid #ccc;">
+            <div style="background: #FFFFFF; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; position: relative;">
                 <!--img id="linkCode" onclick="openLink()" alt='QR Code' style="width:100%;"-->
                 <div id="code-result" style="
                     display: flex;
@@ -213,8 +214,8 @@
                     flex: 1;
                 ">
                     <canvas class="preview" id="show" style="
-                        width: auto;
-                        height: min(80vw, 80vh);
+                        width: min(80vw, 80vh);
+                        height: auto;
                         /*object-fit: contain;*/
                         /*margin: auto;*/
                         margin: 1em 0;
@@ -226,12 +227,14 @@
                 <div id="code-slider" style="
                     display: flex;
                     /*flex-direction: row;  /* 上下==column */
-                    /*justify-content: center;*/
-                    justify-content: flex-start;  /* 左對齊較符合滾動預期 */
+                    justify-content: flex-start;  /* 左對齊較符合滾動預期 center 不符合 */
                     flex-shrink: 0
                     align-items: center;  /* 水平置中 canvas */
-                    /*overflow-y: auto;     /* 可垂直滾動 */
+                    overflow-y: auto;     /* 可垂直滾動 */
                     overflow-x: auto;     /* 可水平滾動 */
+
+                    position: absolute;
+                    bottom: 0;
                 ">
                 
                     <canvas class="thumb oned" id="code39" style="border: 2px solid #FF3B00;"></canvas>
@@ -309,7 +312,7 @@
         // 清除 & 複製
         ctx.clearRect(0, 0, preview.width, preview.height);
         ctx.drawImage(canvas, 0, 0);
-        preview.style.display = 'block';
+        ///preview.style.display = 'block';
 
         /*
         // 開啟圖片於新的分頁
@@ -538,7 +541,7 @@
           } else {
             // 若已在全螢幕 → 退出
             document.exitFullscreen();
-            canvas.style.background = ""; // ← 退出後恢復
+            canvas.style.background = "transparent"; // ← 退出後恢復
           }
         });
       });
