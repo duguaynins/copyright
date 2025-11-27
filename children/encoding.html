@@ -305,6 +305,7 @@
     </script>
 
     <script>
+
       document.getElementById("code-bgcolor").addEventListener("input", function(e) {
           ///document.getElementById("CONTENT").style.background = e.target.value;
           ///document.querySelectorAll(".CONTENT").style.background = e.target.value;
@@ -614,6 +615,16 @@
         }
       });
     
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const data = urlParams.get('data') || ""; // 沒有 data 時就給空字串
+        document.getElementById('InputRoom').value = data;
+
+        const event = new Event('input', { bubbles: true });
+        document.getElementById('InputRoom').dispatchEvent(event);
+      });
     </script>
 </body>
 </html>
