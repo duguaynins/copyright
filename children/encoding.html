@@ -213,16 +213,15 @@
           <div style="margin: 10px;" onclick="document.getElementById('DialogShare').showModal()">
           nins/encoding
           </div></div>
-          <input id="CONTENT-bgcolor" type="color" value="#cdcdcd" style="width:100%;">
-
-          <div id="CONTENT" style="background: #FFFFFF; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; position: relative;">
+          
+          <div class="CONTENT" style="background: #FFFFFF; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; position: relative;">
               <!--img id="linkCode" onclick="openLink()" alt='QR Code' style="width:100%;"-->
-              
+              <input id="code-bgcolor" type="color" value="#FFFFFF" style="width:100%; height:9%;">
 
               <div id="code-result" style="
-                  display: flex;
+                  /*/flex: 1; *
+                  /*display: flex; */
                   justify-content: center;
-                  flex: 1;
               ">
                   <canvas class="preview" id="show" style="
                       width: auto; /*min(80vw, 80vh)*/
@@ -234,7 +233,17 @@
 
                     " /></canvas><br>
               </div>
-              
+              <div style="background: #FFFFFF; color: black;">
+                  <p>🔺🔺🔺</p>
+                  <p>A background color palette is available here.</p>
+                  <p>You can select any color directly from it.</p>
+                  <p>⚠️⚠️⚠️</p>
+                  <p>It only takes effect after entering the content!</p>
+                  <p>🔻🔻🔻</p>
+              </div>
+          </div>
+
+          <div class="CONTENT">
               <div id="code-slider" style="
                   display: flex;
                   /*flex-direction: row;  /* 上下==column */
@@ -244,8 +253,6 @@
                   overflow-y: auto;     /* 可垂直滾動 */
                   overflow-x: auto;     /* 可水平滾動 */
 
-                  position: absolute;
-                  bottom: 0;
               ">
               
                   <canvas class="thumb oned hot" id="code39"></canvas>
@@ -279,8 +286,12 @@
     </div>
 
     <script>
-    document.getElementById("CONTENT-bgcolor").addEventListener("input", function(e) {
-        document.getElementById("CONTENT").style.background = e.target.value;
+    document.getElementById("code-bgcolor").addEventListener("input", function(e) {
+        ///document.getElementById("CONTENT").style.background = e.target.value;
+        ///document.querySelectorAll(".CONTENT").style.background = e.target.value;
+        document.querySelectorAll(".thumb").forEach(element => {
+            element.style.backgroundColor = e.target.value;
+        });
     });
     </script>
   <script>
@@ -547,7 +558,7 @@
           if (!document.fullscreenElement) {
             try {
               canvas.style.background = "white"; // ← 進入全螢幕時套用白色背景
-              canvas.style.background = document.getElementById('CONTENT-bgcolor').value;
+              canvas.style.background = document.getElementById('code-bgcolor').value;
 
               await canvas.requestFullscreen();
               // 強制橫向顯示（支援的瀏覽器才有效）
@@ -573,7 +584,7 @@
         if (!fsElem) {
           // 找到 *剛剛* 進入全螢幕的 canvas
           document.querySelectorAll("canvas").forEach(c => {
-            c.style.background = "transparent";  // 全部還原透明
+            ///c.style.background = "transparent";  // 全部還原透明
           });
         }
       });
