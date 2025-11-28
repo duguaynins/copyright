@@ -398,7 +398,39 @@
   
   <!--strong><span style="color: #ffffff;">By using any of the services, it means you have read and agreed to all! ***</span></strong-->
   
-  <!--/div-->
+  <!-- ###################################################### -->
+  <script>
+      async function generate(params) {  ///translate()
+        const { text, source = 'auto', target } = params;
+        ///const text = inputText.value.trim();
+
+        if (!text) {
+          console.error("text?");
+          return;
+        }
+
+        try {
+          const response = await fetch("https://duguaynins-RedirectAPI.hf.space/translate/chatgpt", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ text })
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          return data.translated_text;
+
+        } catch (err) {
+          console.error(err);
+          return "error";
+        }
+      }
+  </script>
 
 
     
