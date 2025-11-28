@@ -1105,18 +1105,19 @@
         ///const imsg = prompt("（en: ***）");
 
         // 追加的更新測試***
-        const gens = await generate({ "text": xmsg, "source": null, "target": rlang });  // 測試取代首次翻譯
-        console.log(gens);
-        const rmsg = gens; if (!gens) return;
+        ///const gens = await generate({ "text": xmsg, "source": null, "target": rlang });  // 測試取代首次翻譯  //ALARM???
+        ///console.log(gens);
+        ///const rmsg = gens; if (!gens) return;
         
-        let smsg = await translate({ "text": gens, "source": rlang, "target": slang }); if (!smsg) return;   
-        const imsg = await translate({ "text": gens, "source": rlang, "target": ilang }); if (!rmsg) return;
-        smsg = xmsg; if (!smsg) return;  // 還原使用者的語言
+        ///let smsg = await translate({ "text": gens, "source": rlang, "target": slang }); if (!smsg) return;   //OK
+        ///const imsg = await translate({ "text": gens, "source": rlang, "target": ilang }); if (!imsg) return;  //OK
+        ///smsg = xmsg; if (!smsg) return;  // 還原使用者的語言
         // 追加的更新測試***
         
         // 這是原本的翻譯******  // 進行翻譯**
-        ///const imsg = await translate({ "text": smsg, "source": slang, "target": ilang }); if (!imsg) return;
-        ///const rmsg = await translate({ "text": smsg, "source": slang, "target": rlang }); if (!rmsg) return;
+        const smsg = xmsg;
+        const imsg = await translate({ "text": smsg, "source": slang, "target": ilang }); if (!imsg) return;
+        const rmsg = await translate({ "text": smsg, "source": slang, "target": rlang }); if (!rmsg) return;
         // 這兩行暫時註解******
         
         ///const randomID = "id_" + Math.random().toString(36).substring(2, 8);  // 產生短隨機 ID
@@ -1153,7 +1154,7 @@
         
         // 顯示比對
         ///document.getElementById("SemanticDistance").textContent = "（" + "🎯" + distance + "）";
-        input.placeholder = "（" + "👄" + slang + ", " + "🎯" + distance + "）";
+        ///input.placeholder = "（" + "👄" + slang + ", " + "🎯" + distance + "）";
         input.setAttribute("translate", "no");
 
         // 顯示表單***
