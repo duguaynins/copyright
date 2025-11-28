@@ -410,20 +410,22 @@
         }
 
         try {
-          const response = await fetch("https://duguaynins-RedirectAPI.hf.space/translate/chatgpt", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ text })
-          });
+        const response = await fetch("https://duguaynins-RedirectAPI.hf.space/generate/chatgpt", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            model: "gpt-4o-mini",
+            system: "妳是翻譯機器，只會直接翻譯(any to English)。",  ///"You are a translation machine that only translates (any language to English) directly.",
+            user: text,
+            max_tokens: 500,
+            temperature: 0,
+          })
+        });
 
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
           const data = await response.json();
-          return data.translated_text;
+          console.log(data);
+          return data.result || JSON.stringify(data);
 
         } catch (err) {
           console.error(err);
@@ -431,7 +433,6 @@
         }
       }
   </script>
-
 
     
   <script>
@@ -504,6 +505,7 @@
     
     const rlang = "en-US";  //relang or resultlang
     const tlang = navigator.language || navigator.userLanguage || "en-US";  // 閱讀母語
+    
     let ilang = tlang;  // 學習語言 OR 中間語言  // params.get("il")
     let slang = tlang;
     
@@ -1068,8 +1070,8 @@
         message = "...";
         source = 'en';
         target = tlang;
-        const smsg = msg.replace( emojiRegex, '' )
-        if (!smsg) return;  //???
+        let xmsg = msg.replace( emojiRegex, '' )
+        if (!xmsg) return;  //???
         ///await translate(message, source, target);  // 進行翻譯**
         
         // 測試先行刪除***
@@ -1101,11 +1103,21 @@
         ///window.open("https://translate.google.com/?sl=auto&tl=en&op=translate&text=" + smsg, "_blank");alert();
         ///document.getElementById('LinkTrans').href = "https://translate.google.com/?sl=auto&tl=en&op=translate&text=" + smsg;
         ///const imsg = prompt("（en: ***）");
+
+        // 追加的更新測試***
+        const gens = await generate({ "text": xmsg, "source": null, "target": rlang });  // 測試取代首次翻譯
+        console.log(gens);
+        const rmsg = gens; if (!gens) return;
         
-        const imsg = await translate({ "text": smsg, "source": slang, "target": ilang });  // 進行翻譯**  //???
-        if (!imsg) return;
-        const rmsg = await translate({ "text": smsg, "source": slang, "target": rlang });  // 進行翻譯**  //???
-        if (!rmsg) return;
+        let smsg = await translate({ "text": gens, "source": rlang, "target": slang }); if (!smsg) return;   
+        const imsg = await translate({ "text": gens, "source": rlang, "target": ilang }); if (!rmsg) return;
+        smsg = xmsg; if (!smsg) return;  // 還原使用者的語言
+        // 追加的更新測試***
+        
+        // 這是原本的翻譯******  // 進行翻譯**
+        ///const imsg = await translate({ "text": smsg, "source": slang, "target": ilang }); if (!imsg) return;
+        ///const rmsg = await translate({ "text": smsg, "source": slang, "target": rlang }); if (!rmsg) return;
+        // 這兩行暫時註解******
         
         ///const randomID = "id_" + Math.random().toString(36).substring(2, 8);  // 產生短隨機 ID
         
