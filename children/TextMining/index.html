@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gradio/Client</title>
+</head>
+<body style="
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    text-align: center;
+    flex-direction: column;
+">
+  <h1>duguaynins/TextMining</h1>
+  <input id="input-group" name="noMemory" placeholder="input-group">
+  <input id="input-space" name="noMemory" placeholder="input-space">
+  <input id="input-path" name="noMemory" placeholder="input-path">
+  <input id="input-text" name="noMemory" placeholder="input-text" value="hehehe">
+  <!--button id="run" onclick="run()">run</button-->
+  <button id="run">run</button>
+  <p id="output-text"></p>
+  <img id="output-photo" style="max-width: 300px;">
+  
+  <script type="module">
+  import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js";
+  /*
+  async function run() {
+    ///const client = await Client.connect("duguaynins/TextMining");
+    const client = await Client.connect("duguaynins/RedirectAPI");
+    const result = await client.predict("/textMining/predict", { new_text: "Hello!!" });
+    console.log(result.data);
+  } */
+
+  async function run() {
+    const input_text = document.getElementById("input-text").value;
+    const response = await fetch("https://duguaynins-RedirectAPI.hf.space/textMining/predict", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: input_text })  ///"Hello!!"
+    });
+
+    const data = await response.json();
+    console.log(data);
+
+    // 顯示文字
+    document.getElementById("output-text").innerText = data.result[0];
+
+    // 顯示圖片
+    ///const imgPath = data.result[1];
+    ///const imgUrl = "https://duguaynins-redirectapi.hf.space" + "/image?path=" + encodeURIComponent(imgPath);
+    const imgBase64 = data.result[1];
+    const imgUrl = "data:image/webp;base64," + imgBase64;
+    document.getElementById("output-photo").src = imgUrl;
+  }
+  
+  document.getElementById("run").addEventListener("click", run);
+  ///run();
+  </script>
+
+  <!--script type="module">
+    import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client/dist/gradio-client.min.js";
+
+    const client = await Client.connect("duguaynins/TextMining");
+
+    document.getElementById("run").addEventListener("click", async () => {
+        const result = await client.predict("/predict", { new_text: "Hello!!" });
+        console.log(result.data);
+        alert("結果已印到 console");
+    });
+  </script-->
+  
+  <!--script>
+    const token_nins = "YOUR_HF_TOKEN_HERE"; // 替換成你的 Hugging Face Token
+    const url = "https://duguaynins-textmining.hf.space/api/predict/";
+
+    async function sendText(text) {
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${token_nins}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ data: [text] }) // Hugging Face Spaces API 預設需要放在 data 陣列中
+        });
+
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        const result = await response.json();
+        console.log("API 回傳:", result);
+        return result;
+      } catch(err) {
+        console.error("Fetch failed:", err);
+        return null;
+      }
+    }
+
+    document.getElementById("run").addEventListener("click", async () => {
+      const result = await sendText("text");
+      console.log(result);
+    });
+  </script-->
+</body>
+</html>
