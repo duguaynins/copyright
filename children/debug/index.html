@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>nins/Client</title>
+</head>
+<body style="
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    text-align: center;
+    flex-direction: column;
+">
+  <h1>HuggingFaceAPI</h1>
+  <input id="input-group" name="noMemory" placeholder="input-group" value="duguaynins">
+  <input id="input-space" name="noMemory" placeholder="input-space" value="RedirectAPI">
+  <input id="input-path" name="noMemory" placeholder="input-path" value="MultipleEmbeddings/predict">
+  <input id="input-text1" name="noMemory" placeholder="input-text1" value="hehehe">
+  <input id="input-text2" name="noMemory" placeholder="input-text2" value="哈哈哈">
+  <input id="input-text3" name="noMemory" placeholder="input-text3" value="">
+  <!--button id="run" onclick="run()">run</button-->
+  <button id="run">run</button>
+  <p id="output-text"></p>
+  <img id="output-photo" style="max-width: 300px;">
+  
+  <script type="module">
+  import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js";
+  /*
+  async function run() {
+    ///const client = await Client.connect("duguaynins/TextMining");
+    const client = await Client.connect("duguaynins/RedirectAPI");
+    const result = await client.predict("/textMining/predict", { new_text: "Hello!!" });
+    console.log(result.data);
+  } */
+
+  async function run() {
+    const input_group = document.getElementById("input-group").value;
+    const input_space = document.getElementById("input-space").value;
+    const input_path = document.getElementById("input-path").value;
+    const input_text1 = document.getElementById("input-text1").value;
+    const input_text2 = document.getElementById("input-text2").value;
+    const input_text3 = document.getElementById("input-text3").value;
+    const baseUrl = `https://${input_group}-${input_space}.hf.space/${input_path}`;
+    ///const baseUrl = "https://duguaynins-RedirectAPI.hf.space/MultipleEmbeddings/predict";
+    const payload = {};
+    if (input_text1) payload.sent1 = input_text1;
+    if (input_text2) payload.sent2 = input_text2;
+    if (input_text3) payload.c = input_text3;
+
+    const response = await fetch(baseUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)  ///"Hello!!"
+    });
+
+    const data = await response.json();
+    console.log(data);
+
+    // 顯示文字
+    document.getElementById("output-text").innerText = JSON.stringify(data);  ///JSON.stringify(data, null, 2);
+  }
+  
+  document.getElementById("run").addEventListener("click", run);
+  ///run();
+  </script>
+
+  <!--script type="module">
+    import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client/dist/gradio-client.min.js";
+
+    const client = await Client.connect("duguaynins/TextMining");
+
+    document.getElementById("run").addEventListener("click", async () => {
+        const result = await client.predict("/predict", { new_text: "Hello!!" });
+        console.log(result.data);
+        alert("結果已印到 console");
+    });
+  </script-->
+  
+  <!--script>
+    const token_nins = "YOUR_HF_TOKEN_HERE"; // 替換成你的 Hugging Face Token
+    const url = "https://duguaynins-textmining.hf.space/api/predict/";
+
+    async function sendText(text) {
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${token_nins}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ data: [text] }) // Hugging Face Spaces API 預設需要放在 data 陣列中
+        });
+
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        const result = await response.json();
+        console.log("API 回傳:", result);
+        return result;
+      } catch(err) {
+        console.error("Fetch failed:", err);
+        return null;
+      }
+    }
+
+    document.getElementById("run").addEventListener("click", async () => {
+      const result = await sendText("text");
+      console.log(result);
+    });
+  </script-->
+</body>
+</html>
