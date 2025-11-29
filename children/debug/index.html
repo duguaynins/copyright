@@ -26,14 +26,40 @@
   <img id="output-photo" style="max-width: 300px;">
   
   <script type="module">
-  import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js";
   /*
+  import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js";
   async function run() {
     ///const client = await Client.connect("duguaynins/TextMining");
     const client = await Client.connect("duguaynins/RedirectAPI");
     const result = await client.predict("/textMining/predict", { new_text: "Hello!!" });
     console.log(result.data);
   } */
+
+  /*
+  async function HuggingFaceAPI(inputs=null) {
+    console.log(inputs);
+    const { group, space, path, payload } = inputs;
+    const baseUrl = `https://${group}-${space}.hf.space/${path}`;  ///"https://duguaynins-RedirectAPI.hf.space/MultipleEmbeddings/predict";
+
+    const response = await fetch(baseUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+    console.log(data);
+
+    // 顯示文字
+    document.getElementById("output-text").innerText = JSON.stringify(data);  ///JSON.stringify(data, null, 2);
+  }
+  
+  document.getElementById("run").addEventListener("click", HuggingFaceAPI({
+    group: "duguaynins",
+    space: "RedirectAPI",
+    path: "MultipleEmbeddings/predict",
+    payload: { "inputs": { "a": "hehehe", "b": "哈哈哈" } },  // 根據你的 API 需求改 payload
+  })); */
 
   async function run(inputs=null) {
     ///const { group, space, path, payload } = inputs;
