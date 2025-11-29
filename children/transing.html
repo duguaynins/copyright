@@ -400,7 +400,41 @@
   
   <!-- ###################################################### -->
   <script>
-      async function generate(params) {  ///translate()
+    
+      async function HuggingFaceAPI(inputs=null) {
+        // 20251129
+        console.log(inputs);
+        const { group, space, path, payload } = inputs;
+        const baseUrl = `https://${group}-${space}.hf.space/${path}`;  ///"https://duguaynins-RedirectAPI.hf.space/MultipleEmbeddings/predict";
+
+        const response = await fetch(baseUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        console.log(data);
+        return data;
+      }
+
+      async function semantic_vt(params) { 
+        const result = await HuggingFaceAPI({
+          group: "duguaynins",
+          space: "RedirectAPI",
+          path: "MultipleEmbeddings/predict",
+          payload: { "inputs": { "a": "hehehe", "b": "哈哈哈" } }
+        }); 
+      }
+      async function translate_vt(params) {  
+        const result = await HuggingFaceAPI({
+          group: "duguaynins",
+          space: "RedirectAPI",
+          path: "MultipleEmbeddings/predict",
+          payload: { "inputs": { "a": "hehehe", "b": "哈哈哈" } }
+        }); 
+      }
+      async function generate_vt(params) {  ///translate()
         const { text, source = 'auto', target } = params;
         ///const text = inputText.value.trim();
 
@@ -754,6 +788,7 @@
       ///return "🎯" + score.toFixed(1);
       return score;
     }
+    async function generate(params) {  }
     async function translate(params) {
     ///async function translate_vn(params) {
       // 假設你要傳遞的參數放在 URL query string 裡
