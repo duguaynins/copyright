@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>nins/Client</title>
+  <title>Gradio/Client</title>
 </head>
 <body style="
     display: flex;
@@ -16,7 +16,7 @@
   <h1>HuggingFaceAPI</h1>
   <input id="input-group" name="noMemory" placeholder="input-group" value="duguaynins">
   <input id="input-space" name="noMemory" placeholder="input-space" value="RedirectAPI">
-  <input id="input-path" name="noMemory" placeholder="input-path" value="MultipleEmbeddings/predict">
+  <input id="input-path" name="noMemory" placeholder="input-path" value="TextMining/predict">
   <input id="input-text1" name="noMemory" placeholder="input-text1" value="hehehe">
   <input id="input-text2" name="noMemory" placeholder="input-text2" value="哈哈哈">
   <input id="input-text3" name="noMemory" placeholder="input-text3" value="">
@@ -45,9 +45,11 @@
     const baseUrl = `https://${input_group}-${input_space}.hf.space/${input_path}`;
     ///const baseUrl = "https://duguaynins-RedirectAPI.hf.space/MultipleEmbeddings/predict";
     const payload = {};
-    if (input_text1) payload.sent1 = input_text1;
-    if (input_text2) payload.sent2 = input_text2;
-    if (input_text3) payload.c = input_text3;
+    payload.inputs = {};
+    if (input_text1) payload.inputs.a = input_text1;
+    if (input_text2) payload.inputs.b = input_text2;
+    if (input_text3) payload.inputs.c = input_text3;
+    console.log(payload);
 
     const response = await fetch(baseUrl, {
       method: "POST",
