@@ -35,7 +35,8 @@
     console.log(result.data);
   } */
 
-  async function run() {
+  async function run(inputs=null) {
+    ///const { group, space, path, payload } = inputs;
     const input_group = document.getElementById("input-group").value;
     const input_space = document.getElementById("input-space").value;
     const input_path = document.getElementById("input-path").value;
