@@ -1171,30 +1171,7 @@
             
             
             if (token) {
-            
                 ably = new Ably.Realtime({ authUrl: 'https://duguaynins-apininsown.hf.space/auth', authMethod: 'POST', authHeaders: { 'clientId': uuid_user, 'Beta': `TOEKN ${token}`, 'Authorization': `Bearer ${token_nins}` } });
-                /*
-                ably = new Ably.Realtime({
-                    authCallback: function(tokenParams, callback) {
-                        ///fetch('http://localhost:7860/auth', {
-                        fetch('https://duguaynins-apininsown.hf.space/auth', {
-                            method: 'POST',
-                            headers: {
-                                'clientId': uuid_user,
-                                'Content-Type': 'application/json',
-                                'Beta': `TOKEN ${token}`,
-                                'Authorization': `Bearer ${token_nins}`
-                            },
-                            body: JSON.stringify({
-                                clientId: uuid_user
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(tokenRequest => callback(null, tokenRequest))
-                        .catch(error => callback(error, null));
-                    }
-                });*/
-                ///ably = new Ably.Realtime({ authUrl: 'https://duguaynins-apininsown.hf.space/auth', authMethod: 'GET', authHeaders: { 'Beta': `TOEKN ${token}`, 'Authorization': `Bearer ${token_nins}` } });    
             }
             else if (apikey) {
                 ably = new Ably.Realtime({ key: apikey, clientId: uuid_user });console.log("apikey_user");
