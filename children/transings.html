@@ -909,23 +909,6 @@
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     
     
-    /*
-    if (ably) {
-        ably.close(); // Close existing connection if it exists
-        ably = null;
-    }
-    if (!ably) {  ///!!!
-        if (apikey_user) { ably = new Ably.Realtime({ key: apikey_user, clientId: uuid_user }); }
-        else { 
-            ably = new Ably.Realtime({ key: apikey_nins, clientId: uuid_user });
-            ///ably = new Ably.Realtime({ authUrl: 'https://duguaynins-apininsown.hf.space/auth', authMethod: 'GET', authHeaders: { 'Authorization': `Bearer ${token_nins}` } });
-        }
-    }*/
-    
-    ///if (document.getElementById("InputRoom").value) {sendSocket();}  // 暫時關閉自動連線，這導致沒有初始化完成對話框
-    ///if (document.getElementById("InputRoom").value) {sendMessage();}
-    ///if (document.getElementById("InputMsg").value) {sendMessage();}
-    
     // 檢查使用的裝置，是行動裝置時，回傳 TRUE
     function isMobileDevice() {  ///TEST
       return /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
