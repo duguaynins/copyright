@@ -419,7 +419,9 @@
       }
 
       async function semantic(params) { 
+        console.log('翻譯比對:', params);
         const { smsg, rmsg } = params;
+
         const inputs = { "inputs": { "a": smsg, "b": rmsg } };
         const outputs = await HuggingFaceAPI({
           group: "duguaynins",
@@ -427,21 +429,28 @@
           path: "embeddings/meta",  ///embeddings/multiple
           payload: inputs,
         }); 
+
         console.log("INPUT:", inputs);
         console.log("OUTPUT:", outputs);
-
-        const score = outputs.result.label;
-        return score;
+        return outputs.result.label;
       }
-      async function translate_vt(params) {  
+
+      async function translate(params) {  
         const { text, source = 'auto', target } = params;
-        const result = await HuggingFaceAPI({
+
+        const inputs = { "inputs": {"text":text,"target":target,"source":source} };
+        const outputs = await HuggingFaceAPI({
           group: "duguaynins",
           space: "RedirectAPI",
-          path: "embeddings/multiple",  ///MultipleEmbeddings/predict
-          payload: { "inputs": { "a": "hehehe", "b": "哈哈哈" } }
+          path: "transings/deep",  ///MultipleTransings/predict
+          payload: inputs,
         }); 
+
+        console.log("INPUT:", inputs);
+        console.log("OUTPUT:", outputs);
+        return outputs.result.label;
       }
+      
       async function generate_vt(params) {  ///translate()
         const { text, source = 'auto', target } = params;
         ///const text = inputText.value.trim();
@@ -797,8 +806,8 @@
       ///return "🎯" + score.toFixed(1);
       return score;
     }
-    async function generate(params) {  }
-    async function translate(params) {
+    async function generate_v1(params) {  }
+    async function translate_v1(params) {
     ///async function translate_vn(params) {
       // 假設你要傳遞的參數放在 URL query string 裡
       // params 是物件，例如 { text: '你好', target: 'en' }
