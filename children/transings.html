@@ -770,119 +770,11 @@
   
   <script>
     
-    async function semantic_v1(params) {
-      console.log('翻譯比對:', params);
-      
-      let score = null;
-      const url = "https://duguaynins-semanticdistance.hf.space/sim";
-      const { smsg, rmsg } = params;
-      ///if (smsg==rmsg) return "1.000";
-      if (smsg==rmsg) return "***";
-      
-      
-      try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${token_nins}`, 'Content-Type': 'application/json', },
-            body: JSON.stringify({ 
-              text1: smsg,
-              text2: rmsg,
-            })  // ✅ 正確傳參位置  //???target >>> ilang
-        });
     
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
     
-        const data = await response.json();
-        console.log('翻譯結果:', data.similarity);
-        ///return data.similarity;
-        score = data.similarity;
-        
-      } catch (error) {
-        console.error('請求失敗:', error);
-      }
-      
-      ///return "🎯" + score.toFixed(1);
-      return score;
-    }
-    async function generate_v1(params) {  }
-    async function translate_v1(params) {
-    ///async function translate_vn(params) {
-      // 假設你要傳遞的參數放在 URL query string 裡
-      // params 是物件，例如 { text: '你好', target: 'en' }
-      
-      ///const queryString = new URLSearchParams(params).toString();
-      console.log('翻譯原始:', params);
-      const { text, source = 'auto', target } = params;
-      if (source==target) return text;  // 可慮優化效能，但也許需要。  // 還需要顯示英文與語音
-      
-      ///const url = `https://duguaynins-apininsown.hf.space/translate?${queryString}`;
-      const url = "https://duguaynins-apininsown.hf.space/translate";
-      
-      try {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: { 'Authorization': `Bearer ${token_nins}`, 'Content-Type': 'application/json', },
-          body: JSON.stringify({ text, source, target })  // ✅ 正確傳參位置  //???target >>> ilang
-        });
-    
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-    
-        const data = await response.json();
-        console.log('翻譯結果:', data.translated_text);
-        return data.translated_text;
-        
-      } catch (error) {
-        console.error('請求失敗:', error);
-      }
-    }
     
     ///20250609 1947
-    async function translate_v1(params) {
-    ///async function translate_v1(text, source = 'auto', target = 'auto') {
     
-      ///const text = document.getElementById('sourceText').value.trim();
-      ///const targetLang = document.getElementById('langSelect').value;
-      
-      console.log('翻譯原始:', params);
-      let { text, source = 'auto', target } = params;
-      if (source==target) return text;  // 可慮優化效能，但也許需要。  // 還需要顯示英文與語音
-      
-      if (!text) {
-        alert("請輸入要翻譯的文字！");
-        return;
-      }
-      
-      // 初始化，在 auto 判斷之前
-      target = target.slice(0, 2);
-      source = source.slice(0, 2);
-      
-      // 如果目標語言和來源語言相同，則自動選擇新的目標語言
-      if (target === source) {
-        target = (target === 'zh-TW') ? 'en-US' :  'zh-TW';
-        ///return;
-      }
-
-      const encodedText = encodeURIComponent(text);
-      const url = `https://api.mymemory.translated.net/get?q=${encodedText}&langpair=${source}|${target}`;
-
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-        const translating = data.responseData.translatedText;
-        ///translated.innerText = `${translating}...${translated.textContent}`;
-        ///translatedNew.innerText = `${translating}...`;
-        return translating;
-      } catch (err) {
-        console.error(err);
-        ///translated.innerText = "[ALARM]..." + translated.textContent;
-        ///translatedNew.innerText = "[ALARM]...";
-        return null;  // "***"
-      }
-    }
     
     // 監聽視窗大小***
     function updateStructSize() {
