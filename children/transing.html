@@ -418,15 +418,23 @@
         return data;
       }
 
-      async function semantic_vt(params) { 
-        const result = await HuggingFaceAPI({
+      async function semantic(params) { 
+        const { smsg, rmsg } = params;
+        const inputs = { "inputs": { "a": smsg, "b": rmsg } };
+        const outputs = await HuggingFaceAPI({
           group: "duguaynins",
           space: "RedirectAPI",
           path: "MultipleEmbeddings/predict",
-          payload: { "inputs": { "a": "hehehe", "b": "哈哈哈" } }
+          payload: inputs,
         }); 
+        console.log("INPUT:", inputs);
+        console.log("OUTPUT:", outputs);
+
+        const score = outputs.result.label;
+        return score;
       }
       async function translate_vt(params) {  
+        const { text, source = 'auto', target } = params;
         const result = await HuggingFaceAPI({
           group: "duguaynins",
           space: "RedirectAPI",
@@ -449,7 +457,8 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             model: "gpt-4o-mini",
-            system: "妳是翻譯機器，只會直接翻譯(any to English)。",  ///"You are a translation machine that only translates (any language to English) directly.",
+            ///system: "妳是翻譯機器，只會直接翻譯(any to English)。",  ///"You are a translation machine that only translates (any language to English) directly.",
+            system: "You can explain all languages ​​in English.",
             user: text,
             max_tokens: 500,
             temperature: 0,
@@ -752,7 +761,7 @@
   
   <script>
     
-    async function semantic(params) {
+    async function semantic_v1(params) {
       console.log('翻譯比對:', params);
       
       let score = null;
@@ -1060,7 +1069,7 @@
                   // 段開顯示**
                   ably.close(); // Close existing connection if it exists
                   const p = document.createElement('p');
-                  p.innerHTML = `${emoji_clock}${nowUTC}（⛔${uuid_user || 'USER'}）`;p.style.color = 'red';  ///🔴
+                  p.innerHTML = `${emoji_clock}${nowUTC}<br>（⛔${uuid_user || 'USER'}）`;p.style.color = 'red';  ///🔴
                   p.setAttribute('translate', 'no');  //???
                   document.getElementById("chatbox").prepend(p);
                   
@@ -1531,6 +1540,8 @@
               ///window.open('${fullURL}', '_blank', 'noopener,noreferrer');
           } 
           
+          // 記錄所有可能使用的表情 EMOJI：👁️🔄🤖👻🎯📏🟢🔴⛔
+
           // 使用模板字串，插入 randomID 到 HTML 字串中**
           ///const p = document.createElement('p');  // 棄用此行
           const div = document.createElement("div");
@@ -1542,10 +1553,10 @@
             <label id="${randomID}_il" translate="no" style="color:black;">👂il:${msgtLangr}<input style="display:none;" type="button" value="👂${msgtLangr}" onclick="handleTTS('${randomID}_9')" /></label>
             ）</span>
             
-            <span id="${randomID}_2" translate="yes" style="display:block; color:gray;">（🔄${msgtTextr}）</span>
-            <p id="${randomID}_0" translate="no" style="display:none; color:gray;">（🔣${msgtTexts}👄${msgtLangs}）</p>
-            <p id="${randomID}_1" translate="no" style="display:none; color:gray;">（🤖${msgtTextm}👄${msgtLangm}）</p>
-            <p id="${randomID}_9" translate="no" style="display:none; color:gray;">（👻${msgtTextr}👄${msgtLangr}）</p>
+            <p id="${randomID}_2" translate="no" style="display:block; color:gray;">（ <span translate="yes">👁️${msgtTextr}</span> ）</p>
+            <p id="${randomID}_0" translate="no" style="display:none; color:gray;">（ 🔣${msgtTexts}👄${msgtLangs} ）</p>
+            <p id="${randomID}_1" translate="no" style="display:none; color:gray;">（ 🤖${msgtTextm}👄${msgtLangm} ）</p>
+            <p id="${randomID}_9" translate="no" style="display:none; color:gray;">（ 👻${msgtTextr}👄${msgtLangr} ）</p>
 
             <span style="color:gray;">（
             <label id="${randomID}_ds" translate="no" style="color:gray;">🎯ds:${msgtLangr}&${msgtLangs}=${msgDist}<input style="display:none;" type="button" value="👂${0}" onclick="window.open('${fullURL}', '_blank', 'noopener,noreferrer')" /></label>
