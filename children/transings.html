@@ -1154,7 +1154,7 @@
             
             
             if (token) {
-                ably = new Ably.Realtime({ authUrl: 'https://duguaynins-apininsown.hf.space/auth', authMethod: 'POST', authHeaders: { 'clientId': uuid_user, 'Beta': `TOEKN ${token}`, 'Authorization': `Bearer ${token_nins}` } });
+                ably = new Ably.Realtime({ authUrl: 'https://duguaynins-apininsown.hf.space/auth', authMethod: 'POST', authHeaders: { 'clientId': uuid_user, 'Beta': `TOEKN ${token}`, 'Authorization': `Bearer ${0}` } });
             }
             else if (apikey) {
                 ably = new Ably.Realtime({ key: apikey, clientId: uuid_user });console.log("apikey_user");
@@ -1177,7 +1177,7 @@
                         'clientId': uuid_user,
                         'Content-Type': 'application/json',
                         'Beta': `APIKEY ${apikey}`,
-                        'Authorization': `Bearer ${token_nins}`  // 或 'TOEKN your_token'
+                        'Authorization': `Bearer ${0}`  // 或 'TOEKN your_token'
                       },
                       body: JSON.stringify({ /* 如果需要送其他資料，可放這裡 */ })
                     })
