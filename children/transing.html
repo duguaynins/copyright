@@ -424,7 +424,7 @@
         const outputs = await HuggingFaceAPI({
           group: "duguaynins",
           space: "RedirectAPI",
-          path: "MultipleEmbeddings/predict",
+          path: "embeddings/meta",  ///embeddings/multiple
           payload: inputs,
         }); 
         console.log("INPUT:", inputs);
@@ -438,7 +438,7 @@
         const result = await HuggingFaceAPI({
           group: "duguaynins",
           space: "RedirectAPI",
-          path: "MultipleEmbeddings/predict",
+          path: "embeddings/multiple",  ///MultipleEmbeddings/predict
           payload: { "inputs": { "a": "hehehe", "b": "哈哈哈" } }
         }); 
       }
