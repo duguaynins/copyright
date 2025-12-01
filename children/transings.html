@@ -1128,7 +1128,7 @@
         const buf_apikey = document.getElementById('InputRoom').value.split('&&')[1];console.log(buf_apikey);
         let room = document.getElementById('InputRoom').value.split('&&')[0] || ("WORLD");  // ALL, BETA  ///!!!
         let apikey = document.getElementById('InputRoom').value.split('&&')[1] || ("ijFBLQ.6d_0Tg:5ueQrEJ1sjpW1MN9kDlLOzyPoYyYAzufOmGYxMLEV2s");  // ALL, BETA  ///!!!
-        let token = params.get("token");
+        let token = params.get("token") || ("nins");  ///!!!
         
         document.getElementById('InputRoom').value = ("WORLD");  ///!!!
         ///!!!
