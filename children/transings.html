@@ -1127,7 +1127,7 @@
         const buf_room = document.getElementById('InputRoom').value.split('&&')[0];  console.log(buf_room);
         const buf_apikey = document.getElementById('InputRoom').value.split('&&')[1];console.log(buf_apikey);
         let room = document.getElementById('InputRoom').value.split('&&')[0] || ("WORLD");  // ALL, BETA  ///!!!
-        let apikey = document.getElementById('InputRoom').value.split('&&')[1] || ("ijFBLQ.6d_0Tg:5ueQrEJ1sjpW1MN9kDlLOzyPoYyYAzufOmGYxMLEV2s");  // ALL, BETA  ///!!!
+        let apikey = document.getElementById('InputRoom').value.split('&&')[1] || ("");  // ALL, BETA  ///!!!
         let token = params.get("token") || ("nins");  ///!!!
         
         document.getElementById('InputRoom').value = ("WORLD");  ///!!!
@@ -1153,10 +1153,9 @@
             ///if (!apikey_user) { ably = new Ably.Realtime({ key: apikey_nins, clientId: uuid_user });console.log("!apikey_user"); }
             
             
-            if (token) {
-                ably = new Ably.Realtime({ authUrl: 'https://duguaynins-RedirectAPI.hf.space/realtime/ably', authMethod: 'POST', authHeaders: { 'clientId': uuid_user, 'Beta': `TOEKN ${token}`, 'Authorization': `Bearer ${0}` } });
-            }
-            else if (apikey) {
+            
+            if (apikey) {
+                console.log("APIKEY: ", apikey);
                 ably = new Ably.Realtime({ key: apikey, clientId: uuid_user });console.log("apikey_user");
                 
                 if (apikey === "ijFBLQ.6d_0Tg:5ueQrEJ1sjpW1MN9kDlLOzyPoYyYAzufOmGYxMLEV2s") {
@@ -1192,7 +1191,10 @@
                     });
                 }
             }
-            
+            else if (token) {
+                console.log("TOKEN: ", token);
+                ably = new Ably.Realtime({ authUrl: 'https://duguaynins-RedirectAPI.hf.space/realtime/ably', authMethod: 'POST', authHeaders: { 'clientId': uuid_user, 'Beta': `TOEKN ${token}`, 'Authorization': `Bearer ${0}` } });
+            }
             
             
             
