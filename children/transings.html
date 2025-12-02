@@ -278,14 +278,14 @@
 
   
   
-  <dialog style="background-color: #000000;" id="DialogShare">
+  <dialog style="background-color: #000000; text-align:center;" id="DialogShare">
   
       <!--button onclick="document.getElementById('DialogShare').close()" class="text-red-600 mt-3">❌</button-->
       <!--br><br-->
-      <span style="width:100%;">You can set the resolution for the 2D barcode.</span><br>
-      <input type="range" id="barcodeSlider" min="100" max="500" value="300" style="width:100%;" /><br>
-      <a style="width:100%; display:none;" id="linkText" rel="noopener noreferrer" href=""></a>
-      <img style="width:100%;" id="linkCode" onclick="openLink()" alt='QR Code'><br>
+      <span style="width:min(80vw, 80vh);">You can set the resolution for the 2D barcode.</span><br>
+      <input style="width:min(80vw, 80vh);" type="range" id="barcodeSlider" min="100" max="500" value="300" /><br>
+      <a style="width:min(80vw, 80vh); display:none;" id="linkText" rel="noopener noreferrer" href=""></a>
+      <img style="width:min(80vw, 80vh);" id="linkCode" onclick="openLink()" alt='QR Code'><br>
       <!--img src="javascript:void(0)"-->
       
       <span style="display:none;">
