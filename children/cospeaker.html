@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="zh-Hant">
 <head>
@@ -31,10 +32,10 @@ canvas { max-width:100%; border:1px solid #ccc; }
 <select id="voiceSelect"></select>
 
 <div class="row" id="fileInputTxtRow">
-  <h2>文字檔 (.txt)</h2><input type="file" id="fileInputTxt" accept=".txt">
+  <span>文字檔 (.txt)</span><input type="file" id="fileInputTxt" accept=".txt">
 </div>
 <div class="row" id="fileInputPdfRow">
-  <h2>報告檔 (.pdf)</h2><input type="file" id="fileInputPdf" accept=".pdf">
+  <span>報告檔 (.pdf)</span><input type="file" id="fileInputPdf" accept=".pdf">
 </div>
 
 <div class="row">
@@ -166,6 +167,20 @@ nextPdfBtn.addEventListener('click', ()=>{
 const voiceSelect = document.getElementById('voiceSelect');
 let voices = [];
 
+function languageScript(tag) {
+  return tag.split('-').slice(0, 2).join('-');
+}
+function languageRegion(tag) {
+  const match = tag.match(/^([^-]+)-([^-]+)$/); // 嘗試匹配兩段
+  if (match) return match[1] + '-' + match[2];
+  
+  // 如果有三段以上，取第一段 + 最後一段
+  const parts = tag.split('-');
+  if (parts.length >= 2) return parts[0] + '-' + parts[parts.length - 1];
+
+  return tag; // 只有語言
+}
+
 function loadVoices() {
   voices = speechSynthesis.getVoices();
   voiceSelect.innerHTML = '';
@@ -175,6 +190,16 @@ function loadVoices() {
     option.textContent = `${voice.name} (${voice.lang})`;
     voiceSelect.appendChild(option);
   });
+  
+  // 設定預設語音
+  const language = languageRegion(navigator.language || navigator.userLanguage || "en-US");  // 閱讀母語
+  const defaultVoice = voices.find(v => v.lang === language) || 
+                       voices.find(v => v.lang.startsWith(language.slice(0, 2)));
+  
+  if (defaultVoice) {
+    const index = voices.indexOf(defaultVoice);
+    voiceSelect.value = index;
+  }
 }
 
 speechSynthesis.onvoiceschanged = loadVoices;  // 有些瀏覽器語音需要 async 載入
