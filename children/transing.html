@@ -79,6 +79,9 @@
           background: rgba(0, 0, 0, 0.6); /* 半透明背景 */
       }
       dialog {
+        /*display: flex; */
+        /*flex-direction: column; */
+        /*align-items: center;  水平置中 */
         position: fixed;
         top: 50%;
         left: 50%;
@@ -91,6 +94,12 @@
         min-width: 90vw;  /* 不要太窄 */
         max-width: 90vw;  /* 不要太寬 */
         width: 90vw;
+      }
+      dialog > * {
+        /*display: block; */
+        /*margin-left: auto; */
+        /*margin-right: auto; */
+        /*text-align: center;  文字置中 */
       }
     </style>
     <style>
@@ -252,6 +261,7 @@
         nins/transing
         </div></div>
         <div style="margin: 0vw; display: flex; flex-direction: row; border: 1px solid #cdcdcd;" translate="no">
+            <!--button onclick="document.getElementById('DialogShare').showModal()">🔗</button-->
             <button onclick="document.getElementById('DialogShare').showModal()">🔗</button>
             <button onclick="document.getElementById('DialogTool').showModal()">🧰</button>
             <button onclick="downloadChat()">💾</button>
@@ -278,14 +288,18 @@
 
   
   
-  <dialog style="background-color: #000000;" id="DialogShare">
+  <dialog id="DialogShare" style="background-color: #000000; 
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+  ">
   
       <!--button onclick="document.getElementById('DialogShare').close()" class="text-red-600 mt-3">❌</button-->
       <!--br><br-->
-      <span style="width:100%;">You can set the resolution for the 2D barcode.</span><br>
-      <input type="range" id="barcodeSlider" min="100" max="500" value="300" style="width:100%;" /><br>
-      <a style="width:100%; display:none;" id="linkText" rel="noopener noreferrer" href=""></a>
-      <img style="width:100%;" id="linkCode" onclick="openLink()" alt='QR Code'><br>
+      <span style="width:min(80vw, 80vh);">You can set the resolution for the 2D barcode.</span>
+      <input style="width:min(80vw, 80vh);" type="range" id="barcodeSlider" min="100" max="500" value="300" /><br>
+      <a style="width:min(80vw, 80vh); display:none;" id="linkText" rel="noopener noreferrer" href=""></a>
+      <img style="width:min(80vw, 80vh); display:none;" id="linkCode" onclick="openLink()" alt='QR Code'>
+      <canvas style="width:min(80vw, 80vh); cursor:pointer;" class="" id="qrcode" onclick="openLink()"></canvas><br>
       <!--img src="javascript:void(0)"-->
       
       <span style="display:none;">
@@ -295,7 +309,7 @@
       <input type="range" id="InputRate" min="0.1" max="10.0" step="0.1" value="1" style="width:100%;" /><br></span>
   </dialog>
   
-  <dialog style="background-color: #000000;" id="DialogTool">
+  <dialog id="DialogTool" style="background-color: #000000;">
   
       <!--button onclick="document.getElementById('DialogTool').close()" class="text-red-600 mt-3">❌</button-->
       <!--br><br-->
@@ -328,7 +342,7 @@
               <select id="Playslang">
                 <option value="1">open</option>
                 <option value="0">close</option>
-                <!--option value="auto">auto</option>
+                <option value="auto">auto</option>
               </select>）<br-->
               <label for="Switchslang">🔣（sl-switch: </label>
               <input type="checkbox" onchange="document.getElementById('Selectslang').disabled = !this.checked;">）<br>
@@ -552,8 +566,6 @@
     
     // 🔑  ///prompt("（🔑: ***）")
     let apikey_user = "";
-    const apikey_nins = ("ijFBLQ.6d_0Tg:5ueQrEJ1sjpW1MN9kDlLOzyPoYyYAzufOmGYxMLEV2s");  // NINS ABLY_ APIKEY
-    const token_nins = ("hf_"+"mGuvBfOSKABphqccTuytpyrMTQexewVRpm");  // NINS HF_ APIKEY
     
     const rlang = "en-US";  //relang or resultlang
     const tlang = navigator.language || navigator.userLanguage || "en-US";  // 閱讀母語
@@ -637,33 +649,9 @@
         console.log("InputMsg keydown:", 0);
     });
   </script>
+
+  <script src="https://unpkg.com/bwip-js/dist/bwip-js-min.js"></script>
   <script>
-    /*
-    // 字體***大小手動****
-    document.querySelectorAll("input").forEach(el => {
-      ///el.style.fontSize = `${size}px`;
-    });
-    document.querySelectorAll("span").forEach(el => {
-      ///el.style.fontSize = `${size}px`;
-    });
-    // AND
-    // 字體***根據視窗大小自動****
-    function updateWindowSize() {
-        ///document.getElementById("fontSlider").value = window.innerWidth / 66;  //44
-        document.getElementById("width").textContent = window.innerWidth;
-        document.getElementById("height").textContent = window.innerHeight;
-        // 特殊套用**
-        const size = document.getElementById("fontSlider").value;
-        document.body.style.fontSize = `${size}px`;
-        const resize = parseInt(size) + 6;
-        document.getElementById("InputRoom").style.fontSize = `${resize}px`;
-        document.getElementById("ButtonRoom").style.fontSize = `${resize}px`;
-        document.getElementById("InputMsg").style.fontSize = `${resize}px`;
-        document.getElementById("ButtonMsg").style.fontSize = `${resize}px`;
-        ///document.getElementById("Container").style.padding = (window.innerWidth / 66) + "px";  //QR
-        ///document.getElementById("NINS").style.padding = (window.innerWidth / 66) + "px";  //QR
-        ///document.getElementById("NINS").style.width = (window.innerHeight / 2) + "px";  //QR
-    }*/
     function updateWindowSize() {
         const size = document.getElementById("fontSlider").value;
         document.getElementById("chatbox").style.fontSize = `${size}px`;
@@ -681,7 +669,26 @@
     
     
     
-    
+    function gencode(text, bcid, format) {
+        if ( format.test(text) && text.trim()!=="" ) {
+            bwipjs.toCanvas( bcid, {
+                bcid:        bcid,     // 條碼格式
+                text:        text,     // 條碼內容  // "Hello world!"
+                scale:       4,
+                ///alttext:     bcid,     // ✅ 替代顯示的文字
+                barcolor:    '000000',  // 條碼顏色（紅色）
+                textcolor:   '000000',  // 文字顏色（藍色）
+                backgroundcolor: 'FFFFFF',  // 增加這行來設定白色底色
+                padding: 2, // 增加 10 像素的背景填充
+                ///includetext: true,  // 這行會導致錯誤
+            });
+            document.getElementById(bcid).style.margin = "1em 0";
+            document.getElementById(bcid).style.display = "block";
+        }
+        else {
+            document.getElementById(bcid).style.display = "none";
+        }
+    }
     function updateQR(token="") {  ///() => {   ///function () {
         console.log('更新條碼:', token);
         // 格式化套用**
@@ -690,23 +697,20 @@
         console.log('更新條碼大小:', size);
         console.log('更新條碼內容:', input);
         
-        const secret = "nins";
+        
         let baseUrl = null;
         baseUrl = window.location.origin + window.location.pathname + "?channel=" + encodeURIComponent(input); /// + "&idle=" + params.get("idle");
-        if (token) {baseUrl += "&token="+token + "&idle="+secret}
+        const secret = "nins";
+        if (token && token!=="nins") {baseUrl += "&token="+token + "&idle="+secret}
         
-        const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size="+size+"x"+size+"&data=" + encodeURIComponent(baseUrl);
-        ///const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" + baseUrl
+
+        gencode(text=baseUrl, bcid="qrcode", format=/^.{0,1000}$/)
+
+        ///const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size="+size+"x"+size+"&data=" + encodeURIComponent(baseUrl);
+        ///const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" + baseUrl;  // 未編碼，棄用此。
+        ///document.getElementById("linkCode").src = qrUrl;
       
         document.getElementById("linkText").href = baseUrl;  //???
-        document.getElementById("linkCode").src = qrUrl;
-        ///document.getElementById("linkText").textContent = baseUrl;
-        
-        ///const resize = parseInt(size) / 75;
-        ///document.getElementById("linkCode").style.padding = resize + "px";
-        // 房間號碼**
-        ///document.getElementById("copyright").innerHTML = "👻（" + input + "，?）";
-    
     }
     
     // 不會再有 [object Event] 被當作參數傳入的錯誤。  ///!!!
@@ -770,119 +774,11 @@
   
   <script>
     
-    async function semantic_v1(params) {
-      console.log('翻譯比對:', params);
-      
-      let score = null;
-      const url = "https://duguaynins-semanticdistance.hf.space/sim";
-      const { smsg, rmsg } = params;
-      ///if (smsg==rmsg) return "1.000";
-      if (smsg==rmsg) return "***";
-      
-      
-      try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${token_nins}`, 'Content-Type': 'application/json', },
-            body: JSON.stringify({ 
-              text1: smsg,
-              text2: rmsg,
-            })  // ✅ 正確傳參位置  //???target >>> ilang
-        });
     
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
     
-        const data = await response.json();
-        console.log('翻譯結果:', data.similarity);
-        ///return data.similarity;
-        score = data.similarity;
-        
-      } catch (error) {
-        console.error('請求失敗:', error);
-      }
-      
-      ///return "🎯" + score.toFixed(1);
-      return score;
-    }
-    async function generate_v1(params) {  }
-    async function translate_v1(params) {
-    ///async function translate_vn(params) {
-      // 假設你要傳遞的參數放在 URL query string 裡
-      // params 是物件，例如 { text: '你好', target: 'en' }
-      
-      ///const queryString = new URLSearchParams(params).toString();
-      console.log('翻譯原始:', params);
-      const { text, source = 'auto', target } = params;
-      if (source==target) return text;  // 可慮優化效能，但也許需要。  // 還需要顯示英文與語音
-      
-      ///const url = `https://duguaynins-apininsown.hf.space/translate?${queryString}`;
-      const url = "https://duguaynins-apininsown.hf.space/translate";
-      
-      try {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: { 'Authorization': `Bearer ${token_nins}`, 'Content-Type': 'application/json', },
-          body: JSON.stringify({ text, source, target })  // ✅ 正確傳參位置  //???target >>> ilang
-        });
-    
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-    
-        const data = await response.json();
-        console.log('翻譯結果:', data.translated_text);
-        return data.translated_text;
-        
-      } catch (error) {
-        console.error('請求失敗:', error);
-      }
-    }
     
     ///20250609 1947
-    async function translate_v1(params) {
-    ///async function translate_v1(text, source = 'auto', target = 'auto') {
     
-      ///const text = document.getElementById('sourceText').value.trim();
-      ///const targetLang = document.getElementById('langSelect').value;
-      
-      console.log('翻譯原始:', params);
-      let { text, source = 'auto', target } = params;
-      if (source==target) return text;  // 可慮優化效能，但也許需要。  // 還需要顯示英文與語音
-      
-      if (!text) {
-        alert("請輸入要翻譯的文字！");
-        return;
-      }
-      
-      // 初始化，在 auto 判斷之前
-      target = target.slice(0, 2);
-      source = source.slice(0, 2);
-      
-      // 如果目標語言和來源語言相同，則自動選擇新的目標語言
-      if (target === source) {
-        target = (target === 'zh-TW') ? 'en-US' :  'zh-TW';
-        ///return;
-      }
-
-      const encodedText = encodeURIComponent(text);
-      const url = `https://api.mymemory.translated.net/get?q=${encodedText}&langpair=${source}|${target}`;
-
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-        const translating = data.responseData.translatedText;
-        ///translated.innerText = `${translating}...${translated.textContent}`;
-        ///translatedNew.innerText = `${translating}...`;
-        return translating;
-      } catch (err) {
-        console.error(err);
-        ///translated.innerText = "[ALARM]..." + translated.textContent;
-        ///translatedNew.innerText = "[ALARM]...";
-        return null;  // "***"
-      }
-    }
     
     // 監聽視窗大小***
     function updateStructSize() {
@@ -1016,23 +912,6 @@
     ///document.getElementById("ButtonRoom").focus();
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     
-    
-    /*
-    if (ably) {
-        ably.close(); // Close existing connection if it exists
-        ably = null;
-    }
-    if (!ably) {  ///!!!
-        if (apikey_user) { ably = new Ably.Realtime({ key: apikey_user, clientId: uuid_user }); }
-        else { 
-            ably = new Ably.Realtime({ key: apikey_nins, clientId: uuid_user });
-            ///ably = new Ably.Realtime({ authUrl: 'https://duguaynins-apininsown.hf.space/auth', authMethod: 'GET', authHeaders: { 'Authorization': `Bearer ${token_nins}` } });
-        }
-    }*/
-    
-    ///if (document.getElementById("InputRoom").value) {sendSocket();}  // 暫時關閉自動連線，這導致沒有初始化完成對話框
-    ///if (document.getElementById("InputRoom").value) {sendMessage();}
-    ///if (document.getElementById("InputMsg").value) {sendMessage();}
     
     // 檢查使用的裝置，是行動裝置時，回傳 TRUE
     function isMobileDevice() {  ///TEST
@@ -1252,8 +1131,8 @@
         const buf_room = document.getElementById('InputRoom').value.split('&&')[0];  console.log(buf_room);
         const buf_apikey = document.getElementById('InputRoom').value.split('&&')[1];console.log(buf_apikey);
         let room = document.getElementById('InputRoom').value.split('&&')[0] || ("WORLD");  // ALL, BETA  ///!!!
-        let apikey = document.getElementById('InputRoom').value.split('&&')[1] || ("ijFBLQ.6d_0Tg:5ueQrEJ1sjpW1MN9kDlLOzyPoYyYAzufOmGYxMLEV2s");  // ALL, BETA  ///!!!
-        let token = params.get("token");
+        let apikey = document.getElementById('InputRoom').value.split('&&')[1] || ("");  // ALL, BETA  ///!!!
+        let token = params.get("token") || ("nins");  ///!!!
         
         document.getElementById('InputRoom').value = ("WORLD");  ///!!!
         ///!!!
@@ -1278,36 +1157,12 @@
             ///if (!apikey_user) { ably = new Ably.Realtime({ key: apikey_nins, clientId: uuid_user });console.log("!apikey_user"); }
             
             
-            if (token) {
             
-                ably = new Ably.Realtime({ authUrl: 'https://duguaynins-apininsown.hf.space/auth', authMethod: 'POST', authHeaders: { 'clientId': uuid_user, 'Beta': `TOEKN ${token}`, 'Authorization': `Bearer ${token_nins}` } });
-                /*
-                ably = new Ably.Realtime({
-                    authCallback: function(tokenParams, callback) {
-                        ///fetch('http://localhost:7860/auth', {
-                        fetch('https://duguaynins-apininsown.hf.space/auth', {
-                            method: 'POST',
-                            headers: {
-                                'clientId': uuid_user,
-                                'Content-Type': 'application/json',
-                                'Beta': `TOKEN ${token}`,
-                                'Authorization': `Bearer ${token_nins}`
-                            },
-                            body: JSON.stringify({
-                                clientId: uuid_user
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(tokenRequest => callback(null, tokenRequest))
-                        .catch(error => callback(error, null));
-                    }
-                });*/
-                ///ably = new Ably.Realtime({ authUrl: 'https://duguaynins-apininsown.hf.space/auth', authMethod: 'GET', authHeaders: { 'Beta': `TOEKN ${token}`, 'Authorization': `Bearer ${token_nins}` } });    
-            }
-            else if (apikey) {
+            if (apikey) {
+                console.log("APIKEY: ", apikey);
                 ably = new Ably.Realtime({ key: apikey, clientId: uuid_user });console.log("apikey_user");
                 
-                if (apikey === "ijFBLQ.6d_0Tg:5ueQrEJ1sjpW1MN9kDlLOzyPoYyYAzufOmGYxMLEV2s") {
+                if (false) {
                     apikey_user = "";
                     room = "WORLD";  // 使用我的金鑰必須固定頻道
                     ///room = room;  // 廣為人知後開放自訂房間
@@ -1319,13 +1174,13 @@
                     room = room;
                     // 儲存令牌
                     ///fetch('http://localhost:7860/auth', {
-                    fetch('https://duguaynins-apininsown.hf.space/auth', {
+                    fetch('https://duguaynins-RedirectAPI.hf.space/realtime/ably', {
                       method: 'POST',
                       headers: {
                         'clientId': uuid_user,
                         'Content-Type': 'application/json',
                         'Beta': `APIKEY ${apikey}`,
-                        'Authorization': `Bearer ${token_nins}`  // 或 'TOEKN your_token'
+                        'Authorization': `Bearer ${0}`  // 或 'TOEKN your_token'
                       },
                       body: JSON.stringify({ /* 如果需要送其他資料，可放這裡 */ })
                     })
@@ -1340,7 +1195,11 @@
                     });
                 }
             }
-            
+            else if (token) {
+                updateQR(token);
+                console.log("TOKEN: ", token);
+                ably = new Ably.Realtime({ authUrl: 'https://duguaynins-RedirectAPI.hf.space/realtime/ably', authMethod: 'POST', authHeaders: { 'clientId': uuid_user, 'Beta': `TOEKN ${token}`, 'Authorization': `Bearer ${0}` } });
+            }
             
             
             
