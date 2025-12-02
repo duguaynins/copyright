@@ -541,8 +541,18 @@
   </script>
   <script>
     ///document.getElementById('chatbox').style.backgroundColor = '#777777';  ///background-color: #777777;
-    function languageScript(langTag) {
-      return langTag.split('-').slice(0, 2).join('-');
+    function languageScript(tag) {
+      return tag.split('-').slice(0, 2).join('-');
+    }
+    function languageRegion(tag) {
+      const match = tag.match(/^([^-]+)-([^-]+)$/); // 嘗試匹配兩段
+      if (match) return match[1] + '-' + match[2];
+      
+      // 如果有三段以上，取第一段 + 最後一段
+      const parts = tag.split('-');
+      if (parts.length >= 2) return parts[0] + '-' + parts[parts.length - 1];
+
+      return tag; // 只有語言
     }
     
     // 生成隨機字元個數*****
@@ -572,7 +582,8 @@
     
     const rlang = "en-US";  //relang or resultlang
     ///const tlang = navigator.language || navigator.userLanguage || "en-US";  // 閱讀母語
-    const tlang = languageScript(navigator.language || navigator.userLanguage || "en-US");  // 閱讀母語
+    ///const tlang = languageScript(navigator.language || navigator.userLanguage || "en-US");  // 閱讀母語
+    const tlang = languageRegion(navigator.language || navigator.userLanguage || "en-US");  // 閱讀母語
     
     let ilang = tlang;  // 學習語言 OR 中間語言  // params.get("il")
     let slang = tlang;
