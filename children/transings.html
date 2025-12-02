@@ -697,10 +697,11 @@
         console.log('更新條碼大小:', size);
         console.log('更新條碼內容:', input);
         
-        const secret = "nins";
+        
         let baseUrl = null;
         baseUrl = window.location.origin + window.location.pathname + "?channel=" + encodeURIComponent(input); /// + "&idle=" + params.get("idle");
-        if (token) {baseUrl += "&token="+token + "&idle="+secret}
+        const secret = "nins";
+        if (token && token!=="nins") {baseUrl += "&token="+token + "&idle="+secret}
         
 
         gencode(text=baseUrl, bcid="qrcode", format=/^.{0,1000}$/)
