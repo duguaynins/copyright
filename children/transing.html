@@ -541,6 +541,9 @@
   </script>
   <script>
     ///document.getElementById('chatbox').style.backgroundColor = '#777777';  ///background-color: #777777;
+    function languageScript(langTag) {
+      return langTag.split('-').slice(0, 2).join('-');
+    }
     
     // 生成隨機字元個數*****
     function randomAlphaString(length) {
@@ -568,7 +571,8 @@
     let apikey_user = "";
     
     const rlang = "en-US";  //relang or resultlang
-    const tlang = navigator.language || navigator.userLanguage || "en-US";  // 閱讀母語
+    ///const tlang = navigator.language || navigator.userLanguage || "en-US";  // 閱讀母語
+    const tlang = languageScript(navigator.language || navigator.userLanguage || "en-US");  // 閱讀母語
     
     let ilang = tlang;  // 學習語言 OR 中間語言  // params.get("il")
     let slang = tlang;
