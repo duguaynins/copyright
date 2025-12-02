@@ -1806,18 +1806,6 @@
 
     }
 
-    // 條碼下載
-    function downloadChat() {  ///updateQR
-      // 時間****
-      const nowUTC = new Date().toISOString();
-      const filetimestamp = nowUTC.replace(/[-:.]/g, '_');
-      console.log(filetimestamp); // 例如：2025-07-02T06-56-31-400Z
-      const filename = "NINS_TRANSING_" + filetimestamp;
-
-      downloadTXT(filename + ".txt");
-      downloadHTML(filename + ".html");
-    }
-
     // 檔案下載
     function downloadChat() {
       // 時間****
