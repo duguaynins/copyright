@@ -552,8 +552,6 @@
     
     // 🔑  ///prompt("（🔑: ***）")
     let apikey_user = "";
-    const apikey_nins = ("ijFBLQ.6d_0Tg:5ueQrEJ1sjpW1MN9kDlLOzyPoYyYAzufOmGYxMLEV2s");  // NINS ABLY_ APIKEY
-    const token_nins = ("hf_"+"mGuvBfOSKABphqccTuytpyrMTQexewVRpm");  // NINS HF_ APIKEY
     
     const rlang = "en-US";  //relang or resultlang
     const tlang = navigator.language || navigator.userLanguage || "en-US";  // 閱讀母語
@@ -1158,7 +1156,7 @@
                 console.log("APIKEY: ", apikey);
                 ably = new Ably.Realtime({ key: apikey, clientId: uuid_user });console.log("apikey_user");
                 
-                if (apikey === "ijFBLQ.6d_0Tg:5ueQrEJ1sjpW1MN9kDlLOzyPoYyYAzufOmGYxMLEV2s") {
+                if (false) {
                     apikey_user = "";
                     room = "WORLD";  // 使用我的金鑰必須固定頻道
                     ///room = room;  // 廣為人知後開放自訂房間
@@ -1192,6 +1190,7 @@
                 }
             }
             else if (token) {
+                updateQR(token);
                 console.log("TOKEN: ", token);
                 ably = new Ably.Realtime({ authUrl: 'https://duguaynins-RedirectAPI.hf.space/realtime/ably', authMethod: 'POST', authHeaders: { 'clientId': uuid_user, 'Beta': `TOEKN ${token}`, 'Authorization': `Bearer ${0}` } });
             }
