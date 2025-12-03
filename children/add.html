@@ -181,7 +181,7 @@
       flex-direction: column;
     ">
           <div style="background: #FFFFFF; color: black;" translate="no">
-          <div style="margin: 10px;" onclick="document.getElementById('DialogShare').showModal()">
+          <div style="margin: 10px;" onclick="document.getElementById('DialogCheck').showModal();console.log(new Date().toLocaleString(), '🙉');">
           nins/zero
           </div></div>
           
@@ -197,48 +197,93 @@
           </div></div>
     </div>
     
-    <!-- 放置你原有的布局 -->
-    <!-- 放置你原有的布局 -->
+    <dialog id="DialogCheck" translate="no">
+        <pre id="logOutput" style="max-height:200px; overflow:auto; margin:0;"></pre>
+        <br>
+        <button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogCheck').close();console.log(new Date().toLocaleString(), '🙈');">❌</button>
 
-    <script type="text/javascript">  // google.js
-      // GOOGLE TRANSLATE
-      // 自動翻譯***
-      ///document.cookie = "googtrans=/en/zh-TW; path=/";
-      ///location.reload();
+    </dialog>
+<!-- HTML ================================================== -->
     
-      function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-          pageLanguage: 'en',  ///'en', 改為根據中間語言(ilang) 或 頁面語言(locale)  ///鼓勵輸入中間語言，翻譯必定可以顯示英文。
-          includedLanguages: '',  ///zh-TW,ja,ko,en,hi,zh-CN
-          autoDisplay: false,
-          ///layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-        }, 'google_translate_element');
+<!-- 放置你原有的布局 -->
+<!-- 放置你原有的布局 -->
+ 
+<!-- LOG ================================================== -->
+<script>
+const dialog = document.getElementById('DialogCheck');
+const logOutput = document.getElementById('logOutput');
+/*
+const _log = console.log;
+console.log = function(...args) {
+  _log.apply(console, args);
+
+  const text = args.map(a =>
+    typeof a === 'object' ? JSON.stringify(a) : String(a)
+  ).join(' ');
+
+  logOutput.insertAdjacentHTML('beforeend', text + '\n');
+  logOutput.scrollTop = logOutput.scrollHeight; // ✅ 自動滾到底
+}; */
+
+// 攔截 console.log 與 console.error
+['log', 'error'].forEach(level => {
+  const original = console[level];
+  console[level] = function(...args) {
+    original.apply(console, args);
+    const message = args.map(a => (typeof a === 'object' ? JSON.stringify(a) : a)).join(' ');
+    logOutput.insertAdjacentHTML('beforeend', `<div class="${level}">${message}</div>`);
+    // 滾動到底部
+    logOutput.scrollTop = logOutput.scrollHeight;
+  };
+});
+
+// 測試
+console.log(new Date().toLocaleString(), 'This is a log test.');
+console.error(new Date().toLocaleString(), 'This is an error test.');
+</script>
+<!-- LOG ================================================== -->
+    
+
+<!-- TRANSLATE ================================================== -->
+<script type="text/javascript">  // google.js
+  // GOOGLE TRANSLATE
+  // 自動翻譯***
+  ///document.cookie = "googtrans=/en/zh-TW; path=/";
+  ///location.reload();
+
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'en',  ///'en', 改為根據中間語言(ilang) 或 頁面語言(locale)  ///鼓勵輸入中間語言，翻譯必定可以顯示英文。
+      includedLanguages: '',  ///zh-TW,ja,ko,en,hi,zh-CN
+      autoDisplay: false,
+      ///layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }, 'google_translate_element');
+  }
+  
+
+  function autoTranslate(lang) {
+    const tryTranslate = () => {
+      const combo = document.querySelector('.goog-te-combo');
+      if (combo) {
+        combo.value = lang;
+        combo.dispatchEvent(new Event('change'));
+      } else {
+        setTimeout(tryTranslate, 300); // 遞迴檢查
       }
+    };
+    tryTranslate();
+  }
+
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const tlang = navigator.language || navigator.userLanguage || "en-US";
+      autoTranslate(tlang);
       
-    
-      function autoTranslate(lang) {
-        const tryTranslate = () => {
-          const combo = document.querySelector('.goog-te-combo');
-          if (combo) {
-            combo.value = lang;
-            combo.dispatchEvent(new Event('change'));
-          } else {
-            setTimeout(tryTranslate, 300); // 遞迴檢查
-          }
-        };
-        tryTranslate();
-      }
-    
-      window.addEventListener('load', () => {
-        setTimeout(() => {
-          const tlang = navigator.language || navigator.userLanguage || "en-US";
-          autoTranslate(tlang);
-          
-          ///document.getElementById(":1.container").style.display = "";
-        }, 1500);
-      });
-    </script>
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+      ///document.getElementById(":1.container").style.display = "";
+    }, 1500);
+  });
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     
 </body>
 </html>
