@@ -212,18 +212,6 @@
 <script>
 const dialog = document.getElementById('DialogCheck');
 const logOutput = document.getElementById('logOutput');
-/*
-const _log = console.log;
-console.log = function(...args) {
-  _log.apply(console, args);
-
-  const text = args.map(a =>
-    typeof a === 'object' ? JSON.stringify(a) : String(a)
-  ).join(' ');
-
-  logOutput.insertAdjacentHTML('beforeend', text + '\n');
-  logOutput.scrollTop = logOutput.scrollHeight; // ✅ 自動滾到底
-}; */
 
 // 攔截 console.log 與 console.error
 ['log', 'error'].forEach(level => {
