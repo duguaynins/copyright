@@ -15,6 +15,13 @@
     }
   </style>
   <style>
+    #content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;  /* 垂直置中 */
+        align-items: center;      /* 水平置中 */
+        text-align: center;       /* 文字置中 */
+    }
     input, textarea, button, select {
       /*font-size: inherit; /* 主動繼承 body 字體大小 */
       font-size: 18px;
@@ -185,10 +192,10 @@
           nins/zero
           </div></div>
           
-              <!-- 放置你原有的布局 -->
-              <div style="background: #FFFFFF; overflow:auto; width:100%; flex:1; border: 1px solid #ccc;">
-              </div>
-              <!-- 放置你原有的布局 -->
+          <!-- 放置你原有的布局 -->
+          <div id="content" style="background: #FFFFFF; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
+          </div>
+          <!-- 放置你原有的布局 -->
             
           <!--strong></strong-->
           <div style="background: #FF3B00; color: white;" translate="yes">
