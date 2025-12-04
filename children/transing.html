@@ -1175,6 +1175,7 @@
             
             if (apikey) {
                 console.log("APIKEY: ", apikey);
+                console.log("ROOM: ", room);
                 ably = new Ably.Realtime({ key: apikey, clientId: uuid_user });console.log("apikey_user");
                 
                 if (false) {
@@ -1212,7 +1213,9 @@
             }
             else if (token) {
                 updateQR(token);
+                if (token === "nins") { room = "WORLD"; }
                 console.log("TOKEN: ", token);
+                console.log("ROOM: ", room);
                 ably = new Ably.Realtime({ authUrl: 'https://duguaynins-RedirectAPI.hf.space/realtime/ably', authMethod: 'POST', authHeaders: { 'clientId': uuid_user, 'Beta': `TOEKN ${token}`, 'Authorization': `Bearer ${0}` } });
             }
             
