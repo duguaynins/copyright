@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -117,6 +118,8 @@
               HTTPPING
               </div>
           </div>
+          <input type="range" id="intervalSlider" min="2000" max="86400000" step="1000" value="2000">
+          
           <div id="contentbox" style="border:1px solid #ccc; overflow:auto; width:100%; flex:1;">
           <!--strong class="bg-white rounded-xl shadow-lg p-8 md:p-10 w-full max-w-lg text-center"></strong-->
 
@@ -232,7 +235,7 @@
                     return;
                 }
                 startPing();
-                pingIntervalId = setInterval(startPing, 3000); // Execute every 3 seconds
+                pingIntervalId = setInterval(startPing, document.getElementById('intervalSlider').value); // Execute every 3 seconds // 5000 ~ 86400000
                 button.textContent = 'Stop Ping';
                 button.classList.remove('bg-blue-600', 'hover:bg-blue-700');
                 button.classList.add('bg-red-600', 'hover:bg-red-700');
