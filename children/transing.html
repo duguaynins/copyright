@@ -435,12 +435,13 @@
       async function semantic(params) { 
         console.log('翻譯比對:', params);
         const { smsg, rmsg } = params;
+        if (smsg === rmsg) { return "{goog:1.0||meta:1.0}"; }
 
         const inputs = { "inputs": { "a": smsg, "b": rmsg } };
         const outputs = await HuggingFaceAPI({
           group: "duguaynins",
           space: "RedirectAPI",
-          path: "embeddings/meta",  ///embeddings/multiple
+          path: "MultipleEmbeddings/predict",  ///embeddings/meta
           payload: inputs,
         }); 
 
@@ -450,13 +451,15 @@
       }
 
       async function translate(params) {  
+        console.log('翻譯文本:', params);
         const { text, source = 'auto', target } = params;
+        if (source === target) { return text; }
 
         const inputs = { "inputs": {"text":text,"target":target,"source":source} };
         const outputs = await HuggingFaceAPI({
           group: "duguaynins",
           space: "RedirectAPI",
-          path: "transings/deep",  ///MultipleTransings/predict
+          path: "MultipleTransings/predict",  ///transings/deep
           payload: inputs,
         }); 
 
