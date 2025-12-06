@@ -1964,9 +1964,9 @@
     
       window.addEventListener('load', () => {
         setTimeout(() => {
-          ///const tlang = navigator.language || navigator.userLanguage || "en-US";
-          autoTranslate(tlang);
-          console.log("sl, tl：", tlang);
+          const slang = navigator.language || navigator.userLanguage || "en-US";
+          autoTranslate(slang);
+          console.log("sl, tl：", slang);
           
           ///document.getElementById(":1.container").style.display = "";
         }, 1000);
