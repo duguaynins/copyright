@@ -462,8 +462,8 @@
           ///return "Server? Wake up!";
           ///return "Server? Cheer up a bit!";
           ///return "Server? Together!";
-          return {result: {confidences: null, label: '<b translate="no">'+escapeHtml(err.stack)+'</b>' }};  ///err.name+err.message
-          
+          ///return {result: {confidences: null, label: '<b translate="no">'+escapeHtml(err.stack)+'</b>' }};  ///err.name+err.message
+          return {result: {confidences: null, label: `<a translate="no" href="mailto:duguaynins@gmail.com?subject=${encodeURIComponent( new Date().toISOString() )}&body=${encodeURIComponent( err.stack )}">mailto:duguaynins@gmail.com</a>` }};  ///escapeHtml(err.stack)
         }
       }
 
@@ -1483,7 +1483,7 @@
             <p id="${randomID}_9" translate="no" style="display:none; color:gray;">（ 👻${msgtTextr}👄${msgtLangr} ）</p>
 
             <span style="color:gray;">（
-            <label id="${randomID}_ds" translate="no" style="color:gray;">🎯ds:${msgtLangr}&${msgtLangs}=${msgDist}<input style="display:none;" type="button" value="👂${0}" onclick="window.open('${fullURL}', '_blank', 'noopener,noreferrer')" /></label>
+            <label id="${randomID}_ds" translate="no" style="color:gray;">🎯${msgDist}📏ds:${msgtLangr}&${msgtLangs}<input style="display:none;" type="button" value="👂${0}" onclick="window.open('${fullURL}', '_blank', 'noopener,noreferrer')" /></label>
             ）</span>
           `;
           
