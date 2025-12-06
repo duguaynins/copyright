@@ -1953,9 +1953,17 @@
           const combo = document.querySelector('.goog-te-combo');
           if (combo) {
             const options = Array.from(combo.options).map(opt => opt.value);console.log('可用語言代碼:', options);
+            console.log("autoTranslate?:", lang);
             ///combo.value = lang;
-            ///combo.dispatchEvent(new Event('change'));
+            combo.value = options.includes(lang) 
+              ?  lang 
+              :  options.find(opt => opt.startsWith(lang))  
+              || options.find(opt => opt.startsWith(lang.slice(0, 2))) 
+              || null;
+            combo.dispatchEvent(new Event('change'));
+            console.log("autoTranslate!:", combo.value);
 
+            /*
             if (options.includes(lang)) {
               console.log("translate: ", lang);
               combo.value = lang;
@@ -1968,7 +1976,7 @@
               console.log("translate: ", "null");
               ///combo.value = "zh-TW";
               ///combo.dispatchEvent(new Event('change'));
-            }
+            }  */
 
           } else {
             setTimeout(tryTranslate, 300); // 遞迴檢查
@@ -1980,7 +1988,7 @@
       window.addEventListener('load', () => {
         setTimeout(() => {
           ///const slang = navigator.language || navigator.userLanguage || "en-US";
-          autoTranslate(slang);          
+          autoTranslate( (navigator.language || navigator.userLanguage || "en-US") );          
           ///document.getElementById(":1.container").style.display = "";
         }, 1000);
       });
