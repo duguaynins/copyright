@@ -289,8 +289,11 @@
         const before = text.substring(0, index);        // 👄 前的內容
         const after = text.substring(index + "👄".length); // 👄 後的內容（+1）
         // 格式化**
-        const content = text;  ///before.substring(1 + "🔣".length);
-        const language = lang;  ///after.substring(0, after.length - 1)   // 或 after = after.slice(0, -1);
+        ///const content = text;  ///before.substring(1 + "🔣".length);
+        ///const language = lang;  ///after.substring(0, after.length - 1)   // 或 after = after.slice(0, -1);
+        ///const talkrate = 1.2;  ///input.value
+        const content = before.substring(1 + "🔣".length);
+        const language = after.substring(0, after.length - 1)   // 或 after = after.slice(0, -1);
         const talkrate = 1.2;  ///input.value
         console.log("content:", content);
         console.log("language:", language);
@@ -374,7 +377,8 @@ console.error(new Date().toLocaleString(), 'This is an error test.');
         combo.value = tl || lang;
         combo.dispatchEvent(new Event('change'));
 
-        document.getElementById("content").innerHTML = `<label translate="no" id="sl" onclick="handleTTS('sl', '${sl}')">${text}</label><br><label translate="yes" id="tl" onclick="handleTTS('tl', '${tl}')">${text}</label>`;
+        document.getElementById("content").innerHTML = `<label translate="no" id="sl" onclick="handleTTS('sl', '${sl}')">（<span translate="no">🔣${text}👄${sl}</span>）</label><br>
+                                                        <label translate="no" id="tl" onclick="handleTTS('tl', '${tl}')">（<span translate="yes">🤖${text}👄${tl}</span>）</label>`;
 
         setTimeout(() => { if (!navigator.userAgent.includes("Chrome")) { console.log("USE GOOGLE!"); window.open("https://www.google.com/chrome", "_blank", "noopener,noreferrer"); } else { console.log("HEY GOOGLE!") }  }, 2000);
       } else {
