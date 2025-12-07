@@ -242,7 +242,33 @@
         
     });
 
+    function languageScript(tag) {
+      return tag.split('-').slice(0, 2).join('-');
+    }
+    function languageRegion(tag) {
+      const match = tag.match(/^([^-]+)-([^-]+)$/); // 嘗試匹配兩段
+      if (match) return match[1] + '-' + match[2];
+      
+      // 如果有三段以上，取第一段 + 最後一段
+      const parts = tag.split('-');
+      if (parts.length >= 2) return parts[0] + '-' + parts[parts.length - 1];
+
+      return tag; // 只有語言
+    }
     
+    function handleVoice(language) {
+      // 設定預設語音
+      ///const language = languageRegion(navigator.language || navigator.userLanguage || "en-US");  // 閱讀母語
+      const voice = voices.find(v => v.lang.startsWith( new URL(window.location.href).searchParams.get("lang")||language )) || 
+                          ///voices.find(v => v.lang === language) || 
+                          voices.find(v => v.lang.startsWith( language.replace(/_/g, "-") )) || // zh-TW
+                          voices.find(v => v.lang.startsWith( language.replace(/-/g, "_") )) || // zh_TW
+                          voices.find(v => v.lang.startsWith( language.slice(0, 2) ));
+      ///const index = voices.indexOf(voice);
+      ///const voice = voices[parseInt(voiceSelect.value)]
+      return voice.lang;
+    }
+
     // 處理文字轉語音****
     // 的按鈕點擊事件****
     function handleTTS(id, lang = "") {
@@ -294,7 +320,8 @@
         ///const language = lang;  ///after.substring(0, after.length - 1)   // 或 after = after.slice(0, -1);
         ///const talkrate = 1.2;  ///input.value
         const content = before.substring(1 + "🔣".length);
-        const language = after.substring(0, after.length - 1)   // 或 after = after.slice(0, -1);
+        ///const language = after.substring(0, after.length - 1)   // 或 after = after.slice(0, -1);
+        let language = after.substring(0, after.length - 1);language = handleVoice(language)
         const talkrate = 1.2;  ///input.value
         console.log("content:", content);
         console.log("language:", language);
@@ -354,10 +381,13 @@ console.error(new Date().toLocaleString(), 'This is an error test.');
   // 自動翻譯***
   ///document.cookie = "googtrans=/en/zh-TW; path=/";
   ///location.reload();
+  let sl = new URL(window.location.href).searchParams.get("sl") || "en-US";
+  let tl = new URL(window.location.href).searchParams.get("tl") || navigator.language || navigator.userLanguage || "zh-TW";
+  let text = new URL(window.location.href).searchParams.get("text") || "Please enter text in the URL.";
 
   function googleTranslateElementInit() {
     new google.translate.TranslateElement({
-      pageLanguage: 'en',  ///'en', 改為根據中間語言(ilang) 或 頁面語言(locale)  ///鼓勵輸入中間語言，翻譯必定可以顯示英文。
+      pageLanguage: sl,  ///'en', 改為根據中間語言(ilang) 或 頁面語言(locale)  ///鼓勵輸入中間語言，翻譯必定可以顯示英文。
       includedLanguages: '',  ///zh-TW,ja,ko,en,hi,zh-CN
       autoDisplay: false,
       ///layout: google.translate.TranslateElement.InlineLayout.SIMPLE
@@ -365,21 +395,37 @@ console.error(new Date().toLocaleString(), 'This is an error test.');
   }
   
 
-  function autoTranslate(lang) {
+  function autoTranslate() {
+    ///if (!combo) { return; }
+
     const tryTranslate = () => {
       const combo = document.querySelector('.goog-te-combo');
-      const trans = new URL(window.location.href).searchParams.get("translate") || "yes";
-      if (trans !== "yes") { return; }
+      ///const trans = new URL(window.location.href).searchParams.get("translate") || "yes";
+      ///if (trans !== "yes") { return; }
       if (combo) {
-        const sl = new URL(window.location.href).searchParams.get("sl") || "en-US";
-        const tl = new URL(window.location.href).searchParams.get("tl") || "zh-TW";
-        const text = new URL(window.location.href).searchParams.get("text") || "Please enter text in the URL.";
+        const options = Array.from(combo.options).map(opt => opt.value);console.log('可用語言代碼:', options);
+            
+        const lang_sl = sl;
+        sl = options.includes(lang_sl) 
+          ?  lang_sl 
+          :  options.find(opt => opt.startsWith(lang_sl))  
+          || options.find(opt => opt.startsWith(lang_sl.slice(0, 2))) 
+          || handleVoice(lang_sl) || null;
+        
+        const lang_tl = tl;
+        tl = options.includes(lang_tl)
+          ?  lang_tl 
+          :  options.find(opt => opt.startsWith(lang_tl))  
+          || options.find(opt => opt.startsWith(lang_tl.slice(0, 2))) 
+          || handleVoice(lang_tl) || null;
 
-        combo.value = tl || lang;
+        googleTranslateElementInit();
+        ///combo.value = tl || lang;
+        combo.value = tl;
         combo.dispatchEvent(new Event('change'));
 
-        document.getElementById("content").innerHTML = `<label translate="no" id="sl" onclick="handleTTS('sl', '${sl}')">（<span translate="no">🔣${text}👄${sl}</span>）</label><br>
-                                                        <label translate="no" id="tl" onclick="handleTTS('tl', '${tl}')">（<span translate="yes">🤖${text}👄${tl}</span>）</label>`;
+        document.getElementById("content").innerHTML = `<label translate="no" id="sl" onclick="handleTTS('sl', '${sl}')">（<span translate="no">🔣${text}</span><span translate="no">👄${sl}</span>）</label><br>
+                                                        <label translate="no" id="tl" onclick="handleTTS('tl', '${tl}')">（<span translate="yes">🤖${text}</span><span translate="no">👄${tl}</span>）</label>`;
 
         setTimeout(() => { if (!navigator.userAgent.includes("Chrome")) { console.log("USE GOOGLE!"); window.open("https://www.google.com/chrome", "_blank", "noopener,noreferrer"); } else { console.log("HEY GOOGLE!") }  }, 2000);
       } else {
@@ -391,8 +437,8 @@ console.error(new Date().toLocaleString(), 'This is an error test.');
 
   window.addEventListener('load', () => {
     setTimeout(() => {
-      const tlang = navigator.language || navigator.userLanguage || "en-US";
-      autoTranslate(tlang);
+      ///const tlang = navigator.language || navigator.userLanguage || "en-US";
+      autoTranslate();
       
       ///document.getElementById(":1.container").style.display = "";
     }, 1500);
