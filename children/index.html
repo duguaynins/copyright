@@ -355,13 +355,13 @@
                     <p>內容 1</p>
                   </details-->
 
-                  <div class="feature-item" onclick="openApp(repo='copyright', file='preview')" style="">
+                  <div class="feature-item" onclick="openApp(repo='copyright', path='/children/preview')" style="">
                     <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
                     <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
                     <h2 translate="no">👀 nins/Preview 👀</h2>
                     <p>Select and display any downloaded HTML file.</p>
                   </div>
-                  <div class="feature-item main" onclick="openApp(repo='copyright', file='transing')" style="">
+                  <div class="feature-item main" onclick="openApp(repo='transing', path='/')" style="">
                     <h2 translate="no">🔣 nins/Transing 🔣</h2>
                     <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
                     <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⭐</div>
@@ -446,9 +446,8 @@
       ///event.preventDefault(); // 阻止原本的跳轉  // 將先執行 onclick，再依據 href 跳轉
       // 按鈕方法
       
-      function openApp(repo, file, dir = "/children/") {
-        ///const href = "https://" + repo + ".nins.jpgt.one/apps/" + file;
-        const href = "https://duguaynins.github.io/" + repo + dir + file;console.log(href);
+      function openApp(repo, path="", dir="/children/", file="") {
+        const href = "https://" + repo + ".nins.cc" + path;console.log(href);
         window.open(href, "_blank", "noopener,noreferrer");
       }
       // 按鈕方法
