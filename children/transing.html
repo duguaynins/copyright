@@ -276,14 +276,14 @@
         
         <div id="chatbox" style="border:1px solid #ccc; overflow:auto; width:100%; text-align:left; flex:1;">init</div>
         
-        <input style="display:none" class="main" id="InputRoom" type="text" name="noMemory" autocomplete="off" placeholder="input connection number..." style="width:100%; text-align: center;"/>
-        <input style="display:none" class="main" id="InputMsg"  type="text" name="noMemory" autocomplete="off" placeholder="input message text..." style="width:100%; text-align: center;"/>
-        <button id="ButtonRoom" onclick="sendSocket()" style="width:100%;" class="button" >📶Send connection</button>
-        <button id="ButtonMsg" onclick="sendMessage()" style="width:100%;" class="button" >🚀Send Message</button>
+        <input  style="display:none" class="main" id="InputRoom" type="text" name="noMemory" autocomplete="off" placeholder="input connection number..." style="width:100%; text-align: center;"/>
+        <input  style="display:none" class="main" id="InputMsg"  type="text" name="noMemory" autocomplete="off" placeholder="input message text..." style="width:100%; text-align: center;"/>
+        <button style="display:none" id="ButtonRoom" onclick="sendSocket()" style="width:100%;" class="button" >📶Send connection</button>
+        <button style="display:none" id="ButtonMsg" onclick="sendMessage()" style="width:100%;" class="button" >🚀Send Message</button>
         
         <!--strong></strong-->
         <div style="background: #FF3B00; color: white;" translate="yes">
-        <div style="margin: 10px;" onclick="">
+        <div style="margin: 10px;" onclick="" id="notice">
         By using any of the services, it means you have agreed to any content and all content!
         </div></div>
   </div>
@@ -1004,9 +1004,10 @@ console.log(version);
       "🕚"  // 23
     ];
     
-    
-    document.getElementById("InputRoom").value = params.get("channel") || "";  // 取得 ?room= 後面的值  //BETA***
-    document.getElementById("InputMsg").value = params.get("message") || "";  // 取得 ?room= 後面的值  //Hello.
+    if (params.get("channel") !== null) { document.getElementById("InputRoom").value = params.get("channel"); }
+    if (params.get("message") !== null) { document.getElementById("InputMsg").value = params.get("message"); }
+    ///document.getElementById("InputRoom").value = params.get("channel") || "";  // 取得 ?room= 後面的值  //BETA***
+    ///document.getElementById("InputMsg").value = params.get("message") || "";  // 取得 ?room= 後面的值  //Hello.
     ///document.getElementById("ButtonRoom").focus();
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     
@@ -1429,8 +1430,8 @@ console.log(version);
               document.getElementById("chatbox").prepend(p);
               if (!err) { console.log('Members:', members.length);document.getElementById("copyright").innerHTML = `👻（${room}, ${members.length}）`; }
             });
-            document.getElementById('InputMsg').disabled = false;
-            document.getElementById('InputMsg').style.display = '';
+            document.getElementById("InputMsg").disabled = false;
+            document.getElementById("InputMsg").style.display = '';
         });
           
         channel.presence.subscribe('leave', (member) => {
@@ -1448,8 +1449,8 @@ console.log(version);
               document.getElementById("chatbox").prepend(p);
               if (!err) { console.log('Members:', members.length);document.getElementById("copyright").innerHTML = `👻（${room}, ${members.length}）`; }
             });
-            document.getElementById('InputMsg').disabled = true;
-            document.getElementById('InputMsg').style.display = 'none';
+            document.getElementById("InputMsg").disabled = true;
+            document.getElementById("InputMsg").style.display = 'none';
         });
         
         
@@ -2028,10 +2029,39 @@ console.log(version);
         }, 'google_translate_element');
       }
       
+      function waitForTranslationById(elementId, callback) {
+        const target = document.getElementById(elementId);
+        if (!target) return;
+
+        const observer = new MutationObserver((mutations, obs) => {
+          for (const mutation of mutations) {
+            // 偵測子節點或文字內容是否改變
+            if (mutation.type === "childList" || mutation.type === "characterData") {
+              obs.disconnect(); // 翻譯完成，停止觀察
+              callback();
+              break;
+            }
+          }
+        });
+
+        observer.observe(target, {
+          childList: true,   // 子節點增減
+          subtree: true,     // 包含所有子孫節點
+          characterData: true // 文字內容改變
+        });
+      }
     
       function autoTranslate(lang) {
         const tryTranslate = () => {
           const combo = document.querySelector('.goog-te-combo');
+          
+      
+          waitForTranslationById('notice', () => {
+            document.getElementById('InputRoom').disabled = false;
+            document.getElementById('InputRoom').style.display = 'block';
+            ///document.getElementById('InputRoom').textAlign = 'center';
+          });
+
           if (combo) {
             const options = Array.from(combo.options).map(opt => opt.value);console.log('可用語言代碼:', options);
             console.log("autoTranslate?:", lang);
@@ -2044,8 +2074,8 @@ console.log(version);
             combo.dispatchEvent(new Event('change'));
             console.log("autoTranslate!:", combo.value);
             
-            document.getElementById('InputRoom').disabled = false;
-            document.getElementById('InputRoom').style.display = 'block';
+            ///document.getElementById('InputRoom').disabled = false;
+            ///document.getElementById('InputRoom').style.display = 'block';
             ///document.getElementById('InputRoom').textAlign = 'center';
 
             /*
