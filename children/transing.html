@@ -1579,12 +1579,14 @@ console.log(version);
       // 設定預設語音
       ///const language = languageRegion(navigator.language || navigator.userLanguage || "en-US");  // 閱讀母語
       const voice = voices.find(v => v.lang.startsWith( new URL(window.location.href).searchParams.get("lang")||language )) || 
-                          ///voices.find(v => v.lang === language) || 
-                          voices.find(v => v.lang.startsWith( language.replace(/_/g, "-") )) || // zh-TW
-                          voices.find(v => v.lang.startsWith( language.replace(/-/g, "_") )) || // zh_TW
-                          voices.find(v => v.lang.startsWith( language.slice(0, 2) ));
+                    ///voices.find(v => v.lang === language) || 
+                    voices.find(v => v.lang.startsWith( language.replace(/_/g, "-") )) || // zh-TW
+                    voices.find(v => v.lang.startsWith( language.replace(/-/g, "_") )) || // zh_TW
+                    voices.find(v => v.lang.startsWith( language.slice(0, 2) ));
       ///const index = voices.indexOf(voice);
       ///const voice = voices[parseInt(voiceSelect.value)]
+      console.log("handleVoice_inputs:", language);
+      console.log("handleVoice_outputs:", voice.lang);
       return voice.lang;
     }
     
@@ -1621,18 +1623,20 @@ console.log(version);
         const input = document.getElementById("InputRate");
         const element = document.getElementById(id);
         const text = element.textContent;
+        console.log("handleTTS_inputs", text);
         //if (element) { alert("副文字內容為： " + element.textContent); }
         // 取得語言**
         const index = text.lastIndexOf("👄");
         const before = text.substring(0, index);        // 👄 前的內容
         const after = text.substring(index + "👄".length); // 👄 後的內容（+1）
         // 格式化**
-        const content = before.substring(1 + "🔣".length);
-        const language = after.substring(0, after.length - 1);///language = handleVoice(language);   // 或 after = after.slice(0, -1);
+        const content = before.substring(2 + "🔣".length);
+        let language = after.substring(0, after.length - 1); language = handleVoice(language);   // 或 after = after.slice(0, -1);
         const talkrate = input.value;
-        console.log("content:", content);
-        console.log("language:", language);
-        console.log("talkrate:", talkrate);
+        ///console.log("content:", content);
+        ///console.log("language:", language);
+        ///console.log("talkrate:", talkrate);
+        console.log("handleTTS:", language, content, talkrate);
       
         // 取得聲音
         ///const lang = tlang.slice(0, 2);
