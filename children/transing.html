@@ -257,7 +257,7 @@
     flex-direction: column;
   ">
         <div style="background: #FFFFFF; color: black;" translate="no">
-        <div style="margin: 10px;" onclick="">
+        <div style="height: 2vh; margin: 10px;" onclick="document.getElementById('DialogCheck').showModal();console.log(new Date().toLocaleString(), '🙉');">
         nins/transing
         </div></div>
         <div style="margin: 0vw; display: flex; flex-direction: row; border: 1px solid #cdcdcd;" translate="no">
@@ -411,10 +411,53 @@
   
   
   
-  
-  <!--strong><span style="color: #ffffff;">By using any of the services, it means you have read and agreed to all! ***</span></strong-->
-  
-  <!-- ###################################################### -->
+    
+  <dialog id="DialogCheck" translate="no">
+      <pre id="logOutput" style="max-height:200px; overflow:auto; margin:0;"></pre>
+      <br>
+      <button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogCheck').close();console.log(new Date().toLocaleString(), '🙈');">❌</button>
+
+  </dialog>
+<!-- HTML ================================================== -->
+
+<script>
+const dialog = document.getElementById('DialogCheck');
+const logOutput = document.getElementById('logOutput');
+/*
+const _log = console.log;
+console.log = function(...args) {
+  _log.apply(console, args);
+
+  const text = args.map(a =>
+    typeof a === 'object' ? JSON.stringify(a) : String(a)
+  ).join(' ');
+
+  logOutput.insertAdjacentHTML('beforeend', text + '\n');
+  logOutput.scrollTop = logOutput.scrollHeight; // ✅ 自動滾到底
+}; */
+
+// 攔截 console.log 與 console.error
+['log', 'error'].forEach(level => {
+  const original = console[level];
+  console[level] = function(...args) {
+    original.apply(console, args);
+    const message = args.map(a => (typeof a === 'object' ? JSON.stringify(a) : a)).join(' ');
+    logOutput.insertAdjacentHTML('beforeend', `<div class="${level}">${message}</div>`);
+    // 滾動到底部
+    logOutput.scrollTop = logOutput.scrollHeight;
+  };
+});
+
+// 測試
+const version = (new Date().toLocaleString(), 'v1.20251203.1315 (This is an error test.)');
+console.error(version);
+console.warn(version);
+console.info(version);
+console.log(version);
+</script>
+<!-- LOG ================================================== -->
+
+
   <script>
       /*
       async function HuggingFaceAPI(inputs=null) {
@@ -1026,8 +1069,8 @@
                   ///document.getElementById("InputMsg").style.backgroundColor = '#cdcdcd';
                 } 
                 
-            } else { console.log('idle...?'); }
-          } else { console.log('connect...?'); }
+            } ///else { console.log('idle...?'); }
+          } ///else { console.log('connect...?'); }
           
         }, 60000/60); // 檢查於每分鐘之幾
     };userIdleChecker();
