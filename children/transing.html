@@ -264,8 +264,8 @@
             <!--button onclick="document.getElementById('DialogShare').showModal()">🔗</button-->
             <button onclick="document.getElementById('DialogShare').showModal()">🔗<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">Connect</p></button>
             <button onclick="document.getElementById('DialogTool').showModal()">🧰<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">Tool</p></button>
-            <button onclick="downloadChat()">💾<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">Save</p></button>
             <button onclick="DUGUAYNINS()">👻<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">JPGT</p></button>
+            <button onclick="downloadChat()">💾<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">Save</p></button>
             <button onclick="window.open('https://copyright.nins.cc/children/preview', '_blank', 'noopener,noreferrer');">👀
             <p style="margin: 0; padding: 0; font-size: 1vh;" class="label">Preview</p></button>
         </div>
@@ -276,8 +276,8 @@
         
         <div id="chatbox" style="border:1px solid #ccc; overflow:auto; width:100%; text-align:left; flex:1;">init</div>
         
-        <input class="main" id="InputRoom" type="text" name="noMemory" autocomplete="off" placeholder="input connection number..." style="width:100%; text-align: center;"/>
-        <input class="main" id="InputMsg"  type="text" name="noMemory" autocomplete="off" placeholder="input message text..." style="width:100%; text-align: center;"/>
+        <input style="display:none" class="main" id="InputRoom" type="text" name="noMemory" autocomplete="off" placeholder="input connection number..." style="width:100%; text-align: center;"/>
+        <input style="display:none" class="main" id="InputMsg"  type="text" name="noMemory" autocomplete="off" placeholder="input message text..." style="width:100%; text-align: center;"/>
         <button id="ButtonRoom" onclick="sendSocket()" style="width:100%;" class="button" >📶Send connection</button>
         <button id="ButtonMsg" onclick="sendMessage()" style="width:100%;" class="button" >🚀Send Message</button>
         
@@ -891,7 +891,7 @@
       const source = "en";
       const target = language;
       let message = ""
-      document.getElementById('InputRoom').placeholder = "(👁️" + language + ", 📶Use the same number to connect." + ")";  // as other devices to connect
+      document.getElementById('InputRoom').placeholder = "(👁️" + language + ", 📶Use the same channel to connect." + ")";  // as other devices to connect
       document.getElementById('InputMsg').placeholder = "(👁️" + language + ", 🚀Use your native language to chat." + ")";  //👁️👀👄
       
     });
@@ -1344,8 +1344,9 @@
         document.getElementById('InputRoom').style.display = 'none';
         document.getElementById('ButtonRoom').disabled = true;  // 禁用
         document.getElementById('ButtonRoom').style.display = 'none';
-        document.getElementById('InputMsg').disabled = false;  // 啟用
-        document.getElementById('InputMsg').style.display = '';
+        
+        ///document.getElementById('InputMsg').disabled = false;  // 啟用
+        ///document.getElementById('InputMsg').style.display = '';
         document.getElementById('ButtonMsg').disabled = false;  // 啟用
         document.getElementById('ButtonMsg').style.display = '';
         
@@ -1385,6 +1386,8 @@
               document.getElementById("chatbox").prepend(p);
               if (!err) { console.log('Members:', members.length);document.getElementById("copyright").innerHTML = `👻（${room}, ${members.length}）`; }
             });
+            document.getElementById('InputMsg').disabled = false;
+            document.getElementById('InputMsg').style.display = '';
         });
           
         channel.presence.subscribe('leave', (member) => {
@@ -1402,6 +1405,8 @@
               document.getElementById("chatbox").prepend(p);
               if (!err) { console.log('Members:', members.length);document.getElementById("copyright").innerHTML = `👻（${room}, ${members.length}）`; }
             });
+            document.getElementById('InputMsg').disabled = true;
+            document.getElementById('InputMsg').style.display = 'none';
         });
         
         
@@ -1512,12 +1517,41 @@
     }
     
     
+    function languageScript(tag) {
+      return tag.split('-').slice(0, 2).join('-');
+    }
+    function languageRegion(tag) {
+      const match = tag.match(/^([^-]+)-([^-]+)$/); // 嘗試匹配兩段
+      if (match) return match[1] + '-' + match[2];
+      
+      // 如果有三段以上，取第一段 + 最後一段
+      const parts = tag.split('-');
+      if (parts.length >= 2) return parts[0] + '-' + parts[parts.length - 1];
 
+      return tag; // 只有語言
+    }
+    
+    function handleVoice(language) {
+      // 設定預設語音
+      ///const language = languageRegion(navigator.language || navigator.userLanguage || "en-US");  // 閱讀母語
+      const voice = voices.find(v => v.lang.startsWith( new URL(window.location.href).searchParams.get("lang")||language )) || 
+                          ///voices.find(v => v.lang === language) || 
+                          voices.find(v => v.lang.startsWith( language.replace(/_/g, "-") )) || // zh-TW
+                          voices.find(v => v.lang.startsWith( language.replace(/-/g, "_") )) || // zh_TW
+                          voices.find(v => v.lang.startsWith( language.slice(0, 2) ));
+      ///const index = voices.indexOf(voice);
+      ///const voice = voices[parseInt(voiceSelect.value)]
+      return voice.lang;
+    }
     
     // 處理文字轉語音****
     // 的按鈕點擊事件****
     function handleTTS(id, lang = "") {
         ///document.getElementById(id).style.display = "";
+        
+        if (document.getElementById(id).style.display === "none") {
+            document.getElementById(id).style.display = "";
+        }
         
         // 移除再加上 class，確保每次點擊都能觸發動畫
         document.getElementById(id).classList.remove('breathe');
@@ -1525,12 +1559,14 @@
         document.getElementById(id).classList.add('breathe');
     
         if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) {
-            alert("No TTS.")
+            ///alert("No TTS.")
+            console.log("alert:", "No TTS.");
             ///alert("此瀏覽器不支援語音合成功能（TTS）。請改用 Chrome 或 Safari。");
             return;
         }
         if (!voices || voices.length === 0) {
-            alert("No TTS voices.")
+            ///alert("No TTS voices.")
+            console.log("alert:", "No Voices.");
             ///alert("語音清單尚未載入，請稍後再試。");
             return;
         }
@@ -1548,7 +1584,7 @@
         const after = text.substring(index + "👄".length); // 👄 後的內容（+1）
         // 格式化**
         const content = before.substring(1 + "🔣".length);
-        const language = after.substring(0, after.length - 1)   // 或 after = after.slice(0, -1);
+        const language = after.substring(0, after.length - 1);///language = handleVoice(language);   // 或 after = after.slice(0, -1);
         const talkrate = input.value;
         console.log("content:", content);
         console.log("language:", language);
@@ -1964,6 +2000,10 @@
               || null;
             combo.dispatchEvent(new Event('change'));
             console.log("autoTranslate!:", combo.value);
+            
+            document.getElementById('InputRoom').disabled = false;
+            document.getElementById('InputRoom').style.display = 'block';
+            ///document.getElementById('InputRoom').textAlign = 'center';
 
             /*
             if (options.includes(lang)) {
