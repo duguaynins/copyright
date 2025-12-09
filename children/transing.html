@@ -1066,6 +1066,8 @@ console.log(version);
                   
                   document.getElementById("InputMsg").disabled = true;
                   document.getElementById("ButtonMsg").disabled = true;
+                  document.getElementById("InputMsg").style.display = 'none';
+                  document.getElementById("ButtonMsg").style.display = 'none';
                   document.getElementById("chatbox").style.backgroundColor = '#cdcdcd';
                   ///document.getElementById("InputMsg").style.backgroundColor = '#cdcdcd';
                 } 
@@ -1430,8 +1432,10 @@ console.log(version);
               document.getElementById("chatbox").prepend(p);
               if (!err) { console.log('Members:', members.length);document.getElementById("copyright").innerHTML = `👻（${room}, ${members.length}）`; }
             });
-            document.getElementById("InputMsg").disabled = false;
-            document.getElementById("InputMsg").style.display = '';
+            if (member.clientId === uuid_user) {
+              document.getElementById("InputMsg").disabled = false;
+              document.getElementById("InputMsg").style.display = '';
+            }
         });
           
         channel.presence.subscribe('leave', (member) => {
@@ -1449,8 +1453,10 @@ console.log(version);
               document.getElementById("chatbox").prepend(p);
               if (!err) { console.log('Members:', members.length);document.getElementById("copyright").innerHTML = `👻（${room}, ${members.length}）`; }
             });
-            document.getElementById("InputMsg").disabled = true;
-            document.getElementById("InputMsg").style.display = 'none';
+            if (member.clientId === uuid_user) {
+              document.getElementById("InputMsg").disabled = true;
+              document.getElementById("InputMsg").style.display = 'none';
+            }
         });
         
         
