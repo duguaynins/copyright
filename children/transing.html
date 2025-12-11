@@ -2068,7 +2068,8 @@ console.log(version);
       function autoTranslate(lang) {
         const tryTranslate = () => {
           const combo = document.querySelector('.goog-te-combo');
-          
+          console.log('combo?', !!combo);
+            
           if (lang.replace(/_/g, "-").split("-")[0] === "en") {
             document.getElementById('InputRoom').disabled = false;
             document.getElementById('InputRoom').style.display = 'block';
