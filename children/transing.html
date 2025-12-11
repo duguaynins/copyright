@@ -2071,14 +2071,12 @@ console.log(version);
             document.getElementById('InputRoom').disabled = false;
             document.getElementById('InputRoom').style.display = 'block';
             ///document.getElementById('InputRoom').textAlign = 'center';
-            return true;
           }
       
           waitForTranslationById('notice', () => {
             document.getElementById('InputRoom').disabled = false;
             document.getElementById('InputRoom').style.display = 'block';
             ///document.getElementById('InputRoom').textAlign = 'center';
-            return true;
           });
 
           if (combo) {
@@ -2111,14 +2109,12 @@ console.log(version);
               ///combo.value = "zh-TW";
               ///combo.dispatchEvent(new Event('change'));
             }  */
-            return true;
 
           } else {
             setTimeout(tryTranslate, 300); // 遞迴檢查
           }
         };
-        ///tryTranslate();
-        if (tryTranslate() === true) return;
+        tryTranslate();
       }
     
       window.addEventListener('load', () => {
