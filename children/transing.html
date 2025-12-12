@@ -2108,6 +2108,7 @@ console.log(version);
             ///document.getElementById('InputRoom').textAlign = 'center';
           });
 
+          if (!combo) { setTimeout(tryTranslate, 300); }
           if (combo) {
             document.querySelector('.goog-te-combo').addEventListener('change', () => {
               console.log("語言已切換!");
@@ -2153,6 +2154,8 @@ console.log(version);
       }
     
       window.addEventListener('load', () => {
+        console.log("window...load");
+          
         waitForCombo((combo) => {
           console.log("autoTranslate...waitForCombo");
           autoTranslate( (navigator.language || navigator.userLanguage || "en-US") );
