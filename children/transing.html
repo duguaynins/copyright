@@ -2113,14 +2113,16 @@ console.log(version);
 
           if (!combo) { setTimeout(tryTranslate, 300); }
           if (combo) {
+            const options = Array.from(combo.options).map(opt => opt.value);console.log('可用語言代碼:', options);
+            
+            console.log("autoTranslate?:", lang);
             document.querySelector('.goog-te-combo').addEventListener('change', () => {
               console.log("語言已切換!");
               console.log("新語言代碼:", combo.value);
               console.log("新語言文字:", combo.options[combo.selectedIndex].text);
             });
 
-            const options = Array.from(combo.options).map(opt => opt.value);console.log('可用語言代碼:', options);
-            console.log("autoTranslate?:", lang);
+            
             ///combo.value = lang;
             combo.value = options.includes(lang) 
               ?  lang 
