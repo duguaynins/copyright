@@ -10,6 +10,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title translate="no">nins/zero</title>
     <style>
+      iframe.skiptranslate, #goog-gt-tt {
+          display: none !important;
+      }
       html, body {
         overflow: hidden;
         height: 100%;
@@ -17,6 +20,22 @@
         width: 100%;
       }
     </style>
+    <!--style>
+        .skiptranslate {
+          display: none !important;   /* 避免 display:none 影響內容顯示 */
+          position: static !important;   /* 防止位置異常 */
+          width: 0px !important;
+          height: 0px !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          border: none !important;
+          background: none !important;
+          /*font-size: inherit !important;*/
+        }
+        iframe {
+          display: none !important;
+        }
+    </style-->
     <style>
       #content {
           display: flex;
@@ -81,22 +100,6 @@
         background: #eee;
         color: black;
       }
-    </style>
-    <style>
-        .skiptranslate {
-          display: none !important;   /* 避免 display:none 影響內容顯示 */
-          position: static !important;   /* 防止位置異常 */
-          width: 0px !important;
-          height: 0px !important;
-          margin: 0 !important;
-          padding: 0 !important;
-          border: none !important;
-          background: none !important;
-          /*font-size: inherit !important;*/
-        }
-        iframe {
-          display: none !important;
-        }
     </style>
   
     <style>
@@ -196,10 +199,14 @@
           nins/zero
           </div></div>
           
-          <!-- 放置你原有的布局 -->
-          <div id="content" style="background: #FFFFFF; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
-          </div>
-          <!-- 放置你原有的布局 -->
+<!-- 放置你原有的布局 -->
+
+
+<div id="content" style="background: #FFFFFF; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
+</div>
+
+
+<!-- 放置你原有的布局 -->
             
           <!--strong></strong-->
           <div style="background: #FF3B00; color: white;" translate="yes">
@@ -207,13 +214,17 @@
           By sending a message to this service, it means you have agreed to any content and all content!
           </div></div>
     </div>
+  
+  <dialog id="DialogTrans" translate="no">
+      <div id="google_translate_element" style="display:block;"></div><br>      
+      <button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogTrans').close();console.log(new Date().toLocaleString(), '🙈');">❌</button>
+  </dialog>
     
-    <dialog id="DialogCheck" translate="no">
-        <pre id="logOutput" style="max-height:200px; overflow:auto; margin:0;"></pre>
-        <br>
-        <button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogCheck').close();console.log(new Date().toLocaleString(), '🙈');">❌</button>
+  <dialog id="DialogCheck" translate="no">
+      <pre id="logOutput" style="max-height:200px; overflow:auto; margin:0;"></pre><br>
+      <button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogCheck').close();console.log(new Date().toLocaleString(), '🙈');">❌</button>
+  </dialog>
 
-    </dialog>
 <!-- HTML ================================================== -->
     
 <!-- 放置你原有的布局 -->
@@ -259,13 +270,72 @@ console.error(new Date().toLocaleString(), 'This is an error test.');
     }, 'google_translate_element');
   }
   
+  function waitForCombo(callback) {
+    // 等待載入翻譯語言
+    // 這是一種調用方法？ 並且使用方法的內部變數？
+    const timer = setInterval(() => {
+      const combo = document.querySelector('.goog-te-combo');
+      if (combo) {
+        clearInterval(timer);
+        callback(combo);
+      }
+    }, 300);
+  }
+
+  function waitForTranslationById(elementId, callback) {
+    // 等待頁面翻譯完成
+    const target = document.getElementById(elementId);
+    if (!target) return;
+
+    const observer = new MutationObserver((mutations, obs) => {
+      for (const mutation of mutations) {
+        // 偵測子節點或文字內容是否改變
+        if (mutation.type === "childList" || mutation.type === "characterData") {
+          obs.disconnect(); // 翻譯完成，停止觀察
+          callback();
+          break;
+        }
+      }
+    });
+
+    observer.observe(target, {
+      childList: true,   // 子節點增減
+      subtree: true,     // 包含所有子孫節點
+      characterData: true // 文字內容改變
+    });
+  }
 
   function autoTranslate(lang) {
     const tryTranslate = () => {
       const combo = document.querySelector('.goog-te-combo');
+      console.log('combo?', !!combo);
+        
+      if (lang.replace(/_/g, "-").split("-")[0] === "en") {
+        ///document.getElementById('Input').textAlign = 'center';
+      }
+  
+      waitForTranslationById('notice', () => {
+        ///document.getElementById('Input').textAlign = 'center';
+      });
+
+      if (!combo) { setTimeout(tryTranslate, 300); }
       if (combo) {
-        combo.value = lang;
+        document.querySelector('.goog-te-combo').addEventListener('change', () => {
+          console.log("語言已切換!");
+          console.log("新語言代碼:", combo.value);
+          console.log("新語言文字:", combo.options[combo.selectedIndex].text);
+        });
+
+        const options = Array.from(combo.options).map(opt => opt.value);console.log('可用語言代碼:', options);
+        console.log("autoTranslate?:", lang);
+        ///combo.value = lang;
+        combo.value = options.includes(lang) 
+          ?  lang 
+          :  options.find(opt => opt.startsWith(lang))  
+          || options.find(opt => opt.startsWith(lang.slice(0, 2))) 
+          || null;
         combo.dispatchEvent(new Event('change'));
+        console.log("autoTranslate!:", combo.value);
       } else {
         setTimeout(tryTranslate, 300); // 遞迴檢查
       }
@@ -274,12 +344,22 @@ console.error(new Date().toLocaleString(), 'This is an error test.');
   }
 
   window.addEventListener('load', () => {
-    setTimeout(() => {
-      const tlang = navigator.language || navigator.userLanguage || "en-US";
-      autoTranslate(tlang);
+    console.log("window...load");
       
+    waitForCombo((combo) => {
+      console.log("autoTranslate...waitForCombo");
+      autoTranslate( (navigator.language || navigator.userLanguage || "en-US") );
+      ///console.log("combo 已生成:", combo);
+      ///combo.value = 'en';
+      ///combo.dispatchEvent(new Event('change'));
+    });
+    /*
+    setTimeout(() => {
+      console.log("autoTranslate...setTimeout");
+      ///const slang = navigator.language || navigator.userLanguage || "en-US";
+      autoTranslate( (navigator.language || navigator.userLanguage || "en-US") );          
       ///document.getElementById(":1.container").style.display = "";
-    }, 1500);
+    }, 1000); */
   });
 </script>
 <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
