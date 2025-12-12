@@ -1332,11 +1332,20 @@ console.log(version);
             case 'connected':
               console.log('✅ Connected: Successfully connected to Ably.');
               state.textContent  = "✅（Connected）";
+
+              document.getElementById('InputRoom').disabled = false;
+              document.getElementById('InputRoom').style.display = 'block';
+              ///document.getElementById('InputRoom').placeholder = '';
+                  
               break;
             case 'disconnected':
               console.log('⚠️ Disconnected: Connection is temporarily unavailable, retrying...');
               state.textContent  = "⚠️（Disconnected）";
 
+              document.getElementById('InputRoom').disabled = true;
+              document.getElementById('InputRoom').style.display = 'none';
+              ///document.getElementById('InputRoom').placeholder = '';
+                  
               /*
               ably.close();  ///!!!
               document.getElementById("InputMsg").disabled = true;
