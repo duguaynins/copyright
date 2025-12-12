@@ -2057,7 +2057,18 @@ console.log(version);
           ///layout: google.translate.TranslateElement.InlineLayout.SIMPLE
         }, 'google_translate_element');
       }
-      
+
+      function waitForCombo(callback) {
+        /*這是一種調用方法？ 並且使用方法的內部變數？ */
+        const timer = setInterval(() => {
+          const combo = document.querySelector('.goog-te-combo');
+          if (combo) {
+            clearInterval(timer);
+            callback(combo);
+          }
+        }, 300);
+      }
+
       function waitForTranslationById(elementId, callback) {
         const target = document.getElementById(elementId);
         if (!target) return;
@@ -2142,12 +2153,20 @@ console.log(version);
       }
     
       window.addEventListener('load', () => {
+        waitForCombo((combo) => {
+          console.log("autoTranslate...waitForCombo");
+          autoTranslate( (navigator.language || navigator.userLanguage || "en-US") );
+          ///console.log("combo 已生成:", combo);
+          ///combo.value = 'en';
+          ///combo.dispatchEvent(new Event('change'));
+        });
+        /*
         setTimeout(() => {
-          console.log("autoTranslate...");
+          console.log("autoTranslate...setTimeout");
           ///const slang = navigator.language || navigator.userLanguage || "en-US";
           autoTranslate( (navigator.language || navigator.userLanguage || "en-US") );          
           ///document.getElementById(":1.container").style.display = "";
-        }, 1000);
+        }, 1000); */
       });
     </script>
     
