@@ -2122,6 +2122,7 @@ console.log(version);
     
       window.addEventListener('load', () => {
         setTimeout(() => {
+          console.log("autoTranslate...");
           ///const slang = navigator.language || navigator.userLanguage || "en-US";
           autoTranslate( (navigator.language || navigator.userLanguage || "en-US") );          
           ///document.getElementById(":1.container").style.display = "";
