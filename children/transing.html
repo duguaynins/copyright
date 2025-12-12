@@ -1333,10 +1333,12 @@ console.log(version);
               console.log('✅ Connected: Successfully connected to Ably.');
               state.textContent  = "✅（Connected）";
 
-              document.getElementById('InputRoom').disabled = false;
-              document.getElementById('InputRoom').style.display = 'block';
+              document.getElementById('InputRoom').disabled = true;
+              document.getElementById('InputRoom').style.display = 'none';
               ///document.getElementById('InputRoom').placeholder = '';
-                  
+
+              document.getElementById('InputMsg').disabled = false;
+              document.getElementById('InputMag').style.display = 'block';
               break;
             case 'disconnected':
               console.log('⚠️ Disconnected: Connection is temporarily unavailable, retrying...');
@@ -1345,6 +1347,9 @@ console.log(version);
               document.getElementById('InputRoom').disabled = true;
               document.getElementById('InputRoom').style.display = 'none';
               ///document.getElementById('InputRoom').placeholder = '';
+
+              document.getElementById('InputMsg').disabled = true;
+              document.getElementById('InputMag').style.display = 'none';
                   
               /*
               ably.close();  ///!!!
