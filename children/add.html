@@ -19,6 +19,14 @@
         position: fixed;
         width: 100%;
       }
+      dialog::backdrop {
+          background: rgba(0, 0, 0, 0.6); /* 半透明背景 */
+          /* background-color: black; */
+      }
+      dialog {
+          background: rgba(0, 0, 0, 0.6); /* 半透明背景 */
+          background-color: white;
+      }
     </style>
     <!--style>
         .skiptranslate {
@@ -149,7 +157,7 @@
     </style>
 </head>
 <body>
-    <div id="google_translate_element" style="display:none;"></div>
+    <!--div id="google_translate_element" style="display:none;"></div-->
   
     
     <button disabled="" id="disabled" style="
@@ -210,19 +218,19 @@
             
           <!--strong></strong-->
           <div style="background: #FF3B00; color: white;" translate="yes">
-          <div style="margin: 10px;" onclick="document.getElementById('DialogTool').showModal()">
+          <div style="margin: 10px;" onclick="document.getElementById('DialogTrans').showModal()">
           By sending a message to this service, it means you have agreed to any content and all content!
           </div></div>
     </div>
   
   <dialog id="DialogTrans" translate="no">
       <div id="google_translate_element" style="display:block;"></div><br>      
-      <button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogTrans').close();console.log(new Date().toLocaleString(), '🙈');">❌</button>
+      <button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogTrans').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
   </dialog>
     
   <dialog id="DialogCheck" translate="no">
       <pre id="logOutput" style="max-height:200px; overflow:auto; margin:0;"></pre><br>
-      <button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogCheck').close();console.log(new Date().toLocaleString(), '🙈');">❌</button>
+      <button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogCheck').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
   </dialog>
 
 <!-- HTML ================================================== -->
