@@ -147,7 +147,7 @@
         box-shadow: 0 0 5px red;
       }
     </style>
-    <style>
+    <!--style>
       .skiptranslate {
         display: none !important;   /* 避免 display:none 影響內容顯示 */
         position: static !important;   /* 防止位置異常 */
@@ -159,6 +159,8 @@
         background: none !important;
         font-size: inherit !important;
       }
+    </style-->
+    <style>
       iframe {
         display: none !important;
       }
@@ -211,7 +213,7 @@
     </style>
 </head>
 <body>
-    <div id="google_translate_element" style="display:block;"></div>
+    <!--div id="google_translate_element" style="display:block;"></div-->
   
     
     <button disabled="" id="disabled" style="
@@ -284,12 +286,21 @@
         
         <!--strong></strong-->
         <div style="background: #FF3B00; color: white;" translate="yes">
-        <div style="margin: 10px;" onclick="" id="notice">
+        <div style="margin: 10px;" onclick="document.getElementById('DialogTrans').showModal();" id="notice">
         By using any of the services, it means you have agreed to any content and all content!
         </div></div>
   </div>
 
   
+  <dialog id="DialogTrans" translate="no">
+      <div id="google_translate_element" style="display:block;"></div><br>      
+      <button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogTrans').close();console.log(new Date().toLocaleString(), '🙈');">❌</button>
+  </dialog>
+    
+  <dialog id="DialogCheck" translate="no">
+      <pre id="logOutput" style="max-height:200px; overflow:auto; margin:0;"></pre><br>
+      <button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogCheck').close();console.log(new Date().toLocaleString(), '🙈');">❌</button>
+  </dialog>
   
   <dialog id="DialogShare" style="background-color: #000000; 
       display: flex; flex-direction: column; align-items: center;
@@ -409,16 +420,6 @@
   </dialog>
   
   
-  
-  
-  
-    
-  <dialog id="DialogCheck" translate="no">
-      <pre id="logOutput" style="max-height:200px; overflow:auto; margin:0;"></pre>
-      <br>
-      <button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogCheck').close();console.log(new Date().toLocaleString(), '🙈');">❌</button>
-
-  </dialog>
 <!-- HTML ================================================== -->
 
 <script>
