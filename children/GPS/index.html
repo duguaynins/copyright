@@ -1,0 +1,49 @@
+
+<style>
+  body {
+    overflow: hidden;
+  }
+</style>
+<style>
+  #content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;  /* 垂直置中 */
+      align-items: center;      /* 水平置中 */
+      text-align: center;       /* 文字置中 */
+  }
+  input, textarea, button, select {
+    /*font-size: inherit; /* 主動繼承 body 字體大小 */
+    font-size: 18px;
+  }
+</style>
+
+
+<button id="input" onclick="getLocation()" style="width: 100%; height: 100%;">GPS</button>
+<p id="output"></p>
+
+<script>
+  function getLocation() {
+    if (!navigator.geolocation) {
+      document.getElementById("output").innerText = "Not supported.";
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        document.getElementById("input").style.display = "none";
+        document.getElementById("output").innerText =
+          `latitude: ${lat}, longitude: ${lng}`;
+        const url = `https://www.google.com/maps?q=${lat},${lng}`;
+        window.open(url, "_blank", "noopener,noreferrer");
+      },
+      (err) => {
+        document.getElementById("input").style.display = "none";
+        document.getElementById("output").innerText =
+          `error: ${err.message}`;
+      }
+    );
+  }
+</script>
