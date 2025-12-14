@@ -214,7 +214,7 @@
 </div>
 
 <input id="input_msg" style="display:none" class="main" type="text" name="noMemory" autocomplete="off" placeholder="input message text..." style="width:100%; text-align: center;"/>
-<button id="input_msgbtn" style="display:none" onclick="send()">Send & Recv</button>
+<button id="input_msgbtn" style="display:none" onclick="send()">Send and Recv</button>
 
 <!-- 放置你原有的布局 -->
             
@@ -324,14 +324,14 @@ console.error(new Date().toLocaleString(), 'This is an error test.');
       if (lang.replace(/_/g, "-").split("-")[0] === "en") {
         document.getElementById("input_msg").style.display = "block";
         document.getElementById("input_msgbtn").style.display = "block";
-        document.getElementById("content").style.background = "#CCCCCC";
+        document.getElementById("content").style.background = "#FFFFFF";
         ///document.getElementById('Input').textAlign = 'center';
       }
   
       waitForTranslationById('notice', () => {
         document.getElementById("input_msg").style.display = "block";
         document.getElementById("input_msgbtn").style.display = "block";
-        document.getElementById("content").style.background = "#CCCCCC";
+        document.getElementById("content").style.background = "#FFFFFF";
         ///document.getElementById('Input').textAlign = 'center';
       });
 
