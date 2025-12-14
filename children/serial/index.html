@@ -212,7 +212,7 @@
           
 <!-- 放置你原有的布局 -->
 
-<div id="content" style="background: #FFFFFF; width:100%; flex:1; border: 1px solid #ccc; color: black; overflow-y: auto; overflow-x: hidden;">
+<div id="content" style="background: #CCCCCC; width:100%; flex:1; border: 1px solid #ccc; color: black; overflow-y: auto; overflow-x: hidden;">
 <div id="output_display" style="border:1px solid #ccc; width:100%; text-align:left; flex:1; margin: 0; padding: 0; overflow:auto;
                                 flex-direction: column-reverse; display: flex;"></div>
 </div>
@@ -277,8 +277,10 @@ function log(msg) {
   ///document.getElementById("output_display").innerHTML += msg + "<br>";
   ///document.getElementById("output_display").innerHTML += `<span translate="no">${msg}</span><br>`;
 
+  ///let time = Date.now();
+  let time = "⏳　" + new Date().toISOString()
   const div = document.createElement("div");
-  div.innerHTML = `<span translate="no">${msg}</span>`;
+  div.innerHTML = `<span translate="no">${time}　${msg}</span>`;
   ///div.innerHTML = `<pre translate="no">${msg}</pre>`;
   document.getElementById("output_display").prepend(div);
 }
@@ -293,6 +295,7 @@ async function connect() {
   document.getElementById("input_baudbtn").style.display = "none";
   document.getElementById("input_msg").style.display = "block";
   document.getElementById("input_msgbtn").style.display = "block";
+  document.getElementById("output_display").style.background = "#FFFFFF";
 
   // writer（Web → Arduino）
   const encoder = new TextEncoderStream();
@@ -490,3 +493,4 @@ console.error(new Date().toLocaleString(), 'This is an error test.');
     
 </body>
 </html>
+
