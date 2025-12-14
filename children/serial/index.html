@@ -1,0 +1,102 @@
+<!--input id="input_baud" type="number" value="9600"-->
+<select id="input_baud">
+  <option value="300">300</option>
+  <option value="600">600*</option>
+  <option value="750">750*</option>
+  <option value="1200">1200</option>
+  <option value="2400">2400</option>
+  <option value="4800">4800</option>
+  <option value="9600" selected>9600</option>
+  <option value="19200">19200</option>
+  <option value="31250">31250*</option>
+  <option value="38400">38400</option>
+  <option value="57600">57600</option>
+  <option value="74880">74880*</option>
+  <option value="115200">115200</option>
+  <option value="230400">230400</option>
+  <option value="250000">250000*</option>
+  <option value="460800">460800</option>
+  <option value="500000">500000*</option>
+  <option value="921600">921600</option>
+  <option value="1000000">1000000*</option>
+  <option value="2000000">2000000*</option>
+</select>
+
+<button onclick="connect()">Connect</button>
+
+<pre id="output_display"></pre>
+
+<input id="input_msg" type="">
+<button onclick="send()">Send</button>
+
+<script>
+let port;
+let reader;
+let writer;
+
+function log(msg) {
+  document.getElementById("output_display").textContent += msg + "\n";
+}
+
+async function connect() {
+  port = await navigator.serial.requestPort();
+  await port.open({
+    baudRate: Number(document.getElementById("input_baud").value)
+  });
+
+  // writer（Web → Arduino）
+  const encoder = new TextEncoderStream();
+  encoder.readable.pipeTo(port.writable);
+  writer = encoder.writable.getWriter();
+
+  // reader（Arduino → Web）
+  const decoder = new TextDecoderStream();
+  port.readable.pipeTo(decoder.writable);
+  reader = decoder.readable.getReader();
+
+  log("✅ Connected");
+
+  readLoop(); // 啟動讀取
+}
+
+/*
+async function readLoop() {
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    log("◄ " + value.trim());
+  }
+}  */
+let lineBuffer = "";
+
+async function readLoop() {
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+
+    lineBuffer += value;
+
+    let lines = lineBuffer.split("\n");
+    lineBuffer = lines.pop(); // 留下未完成的一行
+
+    for (let line of lines) {
+      log("🤖　" + line);
+    }
+  }
+}
+
+async function send() {
+  const v = document.getElementById("input_msg").value;
+  document.getElementById("input_msg").value = "";
+  await writer.write(v + "\n");
+  log("🧠　" + v);  ///🧠✨💡
+}
+
+
+document.getElementById("input_msg").addEventListener("keydown", function(e) {    
+    if (e.key === "Enter") {
+        e.preventDefault();  // 阻止 Enter 鍵的預設行為（即防止跳轉到下一個輸入框）
+        send();
+    }
+});
+</script>
