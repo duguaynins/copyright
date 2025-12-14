@@ -204,8 +204,8 @@
       display: flex;
       flex-direction: column;
     ">
-          <span id="message" style="background-color: black; color: white; font-size: max(1vh,1vw);">Communicating with the device you are connected to.</span>
-          <div style="background: #FFFFFF; color: black;" translate="no">
+          <span id="anything" style="background-color: black; color: white; font-size: max(1vh,1vw);">Communicating with the device you are connected to.</span>
+          <div id="title" style="background: #FFFFFF; color: black;" translate="no">
           <div style="margin: 10px;" onclick="document.getElementById('DialogCheck').showModal();console.log(new Date().toLocaleString(), '🙉');">
           nins/serial
           </div></div>
@@ -214,7 +214,7 @@
 
 <div id="content" style="background: #CCCCCC; width:100%; flex:1; border: 1px solid #ccc; color: black; overflow-y: auto; overflow-x: hidden;">
 <div id="output_display" style="border:1px solid #ccc; width:100%; text-align:left; flex:1; margin: 0; padding: 0; overflow:auto;
-                                flex-direction: column-reverse; display: flex;"></div>
+                                flex-direction: column-reverse; display: flex;">Start after connecting...</div>
 </div>
 
 <select id="input_baud" style="display:none" style="width:100%;" class="main" >
@@ -246,21 +246,21 @@
 <!-- 放置你原有的布局 -->
           
           <!--strong></strong-->
-          <div style="background: #FF3B00; color: white;" translate="yes">
+          <div id="notice" style="background: #FF3B00; color: white;" translate="yes">
           <div style="margin: 10px;" onclick="document.getElementById('DialogTrans').showModal()">
           By sending a message to this service, it means you have agreed to any content and all content!
           </div></div>
-          <span style="background-color: black; color: white; font-size: max(1vh,1vw);" translate="no">© 2024 NINS (by JPGT).</span>
+          <span id="copyright" style="background-color: black; color: white; font-size: max(1vh,1vw);" translate="no">© 2024 NINS (by JPGT).</span>
     </div>
   
   <dialog id="DialogTrans" translate="no">
       <div id="google_translate_element" style="display:block;"></div><br>      
-      <button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogTrans').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
+      <button style="width: 100%;" onclick="document.getElementById('DialogTrans').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
   </dialog>
     
   <dialog id="DialogCheck" translate="no">
       <pre id="logOutput" style="max-height:200px; overflow:auto; margin:0;"></pre><br>
-      <button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogCheck').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
+      <button style="width: 100%;" onclick="document.getElementById('DialogCheck').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
   </dialog>
 
 <!-- HTML ================================================== -->
@@ -296,6 +296,7 @@ async function connect() {
   document.getElementById("input_msg").style.display = "block";
   document.getElementById("input_msgbtn").style.display = "block";
   document.getElementById("output_display").style.background = "#FFFFFF";
+  document.getElementById("output_display").innerHTML = "";
 
   // writer（Web → Arduino）
   const encoder = new TextEncoderStream();
