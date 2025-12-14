@@ -217,7 +217,7 @@
                                 flex-direction: column-reverse; display: flex;"></div>
 </div>
 
-<select id="input_baud" style="width:100%;" class="main" >
+<select id="input_baud" style="display:none" style="width:100%;" class="main" >
   <option value="9600" selected>select device baud...</option>
   <option value="300">300</option>
   <option value="600">600*</option>
@@ -240,9 +240,9 @@
   <option value="1000000">1000000*</option>
   <option value="2000000">2000000*</option>
 </select>
-<button id="input_baudbtn" onclick="connect()">Connect</button>
+<button id="input_baudbtn" style="display:none" onclick="connect()">Connect</button>
 <input id="input_msg" style="display:none" class="main" type="text" name="noMemory" autocomplete="off" placeholder="input message text..." style="width:100%; text-align: center;"/>
-<button id="input_msgbtn" onclick="send()" style="display:none">Send & Recv</button>
+<button id="input_msgbtn" style="display:none" onclick="send()">Send & Recv</button>
 <!-- 放置你原有的布局 -->
           
           <!--strong></strong-->
@@ -325,18 +325,31 @@ async function readLoop() {
 let lineBuffer = "";
 
 async function readLoop() {
-  while (true) {
-    const { value, done } = await reader.read();
-    if (done) break;
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) { 
+        document.getElementById("input_msg").style.display = "none";
+        document.getElementById("input_msgbtn").style.display = "none";
+        document.getElementById("output_display").style.background = "#CCCCCC";
+        log("✅　Exited");
+        break; 
+      }
 
-    lineBuffer += value;
+      lineBuffer += value;
 
-    let lines = lineBuffer.split("\n");
-    lineBuffer = lines.pop(); // 留下未完成的一行
+      let lines = lineBuffer.split("\n");
+      lineBuffer = lines.pop(); // 留下未完成的一行
 
-    for (let line of lines) {
-      log("🤖　" + line);
+      for (let line of lines) {
+        log("🤖　" + line);
+      }
     }
+  } catch (err) {
+        document.getElementById("input_msg").style.display = "none";
+        document.getElementById("input_msgbtn").style.display = "none";
+        document.getElementById("output_display").style.background = "#CCCCCC";
+        log("✅　Exited");
   }
 }
 
@@ -438,10 +451,14 @@ console.error(new Date().toLocaleString(), 'This is an error test.');
       console.log('combo?', !!combo);
         
       if (lang.replace(/_/g, "-").split("-")[0] === "en") {
+        document.getElementById("input_baud").style.display = "block";
+        document.getElementById("input_baudbtn").style.display = "block";
         ///document.getElementById('Input').textAlign = 'center';
       }
   
       waitForTranslationById('notice', () => {
+        document.getElementById("input_baud").style.display = "block";
+        document.getElementById("input_baudbtn").style.display = "block";
         ///document.getElementById('Input').textAlign = 'center';
       });
 
