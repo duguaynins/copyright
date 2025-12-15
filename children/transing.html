@@ -363,11 +363,11 @@
                 <option value="0">close</option>
                 <option value="auto">auto</option>
               </select>）<br-->
-              <label for="Switchslang">🔣（sl-switch: </label>
-              <input type="checkbox" onchange="document.getElementById('Selectslang').disabled = !this.checked;">）<br>
+              <label for="SwitchSlang">🔣（sl-switch: </label>
+              <input type="checkbox" onchange="document.getElementById('SelectSlang').disabled = !this.checked;">）<br>
             
-              <label for="Selectslang">🔣（sl-in: </label>
-              <select id="Selectslang">
+              <label for="SelectSlang">🔣（sl-in: </label>
+              <select id="SelectSlang">
                 <!--option value="auto">auto*</option-->
                 <option value="en-US">English</option>
                 <option value="ja-JP">日本語</option>
@@ -380,8 +380,8 @@
                 <option value="1">open</option>
                 <option value="0">close</option>
               </select>）<br-->
-              <label for="Selectilang">🤖（tl-out: </label>
-              <select id="Selectilang">
+              <label for="SelectTlang">🤖（tl-out: </label>
+              <select id="SelectTlang">
                 <!--option value="auto">auto*</option-->
                 <option value="en-US">English</option>
                 <option value="ja-JP">日本語</option>
@@ -394,8 +394,8 @@
                 <option value="1">open</option>
                 <option value="0">close</option>
               </select>）<br-->
-              <label for="Selecttlang">👻（il-out: </label>
-              <select id="Selecttlang">
+              <label for="Selectilang">👻（il-out: </label>
+              <select id="Selectilang">
                 <option value="auto">auto*</option>
                 <!--option value="auto">auto</option-->
               </select>）<br>
@@ -670,13 +670,13 @@ console.log(version);
     // 🔑  ///prompt("（🔑: ***）")
     let apikey_user = "";
     
-    const rlang = "en-US";  //relang or resultlang
-    ///const tlang = navigator.language || navigator.userLanguage || "en-US";  // 閱讀母語
+    const ilang = "en-US";  //relang or resultlang
+    const xlang = languageRegion(navigator.language || navigator.userLanguage || "en-US");  // 閱讀母語
     ///const tlang = languageScript(navigator.language || navigator.userLanguage || "en-US");  // 閱讀母語
-    const tlang = languageRegion(navigator.language || navigator.userLanguage || "en-US");  // 閱讀母語
+    ///const tlang = navigator.language || navigator.userLanguage || "en-US";  // 閱讀母語
     
-    let ilang = tlang;  // 學習語言 OR 中間語言  // params.get("il")
-    let slang = tlang;
+    let tlang = xlang;  // 學習語言 OR 中間語言  // params.get("il")
+    let slang = xlang;
     
     let speed = 1.2;
   </script>
@@ -950,12 +950,12 @@ console.log(version);
     
   <script>
     // 連線前的禁用****
-    document.getElementById('Selectslang').disabled = true;  // 禁用
-    ///document.getElementById('Selectslang').style.display = 'none';
+    document.getElementById('SelectSlang').disabled = true;  // 禁用
+    ///document.getElementById('SelectSlang').style.display = 'none';
+    document.getElementById('SelectTlang').disabled = true;  // 禁用
+    ///document.getElementById('SelectTlang').style.display = 'none';
     document.getElementById('Selectilang').disabled = true;  // 禁用
     ///document.getElementById('Selectilang').style.display = 'none';
-    document.getElementById('Selecttlang').disabled = true;  // 禁用
-    ///document.getElementById('Selecttlang').style.display = 'none';
     
     document.getElementById('InputMsg').disabled = true;  // 禁用
     document.getElementById('InputMsg').style.display = 'none';
@@ -1091,9 +1091,9 @@ console.log(version);
     async function sendMessage() {
         lastSentTime = Date.now();
         
-        let message = null;
-        let source = null;
-        let target = null;
+        ///let message = null;
+        ///let source = null;
+        ///let target = null;
         
         // 確保內容***
         const input = document.getElementById('InputMsg');
@@ -1106,10 +1106,10 @@ console.log(version);
         ///const hasEmoji = emojiRegex.test(msg);
         ///const emojis = msg.match(emojiRegex);
         // 清除法
-        message = "I sent a test message.";
-        message = "...";
-        source = 'en';
-        target = tlang;
+        ///message = "I sent a test message.";
+        ///message = "...";
+        ///source = 'en';
+        ///target = xlang;
         let xmsg = msg.replace( emojiRegex, '' )
         if (!xmsg) return;  //???
         ///await translate(message, source, target);  // 進行翻譯**
@@ -1156,8 +1156,8 @@ console.log(version);
         
         // 這是原本的翻譯******  // 進行翻譯**
         const smsg = xmsg;
+        const tmsg = await translate({ "text": smsg, "source": slang, "target": tlang }); if (!tmsg) return;
         const imsg = await translate({ "text": smsg, "source": slang, "target": ilang }); if (!imsg) return;
-        const rmsg = await translate({ "text": smsg, "source": slang, "target": rlang }); if (!rmsg) return;
         // 這兩行暫時註解******
         
         ///const randomID = "id_" + Math.random().toString(36).substring(2, 8);  // 產生短隨機 ID
@@ -1171,22 +1171,22 @@ console.log(version);
         const emoji_textil = '🤖';
         const emoji_textsl = '🔣';
         const emoji_langxl = '👄';  //👂
-        const result = (emoji_clock + nowUTC) + ("🔄" + rmsg) + ("🤖" + imsg) + ("🔣" + smsg) + ("👄" + ilang + "|" + slang);/// + ("🆔" + randomID);  //???
+        const result = (emoji_clock + nowUTC) + ("🔄" + imsg) + ("🤖" + tmsg) + ("🔣" + smsg) + ("👄" + tlang + "|" + slang);/// + ("🆔" + randomID);  //???
         // 穩定：發送訊息
         ///channel.publish('message', result);
         
         // 語意距離
-        const distance = await semantic({ "smsg": smsg, "rmsg": rmsg }); // duguaynins/SemanticDistance
+        const distance = await semantic({ "smsg": smsg, "rmsg": imsg }); // duguaynins/SemanticDistance
         console.log("語意距離：" + distance + "***");
 
         // 測試：統一顯示語意距離
         ///channel.subscribe
         channel.publish('message', {
           time: (emoji_clock + nowUTC),
-          rl_text: rmsg, ///("🔄" + rmsg),
-          il_text: imsg, ///("🤖" + imsg),
+          rl_text: imsg, ///("🔄" + rmsg),
+          il_text: tmsg, ///("🤖" + imsg),
           sl_text: smsg, ///("🔣" + smsg),
-          tl_lang: ilang, ///("👄" + ilang),
+          tl_lang: tlang, ///("👄" + ilang),
           sl_lang: slang, ///("👄" + slang),
           dist: distance, ///("📏" + distance),
         });
@@ -1205,9 +1205,9 @@ console.log(version);
         ///const var1 = ilang;
         ///const var2 = slang;
         ///const var3 = rlang;
-        const var1 = imsg;
+        const var1 = tmsg;
         const var2 = smsg;
-        const var3 = rmsg;
+        const var3 = imsg;
         const var4 = distance;
         const fullURL = `${baseURL}&entry.2108432241=${encodeURIComponent(var1)}&entry.108198120=${encodeURIComponent(var2)}&entry.2008598079=${encodeURIComponent(var3)}&entry.1461710493=${encodeURIComponent(var4)}`;
         
@@ -1247,12 +1247,12 @@ console.log(version);
         document.getElementById('InputRoom').style.display = 'none';
         ///!!!
         
-        //*document.getElementById('Selectslang').disabled = false;  // 啟用
-        ///document.getElementById('Selectslang').style.display = '';
-        document.getElementById('Selectilang').disabled = false;  // 啟用
+        //*document.getElementById('SelectSlang').disabled = false;  // 啟用
+        ///document.getElementById('SelectSlang').style.display = '';
+        document.getElementById('SelectTlang').disabled = false;  // 啟用
+        ///document.getElementById('SelectTlang').style.display = '';
+        //*document.getElementById('Selectilang').disabled = false;  // 啟用
         ///document.getElementById('Selectilang').style.display = '';
-        //*document.getElementById('Selecttlang').disabled = false;  // 啟用
-        ///document.getElementById('Selecttlang').style.display = '';
         
         document.getElementById('chatbox').textContent = "";
         
@@ -1749,7 +1749,7 @@ console.log(version);
             // 選擇語言
             if (!recognition.lang) {  // 口語語言設定偵測  // 必須 start() 之前
                 ///recognition.lang = prompt("Input your speek language: (zh-TW || ja-JP || ko-KR || en-US)***") || tlang;
-                recognition.lang = tlang;  //tlang, slang  // 要講其他語言就自己更換瀏覽器語言吧！！！  //???
+                recognition.lang = xlang;  //tlang, slang  // 要講其他語言就自己更換瀏覽器語言吧！！！  //???
             }
             
             button.textContent = "🎙️（KEEP＝" + recognition.lang + "）";
@@ -1859,20 +1859,20 @@ console.log(version);
     ///window.onload = function() {
     document.addEventListener('DOMContentLoaded', () => {
         const news = document.createElement("option");        
-        news.value = tlang;///this.options[this.selectedIndex].value;///this.value;
+        news.value = xlang;///this.options[this.selectedIndex].value;///this.value;
         news.text = "auto*";///this.options[this.selectedIndex].text;///this.text;
-        document.getElementById("Selectslang").appendChild(news);
+        document.getElementById("SelectSlang").appendChild(news);
         news.selected = true;  // ✅ 設為預設選中
         
         const newi = document.createElement("option");
-        newi.value = tlang;///this.options[this.selectedIndex].value;///this.value;
+        newi.value = xlang;///this.options[this.selectedIndex].value;///this.value;
         newi.text = "auto*";///this.options[this.selectedIndex].text;///this.text;
-        document.getElementById("Selectilang").appendChild(newi);
+        document.getElementById("SelectTlang").appendChild(newi);
         newi.selected = true;  // ✅ 設為預設選中
     });  // 載入監聽
     ///};
     
-    document.getElementById("Selectslang").addEventListener("change", function () {
+    document.getElementById("SelectSlang").addEventListener("change", function () {
         if (true) { 
             const selectedValue = this.value;
             slang = selectedValue;  // 輸入的語言
@@ -1891,15 +1891,15 @@ console.log(version);
         }
     });
     
-    document.getElementById("Selectilang").addEventListener("change", function () {
+    document.getElementById("SelectTlang").addEventListener("change", function () {
         const selectedValue = this.value;
-        ilang = selectedValue;  // 學習的語言
+        tlang = selectedValue;  // 學習的語言
         console.log("選擇了：", selectedValue);
         
         ///const news = document.createElement("option");
         ///news.value = this.options[this.selectedIndex].value;///this.value;
         ///news.text = this.options[this.selectedIndex].text;///this.text;
-        ///document.getElementById("Selectslang").appendChild(news);
+        ///document.getElementById("SelectSlang").appendChild(news);
         // 這裡可以加入其他邏輯，例如根據選擇更改語言、顯示訊息等
     });
     
