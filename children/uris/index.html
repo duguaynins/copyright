@@ -9,6 +9,11 @@
     <!--link rel="shortcut icon" href="/favicon.ico"-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <title translate="no">nins/uris</title>
+    <style>
+      body {
+        overflow: hidden;
+      }
+    </style>
   
     <!-- 可選：簡單 CSS 調整翻譯小工具外觀（可自訂） -->
     <style>
@@ -19,19 +24,25 @@
             align-items: center;      /* 水平置中 */
             text-align: center;       /* 文字置中 */
         }
-        input {
-          width: 90vw;
+        
+        button:hover {
+          background-color: #cdcdcd;
+          color: black;
         }
-        input, button {
-            border: 2px solid #4CAF50; /* 綠色邊框 */
+        button:active {
+          background-color: #222222;
+          color: white;
+        }
+        button {
+            border: 2px solid #FF3B00; /* 綠色邊框 */
             border-radius: 6px;        /* 圓角 */
-            padding: 8px 12px;
-            margin: 2px 0;
+            padding: 4px 12px;
+            margin: 0px 0;
             outline: none;              /* 移除預設外框 */
         }
 
         /* 聚焦時（使用者點入）變色 */
-        input:focus, button:focus {
+        button:focus {
             border-color: red;      /* 聚焦時變藍色 */
         }
     </style>
@@ -222,10 +233,12 @@
       display: flex;
       flex-direction: column;
     ">
+          <span style="background-color: black; color: white; font-size: max(1vh,1vw);">Quickly create your own contact URL in HTTPS.</span>
           <div style="background: #FFFFFF; color: black;" translate="no">
-          <div style="margin: 10px;" onclick="document.getElementById('DialogShare').showModal()">
+          <div style="margin: 10px;" onclick="document.getElementById('DialogLog').showModal()">
           nins/uris
           </div></div>
+          <!-- 可選額外說明 -->
           
               <!-- 放置你原有的布局 -->
               <div id="content" style="background: #FFFFFF; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
@@ -234,33 +247,98 @@
                 <!--h1 translate="no">© 2024 NINS <span translate="no" style="color: red;">(by JPGT)</span>. 👻✨</h1-->
 
                 <!--h1>Preparing your information...</h1-->
-                <p id="message">📌 If you really need a shorter information redirect link, We welcome you to contact us. <a translate="no">(mailto:<a style='color:red;' href='mailto:duguaynins@gmail.com'>duguaynins@gmail.com</a> 📧)</a></p>
+                <!--p id="message">📌 If you really need a shorter information redirect link, We welcome you to contact us. <span translate="no">(mailto:<a style='color:red;' href='mailto:duguaynins@gmail.com'>duguaynins@gmail.com</a> 📧)</span></p-->
+                
+                <p id="message">📌 If you really need a shorter information redirect link, We welcome you to contact us. 
+                    <span translate="no">(mailto:
+                        <a style='color:red;' href="mailto:duguaynins@gmail.com?subject=Hi%20Nins!%20Request%20for%20Short%20Link!&body=Thank%20you.">duguaynins@gmail.com</a> 📧)
+                    </span>
+                </p>
                 
                 <!--p id="message" style="color: #999999;">💬 ...!</p-->
                 <!--p id="nanoURL" translate="no">💡 ...!</p-->
                 <!--p id="hintURL">✨ ...!</p-->
                 <p id="miniURL" translate="no">💡 ...!</p>
                 <!--p id="message">💬 ...!</p-->
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <button type="button" onclick="document.getElementById('informationInput').value='tel:12345678'">tel</button>
-                    <button type="button" onclick="document.getElementById('informationInput').value='sms:12345678'">sms</button>
-                    <button type="button" onclick="document.getElementById('informationInput').value='mailto:test@example.com'">mail</button>
-                </div>
-                
-                <!-- 翻譯小工具容器（放在頁面任意地方） -->
-                <div id="google_translate_wrapper">
-                  <div id="google_translate_element"></div>
-                </div>
               </div>
               <!-- 放置你原有的布局 -->
             
+          <!-- 可選輸入框 -->
+          <u translate="no" style='text-decoration:none; color:black;'>*{A-Z}  {a-z}  {0-9}  {-/_/./~/@}*</u>
+          
+          <div id="sliderButton" style="
+                      display: flex;
+                      /*flex-direction: row;  /* 上下==column */
+                      /*justify-content: center;*/
+                      justify-content: flex-start;  /* 左對齊較符合滾動預期 */
+                      flex-shrink: 0
+                      align-items: center;  /* 水平置中 canvas */
+                      /*overflow-y: auto;     /* 可垂直滾動 */
+                      overflow-x: auto;     /* 可水平滾動 */
+                  ">
+              
+              <button style="width:25vw" id="copyButton" onclick="">🔗</button>
+              <button style="width:25vw" type="button" onclick="document.getElementById('InputInfo').value='mailto:';updateAndCopy();">📧</button>
+              <button style="width:25vw" type="button" onclick="document.getElementById('InputInfo').value='tel:';updateAndCopy();">📞</button>
+              <button style="width:25vw" type="button" onclick="document.getElementById('InputInfo').value='sms:';updateAndCopy();">💬</button>
+              
+          </div>
+          <input class="main" id="InputInfo" type="text" name="noMemory" autocomplete="off" placeholder="" style="width: 100%; text-align: left;">
+          <!--input class="main" id="InputInfo" type="text" name="noMemory" autocomplete="off" placeholder="" style="width: 100%; text-align: center;"-->
           <!--strong></strong-->
           <div style="background: #FF3B00; color: white;" translate="yes">
-          <div style="margin: 10px;" onclick="document.getElementById('DialogTool').showModal()">
+          <div style="margin: 10px;" onclick="document.getElementById('').showModal();console.log('🛠️');">
           By sending a message to this service, it means you have agreed to any content and all content!
           </div></div>
+          <span style="background-color: black; color: white; font-size: max(1vh,1vw);" translate="no">© 2024 NINS (by JPGT).</span>
     </div>
-    <!-- ================================================== -->
+    <dialog id="DialogLog">
+        <pre id="logOutput" style="max-height:200px; overflow:auto; margin:0;"></pre>
+        <button id="openLog" onclick="document.getElementById('DialogLog').close();console.log('❌');">❌</button>
+
+    </dialog>
+    <!-- HTML ================================================== -->
+
+    <script>
+        const dialog = document.getElementById('DialogLog');
+        const logOutput = document.getElementById('logOutput');
+        /*
+        const _log = console.log;
+        console.log = function(...args) {
+          _log.apply(console, args);
+
+          const text = args.map(a =>
+            typeof a === 'object' ? JSON.stringify(a) : String(a)
+          ).join(' ');
+
+          logOutput.insertAdjacentHTML('beforeend', text + '\n');
+          logOutput.scrollTop = logOutput.scrollHeight; // ✅ 自動滾到底
+        }; */
+
+        // 攔截 console.log 與 console.error
+        ['log', 'error'].forEach(level => {
+          const original = console[level];
+          console[level] = function(...args) {
+            original.apply(console, args);
+            const message = args.map(a => (typeof a === 'object' ? JSON.stringify(a) : a)).join(' ');
+            logOutput.insertAdjacentHTML('beforeend', `<div class="${level}">${message}</div>`);
+            // 滾動到底部
+            logOutput.scrollTop = logOutput.scrollHeight;
+          };
+        });
+
+        // 測試
+        console.log('This is a log test.');
+        console.error('This is an error test.');
+    </script>
+    <!-- LOG ================================================== -->
+
+    <script>
+        const url_href = window.location.href;
+        const url_op = window.location.origin + window.location.pathname;  ///https://example.com + /page/subpage
+        const url_sh = window.location.search + window.location.hash;  ///?x=1 + #section
+    </script>
+    <!-- URL ================================================== -->
 
     <script type="text/javascript">  // google.js
       // GOOGLE TRANSLATE
@@ -301,19 +379,44 @@
       });
     </script>
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    <!-- ================================================== -->
+    <!-- TRANSLATE ================================================== -->
     
-    <!-- 放置你原有的布局 -->
-    <!-- 放置你原有的布局 -->
 
     
     <!-- ================================================== -->
 
     <script>
-        function checkUriData(uriData) {
-            let redirect = null;
-            return true; ///測試全通過****
+        function isEncoded(str) {
+            try {
+                // 嘗試解碼，如果解碼後與原始不同，表示曾經編碼
+                const decoded = decodeURIComponent(str);
+                return decoded !== str;
+            } catch (e) {
+                // 如果解碼失敗，表示包含不合法的 %XX，可能是亂碼
+                return false;
+            }
+        }
+        function parseScheme(input) {
+            // 使用正則取出協議與內容
+            const match = input.match(/^([a-zA-Z]+):(.*)$/);
 
+            if (match) {
+                const scheme = match[1] + ":";   // 例如 tel:
+                const recipient = match[2];      // 例如 +886909090909
+                console.log("協議：", scheme);
+                console.log("內容：", recipient);
+                return { scheme, recipient };
+            } else {
+                // 沒有協議時，回傳 null 並保持原始內容
+                return { scheme: null, recipient: input };
+            }
+        }
+        function checkUriData(uriData) {
+            console.log('checkUriData', uriData);
+            ///if (isEncoded(uriData)) { decodeURIComponent(uriData); }  // 是編碼，就解碼。
+
+            let redirect = null;
+            
             if (uriData === null) {
                 console.log('✅');
                 redirect = null;
@@ -345,91 +448,68 @@
     </script-->
     <!-- ================================================== -->
 
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    <script type="text/javascript">
-        ///頁面翻譯***
-
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-            pageLanguage: 'en',            // 你的原始頁面語言 (可改為 'zh-TW'、'auto' 等)
-            autoDisplay: false,
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-            // includedLanguages: 'zh-TW,zh-CN,en,ja,ko' // 可限制顯示的語言列表 (選用)
-            }, 'google_translate_element');
-        }
-    </script>
-    <!-- ================================================== -->
-
     <script>
-        ///網址處理***
-        let redirect = false;
-
+        ///跳轉處理***
+        
+        
         // 1. Get URL parameters
         const urlParams = new URLSearchParams(window.location.search);
 
         // 2. Read the 'redirect' parameter as recipient ID
-        const recipient = urlParams.get('who');
-        ///const recipient = urlParams.get('redirect');
-        ///const recipient = urlParams.get('to');
+        const data = urlParams.get('data') || "";
         /*
-        const recipient = urlParams.get('redirect') 
-                       || urlParams.get('who') 
+        ///const data = urlParams.get('redirect');
+        ///const data = urlParams.get('to');
+        const data = urlParams.get('redirect') 
+                       || urlParams.get('data') 
                        || urlParams.get('go')
                        || urlParams.get('to');*/
         
-        redirect = checkUriData(recipient);
+        let redirect = false;
+        const urisMain = decodeURIComponent(data);
+        redirect = checkUriData(urisMain);
 
-        // Read 'subject' and 'body' parameters
-        const subject = urlParams.get('subject');
-        const body = urlParams.get('body');
-        ///document.getElementById("nanoURL").innerHTML = "💡 （example →）<a style='text-decoration:none; color:black;' href='https://nins.uris.world' target='_blank' rel='noopener noreferrer'>https://<u style='color:red;'>nins</u>.uris.world</a>";
-        document.getElementById("miniURL").innerHTML = "💡 <u style='text-decoration:none; color:black;'>https://duguaynins.github.io/uris/?who=<input style='color:red;' type='text' id='informationInput' placeholder='' value='' size='35'> <button id='copyButton'>Copy URL 🔗</button></u>";  ///uris/index.html
-        ///document.getElementById("message").innerHTML = '✨ Simply enter your information after "who=" to get your "free HTTPS URL" for your information.';
+        // 3. Result
+        if (!redirect && redirect !== null) { 
+            // Not a valid
+            document.getElementById('miniURL').innerHTML = '💡 https://uris.nins.cc/?data=#';
+            document.getElementById('message').innerHTML = '⚠️ This is not a valid protocol. <a translate="no">(mailto:/tel:/sms:)<a>'; 
         
-        if (recipient) {
-            // 3. Build the uris link
-            let urisUrl = `${recipient}`;
-
-            // Check if subject or body exist, then add them
-            const params = [];
-            if (subject) {
-                // Encode special characters for safe URL transmission
-                params.push(`subject=${encodeURIComponent(subject)}`);
-            }
-            if (body) {
-                params.push(`body=${encodeURIComponent(body)}`);
-            }
-
-            // If there are parameters, append them with '?'
-            if (params.length > 0) {
-                urisUrl += '?' + params.join('&');
-            }
-
-            // 4. Redirect to uris link
-            // This triggers the uris protocol
-            if (redirect) {
-                window.location.href = urisUrl;
-            }
-            /*
-            try {
-                window.open(urisUrl);
-            } catch (err) {
-                console.warn("Tel redirect blocked:", err);
-                window.location.href = urisUrl;
-                document.getElementById('message').innerHTML = `⚠️ Fallback redirect is active and the page is locked. The page can be visited at https://uris.world`;
-            }*/
-
-            // Show message to user
-            ///document.getElementById('message').innerText = `The information will be sent to: ${recipient}. Please make sure your information client is open.`;
-            ///document.getElementById('message').innerHTML = `📧 The recipient information will be pre-filled. If it fails, the redirect will not occur. In that case, please use this information to contact (${recipient}).`;
-            if (recipient === null) { console.log('✅'); }
-            else { document.getElementById('message').innerHTML = `✅ Fallback redirect is active and the page is locked. To create a redirect, please visit the original URL. <a translate="no">(<a href='https://duguaynins.github.io/uris/?who=' translate="no">https://uris.nins.cc</a> 🌐)</a>`; }
+        } else if (redirect && urisMain) {
+            // Show link and lock
+            const url = window.location.href;
+            console.log(urisMain);
+            console.log(decodeURIComponent(urisMain));
+            let urisUrl = `${decodeURIComponent(urisMain)}`;  // 解碼全部 ✅  // 解碼更為穩定
+            window.location.href = urisUrl;
             
-            if (!redirect) { document.getElementById('message').innerHTML = '⚠️ This is not mailto/tel/sms.'; }
+            document.getElementById("InputInfo").value = decodeURIComponent(urisMain);
+            document.getElementById("InputInfo").disabled = true;
+            document.getElementById("copyButton").style.display = "none";
+            document.getElementById("sliderButton").style.display = "none";
+
+            document.getElementById('miniURL').innerHTML = `✅ <a href='${url}'>${url}</a> 🌐`;
+            document.getElementById('message').innerHTML = `✅ Fallback redirect is active and the page is locked. To create a redirect, please visit the original URL. <span translate="no">(<a href='https://uris.nins.cc?' translate="no">https://uris.nins.cc</a> 🌐)</span>`;
+        
+        } else if (!redirect && !urisMain) {
+            // New page
+            document.getElementById("miniURL").innerHTML = `💡 <u style='text-decoration:none; color:black;'>https://uris.nins.cc/?data=#</u>`;  ///uris/index.html
+            document.getElementById("message").innerHTML = `📌 If you really need a shorter information redirect link, We welcome you to contact us. <span translate="no">(mailto:<a style='color:red;' href="mailto:duguaynins@gmail.com?subject=Hi%20Nins!%20Request%20for%20Short%20Link!&body=Thank%20you.">duguaynins@gmail.com</a> 📧)</span>`
         } else {
             // Missing required recipient parameter
-            if (recipient === null) { console.log('✅'); }
-            else { document.getElementById('message').innerHTML = '⚠️ Missing recipient information in the URL parameter (?who=...).'; }
+            document.getElementById("miniURL").innerHTML = `💡 <u style='text-decoration:none; color:black;'>https://uris.nins.cc/?data=#</u>`;  ///uris/index.html
+            document.getElementById('message').innerHTML = '⚠️ Missing recipient information in the URL parameter (/?data=#...).';
+        }
+
+        
+        if (redirect && urisMain) {
+            ///const [scheme, recipient] = parseScheme(urisMain); // 陣列用
+            ///const { scheme, recipient } = parseScheme(urisMain); // 字典用 ✅
+            
+        } else {
+            // Missing required recipient parameter
+            if (urisMain === null) { console.log('✅'); }
+            else {  }
             
         }
     </script>
@@ -438,16 +518,40 @@
     <script>
         ///複製與回車***
 
-        ///const input = document.getElementById("informationInput");
+        ///const input = document.getElementById("InputInfo");
         const copyButton = document.getElementById("copyButton");
         ///const result = document.getElementById("result");
 
+        function onlyCopy() {
+            const information = document.getElementById("InputInfo").value.trim();
+            if (!information) return;
+            let redirect = checkUriData(information);
+            if (!redirect) return;
+
+            const url = `https://uris.nins.cc?data=${encodeURIComponent(information)}`;
+            
+            navigator.clipboard.writeText(url).then(() => {
+                copyButton.textContent = "✅";  // Copied 🔗  // 🎁
+                setTimeout(() => (copyButton.textContent = "🔗"), 2000);  // Copy URL 
+                ///document.getElementById("InputInfo").value = "";  // test***
+                ///document.getElementById('message').innerHTML = "🎁 Copied! Paste the link anywhere!";
+                ///document.getElementById('message').innerHTML = "🎁 Link has been copied and is ready to paste!";
+                document.getElementById('message').innerHTML = "🎁 Link has been copied! Paste it wherever you like!";
+
+                const encoding = "https://encoding.nins.cc/?data=" + encodeURIComponent(url);
+                ///window.open(encoding, "_blank", "noopener,noreferrer");
+                setTimeout(() => { window.open(encoding, "_blank", "noopener,noreferrer"); }, 2000);
+            });
+        }
         function updateAndCopy() {
-            const information = document.getElementById("informationInput").value.trim();
+            const information = document.getElementById("InputInfo").value.trim();
             ///if (!information) return;
+            if (!information) { document.getElementById('message').innerHTML = '⚠️ You need to enter valid information. <a translate="no">(mailto:/tel:/sms:)<a>'; }
             if (!information) {
-                copyButton.textContent = "⬅️ Missing 🔗";
-                setTimeout(() => (copyButton.textContent = "Copy URL 🔗"), 2000);
+                document.getElementById('miniURL').innerHTML = '💡 https://uris.nins.cc?data=';
+                copyButton.textContent = "⚠️";
+                ///copyButton.textContent = "⚠️ Missing 🔗";
+                //////setTimeout(() => (copyButton.textContent = "🔗"), 2000);  // Copy URL 
                 return;
             }
 
@@ -455,32 +559,67 @@
             ///if (!redirect) { document.getElementById('message').innerHTML = '⚠️ This is not a valid protocol <a translate="yes">(mailto:/tel:/sms:)<a>.'; }
             if (!redirect) { document.getElementById('message').innerHTML = '⚠️ You need to use a valid protocol. <a translate="no">(mailto:/tel:/sms:)<a>'; }
             if (!redirect) {
-                copyButton.textContent = "⬅️ ERROR 🔗";
-                setTimeout(() => (copyButton.textContent = "Copy URL 🔗"), 2000);
+                document.getElementById('miniURL').innerHTML = '💡 https://uris.nins.cc?data=';
+                copyButton.textContent = "⚠️";
+                ///copyButton.textContent = "⚠️ ERROR 🔗";
+                //////setTimeout(() => (copyButton.textContent = "🔗"), 2000);  // Copy URL 
                 return;
             }
 
-            const url = `https://duguaynins.github.io/uris/?who=${encodeURIComponent(information)}`;
-            document.getElementById('message').innerHTML = `✅ <a href='${url}'>${url}</a> 🌐`;
+            
+            ///const url = `${url_op}?data=${encodeURIComponent(information)}`;
+            ///const url = `https://uris.nins.cc?data=${encodeURIComponent(information)}`;
+            ///const url = `https://uris.nins.cc?data=${(information)}`;
+            /*
+            const url = "";
+            if (isEncoded(recipient)) { url = `https://uris.nins.cc?data=${(information)}` } // ✅
+            else { url = `https://uris.nins.cc?data=${encodeURIComponent(information)}`; } */
+            const url = `https://uris.nins.cc?data=${encodeURIComponent(information)}`;
+
+            ///document.getElementById('message').innerHTML = `✅ <a href='${url}'>${url}</a> 🌐`;
+            document.getElementById('miniURL').innerHTML = `✅ <a href='${url}'>${url}</a> 🌐`;
             ///result.textContent = url;
 
+            /*
             navigator.clipboard.writeText(url).then(() => {
-                copyButton.textContent = "✅ Copied 🔗";
-                setTimeout(() => (copyButton.textContent = "Copy URL 🔗"), 2000);
-                document.getElementById("informationInput").value = "";
-            });
+                copyButton.textContent = "✅";  // Copied 🔗  // 🎁
+                setTimeout(() => (copyButton.textContent = "🔗"), 2000);  // Copy URL 
+                ///document.getElementById("InputInfo").value = "";
+            }); */
+
+            if (true) {
+                copyButton.textContent = "🎁";
+                //////setTimeout(() => (copyButton.textContent = "🎁"), 2000);
+                document.getElementById('message').innerHTML = '✅ Meets the standard protocol.';
+            }
         }
 
+        // 持續監聽使用者輸入
+        document.getElementById("InputInfo").addEventListener("input", (event) => {
+            if (true) {
+                console.log("input:", event.target.value);
+                updateAndCopy();
+            }
+        });
+
         // 按下 Enter 觸發複製
-        document.getElementById("informationInput").addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            updateAndCopy();
-        }
+        document.getElementById("InputInfo").addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                updateAndCopy();onlyCopy();
+                ///document.getElementById("InputInfo").value = "";  // 20251110
+            }
         });
 
         // 按下 Copy 按鈕
-        copyButton.addEventListener("click", updateAndCopy);
+        ///document.getElementById("copyButton").addEventListener("click", updateAndCopy);
+        document.getElementById("copyButton").addEventListener("click", (e) => {
+            if (true) {
+                e.preventDefault();
+                updateAndCopy();onlyCopy();
+                ///document.getElementById("InputInfo").value = "";  // 20251110
+            }
+        });
     </script>
     <!-- ================================================== -->
 
@@ -501,7 +640,7 @@
         ];
 
         let index = 0;
-        const input = document.getElementById("informationInput");
+        const input = document.getElementById("InputInfo");
 
         // 每 1 秒變更一次 placeholder
         setInterval(() => {
@@ -512,9 +651,9 @@
     <!-- ================================================== -->
     
     <script>
-        document.getElementById("informationInput").addEventListener("focus", () => {
+        document.getElementById("InputInfo").addEventListener("focus", () => {
             console.log("第一次聚焦觸發");
-            document.getElementById("message").innerHTML = '✨ Simply enter your information after "who=" to get your "free HTTPS URL" for your information.';
+            document.getElementById("message").innerHTML = '✨ Simply enter your information after "data=" to get your "free HTTPS URL" for your information.';
         
         }, { once: true }); // ✅ 只執行一次
     </script>
