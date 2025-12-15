@@ -281,8 +281,8 @@ async function send() {
   const v = document.getElementById("input_msg").value;
   document.getElementById("input_msg").value = "";
   log("🧠　" + v);  ///🧠✨💡
-  ///log("♊　" + await HuggingFaceAPI("duguaynins/MultipleLLMs","/fn_main",{models:'gemini-2.5-flash',system:document.getElementById("input_sys").value ,user:document.getElementById("input_sys").value }) );
-  log("🤖　" + await HuggingFaceAPI("duguaynins/MultipleLLMs","/fn_main",{models:'gpt-4o-mini',system:document.getElementById("input_sys").value ,user:document.getElementById("input_sys").value }) );
+  ///log("♊　" + await HuggingFaceAPI("duguaynins/MultipleLLMs","/fn_main",{models:'gemini-2.5-flash',system:document.getElementById("input_sys").value ,user:document.getElementById("input_msg").value }) );
+  log("🤖　" + await HuggingFaceAPI("duguaynins/MultipleLLMs","/fn_main",{models:'gpt-4o-mini',system:document.getElementById("input_sys").value ,user:document.getElementById("input_msg").value }) );
 
 }
 
