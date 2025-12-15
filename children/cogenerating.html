@@ -211,7 +211,7 @@
           </div></div>
           
 <!-- 放置你原有的布局 -->
-<input id="input_sys" style="display:none" class="main" type="text" name="noMemory" autocomplete="off" placeholder="input the role settings for artificial intelligence..." style="width:100%; text-align: center;"/>
+<input id="input_sys" style="display:none" class="main" type="text" name="" autocomplete="off" placeholder="input the role settings for artificial intelligence..." style="width:100%; text-align: center;"/>
 
 <div id="content" style="background: #CCCCCC; width:100%; flex:1; border: 1px solid #ccc; color: black; overflow-y: auto; overflow-x: hidden;">
 <div id="output_display" style="border:1px solid #ccc; width:100%; text-align:left; flex:1; margin: 0; padding: 0; overflow:auto;
@@ -278,12 +278,15 @@ async function HuggingFaceAPI(dir="duguaynins/RedirectAPI", path="/textMining/pr
 } 
 
 async function send() {
+  document.getElementById("input_msg").disabled = true;
   const v = document.getElementById("input_msg").value;
   ///document.getElementById("input_msg").value = "";
   log("🧠　" + v);  ///🧠✨💡
   ///log("♊　" + await HuggingFaceAPI("duguaynins/MultipleLLMs","/fn_main",{models:'gemini-2.5-flash',system:document.getElementById("input_sys").value ,user:document.getElementById("input_msg").value }) );
   log("🤖　" + await HuggingFaceAPI("duguaynins/MultipleLLMs","/fn_main",{models:'gpt-4o-mini',system:document.getElementById("input_sys").value ,user:document.getElementById("input_msg").value }) );
+  
   document.getElementById("input_msg").value = "";
+  document.getElementById("input_msg").disabled = false;
 }
 
 
