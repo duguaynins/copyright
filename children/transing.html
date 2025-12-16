@@ -2128,12 +2128,12 @@ console.log(version);
           });
 
           if (!combo) { 
-            console.log("combo:-1"); setTimeout(tryTranslate, 300);
+            console.log("combo:-1"); setTimeout(tryTranslate, 300);return;
           }
           ///if (combo) {  /// && combo.options.length > 0
           ///if (combo && combo.options.length > 0) {
           if (combo && combo.options.length > 0) {
-            console.log("combo: 0"); setTimeout(tryTranslate, 300);
+            console.log("combo: 0"); setTimeout(tryTranslate, 300);return;
           } else { 
             console.log("combo:+1"); 
             const options = Array.from(combo.options).map(opt => opt.value);console.log('可用語言代碼:', options);
