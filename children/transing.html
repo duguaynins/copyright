@@ -933,7 +933,7 @@ console.log(version);
     
     ///20250616 1415
     document.addEventListener('DOMContentLoaded', async function () {
-      const language = navigator.language || navigator.userLanguage || "en-US";
+      const language = slang || (navigator.language || navigator.userLanguage || "en-US");
       const source = "en";
       const target = language;
       let message = ""
@@ -2184,7 +2184,7 @@ console.log(version);
           
         waitForCombo((combo) => {
           console.log("autoTranslate...waitForCombo");
-          autoTranslate( (navigator.language || navigator.userLanguage || "en-US") );
+          autoTranslate( slang || (navigator.language || navigator.userLanguage || "en-US") );
           ///console.log("combo 已生成:", combo);
           ///combo.value = 'en';
           ///combo.dispatchEvent(new Event('change'));
