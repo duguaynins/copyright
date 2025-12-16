@@ -364,7 +364,7 @@
                 <option value="auto">auto</option>
               </select>）<br-->
               <label for="SwitchSlang">🔣（sl-switch: </label>
-              <input type="checkbox" onchange="document.getElementById('SelectSlang').disabled = !this.checked;">）<br>
+              <input id="SwitchSlang" type="checkbox" onchange="document.getElementById('SelectSlang').disabled = !this.checked;">）<br>
             
               <label for="SelectSlang">🔣（sl-in: </label>
               <select id="SelectSlang">
@@ -409,7 +409,7 @@
               </select>）<br>
 
               <label for="Playxlang">🌐（skip-form: </label>
-              <input type="checkbox" id="skipForm" checked="">）<br>
+              <input type="checkbox" id="SkipForm" checked="">）<br>
           </div>
           
           
@@ -541,6 +541,7 @@ console.log(version);
         console.log('翻譯文本:', params);
         const { text, source = 'auto', target } = params;
         if (source === target) { return text; }
+        if (!text) { console.error("text?");return; }
 
         const inputs = { "inputs": {"text":text,"target":target,"source":source} };
         const outputs = await HuggingFaceAPI({
@@ -555,38 +556,32 @@ console.log(version);
         return outputs.result.label;
       }
       
-      async function generate_vt(params) {  ///translate()
+      async function generate(params) {  
+        console.log('翻譯文本:', params);
         const { text, source = 'auto', target } = params;
-        ///const text = inputText.value.trim();
+        if (source === target) { return text; }
+        if (!text) { console.error("text?");return; }
 
-        if (!text) {
-          console.error("text?");
-          return;
-        }
+        ///const inputs = { "inputs": {"text":text,"target":target,"source":source} };
+        ///const langs = { [tlang]: "Hello", [ilang]: "こんにちは", ko: "안녕하세요"};
+        ///const langs = {}; target.forEach(pair => { langs[pair.code] = pair.text; });
+        const langs = { [target.il]: "_", [target.tl]: "_"};  ///{en:_, ja:_, ko:_}
 
-        try {
-        const response = await fetch("https://duguaynins-RedirectAPI.hf.space/generate/chatgpt", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            model: "gpt-4o-mini",
-            ///system: "妳是翻譯機器，只會直接翻譯(any to English)。",  ///"You are a translation machine that only translates (any language to English) directly.",
-            system: "You can explain all languages ​​in English.",
-            user: text,
-            max_tokens: 500,
-            temperature: 0,
-          })
-        });
+        ///const system = "You are a translation and generation expert. You will directly translate any input language into JSON output: {en:_, ja:_, ko:_}";
+        const system = `You are a translation and generation expert. You will directly translate any input language into JSON output: ${JSON.stringify(langs)}`;
+        const user = text;
+        const inputs = { "inputs": {models:'gpt-4o-mini',system:system ,user:user} }
+        const outputs = await HuggingFaceAPI({
+          group: "duguaynins",
+          space: "RedirectAPI",  ///MultipleLLMs
+          path: "generate/llms",  ////run/predict, api/predict, predict, /queue/join
+          payload: inputs,
+        }); 
 
-          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-          const data = await response.json();
-          console.log(data);
-          return data.result || JSON.stringify(data);
-
-        } catch (err) {
-          console.error(err);
-          return "error";
-        }
+        console.log("INPUT:", inputs);
+        console.log("OUTPUT:", outputs);
+        ///return outputs.result.label;
+        return outputs;
       }
   </script>
 
@@ -670,13 +665,14 @@ console.log(version);
     // 🔑  ///prompt("（🔑: ***）")
     let apikey_user = "";
     
-    const ilang = "en-US";  //relang or resultlang
-    const xlang = languageRegion(navigator.language || navigator.userLanguage || "en-US");  // 閱讀母語
-    ///const tlang = languageScript(navigator.language || navigator.userLanguage || "en-US");  // 閱讀母語
-    ///const tlang = navigator.language || navigator.userLanguage || "en-US";  // 閱讀母語
+    const ilang = "en-US";  // tlang === 中間語言
     
-    let tlang = xlang;  // 學習語言 OR 中間語言  // params.get("il")
-    let slang = xlang;
+    ///const tlang = navigator.language || navigator.userLanguage || "en-US";  // 閱讀母語
+    ///const tlang = languageScript(navigator.language || navigator.userLanguage || "en-US");  // 閱讀母語
+    let xlang = languageRegion(navigator.language || navigator.userLanguage || "en-US");  // 閱讀母語
+    
+    let tlang = xlang;  // tlang === 學習語言   // params.get("il")
+    let slang = xlang;  // slang === 常用語言
     
     let speed = 1.2;
   </script>
@@ -1144,21 +1140,38 @@ console.log(version);
         ///document.getElementById('LinkTrans').href = "https://translate.google.com/?sl=auto&tl=en&op=translate&text=" + smsg;
         ///const imsg = prompt("（en: ***）");
 
-        // 追加的更新測試***
-        ///const gens = await generate({ "text": xmsg, "source": null, "target": rlang });  // 測試取代首次翻譯  //ALARM???
-        ///console.log(gens);
-        ///const rmsg = gens; if (!gens) return;
         
-        ///let smsg = await translate({ "text": gens, "source": rlang, "target": slang }); if (!smsg) return;   //OK
-        ///const imsg = await translate({ "text": gens, "source": rlang, "target": ilang }); if (!imsg) return;  //OK
-        ///smsg = xmsg; if (!smsg) return;  // 還原使用者的語言
-        // 追加的更新測試***
+        let smsg = "";let tmsg = "";let imsg = "";
+        if (!document.getElementById("SkipForm").checked) {  ///SkipForm, SwitchSlang
+          // 追加的更新測試***
+          const gens = await generate({ "text": xmsg, "source": null, "target": {tl:tlang, il:ilang} });  // 測試取代首次翻譯  //ALARM???
+          const obj = JSON.parse(gens.result);
+          console.log(gens);
+          console.log(gens.result);
+          ///const keys = Object.keys(obj);  // 取出所有鍵
+          ///const values = Object.values(obj);  // 取出所有數值
+
+          smsg = xmsg;
+          tmsg = obj[tlang];  ///obj.tlang;  ///
+          imsg = obj[ilang];  ///obj.ilang;  ///
+          console.log(smsg);
+          console.log(tmsg);
+          console.log(imsg);
+
+          ///console.log(gens);
+          ///const rmsg = gens; if (!gens) return;
+          
+          ///let smsg = await translate({ "text": gens, "source": rlang, "target": slang }); if (!smsg) return;   //OK
+          ///const imsg = await translate({ "text": gens, "source": rlang, "target": ilang }); if (!imsg) return;  //OK
+          ///smsg = xmsg; if (!smsg) return;  // 還原使用者的語言
+
+        } else {
+          // 這是原本的翻譯******  // 進行翻譯**
+          smsg = xmsg;
+          tmsg = await translate({ "text": smsg, "source": slang, "target": tlang }); if (!tmsg) return;
+          imsg = await translate({ "text": smsg, "source": slang, "target": ilang }); if (!imsg) return;
+        }
         
-        // 這是原本的翻譯******  // 進行翻譯**
-        const smsg = xmsg;
-        const tmsg = await translate({ "text": smsg, "source": slang, "target": tlang }); if (!tmsg) return;
-        const imsg = await translate({ "text": smsg, "source": slang, "target": ilang }); if (!imsg) return;
-        // 這兩行暫時註解******
         
         ///const randomID = "id_" + Math.random().toString(36).substring(2, 8);  // 產生短隨機 ID
         
@@ -1212,7 +1225,7 @@ console.log(version);
         const fullURL = `${baseURL}&entry.2108432241=${encodeURIComponent(var1)}&entry.108198120=${encodeURIComponent(var2)}&entry.2008598079=${encodeURIComponent(var3)}&entry.1461710493=${encodeURIComponent(var4)}`;
         
         // 綁定按鈕打開表單
-        const checkbox = document.getElementById("skipForm");
+        const checkbox = document.getElementById("SkipForm");
         if (!checkbox.checked) {
             window.open(fullURL, "_blank", "noopener,noreferrer");
         } 
@@ -1538,7 +1551,7 @@ console.log(version);
           const fullURL = `${baseURL}&entry.646913966=${encodeURIComponent(var1)}&entry.108198120=${encodeURIComponent(var2)}&entry.2008598079=${encodeURIComponent(var3)}&entry.1461710493=${encodeURIComponent(var4)}&entry.2108432241=${encodeURIComponent(var5)}`;
           
           // 綁定按鈕打開表單
-          const checkbox = document.getElementById("skipForm");
+          const checkbox = document.getElementById("SkipForm");
           if (!checkbox.checked) {
               ///window.open(fullURL, "_blank", "noopener,noreferrer");
               ///window.open('${fullURL}', '_blank', 'noopener,noreferrer');
@@ -2197,3 +2210,4 @@ console.log(version);
     </script>
 </body>
 </html>
+
