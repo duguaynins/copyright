@@ -671,8 +671,8 @@ console.log(version);
     ///const tlang = languageScript(navigator.language || navigator.userLanguage || "en-US");  // 閱讀母語
     let xlang = languageRegion(navigator.language || navigator.userLanguage || "en-US");  // 閱讀母語
     
-    let tlang = xlang;  // tlang === 學習語言   // params.get("il")
-    let slang = xlang;  // slang === 常用語言
+    let tlang = params.get("tl") || xlang;  // tlang === 學習語言
+    let slang = params.get("sl") || xlang;  // slang === 常用語言
     
     let speed = 1.2;
   </script>
