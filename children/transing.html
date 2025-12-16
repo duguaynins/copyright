@@ -675,6 +675,7 @@ console.log(version);
     let slang = params.get("sl") || xlang;  // slang === 常用語言
     ///let tlang = params.get("tl") === "auto" ? xlang : params.get("tl")
     ///let slang = params.get("sl") === "auto" ? xlang : params.get("sl")
+    let smike = params.get("mk") || xlang;
     
     let speed = 1.2;
   </script>
@@ -1765,7 +1766,7 @@ console.log(version);
             // 選擇語言
             if (!recognition.lang) {  // 口語語言設定偵測  // 必須 start() 之前
                 ///recognition.lang = prompt("Input your speek language: (zh-TW || ja-JP || ko-KR || en-US)***") || tlang;
-                recognition.lang = xlang;  //tlang, slang  // 要講其他語言就自己更換瀏覽器語言吧！！！  //???
+                recognition.lang = smike;  //tlang, slang  // 要講其他語言就自己更換瀏覽器語言吧！！！  //???
             }
             
             button.textContent = "🎙️（KEEP＝" + recognition.lang + "）";
