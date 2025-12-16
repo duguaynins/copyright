@@ -2128,7 +2128,7 @@ console.log(version);
           });
 
           if (!combo) { setTimeout(tryTranslate, 300); }
-          if (combo) {
+          if (combo) {  /// && combo.options.length > 0
             const options = Array.from(combo.options).map(opt => opt.value);console.log('可用語言代碼:', options);
             
             console.log("autoTranslate?:", lang);
