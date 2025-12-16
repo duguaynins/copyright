@@ -2127,8 +2127,15 @@ console.log(version);
             ///document.getElementById('InputRoom').textAlign = 'center';
           });
 
-          if (!combo) { setTimeout(tryTranslate, 300); }
-          if (combo) {  /// && combo.options.length > 0
+          if (!combo) { 
+            console.log("combo:-1"); setTimeout(tryTranslate, 300);
+          }
+          ///if (combo) {  /// && combo.options.length > 0
+          ///if (combo && combo.options.length > 0) {
+          if (combo && combo.options.length > 0) {
+            console.log("combo: 0"); setTimeout(tryTranslate, 300);
+          } else { 
+            console.log("combo:+1"); 
             const options = Array.from(combo.options).map(opt => opt.value);console.log('可用語言代碼:', options);
             
             console.log("autoTranslate?:", lang);
@@ -2167,9 +2174,7 @@ console.log(version);
               ///combo.dispatchEvent(new Event('change'));
             }  */
 
-          } else {
-            setTimeout(tryTranslate, 300); // 遞迴檢查
-          }
+          } ///else { setTimeout(tryTranslate, 300);console.log(); }
         };
         tryTranslate();
       }
