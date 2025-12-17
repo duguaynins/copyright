@@ -275,6 +275,7 @@
             <button onclick="window.open('https://copyright.nins.cc/children/preview', '_blank', 'noopener,noreferrer');">👀
             <p style="margin: 0; padding: 0; font-size: 1vh;" class="label">Preview</p></button>
         </div>
+        <input type="range" id="InputSpeed" min="1.0" max="100.0" step="0.1" value="1" style="width:100%; display:none;" />
         
         <!--div style="margin: 0.2vw; display: flex; flex-direction: row; border: 0px solid #cdcdcd;" translate="no">
             <span id="SemanticDistance" style="font-size:1vw; width:100%; text-align:center; color:black;">（Semantic Distance）</span>
@@ -282,6 +283,7 @@
         
         <div id="chatbox" style="border:1px solid #ccc; overflow:auto; width:100%; text-align:left; flex:1;">init</div>
         
+        <input type="range" id="InputRate" min="0.1" max="2.0" step="0.1" value="1" style="width:100%;" />
         <input  style="display:none" class="main" id="InputRoom" type="text" name="noMemory" autocomplete="off" placeholder="input connection number..." style="width:100%; text-align: center;"/>
         <input  style="display:none" class="main" id="InputMsg"  type="text" name="noMemory" autocomplete="off" placeholder="input message text..." style="width:100%; text-align: center;"/>
         <button style="display:none" id="ButtonRoom" onclick="sendSocket()" style="width:100%;" class="button" >📶Send connection</button>
@@ -321,11 +323,11 @@
       <canvas style="width:min(80vw, 80vh); cursor:pointer;" class="" id="qrcode" onclick="openLink()"></canvas><br>
       <!--img src="javascript:void(0)"-->
       
-      <span style="display:none;">
+      <!--span style="display:none;">
       <span style="width:100%;">You can set the abilities for the ghost.</span><br>
       <input type="range" id="InputSpeed" min="1.0" max="100.0" step="0.1" value="1" style="width:100%;" /><br>
       <span style="width:100%;">You can set the speed for the audio playback.</span><br>
-      <input type="range" id="InputRate" min="0.1" max="10.0" step="0.1" value="1" style="width:100%;" /><br></span>
+      <input type="range" id="InputRate" min="0.1" max="2.0" step="0.1" value="1" style="width:100%;" /><br></span-->
   </dialog>
   
   <dialog id="DialogTool" style="background-color: #000000;">
