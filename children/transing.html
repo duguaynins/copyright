@@ -317,7 +317,7 @@
       <!--button onclick="document.getElementById('DialogShare').close()" class="text-red-600 mt-3">❌</button-->
       <!--br><br-->
       <span style="width:min(80vw, 80vh);">You can set the resolution for the 2D barcode.</span>
-      <input style="width:min(80vw, 80vh);" type="range" id="barcodeSlider" min="100" max="500" value="300" /><br>
+      <input style="width:min(80vw, 80vh);" type="range" id="barcodeSlider" min="100" max="500" value="300" disabled=""/><br>
       <a style="width:min(80vw, 80vh); display:none;" id="linkText" rel="noopener noreferrer" href=""></a>
       <img style="width:min(80vw, 80vh); display:none;" id="linkCode" onclick="openLink()" alt='QR Code'>
       <canvas style="width:min(80vw, 80vh); cursor:pointer;" class="" id="qrcode" onclick="openLink()"></canvas><br>
@@ -366,7 +366,7 @@
                 <option value="auto">auto</option>
               </select>）<br-->
               <label for="SwitchSlang">🔣（sl-switch: </label>
-              <input id="SwitchSlang" type="checkbox" onchange="document.getElementById('SelectSlang').disabled = !this.checked;">）<br>
+              <input id="SwitchSlang" type="checkbox" onchange="document.getElementById('SelectSlang').disabled = !this.checked;" disabled="">）<br>
             
               <label for="SelectSlang">🔣（sl-in: </label>
               <select id="SelectSlang">
