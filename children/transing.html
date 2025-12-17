@@ -1150,7 +1150,7 @@ console.log(version);
 
         
         let smsg = "";let tmsg = "";let imsg = "";
-        if (!document.getElementById("AITransing").checked) {  ///SkipForm, SwitchSlang
+        if (!!document.getElementById("AITransing").checked) {  ///SkipForm, SwitchSlang
           // 追加的更新測試***
           const gens = await generate({ "text": xmsg, "source": null, "target": {tl:tlang, il:ilang} });  // 測試取代首次翻譯  //ALARM???
           const obj = JSON.parse(gens.result);
