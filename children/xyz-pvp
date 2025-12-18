@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>代數巔峰：上下對決</title>
+    <style>
+        :root { 
+            --bg: #05050a;
+            --p1-glow: #00d2ff;
+            --p2-glow: #ff0055;
+            --target-glow: #ffeb3b;
+        }
+        body { 
+            background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif;
+            display: flex; flex-direction: column; align-items: center; 
+            margin: 0; padding: 0; height: 100vh; overflow: hidden;
+        }
+
+        /* 遊戲狀態特效 */
+        .winner-p1 { box-shadow: inset 0 50vh 100px rgba(0, 210, 255, 0.3); }
+        .winner-p2 { box-shadow: inset 0 -50vh 100px rgba(255, 0, 85, 0.3); }
+        .loser { filter: grayscale(1) brightness(0.5); pointer-events: none; }
+
+        /* 玩家區域佈局 */
+        .player-zone {
+            width: 100%; height: 42vh; display: flex; flex-direction: column;
+            align-items: center; justify-content: space-between; padding: 10px;
+            box-sizing: border-box; position: relative;
+        }
+
+        /* 能量池容器 */
+        .pool-container {
+            width: 90%; max-width: 500px; background: rgba(255,255,255,0.03);
+            border: 2px solid #222; border-radius: 15px; padding: 10px;
+            display: flex; flex-direction: row; align-items: center; gap: 20px;
+            transition: 0.3s;
+        }
+        .energy-pool {
+            flex: 1; height: 150px; display: flex; flex-direction: column;
+            position: relative; background: rgba(0,0,0,0.3); border-radius: 10px;
+        }
+        .stack { height: 50%; display: flex; align-items: center; justify-content: center; overflow: visible; }
+        .perfect-match { border-color: #00ff88 !important; box-shadow: 0 0 20px rgba(0,255,136,0.3); }
+
+        /* 中央目標區 */
+        .center-ui {
+            width: 100%; height: 16vh; display: flex; align-items: center;
+            justify-content: center; gap: 30px; background: rgba(255,255,255,0.05);
+            border-top: 1px solid #333; border-bottom: 1px solid #333;
+        }
+        .target-display {
+            text-align: center; border: 3px solid var(--target-glow);
+            padding: 5px 20px; border-radius: 50px; background: #000;
+            box-shadow: 0 0 15px rgba(255,235,59,0.2);
+        }
+
+        /* 血條 (垂直顯示在側邊) */
+        .hp-track {
+            position: absolute; right: 20px; width: 10px; height: 80%;
+            background: #111; border-radius: 5px; overflow: hidden;
+        }
+        .hp-fill { width: 100%; height: 100%; transition: height 0.3s; }
+
+        /* 方塊樣式 */
+        .block {
+            position: relative; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; cursor: grab; border: 1px solid rgba(255,255,255,0.8);
+            transition: 0.3s; font-size: 14px;
+        }
+        .v-block { width: calc(7px * var(--h)); height: calc(7px * var(--h)); min-width: 30px; min-height: 30px; }
+        .p1-color { background: var(--p1-glow); box-shadow: 0 0 10px var(--p1-glow); }
+        .p2-color { background: var(--p2-glow); box-shadow: 0 0 10px var(--p2-glow); }
+
+        /* 控制列 */
+        .controls { display: flex; align-items: center; gap: 15px; width: 100%; justify-content: center; }
+        .deck { display: flex; gap: 15px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 10px; }
+        
+        #win-text {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 6rem; font-weight: 900; z-index: 2000; display: none; pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="win-text">　</div>
+
+    <div id="p1-zone" class="player-zone">
+        <div class="deck">
+            <div class="block v-block p1-color" draggable="true" ondragstart="drag(event)" data-type="v" data-vname="x" data-pol="1" style="--h:2">x</div>
+            <div class="block v-block p2-color" draggable="true" ondragstart="drag(event)" data-type="v" data-vname="x" data-pol="-1" style="--h:2">-x</div>
+            <div class="block p1-color" draggable="true" ondragstart="drag(event)" data-type="u" data-pol="1" style="width:25px;height:25px">1</div>
+        </div>
+        <div class="pool-container" id="p1-card">
+            <div style="width: 80px; text-align: center;">
+                <div id="p1-val" style="font-size: 1.5rem; color: var(--p1-glow);">0</div>
+                <div id="p1-formula" style="font-size: 0.7rem; color: #555;">...</div>
+            </div>
+            <div class="energy-pool" id="pool-p1" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <div class="stack pos-stack"></div><div class="stack neg-stack"></div>
+            </div>
+        </div>
+        <div class="controls">
+            X = <input type="range" class="v-slider" data-var="x" min="-10" max="10" value="3" oninput="update()">
+            <b id="x-disp">3</b>
+        </div>
+        <div class="hp-track"><div id="p1-hp" class="hp-fill" style="background: var(--p1-glow)"></div></div>
+    </div>
+
+    <div class="center-ui">
+        <div style="font-size: 3rem; color: #333;">=</div>
+        <div class="target-display">
+            <span style="font-size: 0.8rem; color: var(--target-glow);">TARGET</span><br>
+            <b id="target-val" style="font-size: 2.5rem;">7</b>
+        </div>
+        <div style="font-size: 3rem; color: #333;">=</div>
+    </div>
+
+    <div id="p2-zone" class="player-zone">
+        <div class="hp-track" style="left: 20px;"><div id="p2-hp" class="hp-fill" style="background: var(--p2-glow)"></div></div>
+        <div class="controls">
+            Y = <input type="range" class="v-slider" data-var="y" min="-10" max="10" value="2" oninput="update()">
+            <b id="y-disp">2</b>
+        </div>
+        <div class="pool-container" id="p2-card">
+            <div class="energy-pool" id="pool-p2" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <div class="stack pos-stack"></div><div class="stack neg-stack"></div>
+            </div>
+            <div style="width: 80px; text-align: center;">
+                <div id="p2-val" style="font-size: 1.5rem; color: var(--p2-glow);">0</div>
+                <div id="p2-formula" style="font-size: 0.7rem; color: #555;">...</div>
+            </div>
+        </div>
+        <div class="deck">
+            <div class="block v-block p1-color" draggable="true" ondragstart="drag(event)" data-type="v" data-vname="y" data-pol="1" style="--h:2">y</div>
+            <div class="block v-block p2-color" draggable="true" ondragstart="drag(event)" data-type="v" data-vname="y" data-pol="-1" style="--h:2">-y</div>
+            <div class="block p1-color" draggable="true" ondragstart="drag(event)" data-type="u" data-pol="1" style="width:25px;height:25px">1</div>
+        </div>
+    </div>
+
+<script>
+    let target = 7, hp = [100, 100], vars = { x: 3, y: 2 }, gameEnded = false;
+
+    // 隨機目標
+    setInterval(() => {
+        if(gameEnded) return;
+        target = Math.floor(Math.random() * 21) - 5;
+        document.getElementById('target-val').innerText = target;
+    }, 12000);
+
+    // 遊戲循環：判定血量
+    setInterval(() => {
+        if(gameEnded) return;
+        [1, 2].forEach(pNum => {
+            let currentVal = parseFloat(document.getElementById(`p${pNum}-val`).innerText);
+            let diff = Math.abs(currentVal - target);
+            if(diff !== 0) {
+                hp[pNum-1] -= diff * 0.05;
+                document.getElementById(`p${pNum}-card`).classList.remove('perfect-match');
+            } else {
+                document.getElementById(`p${pNum}-card`).classList.add('perfect-match');
+            }
+            document.getElementById(`p${pNum}-hp`).style.height = hp[pNum-1] + "%";
+            if(hp[pNum-1] <= 0) endGame(pNum === 1 ? 2 : 1);
+        });
+    }, 100);
+
+    function endGame(winner) {
+        gameEnded = true;
+        const winTxt = document.getElementById('win-text');
+        winTxt.style.display = 'block';
+        ///winTxt.innerText = `🔥K.O.🔥`;
+        winTxt.innerText = `🔥P🏆${winner}🔥`;
+        ///winTxt.style.color = winner === 1 ? 'var(--p1-glow)' : 'var(--p2-glow)';
+        winTxt.style.color = "#FFF";
+        document.body.classList.add(winner === 1 ? 'winner-p1' : 'winner-p2');
+        document.getElementById(winner === 1 ? 'p2-zone' : 'p1-zone').classList.add('loser');
+    }
+
+    function update() {
+        if(gameEnded) return;
+        document.querySelectorAll('.v-slider').forEach(s => {
+            let v = s.getAttribute('data-var');
+            vars[v] = parseInt(s.value);
+            document.getElementById(`${v}-disp`).innerText = s.value;
+        });
+
+        [1, 2].forEach(pNum => {
+            let pool = document.getElementById(`pool-p${pNum}`);
+            let total = 0, formula = [];
+            pool.querySelectorAll('.block').forEach(b => {
+                let pol = parseInt(b.getAttribute('data-pol')), val = 0;
+                if(b.getAttribute('data-type') === 'v') {
+                    let vName = b.getAttribute('data-vname'), pow = b.dataset.pow || 1;
+                    val = pol * Math.pow(vars[vName], pow);
+                    b.style.setProperty('--h', Math.abs(vars[vName]));
+                    formula.push((pol > 0 ? "+" : "-") + vName + (pow > 1 ? "<sup>"+pow+"</sup>" : ""));
+                } else { val = pol; formula.push(pol > 0 ? "+1" : "-1"); }
+                total += val;
+            });
+            document.getElementById(`p${pNum}-val`).innerText = total;
+            document.getElementById(`p${pNum}-formula`).innerHTML = formula.join("") || "EMPTY";
+        });
+    }
+
+    function drag(e) {
+        if(gameEnded) return;
+        let id = "b-" + Date.now();
+        if(e.target.parentElement.classList.contains('deck')) {
+            let clone = e.target.cloneNode(true);
+            clone.id = id;
+            if(clone.getAttribute('data-type') === 'v') {
+                clone.dataset.pow = 1;
+                clone.innerHTML += `<div style="position:absolute;top:-5px;right:-5px;background:#fff;color:#000;border-radius:50%;width:14px;height:14px;font-size:9px;display:flex;align-items:center;justify-content:center;">1</div>`;
+                clone.onclick = function() {
+                    this.dataset.pow = (parseInt(this.dataset.pow) % 3) + 1;
+                    this.querySelector('div').innerText = this.dataset.pow;
+                    update();
+                };
+            }
+            document.body.appendChild(clone);
+            clone.style.display = "none";
+            e.dataTransfer.setData("text", id);
+        } else e.dataTransfer.setData("text", e.target.id);
+    }
+
+    function drop(e) {
+        e.preventDefault();
+        let el = document.getElementById(e.dataTransfer.getData("text"));
+        let pool = e.target.closest('.energy-pool');
+        if(pool && el) {
+            el.style.display = "flex";
+            pool.querySelector(el.getAttribute('data-pol') === "1" ? '.pos-stack' : '.neg-stack').appendChild(el);
+            update();
+        }
+    }
+
+    function allowDrop(e) { e.preventDefault(); }
+    update();
+</script>
+</body>
+</html>
