@@ -29,6 +29,9 @@
         #sliderX::-webkit-slider-thumb { background: #38bdf8; box-shadow: 0 0 10px #38bdf8; }
         #sliderY::-webkit-slider-thumb { background: #10b981; box-shadow: 0 0 10px #10b981; }
         #sliderZ::-webkit-slider-thumb { background: #f59e0b; box-shadow: 0 0 10px #f59e0b; }
+        .hide {
+            display: none !important;
+        }
     </style>
 </head>
 <body class="p-4 flex flex-col items-center">
@@ -36,13 +39,17 @@
     <div class="w-full h-full flex flex-col gap-3">
         
         <div class="w-full glass-card p-3 rounded-2xl flex items-center shrink-0">
-            <span class="text-slate-500 font-mono text-lg mr-3">y =</span>
+            <button id="eqLabel" 
+                    class="text-slate-500 font-mono text-xl mr-4 font-bold transition-all duration-200 hover:text-cyan-400 hover:scale-110 active:scale-90 cursor-pointer"
+                    title="open" onclick="toggleVisibility(document.getElementById('Scale'));/*document.getElementById('DialogControl').showModal();*/">
+                y=
+            </button>
             <input type="text" id="eqInput" 
                    class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-2 font-mono text-cyan-400 text-lg outline-none"
                    value="Math.sin(x/40) * 120">
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 shrink-0" style="display: none;">
+        <!--div class="grid grid-cols-1 md:grid-cols-3 gap-3 shrink-0" style="display: none;">
             <div class="glass-card p-4 rounded-2xl flex items-center gap-4">
                 <div class="text-xl font-mono font-black text-blue-400">X</div>
                 <input type="range" id="sliderX">
@@ -53,14 +60,14 @@
                 <input type="range" id="sliderY">
                 <div id="valY" class="text-lg font-mono text-white min-w-[60px] text-right">0.0</div>
             </div>
-            <!--div class="glass-card p-4 rounded-2xl flex items-center gap-4 border-orange-500/30">
+            <div class="glass-card p-4 rounded-2xl flex items-center gap-4 border-orange-500/30">
                 <div class="text-xl font-mono font-black text-orange-400">Z</div>
                 <input type="range" id="sliderZ" min="0.2" max="5" step="0.1" value="1">
                 <div id="valZ" class="text-lg font-mono text-white min-w-[60px] text-right">1.0x</div>
-            </div-->
-        </div>
+            </div>
+        </div-->
         
-        <div class="w-full glass-card p-6 rounded-2xl flex items-center gap-6 shrink-0 shadow-xl border-orange-500/20">
+        <div id="Scale" class="w-full glass-card p-6 rounded-2xl flex items-center gap-6 shrink-0 shadow-xl border-orange-500/20">
             <div class="flex flex-col">
                 <span class="text-orange-400 font-black text-2xl font-mono leading-none">Z</span>
                 <span class="text-slate-500 text-[10px] font-bold uppercase mt-1">Scale</span>
@@ -80,6 +87,38 @@
 
     </div>
 
+    <dialog id="DialogControl">
+        <button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogControl').close();">↩️</button>
+        <div class="glass-card p-6 rounded-3xl shadow-2xl flex flex-row gap-6 min-w-[600px]">
+            <div class="flex-1 flex items-center gap-4">
+                <div class="text-xl font-mono font-black text-blue-400">X</div>
+                <input type="range" id="sliderX">
+                <div id="valX" class="text-lg font-mono text-white min-w-[60px] text-right">0.0</div>
+            </div>
+            <div class="w-[1px] bg-slate-700 h-10"></div>
+            <div class="flex-1 flex items-center gap-4">
+                <div class="text-xl font-mono font-black text-emerald-400">Y</div>
+                <input type="range" id="sliderY">
+                <div id="valY" class="text-lg font-mono text-white min-w-[60px] text-right">0.0</div>
+            </div>
+        </div>
+        <button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogControl').close();">↩️</button>
+    </dialog>
+
+
+
+    <script>
+    let display_valZ = true; // 預設顯示
+
+    function toggleVisibility(el) {
+        display_valZ = !display_valZ; // 切換開關變數
+        ///const el = document.getElementById('content');
+        
+        // 根據 valZ 決定 display 狀態
+        ///el.style.display = display_valZ ? "block" : "none";
+        el.classList.toggle('hide'); // 只是加上或拿掉一個標籤，原本的 CSS 都在
+    }
+    </script>
     <script>
         const canvas = document.getElementById('mainCanvas');
         const ctx = canvas.getContext('2d');
