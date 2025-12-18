@@ -22,19 +22,18 @@
         }
         input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            height: 24px;
-            width: 24px;
-            border-radius: 50%;
-            background: #38bdf8;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
-            border: 2px solid #fff;
+            height: 24px; width: 24px; border-radius: 50%;
+            cursor: pointer; border: 2px solid #fff;
         }
+        /* X 藍色, Y 綠色, Z 橘色 */
+        #sliderX::-webkit-slider-thumb { background: #38bdf8; box-shadow: 0 0 10px #38bdf8; }
+        #sliderY::-webkit-slider-thumb { background: #10b981; box-shadow: 0 0 10px #10b981; }
+        #sliderZ::-webkit-slider-thumb { background: #f59e0b; box-shadow: 0 0 10px #f59e0b; }
     </style>
 </head>
 <body class="p-4 flex flex-col items-center">
 
-    <div class="w-full h-full flex flex-col gap-4">
+    <div class="w-full h-full flex flex-col gap-3">
         
         <div class="w-full glass-card p-3 rounded-2xl flex items-center shrink-0">
             <span class="text-slate-500 font-mono text-lg mr-3">y =</span>
@@ -43,69 +42,79 @@
                    value="Math.sin(x/40) * 120">
         </div>
 
-        <div class="w-full glass-card p-4 rounded-2xl flex items-center gap-4 shrink-0">
-            <div class="text-xl font-mono font-black text-blue-400">X</div>
-            <input type="range" id="sliderX">
-            <div id="valX" class="text-xl font-mono font-bold text-white min-w-[70px] text-right">0.0</div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 shrink-0" style="display: none;">
+            <div class="glass-card p-4 rounded-2xl flex items-center gap-4">
+                <div class="text-xl font-mono font-black text-blue-400">X</div>
+                <input type="range" id="sliderX">
+                <div id="valX" class="text-lg font-mono text-white min-w-[60px] text-right">0.0</div>
+            </div>
+            <div class="glass-card p-4 rounded-2xl flex items-center gap-4">
+                <div class="text-xl font-mono font-black text-emerald-400">Y</div>
+                <input type="range" id="sliderY">
+                <div id="valY" class="text-lg font-mono text-white min-w-[60px] text-right">0.0</div>
+            </div>
+            <!--div class="glass-card p-4 rounded-2xl flex items-center gap-4 border-orange-500/30">
+                <div class="text-xl font-mono font-black text-orange-400">Z</div>
+                <input type="range" id="sliderZ" min="0.2" max="5" step="0.1" value="1">
+                <div id="valZ" class="text-lg font-mono text-white min-w-[60px] text-right">1.0x</div>
+            </div-->
+        </div>
+        
+        <div class="w-full glass-card p-6 rounded-2xl flex items-center gap-6 shrink-0 shadow-xl border-orange-500/20">
+            <div class="flex flex-col">
+                <span class="text-orange-400 font-black text-2xl font-mono leading-none">Z</span>
+                <span class="text-slate-500 text-[10px] font-bold uppercase mt-1">Scale</span>
+            </div>
+            
+            <input type="range" id="sliderZ" min="0.01" max="10" step="0.01" value="1">
+            
+            <div class="flex flex-col items-end min-w-[80px]">
+                <div id="valZ" class="text-2xl font-mono font-bold text-white leading-none">1.0x</div>
+                <div class="text-[10px] text-slate-500 font-bold mt-1 uppercase">Zoom</div>
+            </div>
         </div>
 
         <div class="w-full flex-1 glass-card p-2 rounded-3xl overflow-hidden flex">
             <canvas id="mainCanvas" class="rounded-2xl"></canvas>
         </div>
 
-        <div class="w-full glass-card p-4 rounded-2xl flex items-center gap-4 shrink-0">
-            <div class="text-xl font-mono font-black text-emerald-400">Y</div>
-            <input type="range" id="sliderY">
-            <div id="valY" class="text-xl font-mono font-bold text-white min-w-[70px] text-right">0.0</div>
-        </div>
     </div>
 
     <script>
         const canvas = document.getElementById('mainCanvas');
         const ctx = canvas.getContext('2d');
         const eqInput = document.getElementById('eqInput');
-        const sliderX = document.getElementById('sliderX');
-        const sliderY = document.getElementById('sliderY');
-        const valXDisplay = document.getElementById('valX');
-        const valYDisplay = document.getElementById('valY');
+        const sliderX = document.getElementById('sliderX'), sliderY = document.getElementById('sliderY'), sliderZ = document.getElementById('sliderZ');
+        const valXDisplay = document.getElementById('valX'), valYDisplay = document.getElementById('valY'), valZDisplay = document.getElementById('valZ');
 
         let width, height, centerX, centerY;
-        let curvePoints = []; 
-        let curX = 0, curY = 0;
+        let curX = 0, curY = 0, scaleZ = 1;
         let currentFunc = null;
 
         function init() {
-            // 獲取容器真實尺寸
             const dpr = window.devicePixelRatio || 1;
             width = canvas.clientWidth;
             height = canvas.clientHeight;
-            
-            // 修正 Canvas 解析度
             canvas.width = width * dpr;
             canvas.height = height * dpr;
             ctx.scale(dpr, dpr);
-
             centerX = width / 2;
             centerY = height / 2;
 
-            // 根據畫布大小動態調整滑桿範圍
-            sliderX.min = -centerX; sliderX.max = centerX;
-            sliderY.min = -centerY; sliderY.max = centerY;
-            
+            // X, Y 的範圍根據畫布與比例尺動態調整
+            updateSliderRanges();
             updateEquation();
+        }
+
+        function updateSliderRanges() {
+            // 邏輯數值範圍不受縮放影響，但這裡設定滑桿範圍為畫布可見區域
+            sliderX.min = -(centerX / scaleZ); sliderX.max = (centerX / scaleZ);
+            sliderY.min = -(centerY / scaleZ); sliderY.max = (centerY / scaleZ);
         }
 
         function updateEquation() {
             try {
                 currentFunc = new Function('x', `return ${eqInput.value};`);
-                curvePoints = [];
-                // 提高點位密度以確保滑動平滑度
-                for (let x = -centerX; x <= centerX; x += 1) {
-                    const y = currentFunc(x);
-                    if (typeof y === 'number' && !isNaN(y) && isFinite(y)) {
-                        curvePoints.push({ x, y });
-                    }
-                }
                 syncFromX(curX);
             } catch (e) {}
         }
@@ -118,14 +127,17 @@
 
         function syncFromY(newY) {
             curY = newY;
-            if (curvePoints.length === 0) return;
-            let bestMatch = curvePoints[0];
-            let minScore = Infinity;
-            for (const p of curvePoints) {
-                const score = Math.abs(p.y - newY) * 1000 + Math.abs(p.x - curX);
-                if (score < minScore) { minScore = score; bestMatch = p; }
+            // Y 反查 X (暴力搜尋優化版)
+            let bestX = curX;
+            let minDiff = Infinity;
+            // 在當前縮放視窗內搜尋
+            const step = 1 / scaleZ;
+            for (let x = -centerX/scaleZ; x <= centerX/scaleZ; x += step) {
+                const y = currentFunc(x);
+                const diff = Math.abs(y - newY) * 1000 + Math.abs(x - curX);
+                if (diff < minDiff) { minDiff = diff; bestX = x; }
             }
-            curX = bestMatch.x;
+            curX = bestX;
             curY = currentFunc(curX);
             updateDisplays();
         }
@@ -135,74 +147,79 @@
             sliderY.value = curY;
             valXDisplay.innerText = curX.toFixed(1);
             valYDisplay.innerText = curY.toFixed(1);
+            valZDisplay.innerText = scaleZ.toFixed(1) + 'x';
         }
 
         function render() {
             ctx.clearRect(0, 0, width, height);
             
-            // 1. 格線與軸
-            ctx.strokeStyle = '#1e293b'; ctx.lineWidth = 1; ctx.beginPath();
-            for(let x = centerX % 50; x < width; x+=50) { ctx.moveTo(x, 0); ctx.lineTo(x, height); }
-            for(let y = centerY % 50; y < height; y+=50) { ctx.moveTo(0, y); ctx.lineTo(width, y); }
+            // 格線 (隨比例縮放)
+            const gridSize = 50 * scaleZ;
+            ctx.strokeStyle = '#1e293b'; ctx.lineWidth = 1;
+            ctx.beginPath();
+            for(let x = centerX % gridSize; x < width; x += gridSize) { ctx.moveTo(x, 0); ctx.lineTo(x, height); }
+            for(let y = centerY % gridSize; y < height; y += gridSize) { ctx.moveTo(0, y); ctx.lineTo(width, y); }
             ctx.stroke();
 
+            // 軸線
             ctx.strokeStyle = '#334155'; ctx.lineWidth = 2; ctx.beginPath();
             ctx.moveTo(0, centerY); ctx.lineTo(width, centerY);
             ctx.moveTo(centerX, 0); ctx.lineTo(centerX, height);
             ctx.stroke();
 
-            // 2. 曲線
-            if (curvePoints.length > 1) {
+            // 繪製函數曲線 (加入縮放)
+            try {
                 ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 3; ctx.beginPath();
-                curvePoints.forEach((p, i) => {
-                    const dx = centerX + p.x;
-                    const dy = centerY - p.y;
-                    if (i === 0) ctx.moveTo(dx, dy);
-                    else ctx.lineTo(dx, dy);
-                });
+                for (let px = 0; px <= width; px += 2) {
+                    const mathX = (px - centerX) / scaleZ;
+                    const mathY = currentFunc(mathX);
+                    const py = centerY - (mathY * scaleZ);
+                    if (px === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+                }
                 ctx.stroke();
-            }
+            } catch(e) {}
 
-            // 3. 輔助線
-            const cx = centerX + curX;
-            const cy = centerY - curY;
+            // 十字準星與點 (加入縮放)
+            const cx = centerX + (curX * scaleZ);
+            const cy = centerY - (curY * scaleZ);
+            
             ctx.setLineDash([5, 5]);
             ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
             ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, height); ctx.moveTo(0, cy); ctx.lineTo(width, cy); ctx.stroke();
             ctx.setLineDash([]);
 
-            // 4. 亮點
             ctx.fillStyle = '#fff'; ctx.shadowBlur = 15; ctx.shadowColor = '#38bdf8';
             ctx.beginPath(); ctx.arc(cx, cy, 8, 0, Math.PI * 2); ctx.fill();
             ctx.shadowBlur = 0;
 
-            // 5. 座標文字 (中線換向邏輯)
+            // 座標標籤 (換向邏輯)
             const label = `(${curX.toFixed(1)}, ${curY.toFixed(1)})`;
-            ctx.font = "bold 14px 'JetBrains Mono', monospace";
-            const textWidth = ctx.measureText(label).width;
-            const boxW = textWidth + 12;
-            const boxH = 24;
-
-            // 過中線即更換標籤彈出方向
-            let drawX = (cx > centerX) ? (cx - boxW - 15) : (cx + 15);
-            let drawY = (cy < centerY) ? (cy + 15) : (cy - boxH - 15);
-
+            ctx.font = "bold 14px monospace";
+            const textW = ctx.measureText(label).width;
+            let drawX = (cx > centerX) ? (cx - textW - 25) : (cx + 15);
+            let drawY = (cy < centerY) ? (cy + 20) : (cy - 30);
             ctx.fillStyle = "rgba(15, 23, 42, 0.9)";
-            ctx.beginPath(); ctx.roundRect(drawX, drawY, boxW, boxH, 6); ctx.fill();
+            ctx.beginPath(); ctx.roundRect(drawX-5, drawY-15, textW+10, 24, 6); ctx.fill();
             ctx.fillStyle = "#38bdf8";
-            ctx.fillText(label, drawX + 6, drawY + 17);
+            ctx.fillText(label, drawX, drawY + 2);
 
             requestAnimationFrame(render);
         }
 
+        // 事件綁定
         sliderX.oninput = (e) => syncFromX(parseFloat(e.target.value));
         sliderY.oninput = (e) => syncFromY(parseFloat(e.target.value));
+        sliderZ.oninput = (e) => {
+            scaleZ = parseFloat(e.target.value);
+            updateSliderRanges();
+            updateDisplays();
+        };
         eqInput.onchange = updateEquation;
 
         canvas.onpointermove = (e) => {
             if (e.buttons === 1) {
                 const rect = canvas.getBoundingClientRect();
-                syncFromX((e.clientX - rect.left) - centerX);
+                syncFromX(((e.clientX - rect.left) - centerX) / scaleZ);
             }
         };
 
