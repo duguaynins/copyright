@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>xyz-lab</title>
+    <style>
+        :root { --unit-h: 15px; --pos-color: #4A90E2; --neg-color: #FF4D4D; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        
+        .panel { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 900px; margin-bottom: 20px; }
+        .control-row { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
+        
+        /* 變數滑桿區 */
+        .var-controller { background: #f9f9f9; padding: 10px; border-radius: 8px; border: 1px solid #eee; display: flex; align-items: center; gap: 10px; min-width: 250px; }
+        
+        /* 方塊樣式 */
+        .block { 
+            border-radius: 6px; color: white; display: flex; align-items: center; 
+            justify-content: center; cursor: grab; font-weight: bold; 
+            transition: height 0.3s ease, background-color 0.3s; position: relative;
+            min-width: 65px; box-sizing: border-box;
+        }
+        .v-tile { height: calc(var(--unit-h) * var(--this-h)); min-height: 45px; border: 2px solid rgba(255,255,255,0.2); }
+        .u-tile { height: 30px; width: 45px; }
+        .pos { background: var(--pos-color); box-shadow: 0 4px 0 #357ABD; }
+        .neg { background: var(--neg-color); box-shadow: 0 4px 0 #D93D3D; }
+
+        /* 指數框 */
+        .pow-container { position: absolute; top: -12px; right: -10px; background: #444; padding: 2px; border-radius: 4px; display: flex; align-items: center; z-index: 5; }
+        .pow-input { width: 28px; font-size: 11px; border: none; outline: none; text-align: center; border-radius: 2px; }
+
+        /* 舞台 */
+        .stage { display: flex; align-items: center; gap: 40px; margin-bottom: 20px; padding-top: 20px; }
+        .bin { 
+            width: 200px; height: 480px; border: 3px solid #333; border-top: block; position: relative;
+            background: #fff; border-radius: 10px 10px 10px 10px; display: flex; flex-direction: column; justify-content: center;
+        }
+        .zero-line { position: absolute; top: 50%; width: 100%; border-top: 2px dashed #ccc; z-index: 1; pointer-events: none; }
+        .stack { display: flex; width: 100%; align-items: center; flex-direction: column; z-index: 2; height: 50%; overflow: visible; }
+        .pos-stack { justify-content: flex-end; } .neg-stack { justify-content: flex-start; }
+
+        .total-tag { font-size: 2.2rem; font-weight: bold; margin-bottom: 5px; transition: all 0.2s ease; }
+        #trash-can:hover, .stack:hover { background: #ffebee; color: #ff4d4d; border-color: #ff4d4d; }
+        .equal-sign { font-size: 5rem; color: #ccc; }
+        #trash-can { width: 100%; max-width: 900px; height: 5vh; border: 3px dashed #aaa; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #aaa; font-weight: bold; }
+        #trash-can.hover { background: #ffebee; color: #ff4d4d; border-color: #ff4d4d; }
+
+        .add-var-btn { padding: 5px 15px; cursor: pointer; background: #4CAF50; color: white; border: none; border-radius: 5px; }
+        /* 當 bin 帶有 hovering 類別時的效果 */
+        .bin.hovering {
+            background-color: #e3f2fd; /* 淺藍色 */
+            border-color: #2196F3;
+            transition: 0.2s;
+        }
+        /* 讓 bin 內部的所有子元素不干擾拖曳判定 */
+        .bin * {
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+
+  
+    <div class="panel">
+
+        <div class="control-row">
+            <strong>Variable control:</strong>
+            <button class="add-var-btn" onclick="addNewVariable();document.getElementById('DialogVal').showModal();console.log(new Date().toLocaleString(), '🙉');">＋ add variable (y, z...)</button>
+            <button id="openLog" style="width:auto;" onclick="document.getElementById('DialogVal').showModal();console.log(new Date().toLocaleString(), '🙉');">👁️</button>
+            <!--br-->
+            <select id="active-var-selector">
+                <option value="x">x</option>
+            </select>
+        </div>
+
+        <div class="control-row" id="source-items">
+            <strong>Movable blocks:</strong>
+            <div id="src-pv" class="block v-tile pos" draggable="true" ondragstart="drag(event)" data-type="v" data-pol="1">?</div>
+            <div id="src-nv" class="block v-tile neg" draggable="true" ondragstart="drag(event)" data-type="v" data-pol="-1">-?</div>
+            
+            <div id="src-p1" class="block u-tile pos" draggable="true" ondragstart="drag(event)" data-type="u" data-pol="1">1</div>
+            <div id="src-n1" class="block u-tile neg" draggable="true" ondragstart="drag(event)" data-type="u" data-pol="-1">-1</div>
+        </div>
+
+        <!--hr><hr-->
+        
+        <dialog id="DialogVal">
+        <div class="control-row" id="variable-list">
+            <div class="var-controller">
+                <span>x = </span>
+                <input type="range" class="v-slider" data-var="x" min="-10" max="10" value="2" oninput="updateAll()">
+                <b class="v-val">2</b>
+            </div>
+        </div>
+        <button id="openLog" style="width:100%;" onclick="document.getElementById('DialogVal').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
+        </dialog>
+
+    </div>
+
+    <div id="trash-can" ondrop="trashDrop(event)" ondragover="allowDrop(event)" ondragenter="this.classList.add('hover')" ondragleave="this.classList.remove('hover')">🗑️</div>
+
+
+    <div class="stage">
+        <div style="text-align:center">
+            <div id="left-total" class="total-tag">0</div>
+            <div id="left-bin" class="bin" ondrop="drop(event)" ondragover="allowDrop(event)"
+                 ondragenter="this.classList.add('hovering')" ondragleave="this.classList.remove('hovering')"><div class="zero-line"></div><div class="stack pos-stack"></div><div class="stack neg-stack"></div></div>
+            <b translate="no">Left</b>
+        </div>
+        <div id="eq" class="equal-sign">=</div>
+        <div style="text-align:center">
+            <div id="right-total" class="total-tag">0</div>
+            <div id="right-bin" class="bin" ondrop="drop(event)" ondragover="allowDrop(event)"
+                 ondragenter="this.classList.add('hovering')" ondragleave="this.classList.remove('hovering')"><div class="zero-line"></div><div class="stack pos-stack"></div><div class="stack neg-stack"></div></div>
+            <b translate="no">Right</b>
+        </div>
+    </div>
+
+
+
+
+<script>
+  const tag = document.querySelector('.total-tag');
+
+tag.addEventListener('mouseenter', () => tag.classList.add('hover'));
+tag.addEventListener('mouseleave', () => tag.classList.remove('hover'));
+
+    let idCounter = 0;
+    let variables = { x: 2 };
+    const varNames = "yzwuvpabc".split("");
+
+    function addNewVariable() {
+        if (varNames.length === 0) return;
+        const name = varNames.shift();
+        variables[name] = 2;
+        
+        // 更新滑桿區
+        const container = document.getElementById('variable-list');
+        const div = document.createElement('div');
+        div.className = 'var-controller';
+        div.innerHTML = `<span>${name} = </span><input type="range" class="v-slider" data-var="${name}" min="-10" max="10" value="2" oninput="updateAll()"> <b class="v-val">2</b>`;
+        container.appendChild(div);
+
+        // 更新下拉選單
+        const selector = document.getElementById('active-var-selector');
+        const opt = document.createElement('option');
+        opt.value = name; opt.innerText = name;
+        selector.appendChild(opt);
+    }
+
+    function updateAll() {
+        // 更新滑桿數值顯示
+        document.querySelectorAll('.v-slider').forEach(s => {
+            const vName = s.getAttribute('data-var');
+            variables[vName] = parseInt(s.value);
+            s.nextElementSibling.innerText = s.value;
+        });
+        
+        // 更新方塊視覺效果
+        document.querySelectorAll('.block').forEach(b => {
+            // 只有變數方塊才需要計算高度與顏色變換
+            if (b.getAttribute('data-type') === 'v') {
+                const vName = b.getAttribute('data-var-name');
+                const pol = parseInt(b.getAttribute('data-pol'));
+                const input = b.querySelector('.pow-input'); // 先取得元素
+                const pow = input ? parseFloat(input.value) : 1; // 確保 input 存在才讀取 value
+                
+                const hFactor = Math.abs(Math.pow(variables[vName], pow));
+                b.style.setProperty('--this-h', hFactor);
+                
+                // 變數數值為 0 時變灰色
+                b.style.backgroundColor = (variables[vName] === 0) ? "#ccc" : (pol === 1 ? "var(--pos-color)" : "var(--neg-color)");
+            }
+        });
+        updateTotals();
+    }
+
+    function drag(ev) {
+        if (ev.target.parentElement.id === "source-items") {
+            const clone = ev.target.cloneNode(true);
+            const newId = "obj-" + idCounter++;
+            clone.id = newId;
+            
+            if(clone.getAttribute('data-type') === 'v') {
+                const vName = document.getElementById('active-var-selector').value;
+                clone.setAttribute('data-var-name', vName);
+                clone.innerHTML = (parseInt(clone.getAttribute('data-pol')) === 1 ? vName : "-"+vName) + 
+                                 `<div class="pow-container">^<input type="number" class="pow-input" value="1" oninput="updateAll()"></div>`;
+            }
+            document.body.appendChild(clone);
+            clone.style.display = "none";
+            ev.dataTransfer.setData("text", newId);
+        } else {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        const id = ev.dataTransfer.getData("text");
+        const el = document.getElementById(id);
+        const bin = ev.target.closest('.bin');
+        if (bin && el) {
+            el.style.display = "flex";
+            const targetStack = parseInt(el.getAttribute('data-pol')) >= 0 ? bin.querySelector('.pos-stack') : bin.querySelector('.neg-stack');
+            targetStack.appendChild(el);
+            updateAll();
+        }
+    }
+
+    function trashDrop(ev) {
+        ev.preventDefault();
+        const id = ev.dataTransfer.getData("text");
+        const el = document.getElementById(id);
+        if (el && !el.id.startsWith('src-')) el.remove();
+        document.getElementById('trash-can').classList.remove('hover');
+        updateTotals();
+    }
+
+    function updateTotals() {
+        const sides = ['left', 'right'];
+        let results = [];
+        sides.forEach(side => {
+            const bin = document.getElementById(side + '-bin');
+            let sum = 0;
+            bin.querySelectorAll('.block').forEach(b => {
+                const pol = parseInt(b.getAttribute('data-pol'));
+                if (b.getAttribute('data-type') === 'v') {
+                    const input = b.querySelector('.pow-input');
+                    const pow = input ? parseFloat(input.value) : 0; // 確保 input 存在
+                    const vName = b.getAttribute('data-var-name');
+                    sum += pol * Math.pow(variables[vName], pow);
+                } else { 
+                    // 常數方塊直接加正負 1
+                    sum += pol; 
+                }
+            });
+            document.getElementById(side + '-total').innerText = Math.round(sum * 100) / 100;
+            results.push(sum);
+        });
+        document.getElementById('eq').style.color = (Math.abs(results[0] - results[1]) < 0.01) ? "#4CAF50" : "#ccc";
+    }
+
+    function allowDrop(ev) { ev.preventDefault(); }
+    updateAll();
+</script>
+</body>
+</html>
