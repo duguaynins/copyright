@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雙軸連動方程式繪圖器 - 垂直全寬版</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; overflow-x: hidden; }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(51, 65, 85, 1);
+        }
+        canvas { cursor: crosshair; touch-action: none; background: #020617; width: 100%; }
+        input[type=range] {
+            height: 8px;
+            -webkit-appearance: none;
+            background: #334155;
+            border-radius: 4px;
+            flex-grow: 1;
+            margin: 0 15px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #38bdf8;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
+            border: 2px solid #fff;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-6 flex flex-col items-center font-sans">
+
+    <div class="w-full flex flex-col gap-6">
+        
+        <div class="w-full glass-card p-4 rounded-2xl">
+            <div class="relative w-full">
+                <span class="absolute left-4 top-3 text-slate-500 font-mono text-lg">y =</span>
+                <input type="text" id="eqInput" 
+                       class="w-full bg-slate-900/50 border border-slate-700 rounded-xl pl-12 pr-4 py-3 font-mono text-cyan-400 text-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                       value="Math.sin(x/40) * 120">
+            </div>
+        </div>
+
+        <div class="w-full glass-card p-6 rounded-2xl shadow-lg">
+            <div class="flex items-center w-full">
+                <div class="text-2xl font-mono font-black text-blue-400 w-8">X</div>
+                <input type="range" id="sliderX" class="cursor-pointer">
+                <div id="valX" class="text-2xl font-mono font-bold text-white min-w-[80px] text-right">0.0</div>
+            </div>
+            <div class="flex items-center w-full">
+                <div class="text-2xl font-mono font-black text-emerald-400 w-8">Y</div>
+                <input type="range" id="sliderY" class="cursor-pointer">
+                <div id="valY" class="text-2xl font-mono font-bold text-white min-w-[80px] text-right">0.0</div>
+            </div>
+        </div>
+
+        <div class="w-full relative glass-card p-2 rounded-3xl overflow-hidden shadow-2xl">
+            <canvas id="mainCanvas" class="rounded-2xl h-[500px]"></canvas>
+        </div>
+
+    </div>
+
+    <script>
+        const canvas = document.getElementById('mainCanvas');
+        const ctx = canvas.getContext('2d');
+        const eqInput = document.getElementById('eqInput');
+        const sliderX = document.getElementById('sliderX');
+        const sliderY = document.getElementById('sliderY');
+        const valXDisplay = document.getElementById('valX');
+        const valYDisplay = document.getElementById('valY');
+
+        let width, height, centerX, centerY;
+        let curvePoints = []; 
+        let curX = 0, curY = 0;
+        let currentFunc = null;
+
+        function init() {
+            const dpr = window.devicePixelRatio || 1;
+            // 獲取畫布當前的顯示寬度 (100%)
+            const displayWidth = canvas.clientWidth;
+            const displayHeight = canvas.clientHeight;
+
+            canvas.width = displayWidth * dpr;
+            canvas.height = displayHeight * dpr;
+            ctx.scale(dpr, dpr);
+
+            width = displayWidth;
+            height = displayHeight;
+            centerX = width / 2;
+            centerY = height / 2;
+
+            sliderX.min = -centerX;
+            sliderX.max = centerX;
+            sliderY.min = -centerY;
+            sliderY.max = centerY;
+
+            updateEquation();
+        }
+
+        function updateEquation() {
+            try {
+                currentFunc = new Function('x', `return ${eqInput.value};`);
+                curvePoints = [];
+                // 提高取樣密度以確保滑動順暢
+                for (let x = -centerX; x <= centerX; x += 0.5) {
+                    const y = currentFunc(x);
+                    if (typeof y === 'number' && !isNaN(y) && isFinite(y)) {
+                        curvePoints.push({ x, y });
+                    }
+                }
+                syncFromX(curX);
+            } catch (e) {
+                console.error("方程式解析錯誤");
+            }
+        }
+
+        function syncFromX(newX) {
+            curX = newX;
+            try {
+                curY = currentFunc(curX);
+                if (isNaN(curY)) curY = 0;
+            } catch(e) { curY = 0; }
+            updateDisplays();
+        }
+
+        function syncFromY(newY) {
+            curY = newY;
+            if (curvePoints.length === 0) return;
+
+            let bestMatch = curvePoints[0];
+            let minScore = Infinity;
+
+            for (const p of curvePoints) {
+                const yDiff = Math.abs(p.y - newY);
+                const xDiff = Math.abs(p.x - curX);
+                const score = yDiff * 1000 + xDiff; 
+                if (score < minScore) {
+                    minScore = score;
+                    bestMatch = p;
+                }
+            }
+            curX = bestMatch.x;
+            curY = currentFunc(curX); 
+            updateDisplays();
+        }
+
+        function updateDisplays() {
+            sliderX.value = curX;
+            sliderY.value = curY;
+            valXDisplay.innerText = curX.toFixed(1);
+            valYDisplay.innerText = curY.toFixed(1);
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // 背景格線
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            for(let x = centerX % 50; x < width; x+=50) { ctx.moveTo(x, 0); ctx.lineTo(x, height); }
+            for(let y = centerY % 50; y < height; y+=50) { ctx.moveTo(0, y); ctx.lineTo(width, y); }
+            ctx.stroke();
+
+            // 軸線
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, centerY); ctx.lineTo(width, centerY);
+            ctx.moveTo(centerX, 0); ctx.lineTo(centerX, height);
+            ctx.stroke();
+
+            // 繪製曲線
+            if (curvePoints.length > 1) {
+                ctx.strokeStyle = '#38bdf8';
+                ctx.lineWidth = 3;
+                ctx.lineJoin = 'round';
+                ctx.beginPath();
+                curvePoints.forEach((p, i) => {
+                    const drawX = centerX + p.x;
+                    const drawY = centerY - p.y;
+                    if (i === 0) ctx.moveTo(drawX, drawY);
+                    else ctx.lineTo(drawX, drawY);
+                });
+                ctx.stroke();
+            }
+
+            // 十字準星
+            const cx = centerX + curX;
+            const cy = centerY - curY;
+            ctx.setLineDash([5, 5]);
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.beginPath();
+            ctx.moveTo(cx, 0); ctx.lineTo(cx, height);
+            ctx.moveTo(0, cy); ctx.lineTo(width, cy);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // 亮點
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = '#38bdf8';
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.arc(cx, cy, 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            requestAnimationFrame(render);
+        }
+
+        sliderX.oninput = (e) => syncFromX(parseFloat(e.target.value));
+        sliderY.oninput = (e) => syncFromY(parseFloat(e.target.value));
+        eqInput.onchange = updateEquation;
+
+        canvas.onpointermove = (e) => {
+            if (e.buttons === 1) {
+                const rect = canvas.getBoundingClientRect();
+                const mouseX = (e.clientX - rect.left) - centerX;
+                syncFromX(mouseX);
+            }
+        };
+
+        window.onresize = init;
+        window.onload = () => {
+            init();
+            render();
+        };
+    </script>
+</body>
+</html>
