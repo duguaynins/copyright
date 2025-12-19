@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>函數攔截系統 - 座標顯影版</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; height: 100vh; margin: 0; overflow: hidden; font-family: 'JetBrains Mono', monospace; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(51, 65, 85, 1); z-index: 20; }
+        canvas { cursor: crosshair; touch-action: none; background: #020617; width: 100%; height: 100%; }
+        
+        input[type=range] { height: 8px; -webkit-appearance: none; background: #334155; border-radius: 4px; flex: 1; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; border: 2px solid #fff; cursor: pointer; }
+        #sliderZ::-webkit-slider-thumb { background: #f59e0b; box-shadow: 0 0 10px #f59e0b; }
+
+        @keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+        .scan-effect::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent, rgba(56, 189, 248, 0.1), transparent); animation: scanline 3s linear infinite; pointer-events: none; }
+
+        #startOverlay { position: fixed; inset: 0; z-index: 1000; background: radial-gradient(circle at center, #1e293b 0%, #020617 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .snow { position: absolute; top: -10px; color: white; user-select: none; pointer-events: none; animation: fall linear infinite; z-index: 50; }
+        @keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
+        
+        .mode-btn { @apply flex flex-col items-center justify-center p-6 rounded-3xl transition-all hover:scale-105 active:scale-95 border-2; }
+        .hide { display: none !important; }
+    </style>
+</head>
+<body class="p-4 flex flex-col items-center">
+
+    <div id="startOverlay">
+        <div class="mb-12 text-center">
+            <h1 class="text-6xl font-black text-white mb-2 tracking-tighter italic">MATH<span class="text-cyan-400">DEFENDER</span></h1>
+            <p class="text-slate-400 font-bold uppercase tracking-[0.3em]">座標攔截系統 - 座標顯影版</p>
+        </div>
+        <div class="flex gap-8">
+            <button id="xmasBtn" class="mode-btn bg-red-900/20 border-red-500 text-red-400 w-64">
+                <span class="text-4xl mb-2">🎄</span>
+                <span class="text-2xl font-black">XMAS MODE</span>
+                <span class="text-xs mt-2 opacity-60">聖誕音樂 & 擊中保留</span>
+            </button>
+            <button id="normalBtn" class="mode-btn bg-cyan-900/20 border-cyan-500 text-cyan-400 w-64">
+                <span class="text-4xl mb-2">📡</span>
+                <span class="text-2xl font-black">NORMAL MODE</span>
+                <span class="text-xs mt-2 opacity-60">雷達音效 & 掃描特效</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="w-full h-full flex flex-col gap-3 relative">
+        <div class="w-full glass-card p-3 rounded-2xl flex items-center shrink-0">
+            <button id="eqLabel" class="text-slate-500 font-mono text-xl mr-4 font-bold hover:text-cyan-400 transition-all">y=</button>
+            <input type="text" id="eqInput" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-4 py-2 font-mono text-cyan-400 text-lg outline-none focus:ring-2 focus:ring-cyan-500" value="Math.sin(x/40) * 120">
+            <button id="launchBtn" style="display: none;" class="ml-4 bg-rose-600 hover:bg-rose-500 text-white px-6 py-2 rounded-xl font-black shadow-lg shadow-rose-900/20 active:scale-95 transition-all">FIRE</button>
+        </div>
+
+        <div id="scaleControl" class="w-full glass-card p-4 rounded-2xl flex items-center gap-6 shrink-0 border-orange-500/20">
+            <div class="flex flex-col">
+                <span class="text-orange-400 font-black text-2xl font-mono leading-none">Z</span>
+                <span class="text-slate-500 text-[10px] font-bold uppercase mt-1">Scale</span>
+            </div>
+            <input type="range" id="sliderZ" min="0.1" max="5" step="0.05" value="1">
+            <div class="flex flex-col items-end min-w-[80px]">
+                <div id="valZ" class="text-2xl font-mono font-bold text-white leading-none">1.0x</div>
+                <div class="text-[10px] text-slate-500 font-bold mt-1 uppercase">Zoom</div>
+            </div>
+        </div>
+
+
+        <!-- Main Display -->
+        <div class="w-full flex-1 glass-card p-2 rounded-3xl overflow-hidden relative scan-effect">
+            <canvas id="mainCanvas" class="rounded-2xl"></canvas>
+            
+            <!-- Left Overlay: Score -->
+            <div class="absolute top-6 left-6 pointer-events-none">
+                <div class="text-xs text-slate-500 uppercase font-black">Score</div>
+                <div id="scoreLabel" class="text-4xl font-black text-white">0</div>
+                <div id="gameStatus" class="text-cyan-400 text-[10px] mt-1 font-bold tracking-widest uppercase italic">Radar Active</div>
+            </div>
+
+            <!-- Right Overlay: Crosshair Stats [x, y, z] -->
+            <div class="absolute top-6 right-6 pointer-events-none glass-card px-4 py-2 rounded-xl border-cyan-500/30 flex gap-4 items-center">
+                <div class="flex flex-col">
+                    <span class="text-[10px] text-slate-500 font-bold uppercase">Crosshair</span>
+                    <div class="text-xl font-mono font-black text-white">
+                        [<span class="text-cyan-400" id="statX">0</span>, 
+                        <span class="text-cyan-400" id="statY">0</span>, 
+                        <span class="text-orange-400" id="statZ">1.0</span>]
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- END -->
+        <div class="w-full glass-card p-3 rounded-2xl flex items-center shrink-0">
+            
+        </div>
+    </div>
+
+    
+    <dialog id="DialogCheck" translate="no">
+        <pre id="logOutput" style="max-height:200px; overflow:auto; margin:0;"></pre>
+        <br><button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogCheck').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
+    </dialog>
+
+
+    <script>
+        const canvas = document.getElementById('mainCanvas'), ctx = canvas.getContext('2d');
+        const eqInput = document.getElementById('eqInput'), launchBtn = document.getElementById('launchBtn');
+        const sliderZ = document.getElementById('sliderZ'), valZDisplay = document.getElementById('valZ');
+        const scoreLabel = document.getElementById('scoreLabel'), startOverlay = document.getElementById('startOverlay');
+        const xmasBtn = document.getElementById('xmasBtn'), normalBtn = document.getElementById('normalBtn');
+
+        let width, height, centerX, centerY;
+        let curX = 0, curY = 0, scaleZ = 1;
+        let score = 0, gameActive = false, isLaunching = false, gameMode = 'none';
+        let currentFunc = (x) => Math.sin(x/40)*120;
+        let enemies = []; 
+        
+
+        // --- 音效系統 ---
+        let audioCtx = null;
+        let bgmTimeout = null;
+        let lastPingTime = 0;
+        let pingAnim = 0;
+        const PING_INTERVAL = 1500;
+
+        eqInput.addEventListener('input', (e) => {
+            console.log(`y= ${eqInput.value}`);
+        });
+
+        eqInput.addEventListener('change', (e) => {
+            if (true) {
+                console.log(`y= ${eqInput.value}`);
+                launch();
+            }
+        });
+
+        eqInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                ///updateEquation();          // 先更新函數
+                ///console.log("y=", eqInput.value); // 每次 Enter 印出目前 FX
+                console.log(`y= ${eqInput.value}>>>`);
+                launch();
+            }
+        });
+
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        const jingleBells = [
+            {f: 659.25, d: 250}, {f: 659.25, d: 250}, {f: 659.25, d: 500},
+            {f: 659.25, d: 250}, {f: 659.25, d: 250}, {f: 659.25, d: 500},
+            {f: 659.25, d: 250}, {f: 783.99, d: 250}, {f: 523.25, d: 375}, {f: 587.33, d: 125}, {f: 659.25, d: 1000},
+            {f: 698.46, d: 250}, {f: 698.46, d: 250}, {f: 698.46, d: 375}, {f: 698.46, d: 125},
+            {f: 698.46, d: 250}, {f: 659.25, d: 250}, {f: 659.25, d: 250}, {f: 659.25, d: 125}, {f: 659.25, d: 125},
+            {f: 783.99, d: 250}, {f: 783.99, d: 250}, {f: 698.46, d: 250}, {f: 587.33, d: 250}, {f: 523.25, d: 1000},
+            {f: 392.00, d: 250}, {f: 523.25, d: 250}, {f: 493.88, d: 250}, {f: 440.00, d: 250}, {f: 392.00, d: 750},
+            {f: 392.00, d: 125}, {f: 392.00, d: 125}, {f: 392.00, d: 250}, {f: 523.25, d: 250}, {f: 493.88, d: 250}, {f: 440.00, d: 250}, {f: 587.33, d: 750},
+            {f: 587.33, d: 250}, {f: 587.33, d: 250}, {f: 659.25, d: 250}, {f: 587.33, d: 250}, {f: 523.25, d: 250}, {f: 392.00, d: 750},
+            {f: 392.00, d: 250}, {f: 783.99, d: 250}, {f: 783.99, d: 250}, {f: 698.46, d: 250}, {f: 587.33, d: 250}, {f: 659.25, d: 1000}
+        ];
+        let noteIdx = 0;
+
+        function playXmasBGM() {
+            if (!audioCtx) return;
+            const note = jingleBells[noteIdx];
+            if (note.f > 0) {
+                const osc = audioCtx.createOscillator();
+                const g = audioCtx.createGain();
+                osc.connect(g); g.connect(audioCtx.destination);
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(note.f, audioCtx.currentTime);
+                g.gain.setValueAtTime(0.04, audioCtx.currentTime);
+                g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + note.d/1000);
+                osc.start(); osc.stop(audioCtx.currentTime + note.d/1000);
+            }
+            noteIdx = (noteIdx + 1) % jingleBells.length;
+            bgmTimeout = setTimeout(playXmasBGM, note.d);
+        }
+
+        function playPing() {
+            if (!audioCtx || !gameActive) return;
+            pingAnim = 1.0; 
+            const osc = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            osc.connect(g); g.connect(audioCtx.destination);
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(gameMode === 'xmas' ? 400 : 150, audioCtx.currentTime);
+            g.gain.setValueAtTime(0.03, audioCtx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+        }
+
+        function playLaunchSound() {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            osc.connect(g); g.connect(audioCtx.destination);
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.25);
+            g.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.25);
+        }
+
+        function playHitSound() {
+            if (!audioCtx) return;
+            const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.3, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+            const noise = audioCtx.createBufferSource();
+            noise.buffer = buffer;
+            const g = audioCtx.createGain();
+            g.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+            noise.connect(g); g.connect(audioCtx.destination);
+            noise.start();
+        }
+
+        function createSnow() {
+            if (!gameActive || gameMode !== 'xmas') return;
+            const snow = document.createElement('div');
+            snow.className = 'snow';
+            snow.innerHTML = '❄';
+            snow.style.left = Math.random() * 100 + 'vw';
+            snow.style.fontSize = (Math.random() * 10 + 10) + 'px';
+            snow.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            document.body.appendChild(snow);
+            setTimeout(() => snow.remove(), 5000);
+        }
+        setInterval(createSnow, 300);
+
+        function init() {
+            const dpr = window.devicePixelRatio || 1;
+            width = canvas.clientWidth; height = canvas.clientHeight;
+            canvas.width = width * dpr; canvas.height = height * dpr;
+            ctx.scale(dpr, dpr);
+            centerX = width / 2; centerY = height / 2;
+            updateEquation();
+        }
+
+        function updateEquation() {
+            try { currentFunc = new Function('x', `return ${eqInput.value};`); } catch (e) {}
+        }
+
+        function spawnEnemy() {
+            enemies.push({
+                x: Math.round((Math.random() - 0.5) * (width / scaleZ * 0.7)),
+                y: Math.round((Math.random() - 0.5) * (height / scaleZ * 0.7)),
+                destroyed: false,
+                hitFlash: 0
+            });
+        }
+
+        function drawGrid() {
+            const gridSize = 50 * scaleZ;
+            ctx.strokeStyle = gameMode === 'xmas' ? '#2d1a1a' : '#1e293b'; 
+            ctx.lineWidth = 1; ctx.beginPath();
+            for(let x = centerX % gridSize; x < width; x += gridSize) { ctx.moveTo(x, 0); ctx.lineTo(x, height); }
+            for(let y = centerY % gridSize; y < height; y += gridSize) { ctx.moveTo(0, y); ctx.lineTo(width, y); }
+            ctx.stroke();
+            ctx.strokeStyle = '#334155'; ctx.lineWidth = 2; ctx.beginPath();
+            ctx.moveTo(0, centerY); ctx.lineTo(width, centerY); ctx.moveTo(centerX, 0); ctx.lineTo(centerX, height); ctx.stroke();
+        }
+
+        function render(time) {
+            // Update UI Stats
+            statX.innerText = curX;
+            statY.innerText = curY;
+            statZ.innerText = scaleZ.toFixed(1);
+            
+            ctx.clearRect(0, 0, width, height);
+            drawGrid();
+
+            if (gameActive && time - lastPingTime > PING_INTERVAL) { playPing(); lastPingTime = time; }
+            if (pingAnim > 0) pingAnim -= 0.015;
+
+            // 1. 函數圖形
+            try {
+                ctx.beginPath();
+                ctx.strokeStyle = isLaunching ? '#fb7185' : (gameMode === 'xmas' ? '#f87171' : '#38bdf8');
+                ctx.lineWidth = isLaunching ? 6 : 3;
+                let first = true;
+                for (let px = 0; px <= width; px += 1) {
+                    const x = (px - centerX) / scaleZ;
+                    const y = currentFunc(x);
+                    const py = centerY - (y * scaleZ);
+                    if (Number.isFinite(py)) {
+                        if (first) { ctx.moveTo(px, py); first = false; }
+                        else { ctx.lineTo(px, py); }
+                    }
+                }
+                ctx.stroke();
+            } catch(e) {}
+
+            // 2. 準星
+            try { const y = currentFunc(curX); curY = Number.isFinite(y) ? y : 0; } catch(e) { curY = 0; }
+            const cx = centerX + (curX * scaleZ);
+            const cy = centerY - (curY * scaleZ);
+            ctx.setLineDash([5, 5]); ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)'; ctx.beginPath();
+            ctx.moveTo(cx, 0); ctx.lineTo(cx, height); ctx.moveTo(0, cy); ctx.lineTo(width, cy); ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(cx, cy, 5, 0, Math.PI * 2); ctx.fill();
+
+            // 3. 敵人渲染邏輯
+            enemies.forEach(en => {
+                const ex = centerX + (en.x * scaleZ), ey = centerY - (en.y * scaleZ);
+                
+                ctx.save();
+                
+                // --- 繪製座標數值 (始終顯示) ---
+                ctx.font = "bold 13px 'JetBrains Mono'";
+                ctx.textAlign = "center";
+                if (!en.destroyed) {
+                    // 未擊中：淡淡的青色，帶有呼吸感
+                    const pulse = 0.3 + Math.sin(time / 200) * 0.2;
+                    ///ctx.fillStyle = `rgba(56, 189, 248, ${pulse})`;
+                    ///ctx.fillStyle = `rgba(255, 255, 255, ${pulse})`;
+                    ctx.fillStyle = '#ff0000';
+                } else {
+                    // 已擊中：穩定的灰色
+                    ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+                }
+                ctx.fillText(`(${en.x}, ${en.y})`, ex, ey - 22);
+
+                // --- 繪製敵人本體 ---
+                if (!en.destroyed) {
+                    // 一開始本體完全透明 (Alpha = 0)
+                    ctx.globalAlpha = 0; 
+                    
+                    // 雷達波紋
+                    if (pingAnim > 0) {
+                        ctx.save();
+                        ctx.globalAlpha = pingAnim;
+                        ctx.beginPath(); ctx.arc(ex, ey, (1 - pingAnim) * 120, 0, Math.PI * 2);
+                        ctx.strokeStyle = gameMode === 'xmas' ? '#ef4444' : '#f43f5e'; 
+                        ctx.lineWidth = 2; ctx.stroke();
+                        ctx.restore();
+                    }
+                } else {
+                    // 擊中後 50% 透明度顯影
+                    ctx.globalAlpha = 0.5;
+                }
+
+                // 擊中瞬間閃光或常規顏色
+                if (en.hitFlash > 0) { 
+                    ctx.globalAlpha = en.hitFlash; 
+                    ctx.fillStyle = '#fff'; 
+                    en.hitFlash -= 0.05; 
+                } else { 
+                    ctx.fillStyle = gameMode === 'xmas' ? '#fbbf24' : '#f43f5e'; 
+                }
+
+                ctx.beginPath(); ctx.arc(ex, ey, 10, 0, Math.PI * 2); ctx.fill();
+                ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+                
+                ctx.restore();
+            });
+
+            requestAnimationFrame(render);
+        }
+
+        function launch() {
+            if (isLaunching || !gameActive) return;
+            isLaunching = true;
+            playLaunchSound();
+
+            enemies.forEach(en => {
+                if (en.destroyed) return;
+
+                let hit = false;
+                try {
+                    const funcValAtX = currentFunc(en.x);
+                    
+                    // 判定：精確擊中 y 座標
+                    if (Number.isFinite(funcValAtX) && Math.round(funcValAtX) === en.y) {
+                        hit = true;
+                    }
+
+                    if (!hit) {
+                        // 檢查當前手動準星位置是否重合
+                        if (Math.round(curX) === en.x && Math.round(curY) === en.y) {
+                            hit = true;
+                        }
+                    }
+                } catch(e) {}
+
+                if (hit) {
+                    en.destroyed = true;
+                    en.hitFlash = 1.0;
+                    score += 100;
+                    scoreLabel.innerText = score;
+                    playHitSound();
+                    setTimeout(spawnEnemy, 800);
+                }
+            });
+
+            setTimeout(() => isLaunching = false, 400);
+        }
+
+        canvas.onpointermove = (e) => {
+            const rect = canvas.getBoundingClientRect();
+            curX = Math.round(((e.clientX - rect.left) - centerX) / scaleZ);
+        };
+        canvas.onpointerdown = launch;
+        ///canvas.onpointerdown = 
+        launchBtn.onclick = launch;
+        eqInput.oninput = updateEquation;
+        sliderZ.oninput = (e) => {
+            scaleZ = parseFloat(e.target.value);
+            valZDisplay.innerText = scaleZ.toFixed(1) + 'x';
+        };
+        document.getElementById('eqLabel').onclick = () => document.getElementById('scaleControl').classList.toggle('hide');
+
+        const start = (mode) => {
+            initAudio();
+            gameMode = mode;
+            gameActive = true;
+            startOverlay.style.display = 'none';
+            if(mode === 'xmas') playXmasBGM();
+            init(); spawnEnemy(); requestAnimationFrame(render);
+        };
+
+        xmasBtn.onclick = () => start('xmas');
+        normalBtn.onclick = () => start('normal');
+        window.onresize = init;
+    </script>
+</body>
+</html>
