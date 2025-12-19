@@ -311,6 +311,9 @@
 
         /* 滑桿樣式 */
         input[type="range"] { flex: 1; cursor: pointer; }
+
+        @keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
+        .snow { position: absolute; top: -10px; color: white; user-select: none; pointer-events: none; animation: fall linear infinite; z-index: 100000; }
     </style>
 <!-- 放置你原有的布局 -->
 </head>
@@ -339,7 +342,7 @@
       pointer-events: none;  /* 動畫期間不阻擋互動（可選）*/
     "></button>
     
-    <button id="startOverlay" style="z-index: 99998;" onclick="this.classList.add('fadeOut'); initAudio();">
+    <button id="startOverlay" style="z-index: 99998;" onclick="this.classList.add('fadeOut'); initAudio();playXmasBGM();">
         <span translate="no" id="merryXmas"></span>
     </button>
     
@@ -370,6 +373,15 @@
           
 <!-- 放置你原有的布局 -->
 
+<div id="formulaButtons" class="formula-bar" style="
+    display: flex;
+    justify-content: flex-start;
+    flex-shrink: 0;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: auto;
+    background: #CCCCCC;
+"></div>
 
 <div id="content" style="background: #CCCCCC; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
 
@@ -382,16 +394,16 @@
                 </div>
 
                 <div class="glass-card" style="position: absolute; top: 15px; right: 15px; padding: 5px 10px; font-size: 12px;">
-                    <span style="color: #00f2ff;" id="statX">0</span>, 
-                    <span style="color: #00f2ff;" id="statY">0</span>, 
-                    <span style="color: #ff9d00;" id="statZ">1.0</span>
+                    <span style="color: #00f2ff;" id="statX">x</span>　
+                    <span style="color: #00f2ff;" id="statY">y</span>　
+                    <span style="color: #ff9d00;" id="statZ">z</span>
                 </div>
             </div>
 
 
             <div class="controls" style="width: 90vw; ">
                 <div class="input-group">
-                    <span style="color: #ff9d00; font-weight: bold;">ZOOM</span>
+                    <span style="color: #ff9d00; font-weight: bold;">Z</span>
                     <input type="range" id="sliderZ" min="0.1" max="5" step="0.05" value="1.0">
                     <span id="valZ" style="min-width: 40px;">1.0x</span>
                 </div>
@@ -399,20 +411,11 @@
                 <div class="input-group">
                     <span style="color: #666;">y=</span>
                     <input type="text" id="eqInput" value="Math.sin(x/40) * 120" spellcheck="false">
-                    <button class="btn-fire" onclick="launch();" translate="no">FIRE</button>
+                    <!--button class="btn-fire" onclick="launch();" translate="no">FIRE</button!-->
                 </div>
             </div>
 </div>
 
-<div id="formulaButtons" class="formula-bar" style="
-    display: flex;
-    justify-content: flex-start;
-    flex-shrink: 0;
-    align-items: center;
-    overflow-y: auto;
-    overflow-x: auto;
-    background: #CCCCCC;
-"></div>
 <!-- 放置你原有的布局 -->
             
           <!--strong></strong-->
@@ -495,6 +498,7 @@
 
         function initAudio() {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
         }
 
         function spawnEnemy() {
@@ -599,9 +603,57 @@
             fContainer.appendChild(btn);
         });
 
+        const jingleBells = [
+            {f: 659.25, d: 250}, {f: 659.25, d: 250}, {f: 659.25, d: 500},
+            {f: 659.25, d: 250}, {f: 659.25, d: 250}, {f: 659.25, d: 500},
+            {f: 659.25, d: 250}, {f: 783.99, d: 250}, {f: 523.25, d: 375}, {f: 587.33, d: 125}, {f: 659.25, d: 1000},
+            {f: 698.46, d: 250}, {f: 698.46, d: 250}, {f: 698.46, d: 375}, {f: 698.46, d: 125},
+            {f: 698.46, d: 250}, {f: 659.25, d: 250}, {f: 659.25, d: 250}, {f: 659.25, d: 125}, {f: 659.25, d: 125},
+            {f: 783.99, d: 250}, {f: 783.99, d: 250}, {f: 698.46, d: 250}, {f: 587.33, d: 250}, {f: 523.25, d: 1000},
+            {f: 392.00, d: 250}, {f: 523.25, d: 250}, {f: 493.88, d: 250}, {f: 440.00, d: 250}, {f: 392.00, d: 750},
+            {f: 392.00, d: 125}, {f: 392.00, d: 125}, {f: 392.00, d: 250}, {f: 523.25, d: 250}, {f: 493.88, d: 250}, {f: 440.00, d: 250}, {f: 587.33, d: 750},
+            {f: 587.33, d: 250}, {f: 587.33, d: 250}, {f: 659.25, d: 250}, {f: 587.33, d: 250}, {f: 523.25, d: 250}, {f: 392.00, d: 750},
+            {f: 392.00, d: 250}, {f: 783.99, d: 250}, {f: 783.99, d: 250}, {f: 698.46, d: 250}, {f: 587.33, d: 250}, {f: 659.25, d: 1000}
+        ];
+        let noteIdx = 0;
+
+        function playXmasBGM() {
+            if (!audioCtx) return;
+            const note = jingleBells[noteIdx];
+            if (note.f > 0) {
+                const osc = audioCtx.createOscillator();
+                const g = audioCtx.createGain();
+                osc.connect(g); g.connect(audioCtx.destination);
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(note.f, audioCtx.currentTime);
+                g.gain.setValueAtTime(0.04, audioCtx.currentTime);
+                g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + note.d/1000);
+                osc.start(); osc.stop(audioCtx.currentTime + note.d/1000);
+            }
+            noteIdx = (noteIdx + 1) % jingleBells.length;
+            bgmTimeout = setTimeout(playXmasBGM, note.d);
+        }
+        
         init();
         draw();
         spawnEnemy();
+        ///playXmasBGM();
+
+        ///gameActive = false
+        function createSnow() {  // 搜尋 SNOW 可以得到所有
+
+            ///if (!gameActive || gameMode !== 'xmas') return;
+            const snow = document.createElement('div');
+            snow.className = 'snow';
+            snow.innerHTML = '❄';
+            snow.style.left = Math.random() * 100 + 'vw';
+            snow.style.fontSize = (Math.random() * 10 + 10) + 'px';
+            snow.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            document.body.appendChild(snow);
+            setTimeout(() => snow.remove(), 5000);
+        }
+        setInterval(createSnow, 300);
+
     </script>
 <!-- 放置你原有的布局 -->
  
@@ -686,15 +738,15 @@ console.error(new Date().toLocaleString(), 'This is an error test.');
       console.log('combo?', !!combo);
         
       if (lang.replace(/_/g, "-").split("-")[0] === "en") {
-        document.getElementById("input_msg").style.display = "block";
-        document.getElementById("input_msgbtn").style.display = "block";
+        ///document.getElementById("input_msg").style.display = "block";
+        ///document.getElementById("input_msgbtn").style.display = "block";
         document.getElementById("content").style.background = "#FFFFFF";
         ///document.getElementById('Input').textAlign = 'center';
       }
   
       waitForTranslationById('notice', () => {
-        document.getElementById("input_msg").style.display = "block";
-        document.getElementById("input_msgbtn").style.display = "block";
+        ///document.getElementById("input_msg").style.display = "block";
+        ///document.getElementById("input_msgbtn").style.display = "block";
         document.getElementById("content").style.background = "#FFFFFF";
         ///document.getElementById('Input').textAlign = 'center';
       });
