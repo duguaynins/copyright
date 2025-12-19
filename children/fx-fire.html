@@ -53,6 +53,13 @@
             pointer-events: none; /* 動畫期間禁止點擊 */
             animation: fadeOut 3s forwards;
         }
+        #formulaButtons {
+            display: flex;          /* 排成一排 */
+            overflow-x: auto;       /* 水平滾動 */
+            gap: 8px;               /* 按鈕間距 */
+            padding: 8px;
+            -webkit-overflow-scrolling: touch; /* iOS 平滑滾動 */
+        }
     </style>
 </head>
 <body class="p-4 flex flex-col items-center">
@@ -85,26 +92,22 @@
         </div-->
         
         <div id="modeSelect" class="flex flex-col   gap-8    items-center gap-6">
-            <button id="xmasBtn" class="mode-btn bg-red-900/20 border-red-500 text-red-400 w-64">
+            <button id="xmasBtn" class="mode-btn bg-red-900/20 border-red-500 text-red-400 w-64" style="background: white;">
                 <span class="text-4xl mb-2">🎄</span>
-                <span class="text-2xl font-black">XMAS MODE</span>
+                <span class="text-2xl font-black whitespace-nowrap">*© nins x XMAS 25</span>
                 <!--span class="text-xs mt-2 opacity-60">聖誕音樂 & 擊中保留</span!-->
             </button>
-            <button id="normalBtn" class="mode-btn bg-cyan-900/20 border-cyan-500 text-cyan-400 w-64">
+            <button id="normalBtn" class="mode-btn bg-cyan-900/20 border-cyan-500 text-cyan-400 w-64" style="display: none;">
                 <span class="text-4xl mb-2">📡</span>
-                <span class="text-2xl font-black">NORMAL MODE</span>
+                <span class="text-2xl font-black whitespace-nowrap">NORMAL MODE</span>
                 <!--span class="text-xs mt-2 opacity-60">雷達音效 & 掃描特效</span!-->
             </button>
         </div>
     </div>
 
     <div class="w-full h-full flex flex-col gap-3 relative">
-        <div class="w-full glass-card p-3 rounded-2xl flex items-center shrink-0">
-            <button id="eqLabel" class="text-slate-500 font-mono text-xl mr-4 font-bold hover:text-cyan-400 transition-all">y=</button>
-            <input type="text" id="eqInput" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-4 py-2 font-mono text-cyan-400 text-lg outline-none focus:ring-2 focus:ring-cyan-500" value="Math.sin(x/40) * 120">
-            <button id="launchBtn" style="display: none;" class="ml-4 bg-rose-600 hover:bg-rose-500 text-white px-6 py-2 rounded-xl font-black shadow-lg shadow-rose-900/20 active:scale-95 transition-all">FIRE</button>
-        </div>
 
+        <!-- 輸入 Scale -->
         <div id="scaleControl" class="w-full glass-card p-4 rounded-2xl flex items-center gap-6 shrink-0 border-orange-500/20">
             <div class="flex flex-col">
                 <span class="text-orange-400 font-black text-2xl font-mono leading-none">Z</span>
@@ -156,13 +159,22 @@
             </div>
             
         </div>
+        <div id="formulaButtons" class="w-full glass-card p-3 rounded-2xl flex items-center shrink-0">
 
+        </div>
+
+        <!-- 輸入 FUNC -->
+        <div class="w-full glass-card p-3 rounded-2xl flex items-center shrink-0">
+            <button id="eqLabel" class="text-slate-500 font-mono text-xl mr-4 font-bold hover:text-cyan-400 transition-all">y=</button>
+            <input type="text" id="eqInput" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-4 py-2 font-mono text-cyan-400 text-lg outline-none focus:ring-2 focus:ring-cyan-500" value="Math.sin(x/40) * 120">
+            <button id="launchBtn" style="display: none;" class="ml-4 bg-rose-600 hover:bg-rose-500 text-white px-6 py-2 rounded-xl font-black shadow-lg shadow-rose-900/20 active:scale-95 transition-all">FIRE</button>
+        </div>
         
         <!-- 右側 FIRE 按鈕 -->
         <button id="launchBtn" onclick="launch();" class="bg-rose-600 hover:bg-rose-500 text-white px-6 py-2 rounded-xl font-black shadow-lg shadow-rose-900/20 active:scale-95 transition-all">
             FIRE
         </button>
-        <div class="w-full glass-card p-3 rounded-2xl flex items-center shrink-0"></div>
+        <!--div class="w-full glass-card p-3 rounded-2xl flex items-center shrink-0"></div-->
     </div>
 
     
@@ -171,6 +183,55 @@
         <br><button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogCheck').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
     </dialog>
 
+
+    <script>
+    // 按鈕資料
+    const formulas = [
+        { name: "絕對值", value: "Math.abs(x)" },
+        { name: "方波", value: "Math.sign(Math.sin(x))" },
+        { name: "組合波", value: "Math.sin(x/30)*80 + Math.sin(x/5)*10" },
+        { name: "正弦", value: "Math.sin(x/58)*58" },
+        { name: "餘弦", value: "Math.cos(x/58)*58" },
+        { name: "正切", value: "Math.tan(x/58)*58" },
+        ///{ name: "全圓形", value: "±Math.sqrt(100*100 - x*x)" },
+        { name: "半圓形", value: "Math.sqrt(100*100 - x*x)" },
+        { name: "一次函數", value: "2*x + 50" },
+        { name: "二次函數", value: "-0.01*x*x + 100" },
+        { name: "三次函數", value: "x*x*x - 3*x" },
+        { name: "指數函數", value: "Math.pow(1.05, x)" },
+        ///{ name: "指數衰減", value: "Math.exp(-x)" },
+        { name: "對數函數", value: "Math.log(x)" },
+        { name: "阻尼震盪", value: "Math.sin(x/10)*Math.exp(-x/200)" },
+        { name: "鋸齒波", value: "x % 50" },
+        { name: "隨機波動", value: "Math.random()*100" },
+        
+        // 需參數 t 表示的曲線
+        /*
+        { name: "阿基米德螺旋", value: "x = t*Math.cos(t); y = t*Math.sin(t)" },
+        { name: "對數螺旋", value: "r = Math.exp(0.1*t); x = r*Math.cos(t); y = r*Math.sin(t)" },
+        { name: "玫瑰曲線", value: "r = Math.cos(k*t); x = r*Math.cos(t); y = r*Math.sin(t)" },
+        { name: "心形曲線", value: "x = 16*Math.pow(Math.sin(t),3); y = 13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t)" },
+        { name: "行星繞行", value: "x = cx + r*Math.cos(speed*t); y = cy + r*Math.sin(speed*t)" },
+        { name: "擺線", value: "x = r*(t - Math.sin(t)); y = r*(1 - Math.cos(t))" },
+        { name: "外擺線", value: "x = (R-r)*Math.cos(t)+d*Math.cos((R-r)/r*t); y = (R-r)*Math.sin(t)-d*Math.sin((R-r)/r*t)" },
+        { name: "李薩如圖形", value: "x = Math.sin(t); y = Math.sin(2*t)" }
+        */
+    ];
+
+    // 產生按鈕
+    const container = document.getElementById('formulaButtons');
+    formulas.forEach(f => {
+        const btn = document.createElement('button');
+        btn.textContent = f.name;
+        btn.style.padding = "5px 10px";
+        btn.style.fontSize = "14px";
+        btn.addEventListener('click', () => {
+            document.getElementById('eqInput').value = f.value;
+            updateEquation();
+        });
+        container.appendChild(btn);
+    });
+    </script>
 
     <script>
         const canvas = document.getElementById('mainCanvas'), ctx = canvas.getContext('2d');
@@ -522,7 +583,7 @@
                     console.warn('無法進入全螢幕:', err);
                 });
             }
-            
+
             // 播放對應音樂
             if(mode === 'xmas') playXmasBGM();
             init(); spawnEnemy(); requestAnimationFrame(render);
