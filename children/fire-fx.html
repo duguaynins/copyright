@@ -40,10 +40,17 @@
             font-size: 1.5rem;
             cursor: pointer;
             transition: transform 0.2s ease;
+            background-color: #FFFFFF;
         }
 
-        .mode-btn:hover {
+        #xmasBtn:hover {
             transform: scale(1.05);
+            background-color: #FFFFFF;
+        }
+        #xmasBtn:active {
+            transform: scale(1.05);
+            background-color: #CDCDCD;
+
         }
     
         @keyframes fadeOut {
@@ -93,7 +100,7 @@
         </div-->
         
         <div id="modeSelect" class="flex flex-col   gap-8    items-center gap-6">
-            <button id="xmasBtn" class="mode-btn bg-red-900/20 border-red-500 text-red-400 w-64" style="background: white;">
+            <button id="xmasBtn" class="mode-btn bg-red-900/20 border-red-500 text-red-400 w-64" style="height: 100vh; width: 100vw;">
                 <span class="text-4xl mb-2">🎄</span>
                 <span class="text-2xl font-black whitespace-nowrap">*© nins x XMAS 25</span>
                 <span class="text-2xl font-black whitespace-nowrap" style="color: RED;">= LOCK RED (X,Y)!</span>
@@ -190,7 +197,7 @@
     // 按鈕資料
     const formulas = [
         { name: "絕對值", value: "Math.abs(x)" },
-        { name: "方波", value: "Math.sign(Math.sin(x))" },
+        { name: "方波", value: "Math.sign(Math.sin(x/20))*20" },
         { name: "組合波", value: "Math.sin(x/30)*80 + Math.sin(x/5)*10" },
         { name: "正弦", value: "Math.sin(x/58)*58" },
         { name: "餘弦", value: "Math.cos(x/58)*58" },
@@ -199,11 +206,11 @@
         { name: "半圓形", value: "Math.sqrt(100*100 - x*x)" },
         { name: "一次函數", value: "2*x + 50" },
         { name: "二次函數", value: "-0.01*x*x + 100" },
-        { name: "三次函數", value: "x*x*x - 3*x" },
+        { name: "三次函數", value: "x*x*x  / 5800" },
         { name: "指數函數", value: "Math.pow(1.05, x)" },
         ///{ name: "指數衰減", value: "Math.exp(-x)" },
-        { name: "對數函數", value: "Math.log(x)" },
-        { name: "阻尼震盪", value: "Math.sin(x/10)*Math.exp(-x/200)" },
+        { name: "對數函數", value: "Math.log(x)*20" },
+        { name: "阻尼震盪", value: "Math.sin(x/10)*Math.exp(-x/200)*20" },
         { name: "鋸齒波", value: "x % 50" },
         { name: "隨機波動", value: "Math.random()*100" },
         
