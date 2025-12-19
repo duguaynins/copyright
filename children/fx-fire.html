@@ -130,7 +130,7 @@
 
         eqInput.addEventListener('change', (e) => {
             if (true) {
-                console.log(`y= ${eqInput.value}`);
+                ///console.log(`y= ${eqInput.value}`);
                 launch();
             }
         });
@@ -139,7 +139,7 @@
             if (e.key === 'Enter') {
                 ///updateEquation();          // 先更新函數
                 ///console.log("y=", eqInput.value); // 每次 Enter 印出目前 FX
-                console.log(`y= ${eqInput.value}>>>`);
+                ///console.log(`y= ${eqInput.value}>>>`);
                 launch();
             }
         });
@@ -271,7 +271,7 @@
             statX.innerText = curX;
             statY.innerText = curY;
             statZ.innerText = scaleZ.toFixed(1);
-            
+
             ctx.clearRect(0, 0, width, height);
             drawGrid();
 
@@ -364,6 +364,8 @@
         }
 
         function launch() {
+            console.log(`y= ${eqInput.value}>>>`);
+
             if (isLaunching || !gameActive) return;
             isLaunching = true;
             playLaunchSound();
