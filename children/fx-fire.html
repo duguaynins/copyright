@@ -41,12 +41,12 @@
             <button id="xmasBtn" class="mode-btn bg-red-900/20 border-red-500 text-red-400 w-64">
                 <span class="text-4xl mb-2">🎄</span>
                 <span class="text-2xl font-black">XMAS MODE</span>
-                <span class="text-xs mt-2 opacity-60">聖誕音樂 & 擊中保留</span>
+                <!--span class="text-xs mt-2 opacity-60">聖誕音樂 & 擊中保留</span!-->
             </button>
             <button id="normalBtn" class="mode-btn bg-cyan-900/20 border-cyan-500 text-cyan-400 w-64">
                 <span class="text-4xl mb-2">📡</span>
                 <span class="text-2xl font-black">NORMAL MODE</span>
-                <span class="text-xs mt-2 opacity-60">雷達音效 & 掃描特效</span>
+                <!--span class="text-xs mt-2 opacity-60">雷達音效 & 掃描特效</span!-->
             </button>
         </div>
     </div>
@@ -290,8 +290,8 @@
 
         function render(time) {
             // Update UI Stats
-            statX.innerText = curX;
-            statY.innerText = curY;
+            statX.innerText = curX.toFixed(1);
+            statY.innerText = curY.toFixed(1);
             statZ.innerText = scaleZ.toFixed(1);
 
             ctx.clearRect(0, 0, width, height);
