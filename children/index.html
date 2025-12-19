@@ -1,6 +1,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -9,7 +10,8 @@
   <!--link rel="icon" type="image/x-icon" sizes="48x48" href="https://duguaynins-allninsone.hf.space/favicon.ico"-->
   <!--link rel="icon" type="image/png" sizes="48x48" href="/favicon.png"-->
   <!--link rel="shortcut icon" href="/favicon.ico"-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <link rel="canonical" href="https://copyright.nins.cc/">
   <title translate="no">nins/children</title>
   <style>
     body {
@@ -287,6 +289,12 @@
         background:#000000;
         color:white;
     }
+    .day {
+        border: 2px solid red;
+        padding: 8px;
+        animation: hardBlink 1.0s steps(1, start) infinite;
+        background:rgb(255, 225, 230);
+    }
   </style>
 </head>
 <body>
@@ -344,6 +352,8 @@
               <div class="feature-grid">
               
                   <div class="feature-item" disabled="" style="background:#444444; color:white;">
+                    <!--div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div-->
+                    <!--div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div-->
                     <h2 translate="no">⚠️ Notice ⚠️</h2>
                     <!--p>By using any of the services, it means you have agreed to any content and all content!</p-->
                     <p  style="margin-bottom: 0;">By using any of the services, it means you have agreed to any content and all content!</p>
@@ -356,8 +366,14 @@
                     <p>內容 1</p>
                   </details-->
 
-                  <div class="feature-item" onclick="openApp(repo='copyright', path='/children/httpping')" style="">
+                  <div class="feature-item day" onclick="openApp(repo='copyright', path='/children/2025/xmas-fire-fx')" style="">
                     <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
+                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⭐</div>
+                    <h2 translate="no">🎄 nins/xmas 🎄</h2>
+                    <p>Merry Xmas! LOCK the red point (X,Y)! Play the fun and easy math game!</p>
+                  </div>
+
+                  <div class="feature-item" onclick="openApp(repo='copyright', path='/children/httpping')" style="">
                     <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
                     <h2 translate="no">📶 nins/httpping 📶</h2>
                     <p>Test your connection.</p>
@@ -376,13 +392,13 @@
                     <h2 translate="no">👀 nins/Preview 👀</h2>
                     <p>Select and display any downloaded HTML file.</p>
                   </div-->
-                  <div class="feature-item main" onclick="openApp(repo='transing', path='/')" style="">
+                  <div class="feature-item main disabled" onclick="openApp(repo='transing', path='/')" style="">
                     <h2 translate="no">🔣 nins/transing 🔣</h2>
                     <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
                     <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⭐</div>
                     <p>Use chat channels to easily start communicating with anyone.</p>
                   </div>
-                  <!--div class="feature-item main" onclick="openApp(repo='uris', file='', dir='')" style="">
+                  <!--div class="feature-item main" onclick="openApp(repo='uris', file='', dir='')" style="">
                     <h2 translate="no">🌐 nins/URIs 🌐</h2>
                     <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
                     <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⭐</div>
@@ -395,7 +411,7 @@
                     <h2 translate="no">🔐 nins/encoding 🔐</h2>
                     <p>Enter content and get barcode.</p>
                   </div>
-                  <div class="feature-item" onclick="openApp(repo='copyright', file='decoding')" style="">
+                  <div class="feature-item" onclick="openApp(repo='copyright', file='decoding')" style="">
                     <h2 translate="no">🔓 nins/decoding 🔓</h2>
                     <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
                     <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
@@ -410,14 +426,14 @@
                     <p  style="margin-top: 0; color: red;">(Searchable, link pending, will be based on user feedback.)</p>
                   </div-->
 
-                  <!--div class="feature-item disabled" onclick="openApp(repo='mailto', file='', dir='')" style="display:block;">
+                  <!--div class="feature-item disabled" onclick="openApp(repo='mailto', file='', dir='')" style="display:block;">
                     <h2 translate="no">📧 nins/mailto 📧</h2>
                     <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⏳</div>
                     <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
                     <p  style="margin-bottom: 0;">Quickly create your own contact URL in HTTPS.</p>
                     <p  style="margin-top: 0;">(For mail use, but simpler!)</p>
                   </div>
-                  <div class="feature-item disabled" onclick="openApp(repo='telto', file='', dir='')" style="display:block;">
+                  <div class="feature-item disabled" onclick="openApp(repo='telto', file='', dir='')" style="display:block;">
                     <h2 translate="no">📞 nins/telto 📞</h2>
                     <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⏳</div>
                     <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
