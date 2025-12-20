@@ -403,14 +403,14 @@
 
             <div class="controls" style="width: 90vw; ">
                 <div class="input-group">
-                    <span style="color: #ff9d00; font-weight: bold;">Z</span>
+                    <span style="font-weight: bold; color: #ff9d00;">z=</span>
                     <input type="range" id="sliderZ" min="0.1" max="5.0" step="0.1" value="0.1">
                     <span id="valZ" style="min-width: 40px;">0.1x</span>
                 </div>
 
                 <div class="input-group">
-                    <span style="color: #666;">y=</span>
-                    <input type="text" id="eqInput" value="Math.sin(x/40) * 120" spellcheck="false">
+                    <span style="font-weight: bold; color: red;">y=</span>
+                    <input type="text" id="eqInput" value="Math.sin(x/40) * 120" spellcheck="false" style="color: black;">
                     <!--button class="btn-fire" onclick="launch();" translate="no">FIRE</button!-->
                 </div>
             </div>
@@ -624,8 +624,10 @@
             try { const y = currentFunc(curX); curY = Number.isFinite(y) ? y : 0; } catch(e) { curY = 0; curX = 0; }
             const cx = centerX + (curX * scaleZ);
             const cy = centerY - (curY * scaleZ);
-            statX.innerText = `x: ${cx.toFixed(1)}`;
-            statY.innerText = `y: ${cy.toFixed(1)}`;
+            ///statX.innerText = `x: ${cx.toFixed(1)}`;  // 比較不適合的備用方案
+            ///statY.innerText = `y: ${cy.toFixed(1)}`;
+            statX.innerText = `x: ${Math.round(curX)}`;  // 使用整數顯示較符合遊戲感
+            statY.innerText = `y: ${Math.round(curY)}`;
 
             ctx.setLineDash([5, 5]); ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)'; ctx.beginPath();
             ctx.moveTo(cx, 0); ctx.lineTo(cx, height); ctx.moveTo(0, cy); ctx.lineTo(width, cy); ctx.stroke();
@@ -648,8 +650,9 @@
                     const ey = centerY - (en.y * scaleZ);
                     ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
                     ctx.beginPath();
-                    ctx.arc(ex, ey, 4, 0, Math.PI * 2);
+                    ctx.arc(ex, ey, 5, 0, Math.PI * 2);
                     ctx.fill();
+                    ctx.fillText(`(${en.x}, ${en.y})`, ex + 10, ey);
                 }
                 
                 if (true) {  // 原點
@@ -657,7 +660,7 @@
                     const ey = centerY;
                     ctx.fillStyle = '#ffffff';
                     ctx.beginPath();
-                    ctx.arc(ex, ey, 4, 0, Math.PI * 2);
+                    ctx.arc(ex, ey, 3, 0, Math.PI * 2);
                     ctx.fill();
                 }
             });
