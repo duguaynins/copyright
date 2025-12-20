@@ -530,7 +530,47 @@
             noise.start();
         }
 
+        // 這裡定義你想要的固定座標 (數學遊戲座標)
+        const fixedPoints = [
+            { x: 100, y: 100 },
+            { x: -200, y: 50 },
+            { x: 0, y: 150 },
+            { x: 300, y: -100 },
+            { x: -150, y: -200 }
+        ];
+        let availablePoints = fixedPoints;
+
         function spawnEnemy() {
+            // 檢查是否還有剩餘的點
+            if (availablePoints.length === 0) {
+                console.log("所有目標已出現完畢！");
+                return;
+            }
+
+            // 隨機選取索引
+            const randomIndex = Math.floor(Math.random() * availablePoints.length);
+            
+            // 使用 splice 取得並從陣列移除該點 (回傳的是陣列，所以取索引 0)
+            const point = availablePoints.splice(randomIndex, 1)[0];
+
+            enemies.push({
+                x: point.x,
+                y: point.y,
+                destroyed: false
+            });
+        }
+        function spawnEnemy_v1() {
+            // 隨機選取一個固定點的索引
+            const randomIndex = Math.floor(Math.random() * fixedPoints.length);
+            const point = fixedPoints[randomIndex];
+
+            enemies.push({
+                x: point.x,
+                y: point.y,
+                destroyed: false
+            });
+        }
+        function spawnEnemy_v0() {
             enemies.push({
                 x: Math.round((Math.random() - 0.5) * (width / 0.5)),
                 y: Math.round((Math.random() - 0.5) * (height / 0.5)),
