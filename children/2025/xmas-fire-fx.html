@@ -1,80 +1,326 @@
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="icon" type="image/x-icon" sizes="48x48" href="data:image/x-icon;base64,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">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--meta name="robots" content="noindex,nofollow"-->
-    <!--link rel="canonical" href="https://firefx.nins.cc/?"-->
-    <link rel="canonical" href="https://copyright.nins.cc/">
-
-    <!--<!<!tinins/fire=f(x)</title-->
-    <title>nins/xmas</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
+<head translate="yes">
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/x-icon" sizes="48x48" href="data:image/x-icon;base64,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">
+  <!--link rel="icon" type="image/x-icon" sizes="48x48" href="https://duguaynins-allninsone.hf.space/favicon.ico"-->
+  <!--link rel="icon" type="image/png" sizes="48x48" href="/favicon.png"-->
+  <!--link rel="shortcut icon" href="/favicon.ico"-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <link rel="canonical" href="https://copyright.nins.cc/">
+  <title translate="no">nins/xmas</title>
     <style>
-        body { background-color: #0f172a; color: #f8fafc; height: 100vh; margin: 0; overflow: hidden; font-family: 'JetBrains Mono', monospace; }
-        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(51, 65, 85, 1); z-index: 20; }
-        canvas { cursor: crosshair; touch-action: none; background: #020617; width: 100%; height: 100%; }
-        
-        input[type=range] { height: 8px; -webkit-appearance: none; background: #334155; border-radius: 4px; flex: 1; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; border: 2px solid #fff; cursor: pointer; }
-        #sliderZ::-webkit-slider-thumb { background: #f59e0b; box-shadow: 0 0 10px #f59e0b; }
+      input, button {
+          box-sizing: border-box; /* padding + border 包含在 width 內 */
+      }
+      iframe.skiptranslate, #goog-gt-tt {
+          display: none !important;
+      }
+      html, body {
+        overflow: hidden;
+        height: 100%;
+        position: fixed;
+        width: 100%;
+      }
+      dialog::backdrop {
+          background: rgba(0, 0, 0, 0.6); /* 半透明背景 */
+          /* background-color: black; */
+      }
+      dialog {
+          background: rgba(0, 0, 0, 0.6); /* 半透明背景 */
+          background-color: white;
+      }
+    </style>
+    <!--style>
+        .skiptranslate {
+          display: none !important;   /* 避免 display:none 影響內容顯示 */
+          position: static !important;   /* 防止位置異常 */
+          width: 0px !important;
+          height: 0px !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          border: none !important;
+          background: none !important;
+          /*font-size: inherit !important;*/
+        }
+        iframe {
+          display: none !important;
+        }
+    </style-->
+    <style>
+      #content {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;  /* 垂直置中 */
+          align-items: center;      /* 水平置中 */
+          text-align: center;       /* 文字置中 */
+      }
+      input, textarea, button, select {
+        /*font-size: inherit; /* 主動繼承 body 字體大小 */
+        font-size: 18px;
+      }
+      html, body { font-size: 14px; }
+      html, body {
+        margin: 0;
+        /*font-family: Arial, sans-serif;*/
+        background-color: #ffffff;
+        background-color: #000000;
+        background-color: #cdcdcd;
+        color: #333;
+        user-select: none;
+      }
+  
+      header {
+        text-align: center;
+        padding: 2rem 1rem;
+        border-bottom: 1px solid #ddd;
+      }
+  
+      header h1 {
+        margin: 0;
+        font-size: 2.5rem;
+      }
+  
+      .intro {
+        text-align: center;
+        padding: 1rem 2rem;
+        max-width: 700px;
+        margin: auto;
+      }
+    </style>
+    
+    <style>
+    
+      @keyframes blink {
+        0% { border-color: black; }
+        50% { border-color: transparent; }
+        100% { border-color: black; }
+      }
+      
+      #BOTTOM {
+          height: 100vh;  /* 視窗高度可改成你需要的高度 */
+          width: 100vw;
+          background-color: #000000;
+          background-color: #cdcdcd;
+          color: #333;
+      }
+      .container {
+        position: relative;  /* 父容器設定為 relative，以便子元素的 absolute 定位能相對於它 */
+        width: 100%;
+        height: 100%;
+        background: #eee;
+        color: black;
+      }
+    </style>
+  
+    <style>
+      @keyframes fadeGradient {
+        from {
+          background: linear-gradient(white, white);
+        }
+        to {
+          background: linear-gradient(white, transparent);
+        }
+      }
+      @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+      }
+      
+      
+      @keyframes hardBlink {
+        0%, 100% { border-color: red; }
+        50%      { border-color: transparent; }
+      }
+      .main {
+          border: 2px solid red;
+          padding: 8px;
+          /**animation: blinkBorder 1s infinite;  //===*/
+          /* 呼吸式動畫：平滑過渡 */
+          /**animation: blinkBorder 1s ease-in-out infinite;  //===*/
+          /* 閃爍式動畫：瞬間切換 */
+          animation: hardBlink 1.0s steps(1, start) infinite;
+      }
+      
+      input:hover {
+        background-color: #cdcdcd;
+        color: black;
+      }
+      input:active {
+        background-color: #222222;
+        color: white;
+      }
+      input:focus {
+        outline: none;              /* 移除預設藍色邊框 */
+        /* border: 2px solid #4CAF50;  改為綠色邊框 */
+        /* box-shadow: 0 0 5px #4CAF50; */
+        border: 2px solid red;       /* 或使用 #f44336 */
+        box-shadow: 0 0 5px red;
+      }
+    </style>
+<!-- 放置你原有的布局 -->
 
-        @keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
-        .scan-effect::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent, rgba(56, 189, 248, 0.1), transparent); animation: scanline 3s linear infinite; pointer-events: none; }
+    <style>
+        /* 基礎樣式與強制定標 */
+        * { box-sizing: border-box; }
+        html, body {
+            overflow: hidden;
+            height: 100%;
+            margin: 0;
+            font-family: 'JetBrains Mono', 'Segoe UI', system-ui, sans-serif;
+            background-color: #0a0a0a;
+            color: #e2e8f0;
+            user-select: none;
+        }
 
-        #startOverlay { position: fixed; inset: 0; z-index: 1000; background: radial-gradient(circle at center, #1e293b 0%, #020617 100%); background: white; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .snow { position: absolute; top: -10px; color: white; user-select: none; pointer-events: none; animation: fall linear infinite; z-index: 50; }
-        @keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
-        
-        .mode-btn { /*@apply flex flex-col items-center justify-center p-6 rounded-3xl transition-all hover:scale-105 active:scale-95 border-2;*/ }
-        .hide { display: none !important; }
-        
-        .mode-btn {
+        /* 頂部與底部標籤 */
+        .status-bar {
+            background-color: #000;
+            color: #fff;
+            font-size: 11px;
+            padding: 4px 10px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+
+        /* 主要遊戲容器 */
+        #main-container {
             display: flex;
             flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* 內容區：玻璃擬態卡片 */
+        #content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 15px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            overflow: hidden;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* 雷達畫布區 */
+        .radar-view {
+            flex: 1;
+            position: relative;
+            background: #050505;
+            border: 2px solid #333;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        #mainCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* 閃爍動畫 */
+        @keyframes hardBlink {
+            0%, 100% { border-color: #ff3b00; box-shadow: 0 0 10px #ff3b00; }
+            50% { border-color: transparent; box-shadow: none; }
+        }
+        .scan-effect {
+            animation: hardBlink 1s steps(1, start) infinite;
+        }
+
+        /* 控制列 */
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .input-group {
+            display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            border-radius: 2rem;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 8px 15px;
+            border-radius: 12px;
+            border: 1px solid #444;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #00f2ff;
+            font-family: inherit;
+            font-size: 16px;
+            outline: none;
+        }
+
+        /* 按鈕風格 */
+        .btn-fire {
+            background: #ff3b00;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
             font-weight: 900;
-            font-size: 1.5rem;
             cursor: pointer;
-            transition: transform 0.2s ease;
-            background-color: #FFFFFF;
+            transition: transform 0.1s, background 0.2s;
+        }
+        .btn-fire:active { transform: scale(0.95); background: #cc3000; }
+
+        .formula-bar {
+            display: flex;
+            overflow-x: auto;
+            gap: 8px;
+            padding-bottom: 5px;
+        }
+        .formula-bar button {
+            background: #222;
+            border: 1px solid #444;
+            color: #ccc;
+            padding: 5px 12px;
+            border-radius: 20px;
+            white-space: nowrap;
+            font-size: 12px;
+            cursor: pointer;
         }
 
-        .mode-btn:hover {
-            transform: scale(1.05);
-            background-color: #FFFFFF;
+        /* 覆蓋層樣式 */
+        #startOverlay {
+            position: fixed;
+            inset: 0;
+            background: white;
+            /*z-index: 99999;*/
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: black;
+            font-weight: bold;
+            transition: opacity 1s;
         }
-        .mode-btn:active {
-            transform: scale(1.05);
-            background-color: #CDCDCD;
+        .fadeOut { opacity: 0; pointer-events: none; }
 
-        }
-    
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-        .fadeOut {
-            pointer-events: none; /* 動畫期間禁止點擊 */
-            animation: fadeOut 3s forwards;
-        }
-        #formulaButtons {
-            display: flex;          /* 排成一排 */
-            overflow-x: auto;       /* 水平滾動 */
-            gap: 8px;               /* 按鈕間距 */
-            padding: 8px;
-            -webkit-overflow-scrolling: touch; /* iOS 平滑滾動 */
-        }
+        /* 滑桿樣式 */
+        input[type="range"] { flex: 1; cursor: pointer; }
+
+        @keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
+        .snow { position: absolute; top: -10px; color: white; user-select: none; pointer-events: none; animation: fall linear infinite; z-index: 100000; }
     </style>
+<!-- 放置你原有的布局 -->
 </head>
-<body class="p-4 flex flex-col items-center">
-
+<body>
+    <!--div id="google_translate_element" style="display:none;"></div-->
+  
+    
     <button disabled="" id="disabled" style="
       position: fixed;
       bottom: 0;
@@ -95,245 +341,356 @@
       animation: fadeOut 3s forwards;
       pointer-events: none;  /* 動畫期間不阻擋互動（可選）*/
     "></button>
-
-    <div id="startOverlay">
-        <!--div class="mb-12 text-center">
-            <h1 class="text-6xl font-black text-white mb-2 tracking-tighter italic">MATH<span class="text-cyan-400">DEFENDER</span></h1>
-            <p class="text-slate-400 font-bold uppercase tracking-[0.3em]">座標攔截系統 - 座標顯影版</p>
-        </div-->
-        
-        <div id="modeSelect" class="flex flex-col   gap-8    items-center gap-6">
-            <button id="xmasBtn" class="mode-btn bg-red-900/20 border-red-500 text-red-400 w-64" style="height: 100vh; width: 100vw;">
-                <span class="text-4xl mb-2">🎄</span>
-                <span class="text-2xl font-black whitespace-nowrap">*© nins x XMAS 25</span>
-                <span class="text-2xl font-black whitespace-nowrap" style="color: RED;">= LOCK RED (X,Y)!</span>
-                <!--span class="text-xs mt-2 opacity-60">聖誕音樂 & 擊中保留</span!-->
-            </button>
-            <button id="normalBtn" class="mode-btn bg-cyan-900/20 border-cyan-500 text-cyan-400 w-64" style="display: none;">
-                <!--span class="text-4xl mb-2">📡</span!-->
-                <!--span class="text-2xl font-black whitespace-nowrap">NORMAL MODE</span!-->
-                <!--span class="text-xs mt-2 opacity-60">雷達音效 & 掃描特效</span!-->
-            </button>
-        </div>
-    </div>
-
-    <div class="w-full h-full flex flex-col gap-3 relative">
-
-        <div id="formulaButtons" class="w-full glass-card p-3 rounded-2xl flex items-center shrink-0 overflow-x-auto whitespace-nowrap" style="direction: ltr;">
-        
-            Find the target with radar, lock it with math, then fire a cosmic pulse!
-        </div>
-
-        <!-- 輸入 Scale -->
-        <div id="scaleControl" class="w-full glass-card p-4 rounded-2xl flex items-center gap-6 shrink-0 border-orange-500/20">
-            <div class="flex flex-col">
-                <span class="text-orange-400 font-black text-2xl font-mono leading-none">🔥Z</span>
-                <span class="text-slate-500 text-[10px] font-bold uppercase mt-1">Scale</span>
-            </div>
-            <input type="range" id="sliderZ" min="0.1" max="5" step="0.05" value="0.1">
-            <div class="flex flex-col items-end min-w-[80px]">
-                <div id="valZ" class="text-2xl font-mono font-bold text-white leading-none">0.1x</div>
-                <div class="text-[10px] text-slate-500 font-bold mt-1 uppercase">Zoom</div>
-            </div>
-        </div>
-
-
-        <!-- Main Display -->
-        <div class="w-full flex-1 glass-card p-2 rounded-3xl overflow-hidden relative scan-effect">
-            <canvas id="mainCanvas" class="rounded-2xl"></canvas>
-            
-            <!-- Left Overlay: Score -->
-            <div class="absolute top-6 left-6 pointer-events-none">
-                <div class="text-xs text-slate-500 uppercase font-black">Score</div>
-                <div id="scoreLabel" class="text-4xl font-black text-white">0</div>
-                <div id="gameStatus" class="text-cyan-400 text-[10px] mt-1 font-bold tracking-widest uppercase italic">Radar Active</div>
-            </div>
-
-            <!-- Right Overlay: Crosshair Stats [x, y, z] -->
-            <div class="absolute top-6 right-6 glass-card px-4 py-2 rounded-xl border-cyan-500/30 flex gap-4 items-center">
-                <a href="https://nins.cc">👻</a>
-                <p class="sr-only">nins.cc</p>
-            </div>
-            <!--div class="absolute top-6 right-6 pointer-events-none glass-card px-4 py-2 rounded-xl border-cyan-500/30 flex gap-4 items-center">
-                <div class="flex flex-col">
-                    <span class="text-[10px] text-slate-500 font-bold uppercase">Crosshair</span>
-                    <div class="text-xl font-mono font-black text-white">
-                        [<span class="text-cyan-400" id="statX">0</span>, 
-                        <span class="text-cyan-400" id="statY">0</span>, 
-                        <span class="text-orange-400" id="statZ">1.0</span>]
-                    </div>
-                </div>
-            </div-->
-        </div>
-        
-        <!-- END -->
-        <div class="w-full glass-card p-3 rounded-2xl flex items-center shrink-0">
-
-            <!-- Right Overlay: Crosshair Stats [x, y, z] -->
-            <div class="flex flex-col bg-cyan-900/20 px-4 py-2 rounded-xl border border-cyan-500/30">
-                <span class="text-[10px] text-slate-500 font-bold uppercase">Crosshair</span>
-                <div class="text-xl font-mono font-black text-white">
-                    [<span class="text-cyan-400" id="statX">0</span>, 
-                    <span class="text-cyan-400" id="statY">0</span>, 
-                    <span class="text-orange-400" id="statZ">1.0</span>]
-                </div>
-            </div>
-            
-        </div>
-        <div id="formulaButtons" class="w-full glass-card p-3 rounded-2xl flex items-center shrink-0 overflow-x-auto whitespace-nowrap" style="direction: ltr;">
-        </div>
-
-        <!-- 輸入 FUNC -->
-        <div class="w-full glass-card p-3 rounded-2xl flex items-center shrink-0">
-            <button id="eqLabel" onclick="document.getElementById('DialogCheck').showModal();" class="text-slate-500 font-mono text-xl mr-4 font-bold hover:text-cyan-400 transition-all">y=</button>
-            <input type="text" id="eqInput" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-4 py-2 font-mono text-cyan-400 text-lg outline-none focus:ring-2 focus:ring-cyan-500" value="Math.sin(x/40) * 120">
-            <button id="launchBtn" style="display: none;" class="ml-4 bg-rose-600 hover:bg-rose-500 text-white px-6 py-2 rounded-xl font-black shadow-lg shadow-rose-900/20 active:scale-95 transition-all">FIRE</button>
-        </div>
-        
-        <!-- 右側 FIRE 按鈕 -->
-        <button id="launchBtn" onclick="launch();" class="bg-rose-600 hover:bg-rose-500 text-white px-6 py-2 rounded-xl font-black shadow-lg shadow-rose-900/20 active:scale-95 transition-all">
-            FIRE
-        </button>
-        <!--div class="w-full glass-card p-3 rounded-2xl flex items-center shrink-0"></div-->
-    </div>
-
     
-    <dialog id="DialogCheck" translate="no">
-        <pre id="logOutput" style="max-height:200px; overflow:auto; margin:0;"></pre>
-        <br><button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogCheck').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
-    </dialog>
+    <button id="startOverlay" style="z-index: 99998;" onclick="this.classList.add('fadeOut'); initAudio();playXmasBGM();">
+        <span translate="no" id="merryXmas"></span>
+    </button>
+    
+    <div style="
+      position: fixed;
+      bottom: 0;
+      top: 0; /* 距離頂部 0 */
+      left: 0; /* 距離左側 0 */
+      right: 0; /* 距離右側 0 */
+      background: #777777;
+      background: #FF3B00;
+      background: white;
+      color: white;
+      text-align: center;
+      /*padding: 10px;*/
+      box-sizing: border-box;
+      word-break: break-word;
+      z-index: 9998;
+      
+      display: flex;
+      flex-direction: column;
+    ">
+          <strong id="anything" style="background-color: black; color: white; font-size: max(1vh,1vw);"><b translate="no">© nins. </b>Find the target with radar, lock it with math, then fire a cosmic pulse!</strong>
+          <div id="title" style="background: #FFFFFF; color: black;" translate="no">
+          <div style="margin: 10px;" onclick="document.getElementById('DialogCheck').showModal();console.log(new Date().toLocaleString(), '🙉');">
+          nins/xmas
+          </div></div>
+          
+<!-- 放置你原有的布局 -->
+
+<div id="formulaButtons" class="formula-bar" style="
+    display: flex;
+    justify-content: flex-start;
+    flex-shrink: 0;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: auto;
+    background: #CCCCCC;
+"></div>
+
+<div id="content" style="background: #CCCCCC; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
+
+            <div class="radar-view scan-effect" style="width: 90vw; ">
+                <canvas id="mainCanvas"></canvas>
+                
+                <div style="position: absolute; top: 15px; left: 15px; pointer-events: none;">
+                    <div style="font-size: 10px; text-transform: uppercase; color: #666;">Score</div>
+                    <div id="scoreLabel" style="font-size: 32px; font-weight: 900; color: #ff9d00;">0</div>
+                </div>
+
+                <div class="glass-card" translate="no" style="position: absolute; top: 15px; right: 15px; padding: 5px 10px; font-size: 12px;">
+                    <span style="color: #00f2ff;" id="statX">x: 0.0</span>　
+                    <span style="color: #00f2ff;" id="statY">y: 0.0</span>　
+                    <span style="color: #ff9d00;" id="statZ">z: 0.1</span>
+                </div>
+            </div>
 
 
-<!-- LOG ================================================== -->
-<script>
-const dialog = document.getElementById('DialogCheck');
-const logOutput = document.getElementById('logOutput');
+            <div class="controls" style="width: 90vw; ">
+                <div class="input-group">
+                    <span style="color: #ff9d00; font-weight: bold;">Z</span>
+                    <input type="range" id="sliderZ" min="0.1" max="5.0" step="0.1" value="0.1">
+                    <span id="valZ" style="min-width: 40px;">0.1x</span>
+                </div>
 
-// 攔截 console.log 與 console.error
-['log', 'error'].forEach(level => {
-  const original = console[level];
-  console[level] = function(...args) {
-    original.apply(console, args);
-    const message = args.map(a => (typeof a === 'object' ? JSON.stringify(a) : a)).join(' ');
-    logOutput.insertAdjacentHTML('beforeend', `<div class="${level}">${message}</div>`);
-    // 滾動到底部
-    logOutput.scrollTop = logOutput.scrollHeight;
-  };
-});
+                <div class="input-group">
+                    <span style="color: #666;">y=</span>
+                    <input type="text" id="eqInput" value="Math.sin(x/40) * 120" spellcheck="false">
+                    <!--button class="btn-fire" onclick="launch();" translate="no">FIRE</button!-->
+                </div>
+            </div>
+                    
+</div>
+<button class="btn-fire" onclick="launch();" style="background: red; border-radius: 0%" translate="no">FIRE</button>
+<!-- 放置你原有的布局 -->
+            
+          <!--strong></strong-->
+          <div id="notice" style="background: #FF3B00; color: white;" translate="yes">
+          <div style="margin: 10px;" onclick="document.getElementById('DialogTrans').showModal()">
+          By sending a message to this service, it means you have agreed to any content and all content!
+          </div></div>
+          <strong id="copyright" style="background-color: black; color: white; font-size: max(1vh,1vw);" translate="no">© 2024 NINS (by JPGT).</strong>
+    </div>
+  
+  <dialog id="DialogTrans" translate="no">
+      <div id="google_translate_element" style="display:block;"></div><br>      
+      <button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogTrans').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
+  </dialog>
+    
+  <dialog id="DialogCheck" translate="no">
+      <pre id="logOutput" style="max-height:200px; overflow:auto; margin:0;"></pre><br>
+      <button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogCheck').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
+  </dialog>
 
-// 測試
-const version = (new Date().toLocaleString(), 'v1.20240925.1314 (This is an error test.)');
-console.error(version);
-console.warn(version);
-console.info(version);
-console.log(version);
-</script>
-<!-- LOG ================================================== -->
-
+<!-- HTML ================================================== -->
+    
+<!-- 放置你原有的布局 -->
+ 
     <script>
-    // 按鈕資料
-    const formulas = [
-        { name: "絕對值", value: "Math.abs(x)" },
-        { name: "方波", value: "Math.sign(Math.sin(x/20))*20" },
-        { name: "組合波", value: "Math.sin(x/30)*80 + Math.sin(x/5)*10" },
-        { name: "正弦", value: "Math.sin(x/58)*58" },
-        { name: "餘弦", value: "Math.cos(x/58)*58" },
-        { name: "正切", value: "Math.tan(x/58)*58" },
-        ///{ name: "全圓形", value: "±Math.sqrt(100*100 - x*x)" },
-        { name: "半圓形", value: "Math.sqrt(100*100 - x*x)" },
-        { name: "一次函數", value: "2*x + 50" },
-        { name: "二次函數", value: "-0.01*x*x + 100" },
-        { name: "三次函數", value: "x*x*x  / 5800" },
-        { name: "指數函數", value: "Math.pow(1.05, x)" },
-        ///{ name: "指數衰減", value: "Math.exp(-x)" },
-        { name: "對數函數", value: "Math.log(x)*20" },
-        { name: "阻尼震盪", value: "Math.sin(x/10)*Math.exp(-x/200)*20" },
-        { name: "鋸齒波", value: "x % 50" },
-        { name: "隨機波動", value: "Math.random()*100" },
-        
-        // 需參數 t 表示的曲線
-        /*
-        { name: "阿基米德螺旋", value: "x = t*Math.cos(t); y = t*Math.sin(t)" },
-        { name: "對數螺旋", value: "r = Math.exp(0.1*t); x = r*Math.cos(t); y = r*Math.sin(t)" },
-        { name: "玫瑰曲線", value: "r = Math.cos(k*t); x = r*Math.cos(t); y = r*Math.sin(t)" },
-        { name: "心形曲線", value: "x = 16*Math.pow(Math.sin(t),3); y = 13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t)" },
-        { name: "行星繞行", value: "x = cx + r*Math.cos(speed*t); y = cy + r*Math.sin(speed*t)" },
-        { name: "擺線", value: "x = r*(t - Math.sin(t)); y = r*(1 - Math.cos(t))" },
-        { name: "外擺線", value: "x = (R-r)*Math.cos(t)+d*Math.cos((R-r)/r*t); y = (R-r)*Math.sin(t)-d*Math.sin((R-r)/r*t)" },
-        { name: "李薩如圖形", value: "x = Math.sin(t); y = Math.sin(2*t)" }
-        */
-    ];
+        const canvas = document.getElementById('mainCanvas');
+        const ctx = canvas.getContext('2d');
+        const eqInput = document.getElementById('eqInput');
+        const sliderZ = document.getElementById('sliderZ');
+        const valZDisplay = document.getElementById('valZ');
+        const scoreLabel = document.getElementById('scoreLabel');
+        const statX = document.getElementById('statX');
+        const statY = document.getElementById('statY');
+        const statZ = document.getElementById('statZ');
 
-    // 產生按鈕
-    const container = document.getElementById('formulaButtons');
-    formulas.forEach(f => {
-        const btn = document.createElement('button');
-        btn.textContent = f.name;
-        btn.style.padding = "5px 10px";
-        btn.style.fontSize = "14px";
-        btn.addEventListener('click', () => {
-            document.getElementById('eqInput').value = f.value;
-            updateEquation();
-        });
-        container.appendChild(btn);
-    });
-    </script>
-
-    <script>
-        const canvas = document.getElementById('mainCanvas'), ctx = canvas.getContext('2d');
-        const eqInput = document.getElementById('eqInput'), launchBtn = document.getElementById('launchBtn');
-        const sliderZ = document.getElementById('sliderZ'), valZDisplay = document.getElementById('valZ');
-        const scoreLabel = document.getElementById('scoreLabel'), startOverlay = document.getElementById('startOverlay');
-        const xmasBtn = document.getElementById('xmasBtn'), normalBtn = document.getElementById('normalBtn');
+        document.getElementById('merryXmas').innerHTML = "[ © nins ] x [ Merry Xmas 2025 ]";
 
         let width, height, centerX, centerY;
-        let curX = 0, curY = 0, scaleZ = 1;
-        let score = 0, gameActive = false, isLaunching = false, gameMode = 'none';
+        let curX = 0, curY = 0, scaleZ = 0.1;
+        let score = 0, isLaunching = false;
         let currentFunc = (x) => Math.sin(x/40)*120;
-        let enemies = []; 
-        
-
-        // --- 音效系統 ---
+        let enemies = [];
         let audioCtx = null;
-        let bgmTimeout = null;
-        let lastPingTime = 0;
-        let pingAnim = 0;
-        const PING_INTERVAL = 1500;
 
-        document.getElementById('xmasBtn').addEventListener('click', () => {
-            startOverlay.classList.add('fadeOut');  ///test***
-            ///document.getElementById('modeSelect').classList.add('fadeOut');
-        }, { once: true });
+        // 初始化
+        function init() {
+            width = canvas.offsetWidth;
+            height = canvas.offsetHeight;
+            canvas.width = width * window.devicePixelRatio;
+            canvas.height = height * window.devicePixelRatio;
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+            centerX = width / 2;
+            centerY = height / 2;
+            ///spawnEnemy();
+        }
 
-        document.getElementById('normalBtn').addEventListener('click', () => {
-            startOverlay.classList.add('fadeOut');  ///test***
-            ///document.getElementById('modeSelect').classList.add('fadeOut');
-        }, { once: true });
 
         eqInput.addEventListener('input', (e) => {
-            console.log(`y= ${eqInput.value}`);
+            if (true) { 
+                console.log(`y= ${eqInput.value}`);launch(false); }
         });
 
         eqInput.addEventListener('change', (e) => {
-            if (true) {
-                ///console.log(`y= ${eqInput.value}`);
-                launch();
-            }
+            if (true) { 
+                console.log(`y= ${eqInput.value} >>>`);launch(); }
         });
 
         eqInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
-                ///updateEquation();          // 先更新函數
-                ///console.log("y=", eqInput.value); // 每次 Enter 印出目前 FX
-                ///console.log(`y= ${eqInput.value}>>>`);
-                launch();
+                console.log(`y= ${eqInput.value} >>>`);launch();
             }
+        });
+        
+        window.addEventListener('resize', init);
+        sliderZ.addEventListener('input', (e) => {
+            scaleZ = parseFloat(e.target.value);
+            valZDisplay.innerText = scaleZ.toFixed(1) + 'x';
+            statZ.innerText = `z: ${scaleZ.toFixed(1)}`;
         });
 
         function initAudio() {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             if (audioCtx.state === 'suspended') audioCtx.resume();
         }
+
+        function playLaunchSound() {  // 發射音效
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            osc.connect(g); g.connect(audioCtx.destination);
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.25);
+            g.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.25);
+        }
+
+        function playHitSound() {  // 打擊音效
+            if (!audioCtx) return;
+            const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.3, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+            const noise = audioCtx.createBufferSource();
+            noise.buffer = buffer;
+            const g = audioCtx.createGain();
+            g.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+            noise.connect(g); g.connect(audioCtx.destination);
+            noise.start();
+        }
+
+        function spawnEnemy() {
+            enemies.push({
+                x: Math.round((Math.random() - 0.5) * (width / 0.5)),
+                y: Math.round((Math.random() - 0.5) * (height / 0.5)),
+                destroyed: false
+            });
+        }
+
+        function launch(isDefault = true) {
+            const code = eqInput.value;
+            try {
+                const tempFunc = new Function('x', `with(Math) { return ${code}; }`);  // 嘗試建立函式
+                
+                tempFunc(0);  // 測試執行一次看是否會報錯 (例如輸入了不存在的變數)
+                currentFunc = tempFunc;  // 如果沒報錯，才正式替換當前函數
+                
+                ///isLaunching = (isDefault !== undefined) ? isDefault : true;
+                isLaunching = isDefault ?? true;
+
+                if (isLaunching === true) {
+
+                    playLaunchSound();
+                    setTimeout(() => {
+                        isLaunching = false;
+                        checkHit();
+                    }, 500);
+                }
+                
+            } catch (e) {
+                console.log("[ERROR]", e);
+                ///alert("無效的公式！請輸入正確的數學表達式（例如：x * 2 或 Math.sin(x)）");
+                isLaunching = false;
+            }
+        }
+        function launch_v20251219(/*isLaunching = true*/) {
+            ///console.log(`y= ${eqInput.value}`);
+            ///playLaunchSound();
+            try {
+                currentFunc = new Function('x', `return ${eqInput.value};`);
+                playLaunchSound();
+                isLaunching = true;
+                setTimeout(() => {
+                    isLaunching = false;
+                    checkHit();
+                }, 500);
+            } catch (e) {  
+                ///alert("Invalid Formula");
+            }
+        }
+
+        function checkHit() {
+            enemies.forEach(en => {
+                if (!en.destroyed) {
+                    const targetY = currentFunc(en.x);
+                    if (Number.isFinite(targetY) && Math.round(targetY) === en.y) {  // 判定：精確擊中 y 座標
+                    ///if (Math.abs(targetY - en.y) < 20 / scaleZ) {  // 大概命中
+                        playHitSound();
+                        en.destroyed = true;
+                        score += 100;
+                        scoreLabel.innerText = score;
+                        spawnEnemy();
+                    }
+                }
+            });
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // 繪製格線
+            /*
+            ctx.strokeStyle = '#222';
+            ctx.beginPath();
+            for(let x=0; x<width; x+=50*scaleZ) { ctx.moveTo(x,0); ctx.lineTo(x,height); }
+            for(let y=0; y<height; y+=50*scaleZ) { ctx.moveTo(0,y); ctx.lineTo(width,y); }
+            ctx.stroke();  */
+
+            // 繪製函數
+            ctx.strokeStyle = isLaunching ? '#ff3b00' : '#00f2ff';
+            ctx.lineWidth = isLaunching ? 4 : 2;
+            ctx.beginPath();
+            for (let px = 0; px <= width; px += 2) {
+                const x = (px - centerX) / scaleZ;
+                const y = currentFunc(x);
+                const py = centerY - (y * scaleZ);
+                if (px === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            }
+            ctx.stroke();
+
+            
+            // 準星
+            try { const y = currentFunc(curX); curY = Number.isFinite(y) ? y : 0; } catch(e) { curY = 0; curX = 0; }
+            const cx = centerX + (curX * scaleZ);
+            const cy = centerY - (curY * scaleZ);
+            statX.innerText = `x: ${cx.toFixed(1)}`;
+            statY.innerText = `y: ${cy.toFixed(1)}`;
+
+            ctx.setLineDash([5, 5]); ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)'; ctx.beginPath();
+            ctx.moveTo(cx, 0); ctx.lineTo(cx, height); ctx.moveTo(0, cy); ctx.lineTo(width, cy); ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(cx, cy, 5, 0, Math.PI * 2); ctx.fill();
+
+            // 繪製敵人
+            enemies.forEach(en => {
+                if (!en.destroyed) {
+                    const ex = centerX + (en.x * scaleZ);
+                    const ey = centerY - (en.y * scaleZ);
+                    ctx.fillStyle = '#ff3b00';
+                    ctx.beginPath();
+                    ctx.arc(ex, ey, 5, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.fillText(`(${en.x}, ${en.y})`, ex + 10, ey);
+
+                } else {  // 已擊中的印記：綠色且半透明
+                    const ex = centerX + (en.x * scaleZ);
+                    const ey = centerY - (en.y * scaleZ);
+                    ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
+                    ctx.beginPath();
+                    ctx.arc(ex, ey, 4, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                
+                if (true) {  // 原點
+                    const ex = centerX;
+                    const ey = centerY;
+                    ctx.fillStyle = '#ffffff';
+                    ctx.beginPath();
+                    ctx.arc(ex, ey, 4, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            });
+
+            requestAnimationFrame(draw);
+        }
+
+        // 產生按鈕
+        const formulas = [
+            { name: "Absolute Value", value: "Math.abs(x)" },
+            { name: "Square Wave", value: "Math.sign(Math.sin(x/20))*200" },
+            { name: "Composite Wave", value: "Math.sin(x/30)*80 + Math.sin(x/5)*10" },
+            { name: "Sine", value: "Math.sin(x/58)*58" },
+            { name: "Cosine", value: "Math.cos(x/58)*58" },
+            { name: "Tangent", value: "Math.tan(x/58)*58" },
+            { name: "Semicircle", value: "Math.sqrt(100*100 - x*x)" },
+            { name: "Linear Function", value: "2*x + 50" },
+            { name: "Quadratic Function", value: "-0.01*x*x + 100" },
+            { name: "Cubic Function", value: "x*x*x / 5800" },
+            { name: "Exponential Function", value: "Math.pow(1.05, x)" },
+            { name: "Logarithmic Function", value: "Math.log(x)*20" },
+            { name: "Damped Oscillation", value: "Math.sin(x/10)*Math.exp(-x/200)*20" },
+            { name: "Sawtooth Wave", value: "x % 50" },
+            { name: "Random Fluctuation", value: "Math.random()*100" }
+        ];
+
+        const fContainer = document.getElementById('formulaButtons');
+        formulas.forEach(f => {
+            const btn = document.createElement('button');
+            btn.textContent = f.name;
+            btn.onclick = () => { eqInput.value = f.value; launch(); };
+            fContainer.appendChild(btn);
+        });
 
         const jingleBells = [
             {f: 659.25, d: 250}, {f: 659.25, d: 250}, {f: 659.25, d: 500},
@@ -365,49 +722,16 @@ console.log(version);
             noteIdx = (noteIdx + 1) % jingleBells.length;
             bgmTimeout = setTimeout(playXmasBGM, note.d);
         }
+        
+        init();
+        draw();
+        spawnEnemy();
+        ///playXmasBGM();
 
-        function playPing() {
-            if (!audioCtx || !gameActive) return;
-            pingAnim = 1.0; 
-            const osc = audioCtx.createOscillator();
-            const g = audioCtx.createGain();
-            osc.connect(g); g.connect(audioCtx.destination);
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(gameMode === 'xmas' ? 400 : 300, audioCtx.currentTime);  ///敵人提示音
-            g.gain.setValueAtTime(0.03, audioCtx.currentTime);
-            g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.4);
-        }
+        ///gameActive = false
+        function createSnow() {  // 搜尋 SNOW 可以得到所有
 
-        function playLaunchSound() {
-            if (!audioCtx) return;
-            const osc = audioCtx.createOscillator();
-            const g = audioCtx.createGain();
-            osc.connect(g); g.connect(audioCtx.destination);
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(120, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.25);
-            g.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.25);
-        }
-
-        function playHitSound() {
-            if (!audioCtx) return;
-            const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.3, audioCtx.sampleRate);
-            const data = buffer.getChannelData(0);
-            for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
-            const noise = audioCtx.createBufferSource();
-            noise.buffer = buffer;
-            const g = audioCtx.createGain();
-            g.gain.setValueAtTime(0.3, audioCtx.currentTime);
-            g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
-            noise.connect(g); g.connect(audioCtx.destination);
-            noise.start();
-        }
-
-        function createSnow() {
-            if (!gameActive || gameMode !== 'xmas') return;
+            ///if (!gameActive || gameMode !== 'xmas') return;
             const snow = document.createElement('div');
             snow.className = 'snow';
             snow.innerHTML = '❄';
@@ -419,225 +743,175 @@ console.log(version);
         }
         setInterval(createSnow, 300);
 
-        function init() {
-            const dpr = window.devicePixelRatio || 1;
-            width = canvas.clientWidth; height = canvas.clientHeight;
-            canvas.width = width * dpr; canvas.height = height * dpr;
-            ctx.scale(dpr, dpr);
-            centerX = width / 2; centerY = height / 2;
-            updateEquation();
-        }
+        let mouseX = 0, mouseY = 0;
 
-        function updateEquation() {
-            try { currentFunc = new Function('x', `return ${eqInput.value};`); } catch (e) {}
-        }
-
-        function spawnEnemy() {
-            enemies.push({
-                x: Math.round((Math.random() - 0.5) * (width / scaleZ * 0.7)),
-                y: Math.round((Math.random() - 0.5) * (height / scaleZ * 0.7)),
-                destroyed: false,
-                hitFlash: 0
-            });
-        }
-
-        function drawGrid() {
-            const gridSize = 50 * scaleZ;
-            ctx.strokeStyle = gameMode === 'xmas' ? '#2d1a1a' : '#1e293b'; 
-            ctx.lineWidth = 1; ctx.beginPath();
-            for(let x = centerX % gridSize; x < width; x += gridSize) { ctx.moveTo(x, 0); ctx.lineTo(x, height); }
-            for(let y = centerY % gridSize; y < height; y += gridSize) { ctx.moveTo(0, y); ctx.lineTo(width, y); }
-            ctx.stroke();
-            ctx.strokeStyle = '#334155'; ctx.lineWidth = 2; ctx.beginPath();
-            ctx.moveTo(0, centerY); ctx.lineTo(width, centerY); ctx.moveTo(centerX, 0); ctx.lineTo(centerX, height); ctx.stroke();
-        }
-
-        function render(time) {
-            // Update UI Stats
-            statX.innerText = curX.toFixed(1);
-            statY.innerText = curY.toFixed(1);
-            statZ.innerText = scaleZ.toFixed(1);
-
-            ctx.clearRect(0, 0, width, height);
-            drawGrid();
-
-            if (gameActive && time - lastPingTime > PING_INTERVAL) { playPing(); lastPingTime = time; }
-            if (pingAnim > 0) pingAnim -= 0.015;
-
-            // 1. 函數圖形
-            try {
-                ctx.beginPath();
-                ctx.strokeStyle = isLaunching ? '#fb7185' : (gameMode === 'xmas' ? '#f87171' : '#38bdf8');
-                ctx.lineWidth = isLaunching ? 6 : 3;
-                let first = true;
-                for (let px = 0; px <= width; px += 1) {
-                    const x = (px - centerX) / scaleZ;
-                    const y = currentFunc(x);
-                    const py = centerY - (y * scaleZ);
-                    if (Number.isFinite(py)) {
-                        if (first) { ctx.moveTo(px, py); first = false; }
-                        else { ctx.lineTo(px, py); }
-                    }
-                }
-                ctx.stroke();
-            } catch(e) {}
-
-            // 2. 準星
-            try { const y = currentFunc(curX); curY = Number.isFinite(y) ? y : 0; } catch(e) { curY = 0; }
-            const cx = centerX + (curX * scaleZ);
-            const cy = centerY - (curY * scaleZ);
-            ctx.setLineDash([5, 5]); ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)'; ctx.beginPath();
-            ctx.moveTo(cx, 0); ctx.lineTo(cx, height); ctx.moveTo(0, cy); ctx.lineTo(width, cy); ctx.stroke();
-            ctx.setLineDash([]);
-            ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(cx, cy, 5, 0, Math.PI * 2); ctx.fill();
-
-            // 3. 敵人渲染邏輯
-            enemies.forEach(en => {
-                const ex = centerX + (en.x * scaleZ), ey = centerY - (en.y * scaleZ);
-                
-                ctx.save();
-                
-                // --- 繪製座標數值 (始終顯示) ---
-                ctx.font = "bold 13px 'JetBrains Mono'";
-                ctx.textAlign = "center";
-                if (!en.destroyed) {
-                    // 未擊中：淡淡的青色，帶有呼吸感
-                    const pulse = 0.3 + Math.sin(time / 200) * 0.2;
-                    ///ctx.fillStyle = `rgba(56, 189, 248, ${pulse})`;
-                    ///ctx.fillStyle = `rgba(255, 255, 255, ${pulse})`;
-                    ctx.fillStyle = '#ff0000';
-                } else {
-                    // 已擊中：穩定的灰色
-                    ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-                }
-                ctx.fillText(`(${en.x}, ${en.y})`, ex, ey - 22);
-
-                // --- 繪製敵人本體 ---
-                if (!en.destroyed) {
-                    // 一開始本體完全透明 (Alpha = 0)
-                    ctx.globalAlpha = 0; 
-                    
-                    // 雷達波紋
-                    if (pingAnim > 0) {
-                        ctx.save();
-                        ctx.globalAlpha = pingAnim;
-                        ctx.beginPath(); ctx.arc(ex, ey, (1 - pingAnim) * 120, 0, Math.PI * 2);
-                        ctx.strokeStyle = gameMode === 'xmas' ? '#ef4444' : '#f43f5e'; 
-                        ctx.lineWidth = 2; ctx.stroke();
-                        ctx.restore();
-                    }
-                } else {
-                    // 擊中後 50% 透明度顯影
-                    ctx.globalAlpha = 0.5;
-                }
-
-                // 擊中瞬間閃光或常規顏色
-                if (en.hitFlash > 0) { 
-                    ctx.globalAlpha = en.hitFlash; 
-                    ctx.fillStyle = '#fff'; 
-                    en.hitFlash -= 0.05; 
-                } else { 
-                    ctx.fillStyle = gameMode === 'xmas' ? '#fbbf24' : '#f43f5e'; 
-                }
-
-                ctx.beginPath(); ctx.arc(ex, ey, 10, 0, Math.PI * 2); ctx.fill();
-                ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
-                
-                ctx.restore();
-            });
-
-            requestAnimationFrame(render);
-        }
-
-        function launch() {
-            console.log(`y= ${eqInput.value}>>>`);
-
-            if (isLaunching || !gameActive) return;
-            isLaunching = true;
-            playLaunchSound();
-
-            enemies.forEach(en => {
-                if (en.destroyed) return;
-
-                let hit = false;
-                try {
-                    const funcValAtX = currentFunc(en.x);
-                    
-                    // 判定：精確擊中 y 座標
-                    if (Number.isFinite(funcValAtX) && Math.round(funcValAtX) === en.y) {
-                        hit = true;
-                    }
-
-                    if (!hit) {
-                        // 檢查當前手動準星位置是否重合
-                        if (Math.round(curX) === en.x && Math.round(curY) === en.y) {
-                            hit = true;
-                        }
-                    }
-                } catch(e) {}
-
-                if (hit) {
-                    en.destroyed = true;
-                    en.hitFlash = 1.0;
-                    score += 100;
-                    scoreLabel.innerText = score;
-                    playHitSound();
-                    setTimeout(spawnEnemy, 800);
-                }
-            });
-
-            setTimeout(() => isLaunching = false, 400);
-        }
-
-        canvas.onpointermove = (e) => {
+        canvas.addEventListener('mousemove', (e) => {
             const rect = canvas.getBoundingClientRect();
-            curX = Math.round(((e.clientX - rect.left) - centerX) / scaleZ);
-        };
-        canvas.onpointerdown = launch;
-        ///canvas.onpointerdown = 
-        launchBtn.onclick = launch;
-        eqInput.oninput = updateEquation;
-        sliderZ.oninput = (e) => {
-            scaleZ = parseFloat(e.target.value);
-            valZDisplay.innerText = scaleZ.toFixed(1) + 'x';
-        };
-        ///document.getElementById('eqLabel').onclick = () => document.getElementById('scaleControl').classList.toggle('hide');
+            // 取得相對於 canvas 的滑鼠位置
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
 
-        const start = (mode) => {
-            initAudio();
-            gameMode = mode;
-            gameActive = true;
+            // 計算轉換後的遊戲座標 (x, y)
+            const gameX = Math.round((mouseX - centerX) / scaleZ);
+            const gameY = Math.round((centerY - mouseY) / scaleZ);
 
-            // 執行淡出動畫
-            ///startOverlay.style.display = 'none';
-            startOverlay.classList.add('fadeOut');  ///test***
-            setTimeout(() => { startOverlay.disabled = true; }, 1);
-            setTimeout(() => { startOverlay.style.display = "none"; }, 3000);
-            ///document.getElementById('modeSelect').classList.add('fadeOut');
+            // 即時顯示在右上角的標籤
+            statX.innerText = `x: ${gameX}`;
+            statY.innerText = `y: ${gameY}`;
 
-            // 全螢幕 & 固定直向
-            const elem = document.documentElement; // 全頁面
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen().then(() => {
-                    // 嘗試鎖定直向
-                    if (screen.orientation && screen.orientation.lock) {
-                        screen.orientation.lock('portrait').catch(err => {
-                            console.warn('無法鎖定直向:', err);
-                        });
-                    }
-                }).catch(err => {
-                    console.warn('無法進入全螢幕:', err);
-                });
-            }
-
-            // 播放對應音樂
-            if(mode === 'xmas') playXmasBGM();
-            init(); spawnEnemy(); requestAnimationFrame(render);
-        };
-
-        xmasBtn.onclick = () => start('xmas');
-        normalBtn.onclick = () => start('normal');
-        window.onresize = init;
+            curX = gameX;  // 更新現在鼠標位置  // 準星
+            curY = gameY;  // 更新現在鼠標位置  // 準星
+        });
     </script>
+<!-- 放置你原有的布局 -->
+ 
+
+
+
+
+
+
+
+
+<!-- LOG ================================================== -->
+<script>
+const dialog = document.getElementById('DialogCheck');
+const logOutput = document.getElementById('logOutput');
+
+// 攔截 console.log 與 console.error
+['log', 'error'].forEach(level => {
+  const original = console[level];
+  console[level] = function(...args) {
+    original.apply(console, args);
+    const message = args.map(a => (typeof a === 'object' ? JSON.stringify(a) : a)).join(' ');
+    logOutput.insertAdjacentHTML('beforeend', `<div class="${level}">${message}</div>`);
+    // 滾動到底部
+    logOutput.scrollTop = logOutput.scrollHeight;
+  };
+});
+
+// 測試
+console.log(new Date().toLocaleString(), 'This is a log test.');
+console.error(new Date().toLocaleString(), 'This is an error test.');
+</script>
+<!-- LOG ================================================== -->
+    
+
+<!-- TRANSLATE ================================================== -->
+<script type="text/javascript">  // google.js
+  // GOOGLE TRANSLATE
+  // 自動翻譯***
+  ///document.cookie = "googtrans=/en/zh-TW; path=/";
+  ///location.reload();
+
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'en',  ///'en', 改為根據中間語言(ilang) 或 頁面語言(locale)  ///鼓勵輸入中間語言，翻譯必定可以顯示英文。
+      includedLanguages: '',  ///zh-TW,ja,ko,en,hi,zh-CN
+      autoDisplay: false,
+      ///layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }, 'google_translate_element');
+  }
+  
+  function waitForCombo(callback) {
+    // 等待載入翻譯語言
+    // 這是一種調用方法？ 並且使用方法的內部變數？
+    const timer = setInterval(() => {
+      const combo = document.querySelector('.goog-te-combo');
+      if (combo) {
+        clearInterval(timer);
+        callback(combo);
+      }
+    }, 300);
+  }
+
+  function waitForTranslationById(elementId, callback) {
+    // 等待頁面翻譯完成
+    const target = document.getElementById(elementId);
+    if (!target) return;
+
+    const observer = new MutationObserver((mutations, obs) => {
+      for (const mutation of mutations) {
+        // 偵測子節點或文字內容是否改變
+        if (mutation.type === "childList" || mutation.type === "characterData") {
+          obs.disconnect(); // 翻譯完成，停止觀察
+          callback();
+          break;
+        }
+      }
+    });
+
+    observer.observe(target, {
+      childList: true,   // 子節點增減
+      subtree: true,     // 包含所有子孫節點
+      characterData: true // 文字內容改變
+    });
+  }
+
+  function autoTranslate(lang) {
+    const tryTranslate = () => {
+      const combo = document.querySelector('.goog-te-combo');
+      console.log('combo?', !!combo);
+        
+      if (lang.replace(/_/g, "-").split("-")[0] === "en") {
+        ///document.getElementById("input_msg").style.display = "block";
+        ///document.getElementById("input_msgbtn").style.display = "block";
+        document.getElementById("content").style.background = "#FFFFFF";
+        ///document.getElementById('Input').textAlign = 'center';
+      }
+  
+      waitForTranslationById('notice', () => {
+        ///document.getElementById("input_msg").style.display = "block";
+        ///document.getElementById("input_msgbtn").style.display = "block";
+        document.getElementById("content").style.background = "#FFFFFF";
+        ///document.getElementById('Input').textAlign = 'center';
+      });
+
+      if (!combo) { setTimeout(tryTranslate, 300); }
+      if (combo) {
+        document.querySelector('.goog-te-combo').addEventListener('change', () => {
+          console.log("語言已切換!");
+          console.log("新語言代碼:", combo.value);
+          ///console.log("新語言文字:", combo.options[combo.selectedIndex].text);
+        });
+
+        const options = Array.from(combo.options).map(opt => opt.value);console.log('可用語言代碼:', options);
+        console.log("autoTranslate?:", lang);
+        ///combo.value = lang;
+        combo.value = options.includes(lang) 
+          ?  lang 
+          :  options.find(opt => opt.startsWith(lang))  
+          || options.find(opt => opt.startsWith(lang.slice(0, 2))) 
+          || null;
+        combo.dispatchEvent(new Event('change'));
+        console.log("autoTranslate!:", combo.value);
+      } else {
+        setTimeout(tryTranslate, 300); // 遞迴檢查
+      }
+    };
+    tryTranslate();
+  }
+
+  window.addEventListener('load', () => {
+    console.log("window...load");
+      
+    waitForCombo((combo) => {
+      console.log("autoTranslate...waitForCombo");
+      autoTranslate( (navigator.language || navigator.userLanguage || "en-US") );
+      ///console.log("combo 已生成:", combo);
+      ///combo.value = 'en';
+      ///combo.dispatchEvent(new Event('change'));
+    });
+    /*
+    setTimeout(() => {
+      console.log("autoTranslate...setTimeout");
+      ///const slang = navigator.language || navigator.userLanguage || "en-US";
+      autoTranslate( (navigator.language || navigator.userLanguage || "en-US") );          
+      ///document.getElementById(":1.container").style.display = "";
+    }, 1000); */
+  });
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    
 </body>
 </html>
