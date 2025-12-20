@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="auto">
 <head translate="yes">
@@ -299,6 +300,15 @@
         
   </div>
 
+  <dialog id="DialogAds" translate="no" onclick="this.close()" style="background: white;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; justify-content: center;
+      pointer-events: none;   /* 完全不能點 */
+      min-width: 90vw; width: 100vw;
+      max-height: 90vh; height: 100vh;
+  ">
+      <iframe data-creative-load-listener="" id="200_287_express_html_inpage_0.if" src="https://s0.2mdn.net/sadbundle/11781765405462098489/index.html?ev=01_262" width="300" height="250" frameborder="0" scrolling="no" allowfullscreen="true" style="width: 300px; height: 250px;"></iframe>
+  </dialog>
   
   <dialog id="DialogTrans" translate="no">
       <div id="google_translate_element" style="display:block;"></div>
@@ -418,7 +428,8 @@
               <input  id="SkipForm"type="checkbox" checked="">）<br>
 
               <label for="SkipAds">📣（skip-ads: </label>
-              <input  id="SkipAds"type="checkbox" checked="">）<br>
+              <input  id="SkipAds"type="checkbox" checked="" onclick="document.getElementById('DialogAds').showModal(); setTimeout(() => { document.getElementById('DialogAds').close(); }, 2200);">）<br>
+              <!--input  id="SkipAds"type="checkbox" checked="" onclick="if(!this.checked){document.getElementById('DialogAds').showModal();}">）<br-->
           </div>
           
           
