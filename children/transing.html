@@ -405,10 +405,10 @@
 
               <label for="Playxlang">▶️（auto-play: </label>
               <select id="Playxlang">
-                <option value="3">source language</option>
-                <option value="2" selected="selected">target language</option>
-                <option value="1">intermediate language</option>
                 <option value="0">close</option>
+                <option value="1">intermediate</option>
+                <option value="2" selected="selected">target</option>
+                <option value="3">source</option>
               </select>）<br>
 
               <label for="AITransing">🧠（AI-translate: </label>
@@ -416,6 +416,9 @@
 
               <label for="SkipForm">🌐（skip-form: </label>
               <input  id="SkipForm"type="checkbox" checked="">）<br>
+
+              <label for="SkipAds">📣（skip-ads: </label>
+              <input  id="SkipAds"type="checkbox" checked="">）<br>
           </div>
           
           
@@ -1265,7 +1268,7 @@ console.log(version);
         let apikey = document.getElementById('InputRoom').value.split('&&')[1] || ("");  // ALL, BETA  ///!!!
         let token = params.get("token") || ("nins");  ///!!!
         
-        document.getElementById('InputRoom').value = ("WORLD");  ///!!!
+        ///document.getElementById('InputRoom').value = ("WORLD");  ///!!!
         document.getElementById('InputRoom').disabled = true;  // 禁用
         document.getElementById('InputRoom').style.display = 'none';
         ///!!!
@@ -1331,7 +1334,9 @@ console.log(version);
             }
             else if (token) {
                 updateQR(token);
-                if (token === "nins") { room = "WORLD"; }
+                ///if (token === "nins") {  room = "WORLD"; document.getElementById('InputRoom').value = ("WORLD"); }
+                if (!document.getElementById('SkipAds').checked) { room = document.getElementById('InputRoom').value; }
+                else { room = "WORLD"; document.getElementById('InputRoom').value = ("WORLD"); }
                 console.log("TOKEN: ", token);
                 console.log("ROOM: ", room);
                 ably = new Ably.Realtime({ authUrl: 'https://duguaynins-RedirectAPI.hf.space/realtime/ably', authMethod: 'POST', authHeaders: { 'clientId': uuid_user, 'Beta': `TOEKN ${token}`, 'Authorization': `Bearer ${0}` } });
