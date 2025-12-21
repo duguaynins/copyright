@@ -797,7 +797,7 @@
         setInterval(createSnow, 300);
 
         let mouseX = 0, mouseY = 0;
-
+        /*
         canvas.addEventListener('mousemove', (e) => {
             const rect = canvas.getBoundingClientRect();
             // 取得相對於 canvas 的滑鼠位置
@@ -814,6 +814,10 @@
 
             curX = gameX;  // 更新現在鼠標位置  // 準星
             curY = gameY;  // 更新現在鼠標位置  // 準星
+        });*/
+
+        document.getElementById('sliderX').addEventListener('input', (e) => {
+            curX = e.target.value; curY = 0;  ///console.log(e.target.value);
         });
     </script>
 <!-- 放置你原有的布局 -->
