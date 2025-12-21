@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Blockly 橫向捲動範例</title>
+  <script src="https://unpkg.com/blockly/blockly.min.js"></script>
+  <style>
+    body { 
+      font-family: system-ui, -apple-system, sans-serif; 
+      margin: 0; 
+      background: #f8fafc; 
+      display: flex; 
+      flex-direction: column; 
+      height: 100vh;
+      overflow: hidden; /* 防止整個網頁出現捲動條 */
+    }
+
+    header { 
+      background: #4f46e5; 
+      color: white; 
+      text-align: center; 
+      padding: 12px; 
+      font-size: 18px; 
+      font-weight: bold;
+    }
+
+    .op-panel { 
+      background: white;
+      padding: 10px;
+      border-bottom: 1px solid #e2e8f0;
+      text-align: center;
+    }
+    .op-panel input { width: 60px; padding: 6px; border-radius: 4px; border: 1px solid #cbd5e1; }
+    .op-panel button { padding: 6px 16px; border-radius: 4px; border: none; background: #4f46e5; color: white; cursor: pointer; font-weight: 500; }
+    
+    #main-container {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 15px;
+      gap: 15px;
+      overflow: hidden;
+    }
+
+    /* 方塊工具箱獨立列 */
+    .blocklyToolboxDiv {
+      background-color: #ffffff !important;
+      border: 1px solid #cbd5e1 !important;
+      border-radius: 8px !important;
+      overflow-x: auto !important; /* 方塊列獨立左右滑動 */
+      overflow-y: hidden !important;
+      padding: 5px;
+    }
+
+    /* 畫布容器：固定高度，禁止上下捲動 */
+    #blocklyContainer {
+      height: 350px; /* 您要求的固定上下高度 */
+      position: relative;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      background: white;
+      overflow: hidden; 
+    }
+
+    #blocklyDiv {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    /* 強制隱藏畫布內部的垂直捲動條 */
+    .blocklyMainBackground {
+      cursor: grab;
+    }
+    .blocklyScrollbarVertical {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+<header>Blockly 左右滑動控制範例</header>
+
+<div class="op-panel">
+  x = <input type="number" id="xValue" value="10">
+  <button onclick="calculate()">計算結果</button>
+  <span class="result" id="result" style="margin-left:15px; font-weight:bold;">y = ?</span>
+</div>
+
+<div id="main-container">
+  <!-- 畫布區域 -->
+  <div id="blocklyContainer">
+    <div id="blocklyDiv"></div>
+  </div>
+</div>
+
+<xml id="toolbox" style="display:none">
+  <block type="start_node"></block>
+  <block type="math_number"></block>
+  <block type="variables_get"><field name="VAR">x</field></block>
+  <block type="math_arithmetic"></block>
+  <block type="connector_block"></block>
+</xml>
+
+<script>
+  // --- 1. 方塊定義 ---
+  Blockly.Blocks['start_node'] = {
+    init: function() {
+      this.appendDummyInput().appendField("【起點】");
+      this.appendValueInput("NEXT").setCheck(null);
+      this.setColour(0);
+      this.setDeletable(false);
+    }
+  };
+
+  Blockly.Blocks['connector_block'] = {
+    init: function() {
+      this.appendValueInput("NEXT").appendField("連接 ➔");
+      this.setOutput(true, null);
+      this.setColour(180);
+    }
+  };
+
+  // --- 2. 初始化 Blockly ---
+  const workspace = Blockly.inject('blocklyDiv', {
+    toolbox: document.getElementById('toolbox'),
+    toolboxPosition: 'top', 
+    horizontalLayout: true, 
+    // 關鍵設定：只開啟水平捲動，關閉垂直捲動
+    scrollbars: {
+      horizontal: true,
+      vertical: false
+    },
+    move: {
+      scrollbars: {
+        horizontal: true,
+        vertical: false
+      },
+      drag: true,
+      wheel: false // 禁用滾輪防止意外的縮放或位移
+    },
+    grid: { spacing: 20, length: 3, colour: '#f1f5f9', snap: true },
+    trashcan: true,
+    renderer: 'zelos'
+  });
+
+// --- 3. 生成初始方塊 ---
+  function initDefaultBlocks() {
+    const root = workspace.newBlock('start_node');
+    root.initSvg();
+    root.render();
+    root.moveBy(50, 150);
+
+    // 1. 建立加法方塊 (x + 4)
+    const addBlock = workspace.newBlock('math_arithmetic');
+    addBlock.setFieldValue('ADD', 'OP');
+    addBlock.initSvg(); addBlock.render();
+
+    const varX = workspace.newBlock('variables_get');
+    varX.setFieldValue('x', 'VAR');
+    varX.initSvg(); varX.render();
+
+    const num4a = workspace.newBlock('math_number');
+    num4a.setFieldValue(4, 'NUM');
+    num4a.initSvg(); num4a.render();
+
+    addBlock.getInput('A').connection.connect(varX.outputConnection);
+    addBlock.getInput('B').connection.connect(num4a.outputConnection);
+
+    // 2. 建立乘法方塊 ( [x+4] * 4 )
+    const multBlock = workspace.newBlock('math_arithmetic');
+    multBlock.setFieldValue('MULTIPLY', 'OP');
+    multBlock.initSvg(); multBlock.render();
+
+    const num4b = workspace.newBlock('math_number');
+    num4b.setFieldValue(4, 'NUM');
+    num4b.initSvg(); num4b.render();
+
+    // 將 (x+4) 的結果連到乘法的 A 接口
+    multBlock.getInput('A').connection.connect(addBlock.outputConnection);
+    // 將 數字 4 連到乘法的 B 接口
+    multBlock.getInput('B').connection.connect(num4b.outputConnection);
+
+    // 3. 最後將整個運算組合連到起點
+    root.getInput('NEXT').connection.connect(multBlock.outputConnection);
+    
+    workspace.scrollX = 0;
+    workspace.render();
+  }
+
+  // --- 4. 計算邏輯 ---
+  function evalBlock(block, scope) {
+    if (!block) return 0;
+    switch (block.type) {
+      case 'variables_get':
+        return scope[block.getFieldValue('VAR')] ?? 0;
+      case 'math_number':
+        return Number(block.getFieldValue('NUM'));
+      case 'math_arithmetic':
+        const op = block.getFieldValue('OP');
+        const A = evalBlock(block.getInputTargetBlock('A'), scope);
+        const B = evalBlock(block.getInputTargetBlock('B'), scope);
+        if (op === 'ADD') return A + B;
+        if (op === 'MINUS') return A - B;
+        if (op === 'MULTIPLY') return A * B;
+        if (op === 'DIVIDE') return A / B;
+        return 0;
+      default:
+        return 0;
+    }
+  }
+
+  // 1. 生成數學表達式的函數 (必須定義在 script 標籤內)
+function getExpression(block) {
+  if (!block) return "0";
+  
+  switch (block.type) {
+    case 'variables_get':
+      // 修正點：使用 getVariableById 並從 block 本身的 workspace 呼叫
+      const varId = block.getFieldValue('VAR');
+      const variable = block.workspace.getVariableById(varId);
+      return variable ? variable.name : 'x';
+      
+    case 'math_number':
+      return block.getFieldValue('NUM');
+      
+    case 'math_arithmetic':
+      const opMap = { 'ADD': '+', 'MINUS': '-', 'MULTIPLY': '*', 'DIVIDE': '/' };
+      const op = opMap[block.getFieldValue('OP')];
+      const A = getExpression(block.getInputTargetBlock('A'));
+      const B = getExpression(block.getInputTargetBlock('B'));
+      return `(${A} ${op} ${B})`;
+      
+    default:
+      return "0";
+  }
+}
+  // --- 修改後的計算按鈕邏輯 ---
+  function calculate() {
+    const rootBlock = workspace.getBlocksByType('start_node')[0];
+    const nextBlock = rootBlock.getInputTargetBlock('NEXT');
+    
+    if (nextBlock) {
+      const expression = getExpression(nextBlock);
+      document.getElementById('result').textContent = `y = ${expression}`;
+    } else {
+      document.getElementById('result').textContent = `y = ?`;
+    }
+  }
+  function calculate_v0() {
+    const x = Number(document.getElementById('xValue').value);
+    const rootBlock = workspace.getBlocksByType('start_node')[0];
+    const result = evalBlock(rootBlock.getInputTargetBlock('NEXT'), { x: x });
+    document.getElementById('result').textContent = `y = ${result}`;
+  }
+
+  window.addEventListener('load', () => {
+    initDefaultBlocks();
+    window.addEventListener('resize', () => Blockly.svgResize(workspace));
+  });
+</script>
+
+</body>
+</html>
