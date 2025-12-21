@@ -1,6 +1,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -214,6 +215,10 @@
         from { opacity: 1; }
         to { opacity: 0; }
       }
+      .disabled {
+        pointer-events: none; /* 不能點 */
+        /* opacity: 0.5;         視覺上灰掉 */
+      }
     </style>
 </head>
 <body>
@@ -299,15 +304,20 @@
         
   </div>
 
-  <dialog id="DialogAds" translate="no" onclick="this.close()" style="background: white;
+  <dialog id="DialogAds" translate="no" onclick="this.close()" style="background: white; color:black;
       display: flex; flex-direction: column; align-items: center;
       text-align: center; justify-content: center;
       /* pointer-events: none;   完全不能點 */
       min-width: 90vw; width: 100vw;
       max-height: 90vh; height: 100vh;
   ">
+      
       <button id="openLog" style="width: 100%; background: black;" onclick="document.getElementById('DialogTrans').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
+      <br>
       <iframe data-creative-load-listener="" id="200_287_express_html_inpage_0.if" src="https://s0.2mdn.net/sadbundle/11781765405462098489/index.html?ev=01_262" width="300" height="250" frameborder="0" scrolling="no" allowfullscreen="true" style="width: 300px; height: 250px;"></iframe>
+      <progress id="progress" value="0" max="3000"></progress>
+      <span id="time">0 ms</span>
+      <br>
       <button id="openLog" style="width: 100%; background: black;" onclick="document.getElementById('DialogTrans').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
   </dialog>
   
@@ -423,13 +433,14 @@
               </select>）<br>
 
               <label for="AITransing">🧠（AI-translate: </label>
-              <input  id="AITransing"type="checkbox" checked="">）<br>
+              <input  id="AITransing" type="checkbox" checked="">）<br>
 
               <label for="SkipForm">🌐（skip-form: </label>
-              <input  id="SkipForm"type="checkbox" checked="">）<br>
+              <input  id="SkipForm" type="checkbox" checked="">）<br>
 
+              <div style="display: block;">
               <label for="SkipAds">📣（skip-ads: </label>
-              <input  id="SkipAds"type="checkbox" checked="" onclick="document.getElementById('DialogAds').showModal();">）<br>
+              <input  id="SkipAds" type="checkbox" checked="" onclick="document.getElementById('DialogAds').showModal();startSkipAdsProgress();">）<br></div>
               <!--input  id="SkipAds"type="checkbox" checked="" onclick="document.getElementById('DialogAds').showModal(); setTimeout(() => { document.getElementById('DialogAds').close(); }, 2200);">）<br-->
               <!--input  id="SkipAds"type="checkbox" checked="" onclick="if(!this.checked){document.getElementById('DialogAds').showModal();}">）<br-->
           </div>
@@ -448,6 +459,38 @@
   
   
 <!-- HTML ================================================== -->
+<script>
+  function startSkipAdsProgress() {
+    const progress = document.getElementById("progress");
+    const timeText = document.getElementById("time");
+
+    const totalTime = Number(progress.max); // 直接讀 max
+    const interval = 50;
+
+    let current = 0;
+    progress.value = 0;
+    timeText.textContent = "0 ms";
+
+    ///setTimeout(update, 16);
+    setTimeout( () => { document.getElementById("DialogAds").classList.add("disabled") }, 3);
+    setTimeout( () => { document.getElementById("DialogAds").classList.remove("disabled") }, 3000);
+
+    const timer = setInterval(() => {
+      current += interval;
+      progress.value = current;
+      timeText.textContent = current + " ms";
+
+      if (current >= totalTime) {
+        progress.value = totalTime;
+        ///progress.style.setProperty('--progress-color', '#4caf50'); // 綠色
+        clearInterval(timer);
+        timeText.textContent = "done!";
+        timeText.textContent = "skip?!";
+      }
+    }, interval);
+  }
+</script>
+<!-- ADS ================================================== -->
 
 <script>
 const dialog = document.getElementById('DialogCheck');
@@ -1478,6 +1521,7 @@ console.log(version);
               
         // 正式進入頻道**
         channel.presence.enter();
+        document.getElementById('DialogAds').showModal();startSkipAdsProgress();  ///test:20251221***
         // 監聽**
         ///channel.attach(() => {
         ///channel.presence.get((err, members) => {
