@@ -385,6 +385,14 @@
 
 <div id="content" style="background: #CCCCCC; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
 
+            <div class="controls" style="width: 90vw; ">
+                <div class="input-group">
+                    <span style="font-weight: bold; color: #ff9d00;">z=</span>
+                    <input type="range" id="sliderZ" min="0.1" max="5.0" step="0.1" value="0.1">
+                    <span id="valZ" style="min-width: 40px;">0.1x</span>
+                </div>
+            </div>
+  
             <div class="radar-view scan-effect" style="width: 90vw; ">
                 <canvas id="mainCanvas"></canvas>
                 
@@ -403,20 +411,23 @@
 
             <div class="controls" style="width: 90vw; ">
                 <div class="input-group">
-                    <span style="font-weight: bold; color: #ff9d00;">z=</span>
-                    <input type="range" id="sliderZ" min="0.1" max="5.0" step="0.1" value="0.1">
-                    <span id="valZ" style="min-width: 40px;">0.1x</span>
+                    <span style="font-weight: bold; color: #000000;">x=</span>
+                    <input type="range" id="sliderX" min="-9999" max="9999" step="1" value="0">
+                    <!--span id="valX" style="min-width: 40px;">---</span-->
+                    <button onclick="decrease()" translate="no">－</button>
+                    <button onclick="increase()" translate="no">＋</button>
                 </div>
 
                 <div class="input-group">
                     <span style="font-weight: bold; color: red;">y=</span>
                     <input type="text" id="eqInput" value="Math.sin(x/40) * 120" spellcheck="false" style="color: black;">
                     <!--button class="btn-fire" onclick="launch();" translate="no">FIRE</button!-->
+                    <button onclick="launch()" translate="no" style="background:yellow;">🔥</button>
                 </div>
             </div>
                     
 </div>
-<button class="btn-fire" onclick="launch();" style="background: red; border-radius: 0%" translate="no">FIRE</button>
+<!--button class="btn-fire" onclick="launch();" style="background: red; border-radius: 0%" translate="no">FIRE</button-->
 <!-- 放置你原有的布局 -->
             
           <!--strong></strong-->
@@ -789,7 +800,7 @@
         setInterval(createSnow, 300);
 
         let mouseX = 0, mouseY = 0;
-
+        /*
         canvas.addEventListener('mousemove', (e) => {
             const rect = canvas.getBoundingClientRect();
             // 取得相對於 canvas 的滑鼠位置
@@ -806,8 +817,33 @@
 
             curX = gameX;  // 更新現在鼠標位置  // 準星
             curY = gameY;  // 更新現在鼠標位置  // 準星
+        });*/
+
+        document.getElementById('sliderX').addEventListener('input', (e) => {
+            curX = e.target.value; curY = 0;  ///console.log(e.target.value);
         });
+      
     </script>
+
+<script>
+function decrease() {
+  const input = document.getElementById('sliderX');
+  let value = parseInt(input.value);
+  if (value > parseInt(input.min)) {
+    input.value = value - 1;
+    curX = input.value;
+  }
+}
+
+function increase() {
+  const input = document.getElementById('sliderX');
+  let value = parseInt(input.value);
+  if (value < parseInt(input.max)) {
+    input.value = value + 1;
+    curX = input.value;
+  }
+}
+</script>
 <!-- 放置你原有的布局 -->
  
 
