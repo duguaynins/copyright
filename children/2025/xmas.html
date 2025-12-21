@@ -413,7 +413,9 @@
                 <div class="input-group">
                     <span style="font-weight: bold; color: #000000;">x=</span>
                     <input type="range" id="sliderX" min="-9999" max="9999" step="1" value="0">
-                    <span id="valX" style="min-width: 40px;">---</span>
+                    <!--span id="valX" style="min-width: 40px;">---</span-->
+                    <button onclick="decrease()">-</button>
+                    <button onclick="increase()">+</button>
                 </div>
 
                 <div class="input-group">
@@ -819,7 +821,26 @@
         document.getElementById('sliderX').addEventListener('input', (e) => {
             curX = e.target.value; curY = 0;  ///console.log(e.target.value);
         });
+      
     </script>
+
+<script>
+function decrease() {
+  const input = document.getElementById('sliderX');
+  let value = parseInt(input.value);
+  if (value > parseInt(input.min)) {
+    input.value = value - 1;
+  }
+}
+
+function increase() {
+  const input = document.getElementById('sliderX');
+  let value = parseInt(input.value);
+  if (value < parseInt(input.max)) {
+    input.value = value + 1;
+  }
+}
+</script>
 <!-- 放置你原有的布局 -->
  
 
