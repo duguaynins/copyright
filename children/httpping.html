@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -119,7 +120,7 @@
               nins/httpping
               </div>
           </div>
-          <input type="range" id="intervalSlider" min="2000" max="86400000" step="1000" value="2000">
+          <input type="range" id="intervalSlider" min="1000" max="86400000" step="1000" value="1000">
           
           <div id="contentbox" style="border:1px solid #ccc; overflow:auto; width:100%; flex:1;">
           <!--strong class="bg-white rounded-xl shadow-lg p-8 md:p-10 w-full max-w-lg text-center"></strong-->
@@ -143,7 +144,7 @@
                       正在持續 Ping，請稍候...
                   </div>
 
-                  <div id="result" class="min-h-[2.5rem] mt-4 font-medium text-lg"></div>
+                  <div id="result" class="min-h-[2.5rem] mt-4 font-medium text-lg">0.00027</div>
               </div>
               <br>
           
@@ -245,6 +246,16 @@
                 resultDiv.textContent = 'Ping started, testing continuously...';
                 resultDiv.className = 'text-gray-600';
             }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const slider = document.getElementById('intervalSlider');
+            const display = document.getElementById('result');
+
+            slider.addEventListener('input', () => {
+                const hours = slider.value / (1000 * 60 * 60);
+                display.textContent = hours.toFixed(5).toString();
+            });
         });
     </script>
 
