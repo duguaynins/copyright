@@ -503,9 +503,9 @@
             bgmTimeout = setTimeout(playXmasBGM, note.d);
         }
         
-        init();
-        draw();
-        spawnEnemy();
+        ///init();
+        ///draw();
+        ///spawnEnemy();
         ///playXmasBGM();
 
         ///gameActive = false
@@ -514,7 +514,7 @@
             ///if (!gameActive || gameMode !== 'xmas') return;
             const snow = document.createElement('div');
             snow.className = 'snow';
-            snow.style.position = 'fixed';
+            ///snow.style.position = 'fixed';
             snow.innerHTML = '❄';
             snow.style.left = Math.random() * 100 + 'vw';
             snow.style.fontSize = (Math.random() * 10 + 10) + 'px';
