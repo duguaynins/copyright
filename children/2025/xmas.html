@@ -373,58 +373,11 @@
           
 <!-- 放置你原有的布局 -->
 
-<div id="formulaButtons" class="formula-bar" style="
-    display: flex;
-    justify-content: flex-start;
-    flex-shrink: 0;
-    align-items: center;
-    overflow-y: auto;
-    overflow-x: auto;
-    background: #CCCCCC;
-"></div>
+
 
 <div id="content" style="background: #CCCCCC; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
 
-            <div class="controls" style="width: 90vw; ">
-                <div class="input-group">
-                    <span style="font-weight: bold; color: #ff9d00;">z=</span>
-                    <input type="range" id="sliderZ" min="0.1" max="5.0" step="0.1" value="0.1">
-                    <span id="valZ" style="min-width: 40px;">0.1x</span>
-                </div>
-            </div>
-  
-            <div class="radar-view scan-effect" style="width: 90vw; ">
-                <canvas id="mainCanvas"></canvas>
-                
-                <div style="position: absolute; top: 15px; left: 15px; pointer-events: none;">
-                    <div style="font-size: 10px; text-transform: uppercase; color: #666;">Score</div>
-                    <div id="scoreLabel" style="font-size: 32px; font-weight: 900; color: #ff9d00;">0</div>
-                </div>
-
-                <div class="glass-card" translate="no" style="position: absolute; top: 15px; right: 15px; padding: 5px 10px; font-size: 12px;">
-                    <span style="color: #00f2ff;" id="statX">x: 0.0</span>　
-                    <span style="color: #00f2ff;" id="statY">y: 0.0</span>　
-                    <span style="color: #ff9d00;" id="statZ">z: 0.1</span>
-                </div>
-            </div>
-
-
-            <div class="controls" style="width: 90vw; ">
-                <div class="input-group">
-                    <span style="font-weight: bold; color: #000000;">x=</span>
-                    <input type="range" id="sliderX" min="-9999" max="9999" step="1" value="0">
-                    <!--span id="valX" style="min-width: 40px;">---</span-->
-                    <button onclick="decrease()" translate="no">－</button>
-                    <button onclick="increase()" translate="no">＋</button>
-                </div>
-
-                <div class="input-group">
-                    <span style="font-weight: bold; color: red;">y=</span>
-                    <input type="text" id="eqInput" value="Math.sin(x/40) * 120" spellcheck="false" style="color: black;">
-                    <!--button class="btn-fire" onclick="launch();" translate="no">FIRE</button!-->
-                    <button onclick="launch()" translate="no" style="background:yellow;">🔥</button>
-                </div>
-            </div>
+            
                     
 </div>
 <!--button class="btn-fire" onclick="launch();" style="background: red; border-radius: 0%" translate="no">FIRE</button-->
@@ -453,62 +406,22 @@
 <!-- 放置你原有的布局 -->
  
     <script>
-        const canvas = document.getElementById('mainCanvas');
-        const ctx = canvas.getContext('2d');
-        const eqInput = document.getElementById('eqInput');
-        const sliderZ = document.getElementById('sliderZ');
-        const valZDisplay = document.getElementById('valZ');
-        const scoreLabel = document.getElementById('scoreLabel');
-        const statX = document.getElementById('statX');
-        const statY = document.getElementById('statY');
-        const statZ = document.getElementById('statZ');
-
+        
         ///document.getElementById('merryXmas').innerHTML = "[ © nins ] x [ Merry Xmas 2025 ]";
         document.getElementById('merryXmas').innerHTML = "☃️🦌🎄✨⭐<br>[ © nins ] x [ Merry Xmas 2025 ]";
 
-        let width, height, centerX, centerY;
-        let curX = 0, curY = 0, scaleZ = 0.1;
-        let score = 0, isLaunching = false;
-        let currentFunc = (x) => Math.sin(x/40)*120;
-        let enemies = [];
+        
         let audioCtx = null;
 
         // 初始化
         function init() {
-            width = canvas.offsetWidth;
-            height = canvas.offsetHeight;
-            canvas.width = width * window.devicePixelRatio;
-            canvas.height = height * window.devicePixelRatio;
-            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-            centerX = width / 2;
-            centerY = height / 2;
             ///spawnEnemy();
         }
 
 
-        eqInput.addEventListener('input', (e) => {
-            if (true) { 
-                console.log(`y= ${eqInput.value}`);launch(false); }
-        });
-
-        eqInput.addEventListener('change', (e) => {
-            if (true) { 
-                console.log(`y= ${eqInput.value} >>>`);launch(); }
-        });
-
-        eqInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                console.log(`y= ${eqInput.value} >>>`);launch();
-            }
-        });
         
-        window.addEventListener('resize', init);
-        sliderZ.addEventListener('input', (e) => {
-            scaleZ = parseFloat(e.target.value);
-            valZDisplay.innerText = scaleZ.toFixed(1) + 'x';
-            statZ.innerText = `z: ${scaleZ.toFixed(1)}`;
-        });
-
+        
+        
         function initAudio() {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -550,203 +463,14 @@
             { x: 66, y: -20 }, { x: -66, y: -20 },
             { x: 0, y: -90 }   // 底部尖端
         ];
-        let availablePoints = fixedPoints;
+        ///let availablePoints = fixedPoints;
 
-        function spawnEnemy() {
-            // 檢查是否還有剩餘的點
-            if (availablePoints.length === 0) {
-                console.log("所有目標已出現完畢！");
-                return;
-            }
+        
 
-            // 隨機選取索引
-            const randomIndex = Math.floor(Math.random() * availablePoints.length);
-            
-            // 使用 splice 取得並從陣列移除該點 (回傳的是陣列，所以取索引 0)
-            const point = availablePoints.splice(randomIndex, 1)[0];
-
-            enemies.push({
-                x: point.x,
-                y: point.y,
-                destroyed: false
-            });
-        }
-        function spawnEnemy_v1() {
-            // 隨機選取一個固定點的索引
-            const randomIndex = Math.floor(Math.random() * fixedPoints.length);
-            const point = fixedPoints[randomIndex];
-
-            enemies.push({
-                x: point.x,
-                y: point.y,
-                destroyed: false
-            });
-        }
-        function spawnEnemy_v0() {
-            enemies.push({
-                x: Math.round((Math.random() - 0.5) * (width / 0.5)),
-                y: Math.round((Math.random() - 0.5) * (height / 0.5)),
-                destroyed: false
-            });
-        }
-
-        function launch(isDefault = true) {
-            const code = eqInput.value;
-            try {
-                const tempFunc = new Function('x', `with(Math) { return ${code}; }`);  // 嘗試建立函式
-                
-                tempFunc(0);  // 測試執行一次看是否會報錯 (例如輸入了不存在的變數)
-                currentFunc = tempFunc;  // 如果沒報錯，才正式替換當前函數
-                
-                ///isLaunching = (isDefault !== undefined) ? isDefault : true;
-                isLaunching = isDefault ?? true;
-
-                if (isLaunching === true) {
-
-                    playLaunchSound();
-                    setTimeout(() => {
-                        isLaunching = false;
-                        checkHit();
-                    }, 500);
-                }
-                
-            } catch (e) {
-                console.log("[ERROR]", e);
-                ///alert("無效的公式！請輸入正確的數學表達式（例如：x * 2 或 Math.sin(x)）");
-                isLaunching = false;
-            }
-        }
-        function launch_v20251219(/*isLaunching = true*/) {
-            ///console.log(`y= ${eqInput.value}`);
-            ///playLaunchSound();
-            try {
-                currentFunc = new Function('x', `return ${eqInput.value};`);
-                playLaunchSound();
-                isLaunching = true;
-                setTimeout(() => {
-                    isLaunching = false;
-                    checkHit();
-                }, 500);
-            } catch (e) {  
-                ///alert("Invalid Formula");
-            }
-        }
-
-        function checkHit() {
-            enemies.forEach(en => {
-                if (!en.destroyed) {
-                    const targetY = currentFunc(en.x);
-                    if (Number.isFinite(targetY) && Math.round(targetY) === en.y) {  // 判定：精確擊中 y 座標
-                    ///if (Math.abs(targetY - en.y) < 20 / scaleZ) {  // 大概命中
-                        playHitSound();
-                        en.destroyed = true;
-                        score += 100;
-                        scoreLabel.innerText = score;
-                        spawnEnemy();
-                    }
-                }
-            });
-        }
-
-        function draw() {
-            ctx.clearRect(0, 0, width, height);
-            
-            // 繪製格線
-            /*
-            ctx.strokeStyle = '#222';
-            ctx.beginPath();
-            for(let x=0; x<width; x+=50*scaleZ) { ctx.moveTo(x,0); ctx.lineTo(x,height); }
-            for(let y=0; y<height; y+=50*scaleZ) { ctx.moveTo(0,y); ctx.lineTo(width,y); }
-            ctx.stroke();  */
-
-            // 繪製函數
-            ctx.strokeStyle = isLaunching ? '#ff3b00' : '#00f2ff';
-            ctx.lineWidth = isLaunching ? 4 : 2;
-            ctx.beginPath();
-            for (let px = 0; px <= width; px += 2) {
-                const x = (px - centerX) / scaleZ;
-                const y = currentFunc(x);
-                const py = centerY - (y * scaleZ);
-                if (px === 0) ctx.moveTo(px, py);
-                else ctx.lineTo(px, py);
-            }
-            ctx.stroke();
-
-            
-            // 準星
-            try { const y = currentFunc(curX); curY = Number.isFinite(y) ? y : 0; } catch(e) { curY = 0; curX = 0; }
-            const cx = centerX + (curX * scaleZ);
-            const cy = centerY - (curY * scaleZ);
-            ///statX.innerText = `x: ${cx.toFixed(1)}`;  // 比較不適合的備用方案
-            ///statY.innerText = `y: ${cy.toFixed(1)}`;
-            statX.innerText = `x: ${Math.round(curX)}`;  // 使用整數顯示較符合遊戲感
-            statY.innerText = `y: ${Math.round(curY)}`;
-
-            ctx.setLineDash([5, 5]); ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)'; ctx.beginPath();
-            ctx.moveTo(cx, 0); ctx.lineTo(cx, height); ctx.moveTo(0, cy); ctx.lineTo(width, cy); ctx.stroke();
-            ctx.setLineDash([]);
-            ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(cx, cy, 5, 0, Math.PI * 2); ctx.fill();
-
-            // 繪製敵人
-            enemies.forEach(en => {
-                if (!en.destroyed) {
-                    const ex = centerX + (en.x * scaleZ);
-                    const ey = centerY - (en.y * scaleZ);
-                    ctx.fillStyle = '#ff3b00';
-                    ctx.beginPath();
-                    ctx.arc(ex, ey, 5, 0, Math.PI*2);
-                    ctx.fill();
-                    ctx.fillText(`(${en.x}, ${en.y})`, ex + 10, ey);
-
-                } else {  // 已擊中的印記：綠色且半透明
-                    const ex = centerX + (en.x * scaleZ);
-                    const ey = centerY - (en.y * scaleZ);
-                    ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
-                    ctx.beginPath();
-                    ctx.arc(ex, ey, 5, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.fillText(`(${en.x}, ${en.y})`, ex + 10, ey);
-                }
-                
-                if (true) {  // 原點
-                    const ex = centerX;
-                    const ey = centerY;
-                    ctx.fillStyle = '#ffffff';
-                    ctx.beginPath();
-                    ctx.arc(ex, ey, 3, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            });
-
-            requestAnimationFrame(draw);
-        }
+        
 
         // 產生按鈕
-        const formulas = [
-            { name: "Absolute Value", value: "Math.abs(x)" },
-            { name: "Square Wave", value: "Math.sign(Math.sin(x/20))*200" },
-            { name: "Composite Wave", value: "Math.sin(x/30)*80 + Math.sin(x/5)*10" },
-            { name: "Sine", value: "Math.sin(x/58)*58" },
-            { name: "Cosine", value: "Math.cos(x/58)*58" },
-            { name: "Tangent", value: "Math.tan(x/58)*58" },
-            { name: "Semicircle", value: "Math.sqrt(100*100 - x*x)" },
-            { name: "Linear Function", value: "2*x + 50" },
-            { name: "Quadratic Function", value: "-0.01*x*x + 100" },
-            { name: "Cubic Function", value: "x*x*x / 5800" },
-            { name: "Exponential Function", value: "Math.pow(1.05, x)" },
-            { name: "Logarithmic Function", value: "Math.log(x)*20" },
-            { name: "Damped Oscillation", value: "Math.sin(x/10)*Math.exp(-x/200)*20" },
-            { name: "Sawtooth Wave", value: "x % 50" },
-            { name: "Random Fluctuation", value: "Math.random()*100" }
-        ];
-
-        const fContainer = document.getElementById('formulaButtons');
-        formulas.forEach(f => {
-            const btn = document.createElement('button');
-            btn.textContent = f.name;
-            btn.onclick = () => { eqInput.value = f.value; launch(); };
-            fContainer.appendChild(btn);
-        });
+        
 
         const jingleBells = [
             {f: 659.25, d: 250}, {f: 659.25, d: 250}, {f: 659.25, d: 500},
@@ -799,51 +523,11 @@
         }
         setInterval(createSnow, 300);
 
-        let mouseX = 0, mouseY = 0;
-        /*
-        canvas.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            // 取得相對於 canvas 的滑鼠位置
-            mouseX = e.clientX - rect.left;
-            mouseY = e.clientY - rect.top;
-
-            // 計算轉換後的遊戲座標 (x, y)
-            const gameX = Math.round((mouseX - centerX) / scaleZ);
-            const gameY = Math.round((centerY - mouseY) / scaleZ);
-
-            // 即時顯示在右上角的標籤
-            statX.innerText = `x: ${gameX}`;
-            statY.innerText = `y: ${gameY}`;
-
-            curX = gameX;  // 更新現在鼠標位置  // 準星
-            curY = gameY;  // 更新現在鼠標位置  // 準星
-        });*/
-
-        document.getElementById('sliderX').addEventListener('input', (e) => {
-            curX = e.target.value; curY = 0;  ///console.log(e.target.value);
-        });
+        
       
     </script>
 
-<script>
-function decrease() {
-  const input = document.getElementById('sliderX');
-  let value = parseInt(input.value);
-  if (value > parseInt(input.min)) {
-    input.value = value - 1;
-    curX = input.value;
-  }
-}
 
-function increase() {
-  const input = document.getElementById('sliderX');
-  let value = parseInt(input.value);
-  if (value < parseInt(input.max)) {
-    input.value = value + 1;
-    curX = input.value;
-  }
-}
-</script>
 <!-- 放置你原有的布局 -->
  
 
