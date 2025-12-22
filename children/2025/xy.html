@@ -199,8 +199,8 @@
   function drawAll() {
     const startBlocks = workspace.getBlocksByType('start_node');
     const xValues = [];
-    let minX = document.getElementById('minRange').value || -20; ///-1000;  ///-10
-    let maxX = document.getElementById('maxRange').value || 20; ///1000;  ///10
+    let minX = Number(document.getElementById('minRange').value || -20); ///-1000;  ///-10
+    let maxX = Number(document.getElementById('maxRange').value || 20); ///1000;  ///10
     const step = 1; // 建議步長設為 10，若需要更平滑可設為 5 或 1
     for (let i = minX; i <= maxX; i += step) xValues.push(i);
 
@@ -331,4 +331,5 @@
 </body>
 
 </html>
+
 
