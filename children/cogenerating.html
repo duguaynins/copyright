@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -8,6 +9,7 @@
   <!--link rel="icon" type="image/png" sizes="48x48" href="/favicon.png"-->
   <!--link rel="shortcut icon" href="/favicon.ico"-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <link rel="canonical" href="https://copyright.nins.cc/">
   <title translate="no">nins/cogenerating</title>
     <style>
       input, button {
@@ -204,7 +206,7 @@
       display: flex;
       flex-direction: column;
     ">
-          <span id="anything" style="background-color: black; color: white; font-size: max(1vh,1vw);">Let generative AI work together.</span>
+          <strong id="anything" style="background-color: black; color: white; font-size: max(1vh,1vw);"><b translate="no">© nins. </b>Let generative AI work together.</strong>
           <div id="title" style="background: #FFFFFF; color: black;" translate="no">
           <div style="margin: 10px;" onclick="document.getElementById('DialogCheck').showModal();console.log(new Date().toLocaleString(), '🙉');">
           nins/cogenerating
@@ -227,7 +229,7 @@
           <div style="margin: 10px;" onclick="document.getElementById('DialogTrans').showModal()">
           By sending a message to this service, it means you have agreed to any content and all content!
           </div></div>
-          <span id="copyright" style="background-color: black; color: white; font-size: max(1vh,1vw);" translate="no">© 2024 NINS (by JPGT).</span>
+          <strong id="copyright" style="background-color: black; color: white; font-size: max(1vh,1vw);" translate="no">© 2024 NINS (by JPGT).</strong>
     </div>
   
   <dialog id="DialogTrans" translate="no">
@@ -267,8 +269,35 @@ function log(msg) {
 
 
 
+async function HuggingFaceAPI(inputs=null) {
+  // 20251205
+  try {
+    console.log(inputs);
+    const { group, space, path, payload } = inputs;
+    const baseUrl = `https://${group}-${space}.hf.space/${path}`;  ///"https://duguaynins-RedirectAPI.hf.space/path";
 
-async function HuggingFaceAPI(dir="duguaynins/RedirectAPI", path="/textMining/predict", data="Hello!!") {
+    const response = await fetch(baseUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+    console.log(data);
+    return data;
+  
+  } catch (err) {
+    console.error(err);
+    ///return "error";
+    ///return "Server? Wake up!";
+    ///return "Server? Cheer up a bit!";
+    ///return "Server? Together!";
+    ///return {result: {confidences: null, label: '<b translate="no">'+escapeHtml(err.stack)+'</b>' }};  ///err.name+err.message
+    return {result: {confidences: null, label: `<a translate="no" href="mailto:duguaynins@gmail.com?subject=${encodeURIComponent( new Date().toISOString() )}&body=${encodeURIComponent( err.stack )}">mailto:duguaynins@gmail.com</a>` }};  ///escapeHtml(err.stack)
+  }
+}
+
+async function HuggingFaceAPI_v0(dir="duguaynins/RedirectAPI", path="/textMining/predict", data="Hello!!") {
   ///const client = await Client.connect("duguaynins/TextMining");
   const client = await Client.connect(dir);
   const result = await client.predict(path, { inputs: data });
@@ -277,15 +306,44 @@ async function HuggingFaceAPI(dir="duguaynins/RedirectAPI", path="/textMining/pr
   return result.data;
 } 
 
+async function generate(params) {  
+  console.log('翻譯文本:', params);
+  ///const system = document.getElementById("input_sys").value;
+  ///const message = document.getElementById("input_msg").value;
+
+  const { sys = system, usr = message, models } = params;
+  if (!models) { return; }
+  if (!sys) { return "sys?"; }
+  if (!usr) { return "usr?"; }
+
+  
+  const inputs = { "inputs": {models:models, system:sys, user:usr} }
+  const outputs = await HuggingFaceAPI({
+    group: "duguaynins",
+    space: "RedirectAPI",  ///MultipleLLMs
+    path: "generate/llms",  ////run/predict, api/predict, predict, /queue/join
+    payload: inputs,
+  }); 
+
+  console.log("INPUT:", inputs);
+  console.log("OUTPUT:", outputs);
+  ///return outputs.result.label;
+  return outputs.result;
+}
+
 async function send() {
   document.getElementById("input_msg").disabled = true;
-  const v = document.getElementById("input_msg").value;
+  const sys = document.getElementById("input_sys").value;
+  const usr = document.getElementById("input_msg").value;
   ///document.getElementById("input_msg").value = "";
-  log("🧠　" + v);  ///🧠✨💡
+  log("🧠　" + usr);  ///🧠✨💡
+  ///{ "text": xmsg, "source": null, "target": {tl:tlang, il:ilang} }
   ///log("♊　" + await HuggingFaceAPI("duguaynins/MultipleLLMs","/fn_main",{models:'gemini-2.5-flash',system:document.getElementById("input_sys").value ,user:document.getElementById("input_msg").value }) );
-  log("🤖　" + await HuggingFaceAPI("duguaynins/MultipleLLMs","/fn_main",{models:'gpt-4o-mini',system:document.getElementById("input_sys").value ,user:document.getElementById("input_msg").value }) );
-  log("🤖＋" + await HuggingFaceAPI("duguaynins/MultipleLLMs","/fn_main",{models:'gpt-4o',system:document.getElementById("input_sys").value ,user:document.getElementById("input_msg").value }) );
-  
+  ///log("🤖　" + await HuggingFaceAPI("duguaynins/MultipleLLMs","/fn_main",{models:'gpt-4o-mini',system:document.getElementById("input_sys").value ,user:document.getElementById("input_msg").value }) );
+  ///log("🤖＋" + await HuggingFaceAPI("duguaynins/MultipleLLMs","/fn_main",{models:'gpt-4o',system:document.getElementById("input_sys").value ,user:document.getElementById("input_msg").value }) );
+  log("🤖　" + await generate({ "sys": sys, "usr": usr, "models": 'gpt-4o-mini' }) );
+  log("🤖＋" + await generate({ "sys": sys, "usr": usr, "models": 'gpt-4o' }) );
+
   document.getElementById("input_msg").value = "";
   document.getElementById("input_msg").disabled = false;
 }
