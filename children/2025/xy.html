@@ -82,6 +82,10 @@
     <button class="btn-primary" onclick="showView('editor')" style="background: orange;" >🧩</button>
     <button class="btn-primary" onclick="showView('chart')" style="background: red;" >📊</button>
   </div>
+  <div>
+    <input type="range" id="minRange" min="-1000" max="-10" value="-20">
+    <input type="range" id="maxRange" min="10" max="1000" value="20">
+  </div>
   <button style="background: #10b981; color: white;" onclick="drawAll()">🚀</button>
 </div>
 
@@ -195,8 +199,8 @@
   function drawAll() {
     const startBlocks = workspace.getBlocksByType('start_node');
     const xValues = [];
-    const minX = -1000;  ///-10
-    const maxX = 1000;  ///10
+    const minX = document.getElementById('minRange').value; ///-1000;  ///-10
+    const maxX = document.getElementById('maxRange').value; ///1000;  ///10
     const step = 1; // 建議步長設為 10，若需要更平滑可設為 5 或 1
     for (let i = minX; i <= maxX; i += step) xValues.push(i);
 
@@ -325,4 +329,5 @@
 </script>
 
 </body>
+
 </html>
