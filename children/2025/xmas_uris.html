@@ -624,30 +624,64 @@
       display: flex;
       flex-direction: column;
     ">
-          <strong id="anything" style="background-color: black; color: white; font-size: max(1vh,1vw);"><b translate="no">© nins. </b>Find the target with radar, lock it with math, then fire a cosmic pulse!</strong>
-          <div id="title" style="background: #FFFFFF; color: black;" translate="no">
-          <div style="margin: 10px;" onclick="document.getElementById('DialogCheck').showModal();console.log(new Date().toLocaleString(), '🙉');">
-          nins/xmas
+          <strong id="anything" style="background-color: black; color: white; font-size: max(1vh,1vw);"><b translate="no">© nins. </b>Quickly create your own contact URL in HTTPS.</strong>
+          <div style="background: #FFFFFF; color: black;" translate="no">
+          <div style="margin: 10px;" onclick="document.getElementById('DialogLog').showModal()">
+          nins/uris
           </div></div>
+          <!-- 可選額外說明 -->
           
-<!-- 放置你原有的布局 -->
+              <!-- 放置你原有的布局 -->
+              <div id="content" style="background: #FFFFFF; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
+                <h1 translate="no" style="margin: 0;">© 2024 NINS. 👻</h1>
+                <p translate="no" style="margin: 0; color: red;">(by JPGT)</p>
+                <!--h1 translate="no">© 2024 NINS <span translate="no" style="color: red;">(by JPGT)</span>. 👻✨</h1-->
 
-
-
-<div id="content" style="background: #CCCCCC; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
-
+                <!--h1>Preparing your information...</h1-->
+                <!--p id="message">📌 If you really need a shorter information redirect link, We welcome you to contact us. <span translate="no">(mailto:<a style='color:red;' href='mailto:duguaynins@gmail.com'>duguaynins@gmail.com</a> 📧)</span></p-->
+                
+                <p id="message">📌 If you really need a shorter information redirect link, We welcome you to contact us. 
+                    <span translate="no">(mailto:
+                        <a style='color:red;' href="mailto:duguaynins@gmail.com?subject=Hi%20Nins!%20Request%20for%20Short%20Link!&body=Thank%20you.">duguaynins@gmail.com</a> 📧)
+                    </span>
+                </p>
+                
+                <!--p id="message" style="color: #999999;">💬 ...!</p-->
+                <!--p id="nanoURL" translate="no">💡 ...!</p-->
+                <!--p id="hintURL">✨ ...!</p-->
+                <p id="miniURL" translate="no">💡 ...!</p>
+                <!--p id="message">💬 ...!</p-->
+              </div>
+              <!-- 放置你原有的布局 -->
             
-                    
-</div>
-<!--button class="btn-fire" onclick="launch();" style="background: red; border-radius: 0%" translate="no">FIRE</button-->
-<!-- 放置你原有的布局 -->
-            
+          <!-- 可選輸入框 -->
+          <u translate="no" style='text-decoration:none; color:black;'>*{A-Z}  {a-z}  {0-9}  {-/_/./~/@}*</u>
+          
+          <div id="sliderButton" style="
+                      display: flex;
+                      /*flex-direction: row;  /* 上下==column */
+                      /*justify-content: center;*/
+                      justify-content: flex-start;  /* 左對齊較符合滾動預期 */
+                      flex-shrink: 0
+                      align-items: center;  /* 水平置中 canvas */
+                      /*overflow-y: auto;     /* 可垂直滾動 */
+                      overflow-x: auto;     /* 可水平滾動 */
+                  ">
+              
+              <button style="width:25vw" id="copyButton" onclick="">🔗</button>
+              <button style="width:25vw" type="button" onclick="document.getElementById('InputInfo').value='mailto:';updateAndCopy();">📧</button>
+              <button style="width:25vw" type="button" onclick="document.getElementById('InputInfo').value='tel:';updateAndCopy();">📞</button>
+              <button style="width:25vw" type="button" onclick="document.getElementById('InputInfo').value='sms:';updateAndCopy();">💬</button>
+              
+          </div>
+          <input class="main" id="InputInfo" type="text" name="noMemory" autocomplete="off" placeholder="" style="width: 100%; text-align: left; box-sizing: border-box;">
+          <!--input class="main" id="InputInfo" type="text" name="noMemory" autocomplete="off" placeholder="" style="width: 100%; text-align: center;"-->
           <!--strong></strong-->
-          <div id="notice" style="background: #FF3B00; color: white;" translate="yes">
-          <div style="margin: 10px;" onclick="document.getElementById('DialogTrans').showModal()">
+          <div style="background: #FF3B00; color: white;" translate="yes">
+          <div style="margin: 10px;" onclick="document.getElementById('').showModal();console.log('🛠️');">
           By sending a message to this service, it means you have agreed to any content and all content!
           </div></div>
-          <strong id="copyright" style="background-color: black; color: white; font-size: max(1vh,1vw);" translate="no">© 2024 NINS (by JPGT).</strong>
+          <strong style="background-color: black; color: white; font-size: max(1vh,1vw);" translate="no">© 2024 NINS (by JPGT).</strong>
     </div>
   
   <dialog id="DialogTrans" translate="no">
