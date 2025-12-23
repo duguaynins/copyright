@@ -502,23 +502,12 @@
         }
 
         .input-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(0, 0, 0, 0.4);
-            padding: 8px 15px;
-            border-radius: 12px;
-            border: 1px solid #444;
+            
         }
-
+        /* 滑桿樣式 */
+        input[type="range"] {  }
         input[type="text"] {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: #00f2ff;
-            font-family: inherit;
-            font-size: 16px;
-            outline: none;
+            
         }
 
         /* 按鈕風格 */
@@ -567,8 +556,7 @@
         }
         .fadeOut { opacity: 0; pointer-events: none; }
 
-        /* 滑桿樣式 */
-        input[type="range"] { flex: 1; cursor: pointer; }
+        
     </style>
     <!--style>
         @keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
