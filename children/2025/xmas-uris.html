@@ -779,7 +779,8 @@ redirect = checkUriData(urisMain);
 // 3. Result
 if (!redirect && redirect !== null) { 
     // Not a valid
-    document.getElementById('miniURL').innerHTML = '💡 https://uris.nins.cc/?data=#';
+    const url = "https://uris.nins.cc/?data=";
+    document.getElementById('miniURL').innerHTML = `💡 <a href='${url}'>${url}</a> 🌐`;  ///'💡 https://uris.nins.cc/?data=#';
     document.getElementById('message').innerHTML = '⚠️ This is not a valid protocol. <a translate="no">(mailto:/tel:/sms:)<a>'; 
 
 } else if (redirect && urisMain) {
@@ -800,11 +801,15 @@ if (!redirect && redirect !== null) {
 
 } else if (!redirect && !urisMain) {
     // New page
-    document.getElementById("miniURL").innerHTML = `💡 <u style='text-decoration:none; color:black;'>https://uris.nins.cc/?data=#</u>`;  ///uris/index.html
+    const url = "https://uris.nins.cc/?data=";
+    document.getElementById('miniURL').innerHTML = `💡 <a href='${url}'>${url}</a> 🌐`;  ///'💡 https://uris.nins.cc/?data=#';
+    ///document.getElementById("miniURL").innerHTML = `💡 <u style='text-decoration:none; color:black;'>https://uris.nins.cc/?data=#</u>`;  ///uris/index.html
     document.getElementById("message").innerHTML = `📌 If you really need a shorter information redirect link, We welcome you to contact us. <span translate="no">(mailto:<a style='color:red;' href="mailto:duguaynins@gmail.com?subject=Hi%20Nins!%20Request%20for%20Short%20Link!&body=Thank%20you.">duguaynins@gmail.com</a> 📧)</span>`
 } else {
     // Missing required recipient parameter
-    document.getElementById("miniURL").innerHTML = `💡 <u style='text-decoration:none; color:black;'>https://uris.nins.cc/?data=#</u>`;  ///uris/index.html
+    const url = "https://uris.nins.cc/?data=";
+    document.getElementById('miniURL').innerHTML = `💡 <a href='${url}'>${url}</a> 🌐`;  ///'💡 https://uris.nins.cc/?data=#';
+    ///document.getElementById("miniURL").innerHTML = `💡 <u style='text-decoration:none; color:black;'>https://uris.nins.cc/?data=#</u>`;  ///uris/index.html
     document.getElementById('message').innerHTML = '⚠️ Missing recipient information in the URL parameter (/?data=#...).';
 }
 
@@ -855,7 +860,9 @@ function updateAndCopy() {
     ///if (!information) return;
     if (!information) { document.getElementById('message').innerHTML = '⚠️ You need to enter valid information. <a translate="no">(mailto:/tel:/sms:)<a>'; }
     if (!information) {
-        document.getElementById('miniURL').innerHTML = '💡 https://uris.nins.cc?data=';
+        const url = "https://uris.nins.cc/?data=";
+        document.getElementById('miniURL').innerHTML = `💡 <a href='${url}'>${url}</a> 🌐`;  ///'💡 https://uris.nins.cc/?data=#';
+        ///document.getElementById('miniURL').innerHTML = '💡 https://uris.nins.cc?data=';
         copyButton.textContent = "⚠️";
         ///copyButton.textContent = "⚠️ Missing 🔗";
         //////setTimeout(() => (copyButton.textContent = "🔗"), 2000);  // Copy URL 
@@ -866,7 +873,9 @@ function updateAndCopy() {
     ///if (!redirect) { document.getElementById('message').innerHTML = '⚠️ This is not a valid protocol <a translate="yes">(mailto:/tel:/sms:)<a>.'; }
     if (!redirect) { document.getElementById('message').innerHTML = '⚠️ You need to use a valid protocol. <a translate="no">(mailto:/tel:/sms:)<a>'; }
     if (!redirect) {
-        document.getElementById('miniURL').innerHTML = '💡 https://uris.nins.cc?data=';
+        const url = "https://uris.nins.cc/?data=";
+        document.getElementById('miniURL').innerHTML = `💡 <a href='${url}'>${url}</a> 🌐`;  ///'💡 https://uris.nins.cc/?data=#';
+        ///document.getElementById('miniURL').innerHTML = '💡 https://uris.nins.cc?data=';
         copyButton.textContent = "⚠️";
         ///copyButton.textContent = "⚠️ ERROR 🔗";
         //////setTimeout(() => (copyButton.textContent = "🔗"), 2000);  // Copy URL 
