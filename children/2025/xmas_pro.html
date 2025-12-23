@@ -11,6 +11,86 @@
   <link rel="canonical" href="https://copyright.nins.cc/">
   <title translate="no">nins/xmas</title>
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #050505;
+            height: 100vh;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        /* 雪花基礎樣式 */
+        .snow {
+            position: fixed;
+            top: -50px;
+            color: white;
+            user-select: none;
+            pointer-events: none;
+            z-index: 100001;
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
+            will-change: transform, opacity;
+        }
+
+        .snow.bright {
+            text-shadow: 0 0 10px rgba(255,255,255,0.9), 0 0 20px rgba(255,255,255,0.4);
+            font-weight: bold;
+        }
+
+        /* 優化動畫：使用變數控制消失位置 */
+        @keyframes fall {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            /* 漂移與旋轉 */
+            50% {
+                transform: translate(var(--drift), 40vh) rotate(180deg);
+            }
+            /* 開始消失的點：由 JS 動態決定消失的速度 */
+            80% {
+                opacity: 0.8;
+            }
+            100% {
+                /* 掉落到隨機的 --end-y 位置 */
+                transform: translate(calc(var(--drift) * 1.5), var(--end-y)) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        #startOverlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100005;
+            text-align: center;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 20px;
+            cursor: pointer;
+            background: #d42426;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: 0.3s;
+        }
+
+        .message {
+            color: white;
+            margin-top: 20px;
+            font-size: 24px;
+            text-shadow: 0 0 10px #ff0000;
+        }
+    </style>
+  
+    <style>
       input, button {
           box-sizing: border-box; /* padding + border 包含在 width 內 */
       }
@@ -311,10 +391,11 @@
 
         /* 滑桿樣式 */
         input[type="range"] { flex: 1; cursor: pointer; }
-
+    </style>
+    <!--style>
         @keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
         .snow { position: absolute; top: -10px; color: white; user-select: none; pointer-events: none; animation: fall linear infinite; z-index: 100000; }
-    </style>
+</style-->
 <!-- 放置你原有的布局 -->
 </head>
 <body>
