@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -34,18 +35,23 @@
           background-color: #222222;
           color: white;
         }
+        button:focus {
+          border-color: red;      /* 聚焦時變藍色 */
+        }
         button {
-            border: 2px solid #FF3B00; /* 綠色邊框 */
-            /* border-radius: 6px;        圓角 */
-            padding: 4px 12px;
-            margin: 0px 0;
-            outline: none;              /* 移除預設外框 */
+          background-color: #eeeeee;
+          border: 2px solid #FF3B00; /* 綠色邊框 */
+          /* border-radius: 6px;        圓角 */
+          padding: 4px 12px;
+          margin: 0px 0;
+          outline: none;              /* 移除預設外框 */
+        }
+        .xmas {
+          background-color: #fff0f0;  /* ffdffd ffdfdf ffe6e6 fff0f0 */
+          color: black;
         }
 
-        /* 聚焦時（使用者點入）變色 */
-        button:focus {
-            border-color: red;      /* 聚焦時變藍色 */
-        }
+        
     </style>
 
     <style>
@@ -106,22 +112,6 @@
         color: black;
       }
     </style>
-    <style>
-        .skiptranslate {
-          display: none !important;   /* 避免 display:none 影響內容顯示 */
-          position: static !important;   /* 防止位置異常 */
-          width: 0px !important;
-          height: 0px !important;
-          margin: 0 !important;
-          padding: 0 !important;
-          border: none !important;
-          background: none !important;
-          /*font-size: inherit !important;*/
-        }
-        iframe {
-          display: none !important;
-        }
-    </style>
 
     <style>
       @keyframes fadeGradient {
@@ -153,12 +143,12 @@
       }
       
       input:hover {
-        background-color: #cdcdcd;    ///FF3B00;
-        color: black;///gray;
+        background-color: #cdcdcd;
+        color: black;
       }
       input:active {
-        background-color: #222222;  ///#004080;
-        color: white;///gray;
+        background-color: #222222;
+        color: white;
       }
       input:focus {
         outline: none;              /* 移除預設藍色邊框 */
@@ -589,7 +579,7 @@
       pointer-events: none;  /* 動畫期間不阻擋互動（可選）*/
     "></button>
     
-    <button id="startOverlay" style="z-index: 99998;" onclick="this.classList.add('fadeOut'); initAudio();playXmasBGM();">
+    <button id="startOverlay" style="z-index: 99998; border: 0;" onclick="this.classList.add('fadeOut'); initAudio();playXmasBGM();">
         <span translate="no" id="merryXmas"></span>
     </button>
     
@@ -614,9 +604,10 @@
     ">
           <strong id="anything" style="background-color: black; color: white; font-size: max(1vh,1vw);"><b translate="no">© nins. </b>Quickly create your own contact URL in HTTPS.</strong>
           <div style="background: #FFFFFF; color: black;" translate="no">
-          <div style="margin: 10px;" onclick="document.getElementById('DialogLog').showModal()">
+          <div style="margin: 10px;" onclick="document.getElementById('DialogCheck').showModal();console.log(new Date().toLocaleString(), '🙉');">
           nins/uris
           </div></div>
+          <u translate="no" class="xmas" style='text-decoration:none;'>*{A-Z}  {a-z}  {0-9}  {-/_/./~/@}*</u>
           <!-- 可選額外說明 -->
           
               <!-- 放置你原有的布局 -->
@@ -643,34 +634,36 @@
               <!-- 放置你原有的布局 -->
             
           <!-- 可選輸入框 -->
-          <u translate="no" style='text-decoration:none; color:black;'>*{A-Z}  {a-z}  {0-9}  {-/_/./~/@}*</u>
           
           <div id="sliderButton" style="
                       display: flex;
                       /*flex-direction: row;  /* 上下==column */
                       /*justify-content: center;*/
                       justify-content: flex-start;  /* 左對齊較符合滾動預期 */
-                      flex-shrink: 0
+                      flex-shrink: 0;
                       align-items: center;  /* 水平置中 canvas */
-                      /*overflow-y: auto;     /* 可垂直滾動 */
                       overflow-x: auto;     /* 可水平滾動 */
-                  ">
+          ">
               
-              <button style="width:25vw" id="copyButton" onclick="">🔗</button>
-              <button style="width:25vw" type="button" onclick="document.getElementById('InputInfo').value='mailto:';updateAndCopy();">📧</button>
-              <button style="width:25vw" type="button" onclick="document.getElementById('InputInfo').value='tel:';updateAndCopy();">📞</button>
-              <button style="width:25vw" type="button" onclick="document.getElementById('InputInfo').value='sms:';updateAndCopy();">💬</button>
+              <button class="main xmas" style="width:25vw" id="copyButton" onclick="">🔗</button>
+              <button class="main xmas" style="width:25vw" type="button" onclick="document.getElementById('InputInfo').value='mailto:';updateAndCopy();">📧</button>
+              <button class="main xmas" style="width:25vw" type="button" onclick="document.getElementById('InputInfo').value='tel:';updateAndCopy();">📞</button>
+              <button class="main xmas" style="width:25vw" type="button" onclick="document.getElementById('InputInfo').value='sms:';updateAndCopy();">💬</button>
               
           </div>
+
           <input class="main" id="InputInfo" type="text" name="noMemory" autocomplete="off" placeholder="" style="width: 100%; text-align: left; box-sizing: border-box;">
+          
+          
           <!--input class="main" id="InputInfo" type="text" name="noMemory" autocomplete="off" placeholder="" style="width: 100%; text-align: center;"-->
           <!--strong></strong-->
           <div style="background: #FF3B00; color: white;" translate="yes">
-          <div style="margin: 10px;" onclick="document.getElementById('').showModal();console.log('🛠️');">
+          <div style="margin: 10px;" onclick="document.getElementById('DialogTrans').showModal();console.log(new Date().toLocaleString(), '🙉');">
           By sending a message to this service, it means you have agreed to any content and all content!
           </div></div>
           <strong style="background-color: black; color: white; font-size: max(1vh,1vw);" translate="no">© 2024 NINS (by JPGT).</strong>
-    </div>
+  
+  </div>
   
   <dialog id="DialogTrans" translate="no">
       <div id="google_translate_element" style="display:block;"></div><br>      
@@ -685,218 +678,455 @@
 <!-- HTML ================================================== -->
     
 <!-- 放置你原有的布局 -->
- <script>
-        const snowIcons = ['❅', '❆', '•'];  ///'❄', 
-
-        function createSnow() {
-            if (document.hidden) return; 
-
-            const snow = document.createElement('div');
-            snow.className = 'snow';
-            snow.innerHTML = snowIcons[Math.floor(Math.random() * snowIcons.length)];
-            
-            const startLeft = Math.random() * 100;
-            const sizeRand = Math.random();
-            let size = 10;
-            
-            // 隨機決定消失的高度 (60vh 到 110vh 之間)
-            // 這樣有的雪花在螢幕中間就消失了，有的會掉到底部
-            const endY = Math.random() * 50 + 60; 
-
-            if (sizeRand > 0.9) {
-                size = Math.random() * 15 + 20; 
-                snow.classList.add('bright');
-            } else if (sizeRand > 0.6) {
-                size = Math.random() * 5 + 15;
-            } else {
-                size = Math.random() * 5 + 8;
-            }
-            
-            // 隨機下落時間，根據 endY 調整比例以免落太快
-            const duration = (Math.random() * 4 + 4) * (endY / 100); 
-            
-            const drift = (Math.random() - 0.5) * 150;
-            
-            // 設置 CSS 變數
-            snow.style.setProperty('--drift', `${drift}px`);
-            snow.style.setProperty('--end-y', `${endY}vh`);
-            
-            snow.style.left = startLeft + 'vw';
-            snow.style.fontSize = size + 'px';
-            snow.style.animation = `fall ${duration}s linear forwards`;
-            
-            snow.style.opacity = Math.random() * 0.4 + 0.6;
-
-            if (size < 12) {
-                snow.style.filter = `blur(1.5px)`;
-            }
-
-            document.body.appendChild(snow);
-
-            snow.addEventListener('animationend', () => {
-                snow.remove();
-            });
-        }
-        /*
-        function startApp() {
-            document.querySelector('button').style.display = 'none';
-            document.getElementById('msg').style.display = 'block';
-            setInterval(createSnow, 150); 
-        } */
-        if (true) { setInterval(createSnow, 150); }
-        for(let i=0; i<15; i++) {
-            setTimeout(createSnow, i * 150);
-        }
- </script>
-  
-    <script>
-        
-        ///document.getElementById('merryXmas').innerHTML = "[ © nins ] x [ Merry Xmas 2025 ]";
-        document.getElementById('merryXmas').innerHTML = "☃️🦌🎄✨⭐<br>[ © nins ] x [ Merry Xmas 2025 ]";
-
-        
-        let audioCtx = null;
-
-        // 初始化
-        function init() {
-            ///spawnEnemy();
-        }
 
 
-        
-        
-        
-        function initAudio() {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-        }
+<script>
+    const url_href = window.location.href;
+    const url_op = window.location.origin + window.location.pathname;  ///https://example.com + /page/subpage
+    const url_sh = window.location.search + window.location.hash;  ///?x=1 + #section
+</script>
 
-        function playLaunchSound() {  // 發射音效
-            if (!audioCtx) return;
-            const osc = audioCtx.createOscillator();
-            const g = audioCtx.createGain();
-            osc.connect(g); g.connect(audioCtx.destination);
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(120, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.25);
-            g.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.25);
-        }
+<script>
+function isEncoded(str) {
+    try {
+        // 嘗試解碼，如果解碼後與原始不同，表示曾經編碼
+        const decoded = decodeURIComponent(str);
+        return decoded !== str;
+    } catch (e) {
+        // 如果解碼失敗，表示包含不合法的 %XX，可能是亂碼
+        return false;
+    }
+}
 
-        function playHitSound() {  // 打擊音效
-            if (!audioCtx) return;
-            const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.3, audioCtx.sampleRate);
-            const data = buffer.getChannelData(0);
-            for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
-            const noise = audioCtx.createBufferSource();
-            noise.buffer = buffer;
-            const g = audioCtx.createGain();
-            g.gain.setValueAtTime(0.3, audioCtx.currentTime);
-            g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
-            noise.connect(g); g.connect(audioCtx.destination);
-            noise.start();
-        }
+function parseScheme(input) {
+    // 使用正則取出協議與內容
+    const match = input.match(/^([a-zA-Z]+):(.*)$/);
 
-        // 這裡定義你想要的固定座標 (數學遊戲座標)
-        const fixedPoints = [
-            { x: 0, y: 120 },   // 頂部中心
-            { x: 50, y: 150 }, { x: -50, y: 150 }, // 上方兩圓弧
-            { x: 100, y: 120 }, { x: -100, y: 120 },
-            { x: 120, y: 60 }, { x: -120, y: 60 },
-            { x: 66, y: -20 }, { x: -66, y: -20 },
-            { x: 0, y: -90 }   // 底部尖端
-        ];
-        ///let availablePoints = fixedPoints;
+    if (match) {
+        const scheme = match[1] + ":";   // 例如 tel:
+        const recipient = match[2];      // 例如 +886909090909
+        console.log("協議：", scheme);
+        console.log("內容：", recipient);
+        return { scheme, recipient };
+    } else {
+        // 沒有協議時，回傳 null 並保持原始內容
+        return { scheme: null, recipient: input };
+    }
+}
+function checkUriData(uriData) {
+    console.log('checkUriData', uriData);
+    ///if (isEncoded(uriData)) { decodeURIComponent(uriData); }  // 是編碼，就解碼。
 
-        
+    let redirect = null;
+    
+    if (uriData === null) {
+        console.log('✅');
+        redirect = null;
+    } else if (uriData === '') {
+        console.log('✅');
+        redirect = null;
+    } else if (uriData.startsWith('mailto:')) {
+        console.log('✅ mailto');
+        redirect = true;
+    } else if (uriData.startsWith('tel:')) {
+        console.log('✅ tel');
+        redirect = true;
+    } else if (uriData.startsWith('sms:')) {
+        console.log('✅ sms');
+        redirect = true;
+    } else {
+        console.log('🟥 mailto 🟥 tel 🟥 sms');
+        redirect = false;
+    }
 
-        
+    return redirect;
+}
+</script>
+<!-- ================================================== -->
 
-        // 產生按鈕
-        
+<!--script>
+const tips = ["姓名", "Email", "電話", "留言"], i = document.querySelector('#myInput');
+setInterval((n => i.placeholder = "請輸入" + tips[n % tips.length]), 1000, 0);
+</script-->
+<!-- ================================================== -->
 
-        const jingleBells = [
-            {f: 659.25, d: 250}, {f: 659.25, d: 250}, {f: 659.25, d: 500},
-            {f: 659.25, d: 250}, {f: 659.25, d: 250}, {f: 659.25, d: 500},
-            {f: 659.25, d: 250}, {f: 783.99, d: 250}, {f: 523.25, d: 375}, {f: 587.33, d: 125}, {f: 659.25, d: 1000},
-            {f: 698.46, d: 250}, {f: 698.46, d: 250}, {f: 698.46, d: 375}, {f: 698.46, d: 125},
-            {f: 698.46, d: 250}, {f: 659.25, d: 250}, {f: 659.25, d: 250}, {f: 659.25, d: 125}, {f: 659.25, d: 125},
-            {f: 783.99, d: 250}, {f: 783.99, d: 250}, {f: 698.46, d: 250}, {f: 587.33, d: 250}, {f: 523.25, d: 1000},
-            {f: 392.00, d: 250}, {f: 523.25, d: 250}, {f: 493.88, d: 250}, {f: 440.00, d: 250}, {f: 392.00, d: 750},
-            {f: 392.00, d: 125}, {f: 392.00, d: 125}, {f: 392.00, d: 250}, {f: 523.25, d: 250}, {f: 493.88, d: 250}, {f: 440.00, d: 250}, {f: 587.33, d: 750},
-            {f: 587.33, d: 250}, {f: 587.33, d: 250}, {f: 659.25, d: 250}, {f: 587.33, d: 250}, {f: 523.25, d: 250}, {f: 392.00, d: 750},
-            {f: 392.00, d: 250}, {f: 783.99, d: 250}, {f: 783.99, d: 250}, {f: 698.46, d: 250}, {f: 587.33, d: 250}, {f: 659.25, d: 1000}
-        ];
-        let noteIdx = 0;
+<script>
+///跳轉處理***
 
-        function playXmasBGM() {
-            if (!audioCtx) return;
-            const note = jingleBells[noteIdx];
-            if (note.f > 0) {
-                const osc = audioCtx.createOscillator();
-                const g = audioCtx.createGain();
-                osc.connect(g); g.connect(audioCtx.destination);
-                osc.type = 'square';
-                osc.frequency.setValueAtTime(note.f, audioCtx.currentTime);
-                g.gain.setValueAtTime(0.04, audioCtx.currentTime);
-                g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + note.d/1000);
-                osc.start(); osc.stop(audioCtx.currentTime + note.d/1000);
-            }
-            noteIdx = (noteIdx + 1) % jingleBells.length;
-            bgmTimeout = setTimeout(playXmasBGM, note.d);
-        }
-        
-        ///init();
-        ///draw();
-        ///spawnEnemy();
-        ///playXmasBGM();
-        /*
+
+// 1. Get URL parameters
+const urlParams = new URLSearchParams(window.location.search);
+
+// 2. Read the 'redirect' parameter as recipient ID
+const data = urlParams.get('data') || "";
+/*
+///const data = urlParams.get('redirect');
+///const data = urlParams.get('to');
+const data = urlParams.get('redirect') 
+                || urlParams.get('data') 
+                || urlParams.get('go')
+                || urlParams.get('to');*/
+
+let redirect = false;
+const urisMain = decodeURIComponent(data);
+redirect = checkUriData(urisMain);
+
+// 3. Result
+if (!redirect && redirect !== null) { 
+    // Not a valid
+    document.getElementById('miniURL').innerHTML = '💡 https://uris.nins.cc/?data=#';
+    document.getElementById('message').innerHTML = '⚠️ This is not a valid protocol. <a translate="no">(mailto:/tel:/sms:)<a>'; 
+
+} else if (redirect && urisMain) {
+    // Show link and lock
+    const url = window.location.href;
+    console.log(urisMain);
+    console.log(decodeURIComponent(urisMain));
+    let urisUrl = `${decodeURIComponent(urisMain)}`;  // 解碼全部 ✅  // 解碼更為穩定
+    window.location.href = urisUrl;
+    
+    document.getElementById("InputInfo").value = decodeURIComponent(urisMain);
+    document.getElementById("InputInfo").disabled = true;
+    document.getElementById("copyButton").style.display = "none";
+    document.getElementById("sliderButton").style.display = "none";
+
+    document.getElementById('miniURL').innerHTML = `✅ <a href='${url}'>${url}</a> 🌐`;
+    document.getElementById('message').innerHTML = `✅ Fallback redirect is active and the page is locked. To create a redirect, please visit the original URL. <span translate="no">(<a href='https://uris.nins.cc?' translate="no">https://uris.nins.cc</a> 🌐)</span>`;
+
+} else if (!redirect && !urisMain) {
+    // New page
+    document.getElementById("miniURL").innerHTML = `💡 <u style='text-decoration:none; color:black;'>https://uris.nins.cc/?data=#</u>`;  ///uris/index.html
+    document.getElementById("message").innerHTML = `📌 If you really need a shorter information redirect link, We welcome you to contact us. <span translate="no">(mailto:<a style='color:red;' href="mailto:duguaynins@gmail.com?subject=Hi%20Nins!%20Request%20for%20Short%20Link!&body=Thank%20you.">duguaynins@gmail.com</a> 📧)</span>`
+} else {
+    // Missing required recipient parameter
+    document.getElementById("miniURL").innerHTML = `💡 <u style='text-decoration:none; color:black;'>https://uris.nins.cc/?data=#</u>`;  ///uris/index.html
+    document.getElementById('message').innerHTML = '⚠️ Missing recipient information in the URL parameter (/?data=#...).';
+}
+
+
+if (redirect && urisMain) {
+    ///const [scheme, recipient] = parseScheme(urisMain); // 陣列用
+    ///const { scheme, recipient } = parseScheme(urisMain); // 字典用 ✅
+    
+} else {
+    // Missing required recipient parameter
+    if (urisMain === null) { console.log('✅'); }
+    else {  }
+    
+}
+</script>
+<!-- ================================================== -->
+
+<script>
+///複製與回車***
+
+///const input = document.getElementById("InputInfo");
+const copyButton = document.getElementById("copyButton");
+///const result = document.getElementById("result");
+
+function onlyCopy() {
+    const information = document.getElementById("InputInfo").value.trim();
+    if (!information) return;
+    let redirect = checkUriData(information);
+    if (!redirect) return;
+
+    const url = `https://uris.nins.cc?data=${encodeURIComponent(information)}`;
+    
+    navigator.clipboard.writeText(url).then(() => {
+        copyButton.textContent = "✅";  // Copied 🔗  // 🎁
+        setTimeout(() => (copyButton.textContent = "🔗"), 2000);  // Copy URL 
+        ///document.getElementById("InputInfo").value = "";  // test***
+        ///document.getElementById('message').innerHTML = "🎁 Copied! Paste the link anywhere!";
+        ///document.getElementById('message').innerHTML = "🎁 Link has been copied and is ready to paste!";
+        document.getElementById('message').innerHTML = "🎁 Link has been copied! Paste it wherever you like!";
+
+        const encoding = "https://encoding.nins.cc/?data=" + encodeURIComponent(url);
+        ///window.open(encoding, "_blank", "noopener,noreferrer");
+        setTimeout(() => { window.open(encoding, "_blank", "noopener,noreferrer"); }, 2000);
+    });
+}
+function updateAndCopy() {
+    const information = document.getElementById("InputInfo").value.trim();
+    ///if (!information) return;
+    if (!information) { document.getElementById('message').innerHTML = '⚠️ You need to enter valid information. <a translate="no">(mailto:/tel:/sms:)<a>'; }
+    if (!information) {
+        document.getElementById('miniURL').innerHTML = '💡 https://uris.nins.cc?data=';
+        copyButton.textContent = "⚠️";
+        ///copyButton.textContent = "⚠️ Missing 🔗";
+        //////setTimeout(() => (copyButton.textContent = "🔗"), 2000);  // Copy URL 
+        return;
+    }
+
+    let redirect = checkUriData(information);
+    ///if (!redirect) { document.getElementById('message').innerHTML = '⚠️ This is not a valid protocol <a translate="yes">(mailto:/tel:/sms:)<a>.'; }
+    if (!redirect) { document.getElementById('message').innerHTML = '⚠️ You need to use a valid protocol. <a translate="no">(mailto:/tel:/sms:)<a>'; }
+    if (!redirect) {
+        document.getElementById('miniURL').innerHTML = '💡 https://uris.nins.cc?data=';
+        copyButton.textContent = "⚠️";
+        ///copyButton.textContent = "⚠️ ERROR 🔗";
+        //////setTimeout(() => (copyButton.textContent = "🔗"), 2000);  // Copy URL 
+        return;
+    }
+
+    
+    ///const url = `${url_op}?data=${encodeURIComponent(information)}`;
+    ///const url = `https://uris.nins.cc?data=${encodeURIComponent(information)}`;
+    ///const url = `https://uris.nins.cc?data=${(information)}`;
+    /*
+    const url = "";
+    if (isEncoded(recipient)) { url = `https://uris.nins.cc?data=${(information)}` } // ✅
+    else { url = `https://uris.nins.cc?data=${encodeURIComponent(information)}`; } */
+    const url = `https://uris.nins.cc?data=${encodeURIComponent(information)}`;
+
+    ///document.getElementById('message').innerHTML = `✅ <a href='${url}'>${url}</a> 🌐`;
+    document.getElementById('miniURL').innerHTML = `✅ <a href='${url}'>${url}</a> 🌐`;
+    ///result.textContent = url;
+
+    /*
+    navigator.clipboard.writeText(url).then(() => {
+        copyButton.textContent = "✅";  // Copied 🔗  // 🎁
+        setTimeout(() => (copyButton.textContent = "🔗"), 2000);  // Copy URL 
+        ///document.getElementById("InputInfo").value = "";
+    }); */
+
+    if (true) {
+        copyButton.textContent = "🎁";
+        //////setTimeout(() => (copyButton.textContent = "🎁"), 2000);
+        document.getElementById('message').innerHTML = '✅ Meets the standard protocol.';
+    }
+}
+
+// 持續監聽使用者輸入
+document.getElementById("InputInfo").addEventListener("input", (event) => {
+    if (true) {
+        console.log("input:", event.target.value);
+        updateAndCopy();
+    }
+});
+
+// 按下 Enter 觸發複製
+document.getElementById("InputInfo").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        e.preventDefault();
+        updateAndCopy();onlyCopy();
+        ///document.getElementById("InputInfo").value = "";  // 20251110
+    }
+});
+
+// 按下 Copy 按鈕
+///document.getElementById("copyButton").addEventListener("click", updateAndCopy);
+document.getElementById("copyButton").addEventListener("click", (e) => {
+    if (true) {
+        e.preventDefault();
+        updateAndCopy();onlyCopy();
+        ///document.getElementById("InputInfo").value = "";  // 20251110
+    }
+});
+</script>
+<!-- ================================================== -->
+
+<script>
+// 循環提示***
+
+// 提示文字清單
+const placeholders = [
+    "mailto:duguaynins@gmail.com",
+    "mailto:duguaynins@gmail.com?subject=nins?nins!",
+    ///"mailto:duguaynins@gmail.com?subject=uris!&body=like!",
+    ///"mailto:main@gmail.com?subject=uris!&body=like!&bcc=a@gmail.com,b@gmail.com",
+    ///"mailto:main@gmail.com?subject=uris!&body=like!&cc=y@gmail.com,z@gmail.com",
+    "tel:+886-909095800",
+    "tel:+886-909095800,0000",
+    "sms:+886-909095800",
+    "sms:+886-909095800?body=nins?nins!",
+];
+
+let index = 0;
+const input = document.getElementById("InputInfo");
+
+// 每 1 秒變更一次 placeholder
+setInterval(() => {
+    input.placeholder = placeholders[index];
+    index = (index + 1) % placeholders.length; // 循環切換
+}, 1000);
+</script>
+<!-- ================================================== -->
+
+<script>
+document.getElementById("InputInfo").addEventListener("focus", () => {
+    console.log("第一次聚焦觸發");
+    document.getElementById("message").innerHTML = '✨ Simply enter your information after "data=" to get your "free HTTPS URL" for your information.';
+
+}, { once: true }); // ✅ 只執行一次
+</script>
+<!-- ================================================== -->
+
+
+
+<!-- XMAS vvv ================================================== -->
+<script>
+const snowIcons = ['❅', '❆', '•'];  ///'❄', 
+
 function createSnow() {
+    if (document.hidden) return; 
+
     const snow = document.createElement('div');
     snow.className = 'snow';
-    snow.innerHTML = '❄';
+    snow.innerHTML = snowIcons[Math.floor(Math.random() * snowIcons.length)];
     
-    // 強制設定樣式確保可見性
-    snow.style.position = 'fixed'; // 改用 fixed 避免受父層定位影響
-    snow.style.top = '-20px';
-    snow.style.left = Math.random() * 100 + 'vw';
-    snow.style.color = 'white';
-    snow.style.zIndex = '100000'; // 確保在所有 layer 之上
-    snow.style.pointerEvents = 'none';
-    snow.style.userSelect = 'none';
+    const startLeft = Math.random() * 100;
+    const sizeRand = Math.random();
+    let size = 10;
     
-    // 動畫設定
-    const duration = Math.random() * 3 + 2;
+    // 隨機決定消失的高度 (60vh 到 110vh 之間)
+    // 這樣有的雪花在螢幕中間就消失了，有的會掉到底部
+    const endY = Math.random() * 50 + 60; 
+
+    if (sizeRand > 0.9) {
+        size = Math.random() * 15 + 20; 
+        snow.classList.add('bright');
+    } else if (sizeRand > 0.6) {
+        size = Math.random() * 5 + 15;
+    } else {
+        size = Math.random() * 5 + 8;
+    }
+    
+    // 隨機下落時間，根據 endY 調整比例以免落太快
+    const duration = (Math.random() * 4 + 4) * (endY / 100); 
+    
+    const drift = (Math.random() - 0.5) * 150;
+    
+    // 設置 CSS 變數
+    snow.style.setProperty('--drift', `${drift}px`);
+    snow.style.setProperty('--end-y', `${endY}vh`);
+    
+    snow.style.left = startLeft + 'vw';
+    snow.style.fontSize = size + 'px';
     snow.style.animation = `fall ${duration}s linear forwards`;
     
+    snow.style.opacity = Math.random() * 0.4 + 0.6;
+
+    if (size < 12) {
+        snow.style.filter = `blur(1.5px)`;
+    }
+
     document.body.appendChild(snow);
-    
-    // 動畫結束後移除，釋放記憶體
-    setTimeout(() => {
+
+    snow.addEventListener('animationend', () => {
         snow.remove();
-    }, duration * 1000);
-}  */
-        ///gameActive = false
-        /*
-        function createSnow() {  // 搜尋 SNOW 可以得到所有
+    });
+}
+/*
+function startApp() {
+    document.querySelector('button').style.display = 'none';
+    document.getElementById('msg').style.display = 'block';
+    setInterval(createSnow, 150); 
+} */
+if (true) { setInterval(createSnow, 150); }
+for(let i=0; i<15; i++) {
+    setTimeout(createSnow, i * 150);
+}
+</script>
+  
+<script>
 
-            ///if (!gameActive || gameMode !== 'xmas') return;
-            const snow = document.createElement('div');
-            snow.className = 'snow';
-            ///snow.style.position = 'fixed';
-            snow.innerHTML = '❄';
-            snow.style.left = Math.random() * 100 + 'vw';
-            snow.style.fontSize = (Math.random() * 10 + 10) + 'px';
-            snow.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            document.body.appendChild(snow);
-            setTimeout(() => snow.remove(), 5000);
-        }
-        setInterval(createSnow, 300);  */
+///document.getElementById('merryXmas').innerHTML = "[ © nins ] x [ Merry Xmas 2025 ]";
+document.getElementById('merryXmas').innerHTML = "☃️🦌🎄✨⭐<br>[ © nins ] x [ Merry Xmas 2025 ]";
 
+
+let audioCtx = null;
+
+// 初始化
+function init() {
+    ///spawnEnemy();
+}
+
+
+
+
+
+function initAudio() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playLaunchSound() {  // 發射音效
+    if (!audioCtx) return;
+    const osc = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    osc.connect(g); g.connect(audioCtx.destination);
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.25);
+    g.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.25);
+}
+
+function playHitSound() {  // 打擊音效
+    if (!audioCtx) return;
+    const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.3, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+    const g = audioCtx.createGain();
+    g.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+    noise.connect(g); g.connect(audioCtx.destination);
+    noise.start();
+}
+
+// 這裡定義你想要的固定座標 (數學遊戲座標)
+const fixedPoints = [
+    { x: 0, y: 120 },   // 頂部中心
+    { x: 50, y: 150 }, { x: -50, y: 150 }, // 上方兩圓弧
+    { x: 100, y: 120 }, { x: -100, y: 120 },
+    { x: 120, y: 60 }, { x: -120, y: 60 },
+    { x: 66, y: -20 }, { x: -66, y: -20 },
+    { x: 0, y: -90 }   // 底部尖端
+];
+///let availablePoints = fixedPoints;
+
+
+
+
+
+// 產生按鈕
+
+
+const jingleBells = [
+    {f: 659.25, d: 250}, {f: 659.25, d: 250}, {f: 659.25, d: 500},
+    {f: 659.25, d: 250}, {f: 659.25, d: 250}, {f: 659.25, d: 500},
+    {f: 659.25, d: 250}, {f: 783.99, d: 250}, {f: 523.25, d: 375}, {f: 587.33, d: 125}, {f: 659.25, d: 1000},
+    {f: 698.46, d: 250}, {f: 698.46, d: 250}, {f: 698.46, d: 375}, {f: 698.46, d: 125},
+    {f: 698.46, d: 250}, {f: 659.25, d: 250}, {f: 659.25, d: 250}, {f: 659.25, d: 125}, {f: 659.25, d: 125},
+    {f: 783.99, d: 250}, {f: 783.99, d: 250}, {f: 698.46, d: 250}, {f: 587.33, d: 250}, {f: 523.25, d: 1000},
+    {f: 392.00, d: 250}, {f: 523.25, d: 250}, {f: 493.88, d: 250}, {f: 440.00, d: 250}, {f: 392.00, d: 750},
+    {f: 392.00, d: 125}, {f: 392.00, d: 125}, {f: 392.00, d: 250}, {f: 523.25, d: 250}, {f: 493.88, d: 250}, {f: 440.00, d: 250}, {f: 587.33, d: 750},
+    {f: 587.33, d: 250}, {f: 587.33, d: 250}, {f: 659.25, d: 250}, {f: 587.33, d: 250}, {f: 523.25, d: 250}, {f: 392.00, d: 750},
+    {f: 392.00, d: 250}, {f: 783.99, d: 250}, {f: 783.99, d: 250}, {f: 698.46, d: 250}, {f: 587.33, d: 250}, {f: 659.25, d: 1000}
+];
+let noteIdx = 0;
+
+function playXmasBGM() {
+    if (!audioCtx) return;
+    const note = jingleBells[noteIdx];
+    if (note.f > 0) {
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.connect(g); g.connect(audioCtx.destination);
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(note.f, audioCtx.currentTime);
+        g.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + note.d/1000);
+        osc.start(); osc.stop(audioCtx.currentTime + note.d/1000);
+    }
+    noteIdx = (noteIdx + 1) % jingleBells.length;
+    bgmTimeout = setTimeout(playXmasBGM, note.d);
+}
         
-      
-    </script>
+</script>
 
 
 <!-- 放置你原有的布局 -->
@@ -992,20 +1222,20 @@ console.error(new Date().toLocaleString(), 'This is an error test.');
       if (lang.replace(/_/g, "-").split("-")[0] === "en") {
         ///document.getElementById("input_msg").style.display = "block";
         ///document.getElementById("input_msgbtn").style.display = "block";
-        document.getElementById("content").style.background = "#CDCDCD";
+        document.getElementById("content").style.background = "pink";
         ///document.getElementById('Input').textAlign = 'center';
       }
   
       waitForTranslationById('notice', () => {
         ///document.getElementById("input_msg").style.display = "block";
         ///document.getElementById("input_msgbtn").style.display = "block";
-        document.getElementById("content").style.background = "#CDCDCD";
+        document.getElementById("content").style.background = "pink";
         ///document.getElementById('Input').textAlign = 'center';
       });
 
       if (!combo) { setTimeout(tryTranslate, 300); }
       if (combo) {
-        document.getElementById("content").style.background = "#CDCDCD";
+        document.getElementById("content").style.background = "pink";
         document.querySelector('.goog-te-combo').addEventListener('change', () => {
           console.log("語言已切換!");
           console.log("新語言代碼:", combo.value);
