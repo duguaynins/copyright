@@ -11,6 +11,184 @@
   <link rel="canonical" href="https://copyright.nins.cc/">
   <title translate="no">nins/xmas</title>
     <style>
+      body {
+        overflow: hidden;
+      }
+    </style>
+  
+    <!-- 可選：簡單 CSS 調整翻譯小工具外觀（可自訂） -->
+    <style>
+        #content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;  /* 垂直置中 */
+            align-items: center;      /* 水平置中 */
+            text-align: center;       /* 文字置中 */
+        }
+        
+        button:hover {
+          background-color: #cdcdcd;
+          color: black;
+        }
+        button:active {
+          background-color: #222222;
+          color: white;
+        }
+        button {
+            border: 2px solid #FF3B00; /* 綠色邊框 */
+            border-radius: 6px;        /* 圓角 */
+            padding: 4px 12px;
+            margin: 0px 0;
+            outline: none;              /* 移除預設外框 */
+        }
+
+        /* 聚焦時（使用者點入）變色 */
+        button:focus {
+            border-color: red;      /* 聚焦時變藍色 */
+        }
+    </style>
+
+    <style>
+      input, textarea, button, select {
+        /*font-size: inherit; /* 主動繼承 body 字體大小 */
+        font-size: 18px;
+      }
+      html, body { font-size: 14px; }
+      html, body {
+        margin: 0;
+        /*font-family: Arial, sans-serif;*/
+        background-color: #ffffff;
+        background-color: #000000;
+        background-color: #cdcdcd;
+        color: #333;
+        user-select: none;
+      }
+
+      header {
+        text-align: center;
+        padding: 2rem 1rem;
+        border-bottom: 1px solid #ddd;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 2.5rem;
+      }
+
+      .intro {
+        text-align: center;
+        padding: 1rem 2rem;
+        max-width: 700px;
+        margin: auto;
+      }
+    </style>
+    
+    <style>
+    
+      @keyframes blink {
+        0% { border-color: black; }
+        50% { border-color: transparent; }
+        100% { border-color: black; }
+      }
+      
+      #BOTTOM {
+          height: 100vh;  /* 視窗高度可改成你需要的高度 */
+          width: 100vw;
+          background-color: #000000;
+          background-color: #cdcdcd;
+          color: #333;
+      }
+      .container {
+        position: relative;  /* 父容器設定為 relative，以便子元素的 absolute 定位能相對於它 */
+        width: 100%;
+        height: 100%;
+        background: #eee;
+        color: black;
+      }
+    </style>
+    <style>
+        .skiptranslate {
+          display: none !important;   /* 避免 display:none 影響內容顯示 */
+          position: static !important;   /* 防止位置異常 */
+          width: 0px !important;
+          height: 0px !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          border: none !important;
+          background: none !important;
+          /*font-size: inherit !important;*/
+        }
+        iframe {
+          display: none !important;
+        }
+    </style>
+
+    <style>
+      @keyframes fadeGradient {
+        from {
+          background: linear-gradient(white, white);
+        }
+        to {
+          background: linear-gradient(white, transparent);
+        }
+      }
+      @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+      }
+      
+      
+      @keyframes hardBlink {
+        0%, 100% { border-color: red; }
+        50%      { border-color: transparent; }
+      }
+      .main {
+          border: 2px solid red;
+          padding: 8px;
+          /**animation: blinkBorder 1s infinite;  //===*/
+          /* 呼吸式動畫：平滑過渡 */
+          /**animation: blinkBorder 1s ease-in-out infinite;  //===*/
+          /* 閃爍式動畫：瞬間切換 */
+          animation: hardBlink 1.0s steps(1, start) infinite;
+      }
+      
+      input:hover {
+        background-color: #cdcdcd;    ///FF3B00;
+        color: black;///gray;
+      }
+      input:active {
+        background-color: #222222;  ///#004080;
+        color: white;///gray;
+      }
+      input:focus {
+        outline: none;              /* 移除預設藍色邊框 */
+        /* border: 2px solid #4CAF50;  改為綠色邊框 */
+        /* box-shadow: 0 0 5px #4CAF50; */
+        border: 2px solid red;       /* 或使用 #f44336 */
+        box-shadow: 0 0 5px red;
+      }
+      .twod {
+        /*width: 100vmin;
+        height: 100vmin;*/
+      }
+      .oned {
+        /*width: 100vmin;
+        height: 10vmin;*/
+      }
+      .thumb { 
+        /*width: 87vw;*/
+        width: 100px;
+        height: 60px;
+        margin: 0.5em;
+        padding: 0.5em; /* 這裡增加5像素的內距離 */
+        cursor: pointer;
+        border: 1px solid #ccc;
+        object-fit: contain;
+        display: none;
+        flex-shrink: 0;        /* 防止被壓縮 */
+      }
+    </style>
+    <style>
         .body_vt {
             margin: 0;
             padding: 0;
