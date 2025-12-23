@@ -404,7 +404,70 @@
 <!-- HTML ================================================== -->
     
 <!-- 放置你原有的布局 -->
- 
+ <script>
+        const snowIcons = ['❄', '❅', '❆', '•'];
+
+        function createSnow() {
+            if (document.hidden) return; 
+
+            const snow = document.createElement('div');
+            snow.className = 'snow';
+            snow.innerHTML = snowIcons[Math.floor(Math.random() * snowIcons.length)];
+            
+            const startLeft = Math.random() * 100;
+            const sizeRand = Math.random();
+            let size = 10;
+            
+            // 隨機決定消失的高度 (60vh 到 110vh 之間)
+            // 這樣有的雪花在螢幕中間就消失了，有的會掉到底部
+            const endY = Math.random() * 50 + 60; 
+
+            if (sizeRand > 0.9) {
+                size = Math.random() * 15 + 20; 
+                snow.classList.add('bright');
+            } else if (sizeRand > 0.6) {
+                size = Math.random() * 5 + 15;
+            } else {
+                size = Math.random() * 5 + 8;
+            }
+            
+            // 隨機下落時間，根據 endY 調整比例以免落太快
+            const duration = (Math.random() * 4 + 4) * (endY / 100); 
+            
+            const drift = (Math.random() - 0.5) * 150;
+            
+            // 設置 CSS 變數
+            snow.style.setProperty('--drift', `${drift}px`);
+            snow.style.setProperty('--end-y', `${endY}vh`);
+            
+            snow.style.left = startLeft + 'vw';
+            snow.style.fontSize = size + 'px';
+            snow.style.animation = `fall ${duration}s linear forwards`;
+            
+            snow.style.opacity = Math.random() * 0.4 + 0.6;
+
+            if (size < 12) {
+                snow.style.filter = `blur(1.5px)`;
+            }
+
+            document.body.appendChild(snow);
+
+            snow.addEventListener('animationend', () => {
+                snow.remove();
+            });
+        }
+        /*
+        function startApp() {
+            document.querySelector('button').style.display = 'none';
+            document.getElementById('msg').style.display = 'block';
+            setInterval(createSnow, 150); 
+        } */
+        if (true) { setInterval(createSnow, 150); }
+        for(let i=0; i<15; i++) {
+            setTimeout(createSnow, i * 150);
+        }
+ </script>
+  
     <script>
         
         ///document.getElementById('merryXmas').innerHTML = "[ © nins ] x [ Merry Xmas 2025 ]";
@@ -534,6 +597,7 @@ function createSnow() {
     }, duration * 1000);
 }  */
         ///gameActive = false
+        /*
         function createSnow() {  // 搜尋 SNOW 可以得到所有
 
             ///if (!gameActive || gameMode !== 'xmas') return;
@@ -547,7 +611,7 @@ function createSnow() {
             document.body.appendChild(snow);
             setTimeout(() => snow.remove(), 5000);
         }
-        setInterval(createSnow, 300);
+        setInterval(createSnow, 300);  */
 
         
       
