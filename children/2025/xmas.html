@@ -507,9 +507,33 @@
         ///draw();
         ///spawnEnemy();
         ///playXmasBGM();
-
+function createSnow() {
+    const snow = document.createElement('div');
+    snow.className = 'snow';
+    snow.innerHTML = '❄';
+    
+    // 強制設定樣式確保可見性
+    snow.style.position = 'fixed'; // 改用 fixed 避免受父層定位影響
+    snow.style.top = '-20px';
+    snow.style.left = Math.random() * 100 + 'vw';
+    snow.style.color = 'white';
+    snow.style.zIndex = '100000'; // 確保在所有 layer 之上
+    snow.style.pointerEvents = 'none';
+    snow.style.userSelect = 'none';
+    
+    // 動畫設定
+    const duration = Math.random() * 3 + 2;
+    snow.style.animation = `fall ${duration}s linear forwards`;
+    
+    document.body.appendChild(snow);
+    
+    // 動畫結束後移除，釋放記憶體
+    setTimeout(() => {
+        snow.remove();
+    }, duration * 1000);
+}
         ///gameActive = false
-        function createSnow() {  // 搜尋 SNOW 可以得到所有
+        function createSnow_v0() {  // 搜尋 SNOW 可以得到所有
 
             ///if (!gameActive || gameMode !== 'xmas') return;
             const snow = document.createElement('div');
