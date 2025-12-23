@@ -620,7 +620,7 @@
           <!-- 可選額外說明 -->
           
               <!-- 放置你原有的布局 -->
-              <div id="content" style="background: #FFFFFF; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
+              <div id="content" style="background: #777777; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
                 <h1 translate="no" style="margin: 0;">© 2024 NINS. 👻</h1>
                 <p translate="no" style="margin: 0; color: red;">(by JPGT)</p>
                 <!--h1 translate="no">© 2024 NINS <span translate="no" style="color: red;">(by JPGT)</span>. 👻✨</h1-->
@@ -1005,6 +1005,7 @@ console.error(new Date().toLocaleString(), 'This is an error test.');
 
       if (!combo) { setTimeout(tryTranslate, 300); }
       if (combo) {
+        document.getElementById("content").style.background = "#CDCDCD";
         document.querySelector('.goog-te-combo').addEventListener('change', () => {
           console.log("語言已切換!");
           console.log("新語言代碼:", combo.value);
