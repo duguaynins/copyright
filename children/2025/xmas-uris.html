@@ -611,30 +611,35 @@
           <!-- 可選額外說明 -->
           
               <!-- 放置你原有的布局 -->
-              <div id="content" style="background: #777777; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
-                <h1 translate="no" style="margin: 0;">© 2024 NINS. 👻</h1>
-                <p translate="no" style="margin: 0; color: red;">(by JPGT)</p>
+              <div id="content" style="background: green; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
+                
+                <div style="display:flex; flex-direction:column; gap:0;" translate="no">
+                <h1 style="margin:0;">© 2024 NINS. 👻</h1>
+                <p style="margin:0; color:red;">(by JPGT)</p>
+                </div>
                 <!--h1 translate="no">© 2024 NINS <span translate="no" style="color: red;">(by JPGT)</span>. 👻✨</h1-->
 
                 <!--h1>Preparing your information...</h1-->
                 <!--p id="message">📌 If you really need a shorter information redirect link, We welcome you to contact us. <span translate="no">(mailto:<a style='color:red;' href='mailto:duguaynins@gmail.com'>duguaynins@gmail.com</a> 📧)</span></p-->
-                
-                <p id="message">📌 If you really need a shorter information redirect link, We welcome you to contact us. 
+                <div style="display:flex; flex-direction:column; gap:0;" translate="yes">
+                <p id="message" style="margin:0; color:black;">📌 If you really need a shorter information redirect link, We welcome you to contact us. 
                     <span translate="no">(mailto:
                         <a style='color:red;' href="mailto:duguaynins@gmail.com?subject=Hi%20Nins!%20Request%20for%20Short%20Link!&body=Thank%20you.">duguaynins@gmail.com</a> 📧)
                     </span>
                 </p>
-                
+                <p id="miniURL" style="margin:0;" translate="no">💡 ...!</p>
+                </div>
+
                 <!--p id="message" style="color: #999999;">💬 ...!</p-->
                 <!--p id="nanoURL" translate="no">💡 ...!</p-->
                 <!--p id="hintURL">✨ ...!</p-->
-                <p id="miniURL" translate="no">💡 ...!</p>
+                <!--p id="miniURL" translate="no">💡 ...!</p-->
                 <!--p id="message">💬 ...!</p-->
               </div>
               <!-- 放置你原有的布局 -->
             
           <!-- 可選輸入框 -->
-          
+
           <div id="sliderButton" style="
                       display: flex;
                       /*flex-direction: row;  /* 上下==column */
