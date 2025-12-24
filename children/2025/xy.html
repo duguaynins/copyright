@@ -2,91 +2,104 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/x-icon" sizes="48x48" href="data:image/x-icon;base64,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">
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <link rel="canonical" href="https://uris.nins.cc/?">
   <title translate="no">nins/xy</title>
   
   <script src="https://unpkg.com/blockly/blockly.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
   <style>
+    /* 基礎設置，防止全螢幕溢出 */
+    * { box-sizing: border-box; } 
+
     body { 
       font-family: system-ui, -apple-system, sans-serif; 
       margin: 0; background: #f8fafc; 
       display: flex; flex-direction: column; height: 100vh; overflow: hidden; 
     }
-    header { 
-      background: #1e293b; color: white; text-align: center; padding: 15px; 
-      font-size: 22px; font-weight: 600; letter-spacing: 1px;
-    }
+
     .toolbar { 
-      background: white; padding: 10px 25px; border-bottom: 1px solid #e2e8f0;
-      display: flex; justify-content: space-between; align-items: center;
+      background: white; 
+      padding: 10px 25px; 
+      border-bottom: 1px solid #e2e8f0;
+      display: flex; 
+      flex-direction: column; /* 讓內容改為垂直排列，取代 <br> */
+      align-items: center;
+      gap: 12px;
     }
-    #main-layout { display: flex; flex: 1; padding: 15px; gap: 15px; overflow: hidden; }
-    
-    /* 左側 Blockly */
-    #editor-side { flex: 1.2; display: flex; flex-direction: column; gap: 10px; }
-    #blocklyContainer { flex: 1; border: 1px solid #cbd5e1; border-radius: 12px; background: white; overflow: hidden; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
-    #blocklyDiv { height: 100%; width: 100%; }
 
-    /* 右側 圖表 */
-    #display-side { flex: 1; display: flex; flex-direction: column; gap: 10px; }
-    .card { background: white; border-radius: 12px; border: 1px solid #cbd5e1; padding: 20px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); flex: 1; display: flex; flex-direction: column; }
-    
-    button { 
-      padding: 10px 24px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: all 0.2s;
-    }
-    .btn-primary { background: #4f46e5; color: white; }
-    .btn-primary:hover { background: #4338ca; transform: translateY(-1px); }
-    
-    #chart-container { flex: 1; position: relative; min-height: 0; }
-    
-
-    #main-layout {
-      flex: 1;
-      position: relative;
-      padding: 15px;
+    /* 關鍵：改為垂直排列佈局 */
+    #main-layout { 
+      display: flex; 
+      flex-direction: column; /* 上下排列 */
+      flex: 1; 
+      padding: 15px; 
+      gap: 15px; 
+      overflow: hidden; 
     }
 
     .view-content {
+      flex: 1; 
       width: 100%;
       height: 100%;
+      min-height: 0; /* 關鍵：防止內容撐破 flex 容器 */
     }
 
-    /* 確保 Blockly 在隱藏後重新顯示時能填滿 */
-    #blocklyContainer {
+    /* 區塊容器樣式 */
+    #blocklyContainer, .card {
       height: 100%;
       width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      background: white;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      overflow: hidden;
     }
 
-    .card {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
+    #blocklyDiv { height: 100%; width: 100%; }
+    .card { padding: 10px; display: flex; flex-direction: column; }
+    #chart-container { flex: 1; position: relative; min-height: 0; }
+    
+    button { 
+      padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: 0.2s;
     }
-
-    #chart-container {
-      flex: 1;
-      min-height: 500px; /* 給予圖表足夠的空間 */
+    .btn-primary { background: #4f46e5; color: white; }
+    
+    .tool-group {
+      display: flex;         /* 啟用 Flex 佈局 */
+      gap: 10px;             /* 元素之間的間距 */
+      width: 100%;
+      max-width: 600px;      /* 限制最大寬度，避免在大螢幕長得太奇怪 */
+    }
+    /* 關鍵：讓 tool-group 內的所有直接子元素平分空間 */
+    .tool-group > * {
+      flex: 1;               /* 每一份子元素比例皆為 1 */
+      min-width: 0;          /* 防止內容撐破 flex 項目 */
     }
   </style>
 </head>
 <body>
 
-<!--header>視覺化函數繪圖控制台</header-->
-
 <div class="toolbar">
-  <div>
-    <button class="btn-primary" onclick="showView('editor')" style="background: orange;" >🧩</button>
-    <button class="btn-primary" onclick="showView('chart')" style="background: red;" >📊</button>
+  <div class="tool-group">
+    <input type="number" id="Xinput" placeholder="X" oninput="drawAll(Number(document.getElementById('Xinput').value), Number(document.getElementById('Yinput').value))">
+    <button style="color: white; background: orange;" onclick="showView('editor')">🧩</button>
+    <button style="color: white; background: #10b981;" onclick="drawAll();showView('chart');">🚀</button>
+    <button style="color: white; background: red;" onclick="showView('chart')">📊</button>
+    <input type="number" id="Yinput" placeholder="Y" oninput="drawAll(Number(document.getElementById('Xinput').value), Number(document.getElementById('Yinput').value))">
   </div>
-  <div>
-    <input type="range" id="minRange" min="-1000" max="-10" value="-20">
-    <input type="range" id="maxRange" min="10" max="1000" value="20">
+  <div class="tool-group">
+    <!--input type="range" id="minRange" min="-1000" max="-10" value="-20" oninput="drawAll()">
+    <input type="range" id="maxRange" min="10" max="1000" value="20" oninput="drawAll()"!-->
+    
+    <input type="range" id="XRange" min="-10000" max="10000" value="0" oninput="drawAll()">
+    <input type="range" id="YRange" min="-10000" max="10000" value="0" oninput="drawAll()">
   </div>
-  <button style="background: #10b981; color: white;" onclick="drawAll()">🚀</button>
+  <div class="tool-group">
+    <input type="range" id="ZRange" min="0.1" max="10" value="1" step="0.1" oninput="drawAll()">
+  </div>
+
+
 </div>
 
 <div id="main-layout">
@@ -96,7 +109,7 @@
     </div>
   </div>
 
-  <div id="view-chart" class="view-content" style="display: none;">
+  <div id="view-chart" class="view-content">
     <div class="card">
       <div id="chart-container">
         <canvas id="functionChart"></canvas>
@@ -105,9 +118,15 @@
   </div>
 </div>
 
-
 <xml id="toolbox" style="display:none">
-  <category name="變數與起點" colour="#4f46e5">
+  <category name="All" colour="#777777">
+    <block type="start_node"></block>
+    <block type="math_single"></block>
+    <block type="math_arithmetic"></block>
+    <block type="variables_get"><field name="VAR">x</field></block>
+    <block type="math_number"></block>
+  </category>
+  <!--category name="變數與起點" colour="#4f46e5">
     <block type="start_node"></block>
     <block type="variables_get"><field name="VAR">x</field></block>
   </category>
@@ -117,52 +136,44 @@
   <category name="運算" colour="#f59e0b">
     <block type="math_arithmetic"></block>
     <block type="math_single"></block>
-  </category>
+  </category!-->
 </xml>
 
-
 <script>
+  // 視圖顯示邏輯
   function showView(viewName) {
-  // 1. 隱藏所有視圖
-  document.getElementById('view-editor').style.display = 'none';
-  document.getElementById('view-chart').style.display = 'none';
+    const editor = document.getElementById('view-editor');
+    const chartView = document.getElementById('view-chart');
 
-  // 2. 顯示指定視圖
-  if (viewName === 'editor') {
-    document.getElementById('view-editor').style.display = 'block';
-    // 必須告知 Blockly 容器大小可能變動
-    setTimeout(() => {
-      Blockly.svgResize(workspace);
-    }, 10);
-  } else if (viewName === 'chart') {
-    document.getElementById('view-chart').style.display = 'block';
-    // 顯示圖表時自動繪製最新數據
-    drawAll();
+    if (viewName === 'editor') {
+      editor.style.display = 'block';
+      chartView.style.display = 'none';
+      setTimeout(() => Blockly.svgResize(workspace), 50);
+    } else {
+      editor.style.display = 'none';
+      chartView.style.display = 'block';
+      drawAll();
+    }
   }
-}
 
-
-  // 1. Blockly 區塊定義
+  // Blockly 定義
   Blockly.Blocks['start_node'] = {
     init: function() {
-      this.appendDummyInput().appendField(new Blockly.FieldTextInput("f"), "NAME").appendField("(x)");  ///函數名稱
-      this.appendValueInput("CONTENT").setCheck("Number").appendField("y = "); ///定義為
+      this.appendDummyInput().appendField(new Blockly.FieldTextInput("f"), "NAME").appendField("(x)");
+      this.appendValueInput("CONTENT").setCheck("Number").appendField("y = ");
       this.setColour(260);
-      this.setTooltip("只有接上公式的起點會被繪製出來");
     }
   };
 
   const workspace = Blockly.inject('blocklyDiv', {
     toolbox: document.getElementById('toolbox'),
     grid: { spacing: 20, length: 3, colour: '#f1f5f9', snap: true },
-    trashcan: true, renderer: 'zelos'
+    renderer: 'zelos'
   });
 
-  // 2. 遞迴解析器
   function evaluate(block, x) {
     if (!block) return null;
     const type = block.type;
-    
     if (type === 'variables_get') return x;
     if (type === 'math_number') return Number(block.getFieldValue('NUM'));
     
@@ -171,165 +182,211 @@
       const b = evaluate(block.getInputTargetBlock('B'), x);
       const op = block.getFieldValue('OP');
       if (a === null || b === null) return null;
-      if (op === 'ADD') return a + b;
-      if (op === 'MINUS') return a - b;
-      if (op === 'MULTIPLY') return a * b;
-      if (op === 'DIVIDE') return b === 0 ? 0 : a / b;
-      if (op === 'POWER') return Math.pow(a, b);
-    }
-    
-    if (type === 'math_single') {
-      const val = evaluate(block.getInputTargetBlock('NUM'), x);
-      const op = block.getFieldValue('OP');
-      if (val === null) return null;
       switch(op) {
-        case 'ROOT': return Math.sqrt(val);
-        case 'ABS': return Math.abs(val);
-        case 'SIN': return Math.sin(val);
-        case 'COS': return Math.cos(val);
-        case 'TAN': return Math.tan(val);
-        default: return val;
+        case 'ADD': return a + b;
+        case 'MINUS': return a - b;
+        case 'MULTIPLY': return a * b;
+        case 'DIVIDE': return b === 0 ? 0 : a / b;
+        case 'POWER': return Math.pow(a, b);
+      }
+    }
+    // ... math_single 邏輯省略 ...
+    // --- 關鍵：新增對 math_single 的支援 ---
+    if (type === 'math_single') {
+      const arg = evaluate(block.getInputTargetBlock('NUM'), x);
+      const op = block.getFieldValue('OP');
+      if (arg === null) return null;
+      switch (op) {
+        case 'ROOT': return Math.sqrt(arg);
+        case 'ABS': return Math.abs(arg);
+        case 'NEG': return -arg;
+        case 'LN': return Math.log(arg);
+        case 'LOG10': return Math.log10(arg);
+        case 'EXP': return Math.exp(arg);
+        case 'POW10': return Math.pow(10, arg);
+        case 'SIN': return Math.sin(arg); // 這裡處理 sin(x)
+        case 'COS': return Math.cos(arg);
+        case 'TAN': return Math.tan(arg);
+        default: return arg;
       }
     }
     return null;
   }
 
-  // 3. 圖表邏輯
   let chart = null;
-  function drawAll() {
+  function drawAll(Xinput=null, Yinput=null) {
     const startBlocks = workspace.getBlocksByType('start_node');
+
+    const Xbase = Xinput !== null ? Number(Xinput) : Number(document.getElementById('XRange').value);
+    const Ybase = Yinput !== null ? Number(Yinput) : Number(document.getElementById('YRange').value);
+    const Zbase = Number(document.getElementById('ZRange').value);
+
+    // 關鍵修正：強制轉為 Number 以免變成字串拼接
+    const minX = Xbase - 20*Zbase;
+    const maxX = Xbase + 20*Zbase;
+    const minY = Ybase - 20*Zbase;
+    const maxY = Ybase + 20*Zbase;
+
+    if (Xinput===null) {
+      document.getElementById('Xinput').value = document.getElementById('XRange').value
+      document.getElementById('Yinput').value = document.getElementById('YRange').value
+    } else {
+      document.getElementById('XRange').value = document.getElementById('Xinput').value
+      document.getElementById('YRange').value = document.getElementById('Yinput').value
+    }
+    
     const xValues = [];
-    let minX = Number(document.getElementById('minRange').value || -20); ///-1000;  ///-10
-    let maxX = Number(document.getElementById('maxRange').value || 20); ///1000;  ///10
-    const step = 1; // 建議步長設為 10，若需要更平滑可設為 5 或 1
-    for (let i = minX; i <= maxX; i += step) xValues.push(i);
+    // 動態計算步長以維持效能
+    const step = (maxX - minX) / 100; 
+
+    for (let i = minX; i <= maxX; i += step) {
+      xValues.push(Number(i.toFixed(2)));
+    }
 
     const datasets = [];
-    const colorPalette = ['#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
+    const colorPalette = ['#4f46e5', '#10b981', '#f59e0b', '#ef4444'];
 
     startBlocks.forEach((startBlock, index) => {
       const target = startBlock.getInputTargetBlock('CONTENT');
-      
-      // 關鍵：如果沒接東西，就完全忽略這個起點
       if (!target) return;
-
       const funcName = startBlock.getFieldValue('NAME');
       const yValues = xValues.map(x => evaluate(target, x));
-
       datasets.push({
         label: `${funcName}(x)`,
         data: yValues,
         borderColor: colorPalette[index % colorPalette.length],
-        borderWidth: 3,
-        pointRadius: 0, // 不顯示點，只顯示平滑線條
-        tension: 0.3,
-        fill: false
+        borderWidth: 2,
+        pointRadius: 0,
+        tension: 0.2
       });
     });
 
     const ctx = document.getElementById('functionChart').getContext('2d');
     if (chart) chart.destroy();
-    /*
     chart = new Chart(ctx, {
       type: 'line',
       data: { labels: xValues, datasets: datasets },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        animation: false, // 讓拉動 Slider 時更流暢
         scales: {
-          x: { title: { display: true, text: 'x' }, grid: { color: '#f1f5f9' } },
-          y: { title: { display: true, text: 'y' }, grid: { color: '#f1f5f9' } }
+          x: { grid: { display: false } },
+          y: { beginAtZero: false, min: minY, max: maxY, }
         },
-        plugins: {
-          legend: { position: 'top', labels: { usePointStyle: true } }
-        }
-      }
-    });  */
-    chart = new Chart(ctx, {
-      type: 'line',
-      data: { labels: xValues, datasets: datasets },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        // --- 新增與修改的部分 ---
         interaction: {
-          intersect: false, // 滑鼠不需要碰到點，只要在該 x 座標附近就會觸發
-          mode: 'index',    // 同時顯示該 x 座標下所有函數的 y 值
-        },
-        plugins: {
-          legend: { position: 'top', labels: { usePointStyle: true } },
+          mode: 'index',     // 滑鼠靠近 X 軸時，顯示該 X 軸上「所有」數據
+          intersect: false,  // 不需要滑鼠直接指到點上就能顯示
+        },plugins: {
           tooltip: {
             enabled: true,
-            backgroundColor: 'rgba(30, 41, 59, 0.8)', // 深色背景質感較好
-            titleColor: '#fff',
-            bodyColor: '#fff',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)', // 提示框背景色
+            padding: 10,
             callbacks: {
-              // 在數值前面加上 y = 讓可讀性更好
+              // 在提示框標題顯示 X 值
+              title: function(context) {
+                return 'x = ' + context[0].label;
+              },
+              // 顯示各函數的 Y 值
               label: function(context) {
                 let label = context.dataset.label || '';
                 if (label) {
                   label += ': ';
                 }
                 if (context.parsed.y !== null) {
-                  label += context.parsed.y.toFixed(2); // 限制小數點兩位
+                  label += context.parsed.y.toFixed(2); // 顯示兩位小數
                 }
                 return label;
               }
             }
           }
         },
-        // -----------------------
-        scales: {
-          x: { title: { display: true, text: 'x' }, grid: { color: '#f1f5f9' } },
-          y: { title: { display: true, text: 'y' }, grid: { color: '#f1f5f9' } }
-        }
       }
     });
-
-
   }
+function init() {
+  const variableX = workspace.getVariable('x') || workspace.createVariable('x');
 
-  // 初始化一個預設函數：f(x) = x * x (拋物線)
-  function init() {
-    // 1. 強制建立或取得名為 'x' 的變數物件
-    const variableX = workspace.getVariable('x') || workspace.createVariable('x');
+  // --- 函數 1: f(x) = x * x ---
+  const startF = workspace.newBlock('start_node');
+  startF.setFieldValue('f', 'NAME');
+  startF.initSvg(); startF.render(); startF.moveBy(20, 20);
 
-    const start = workspace.newBlock('start_node');
-    start.setFieldValue('f', 'NAME');
-    start.initSvg(); start.render(); start.moveBy(50, 50);
+  const mul = workspace.newBlock('math_arithmetic');
+  mul.setFieldValue('MULTIPLY', 'OP');
+  mul.initSvg(); mul.render();
 
-    const mul = workspace.newBlock('math_arithmetic');
-    mul.setFieldValue('MULTIPLY', 'OP');
-    mul.initSvg(); mul.render();
-    
-    // 2. 建立變數區塊並使用變數 ID 設定
-    const x1 = workspace.newBlock('variables_get');
-    x1.setFieldValue(variableX.getId(), 'VAR'); // 關鍵：使用 ID
-    
-    const x2 = workspace.newBlock('variables_get');
-    x2.setFieldValue(variableX.getId(), 'VAR'); // 關鍵：使用 ID
+  const x1 = workspace.newBlock('variables_get');
+  x1.setFieldValue(variableX.getId(), 'VAR');
+  const x2 = workspace.newBlock('variables_get');
+  x2.setFieldValue(variableX.getId(), 'VAR');
 
-    x1.initSvg(); x1.render();
-    x2.initSvg(); x2.render();
+  x1.initSvg(); x1.render();
+  x2.initSvg(); x2.render();
 
-    // 3. 連接區塊
-    mul.getInput('A').connection.connect(x1.outputConnection);
-    mul.getInput('B').connection.connect(x2.outputConnection);
-    start.getInput('CONTENT').connection.connect(mul.outputConnection);
-    
-    ///drawAll();
-    ///showView('editor');
-    showView('chart');
-  }
+  mul.getInput('A').connection.connect(x1.outputConnection);
+  mul.getInput('B').connection.connect(x2.outputConnection);
+  startF.getInput('CONTENT').connection.connect(mul.outputConnection);
 
+  // --- 函數 2: g(x) = sin(x) ---
+  const startG = workspace.newBlock('start_node');
+  startG.setFieldValue('g', 'NAME');
+  startG.initSvg(); startG.render(); startG.moveBy(20, 150); // 往下位移，避免重疊
+
+  const sinBlock = workspace.newBlock('math_single');
+  sinBlock.setFieldValue('SIN', 'OP');
+  sinBlock.initSvg(); sinBlock.render();
+
+  const x3 = workspace.newBlock('variables_get');
+  x3.setFieldValue(variableX.getId(), 'VAR');
+  x3.initSvg(); x3.render();
+
+  sinBlock.getInput('NUM').connection.connect(x3.outputConnection);
+  startG.getInput('CONTENT').connection.connect(sinBlock.outputConnection);
+  
+// --- 函數 3: h(x) = x * x * x ---
+const startH = workspace.newBlock('start_node');
+startH.setFieldValue('h', 'NAME');
+
+// 1. 建立乘法與變數積木
+const mulH1 = workspace.newBlock('math_arithmetic');
+mulH1.setFieldValue('MULTIPLY', 'OP');
+const mulH2 = workspace.newBlock('math_arithmetic');
+mulH2.setFieldValue('MULTIPLY', 'OP');
+
+const x4 = workspace.newBlock('variables_get');
+x4.setFieldValue(variableX.getId(), 'VAR');
+const x5 = workspace.newBlock('variables_get');
+x5.setFieldValue(variableX.getId(), 'VAR');
+const x6 = workspace.newBlock('variables_get');
+x6.setFieldValue(variableX.getId(), 'VAR');
+
+// 2. 關鍵：對所有積木執行 initSvg (否則連線座標會出錯)
+[startH, mulH1, mulH2, x4, x5, x6].forEach(b => b.initSvg());
+
+// 3. 進行組裝 (x * x) * x
+mulH1.getInput('A').connection.connect(x4.outputConnection);
+mulH1.getInput('B').connection.connect(x5.outputConnection);
+mulH2.getInput('A').connection.connect(mulH1.outputConnection);
+mulH2.getInput('B').connection.connect(x6.outputConnection);
+startH.getInput('CONTENT').connection.connect(mulH2.outputConnection);
+
+// 4. 最後渲染頂層積木，它會遞迴渲染所有內嵌積木
+startH.render();
+
+  startH.initSvg(); startH.render();
+  startH.moveBy(20, 300); // 再往下移動，避免重疊
+
+  // 繪製初始圖表
+  drawAll();
+}
+  // 初始化
   window.addEventListener('load', () => {
     init();
+    ///showView('editor');  // 預設顯示編輯器
+    showView('chart');
     window.addEventListener('resize', () => Blockly.svgResize(workspace));
   });
 </script>
-
 </body>
-
 </html>
-
-
