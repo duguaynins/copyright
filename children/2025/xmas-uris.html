@@ -841,16 +841,17 @@ function onlyCopy() {
     if (!redirect) return;
 
     const url = `https://uris.nins.cc?data=${encodeURIComponent(information)}`;
+    const encoding = "https://encoding.nins.cc/?data=" + encodeURIComponent(url);
     
     navigator.clipboard.writeText(url).then(() => {
         copyButton.textContent = "✅";  // Copied 🔗  // 🎁
-        setTimeout(() => (copyButton.textContent = "🔗"), 2000);  // Copy URL 
+        setTimeout(() => (copyButton.textContent = "🎁"), 2000);  // Copy URL 
         ///document.getElementById("InputInfo").value = "";  // test***
         ///document.getElementById('message').innerHTML = "🎁 Copied! Paste the link anywhere!";
         ///document.getElementById('message').innerHTML = "🎁 Link has been copied and is ready to paste!";
         document.getElementById('message').innerHTML = "🎁 Link has been copied! Paste it wherever you like!";
 
-        const encoding = "https://encoding.nins.cc/?data=" + encodeURIComponent(url);
+        ///const encoding = "https://encoding.nins.cc/?data=" + encodeURIComponent(url);
         ///window.open(encoding, "_blank", "noopener,noreferrer");
         setTimeout(() => { window.open(encoding, "_blank", "noopener,noreferrer"); }, 2000);
     });
@@ -891,9 +892,12 @@ function updateAndCopy() {
     if (isEncoded(recipient)) { url = `https://uris.nins.cc?data=${(information)}` } // ✅
     else { url = `https://uris.nins.cc?data=${encodeURIComponent(information)}`; } */
     const url = `https://uris.nins.cc?data=${encodeURIComponent(information)}`;
+    const encoding = "https://encoding.nins.cc/?data=" + encodeURIComponent(url);
 
     ///document.getElementById('message').innerHTML = `✅ <a href='${url}'>${url}</a> 🌐`;
-    document.getElementById('miniURL').innerHTML = `✅ <a href='${url}'>${url}</a> 🌐`;
+    ///document.getElementById('miniURL').innerHTML = `✅ <a href='${url}'>${url}</a> 🌐`;
+    ///document.getElementById('miniURL').innerHTML = `✅ <a href='${url}' onclick='onlyCopy(); return false;'>${url}</a> 🌐`;
+    document.getElementById('miniURL').innerHTML = `✅ <a href='${encoding}' onclick='onlyCopy(); return false;'>${url}</a> 🌐`;
     ///result.textContent = url;
 
     /*
