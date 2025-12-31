@@ -126,6 +126,7 @@
     <block type="math_single"></block>
     <block type="math_arithmetic"></block>
     <block type="variables_get"><field name="VAR">x</field></block>
+    <block type="variables_get"><field name="VAR">y</field></block>
     <block type="math_number"></block>
   </category>
   <!--category name="變數與起點" colour="#4f46e5">
@@ -159,13 +160,29 @@
   }
 
   // Blockly 定義
+  /*
   Blockly.Blocks['start_node'] = {
     init: function() {
       this.appendDummyInput().appendField(new Blockly.FieldTextInput("f"), "NAME").appendField("(x)");
       this.appendValueInput("CONTENT").setCheck("Number").appendField("y = ");
       this.setColour(260);
     }
-  };
+  };  */
+  Blockly.Blocks['start_node'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldTextInput("f"), "NAME")
+        // 這裡可以根據模式顯示 (x) 或 (y)
+        ///.appendField("(")
+        ///.appendField(new Blockly.FieldDropdown([["x", "X"], ["y", "Y"]]), "INPUT_VAR")
+        ///.appendField(")");
+
+    this.appendValueInput("CONTENT")
+        .setCheck("Number")
+        .appendField(new Blockly.FieldDropdown([["y =", "Y_EQ"], ["x =", "X_EQ"]]), "MODE");
+    this.setColour(260);
+  }
+};
 
   const workspace = Blockly.inject('blocklyDiv', {
     toolbox: document.getElementById('toolbox'),
@@ -173,15 +190,24 @@
     renderer: 'zelos'
   });
 
-  function evaluate(block, x) {
+  function evaluate(block, scope) {  ///x=>>scope
     if (!block) return null;
     const type = block.type;
-    if (type === 'variables_get') return x;
+
+    ///if (type === 'variables_get') return x;
+    if (type === 'variables_get') {
+      const varId = block.getFieldValue('VAR');
+      const varName = workspace.getVariableById(varId).name; // 取得變數名稱 "x" 或 "y"
+      return scope[varName] || 0; // 回傳對應的數值
+    }
+    
     if (type === 'math_number') return Number(block.getFieldValue('NUM'));
     
     if (type === 'math_arithmetic') {
-      const a = evaluate(block.getInputTargetBlock('A'), x);
-      const b = evaluate(block.getInputTargetBlock('B'), x);
+      ///const a = evaluate(block.getInputTargetBlock('A'), x);
+      ///const b = evaluate(block.getInputTargetBlock('B'), x);
+      const a = evaluate(block.getInputTargetBlock('A'), scope);
+      const b = evaluate(block.getInputTargetBlock('B'), scope);
       const op = block.getFieldValue('OP');
       if (a === null || b === null) return null;
       switch(op) {
@@ -195,7 +221,8 @@
     // ... math_single 邏輯省略 ...
     // --- 關鍵：新增對 math_single 的支援 ---
     if (type === 'math_single') {
-      const arg = evaluate(block.getInputTargetBlock('NUM'), x);
+      ///const arg = evaluate(block.getInputTargetBlock('NUM'), x);
+      const arg = evaluate(block.getInputTargetBlock('NUM'), scope);
       const op = block.getFieldValue('OP');
       if (arg === null) return null;
       switch (op) {
@@ -239,7 +266,7 @@
     
     const xValues = [];
     // 動態計算步長以維持效能
-    const step = (maxX - minX) / 100; 
+    const step = (maxX - minX) / 500; // 提高採樣率
 
     for (let i = minX; i <= maxX; i += step) {
       xValues.push(Number(i.toFixed(2)));
@@ -247,7 +274,7 @@
 
     const datasets = [];
     const colorPalette = ['#4f46e5', '#10b981', '#f59e0b', '#ef4444'];
-
+    /*
     startBlocks.forEach((startBlock, index) => {
       const target = startBlock.getInputTargetBlock('CONTENT');
       if (!target) return;
@@ -259,6 +286,39 @@
         borderColor: colorPalette[index % colorPalette.length],
         borderWidth: 2,
         pointRadius: 0,
+        tension: 0.2
+      });
+    });  */
+    startBlocks.forEach((startBlock, index) => {
+      const target = startBlock.getInputTargetBlock('CONTENT');
+      if (!target) return;
+
+      const mode = startBlock.getFieldValue('MODE'); // 'Y_EQ' 或 'X_EQ'
+      const dataPoints = [];
+
+      if (mode === 'Y_EQ') {
+        // 傳統 y = f(x)
+        for (let i = minX; i <= maxX; i += step) {
+          const val = evaluate(target, { x: i, y: 0 }); // 此時 y 通常不影響結果
+          dataPoints.push({ x: i, y: val });
+        }
+      } else {
+        // 新增 x = f(y)
+        // 這裡改由 y 軸範圍進行疊代
+        const yStep = (maxY - minY) / 100;
+        for (let j = minY; j <= maxY; j += yStep) {
+          const val = evaluate(target, { x: 0, y: j }); // 計算 x 的值
+          dataPoints.push({ x: val, y: j }); // 注意：x 是算出來的，y 是自變量
+        }
+      }
+
+      datasets.push({
+        label: startBlock.getFieldValue('NAME'),
+        data: dataPoints, // Chart.js 支援 {x: , y: } 格式的數據物件
+        borderColor: colorPalette[index % colorPalette.length],
+        showLine: true,
+        borderWidth: 2,
+        ///pointRadius: 0, // 這裡改為 0 就不會看到彩色點了***
         tension: 0.2
       });
     });
@@ -273,8 +333,19 @@
         maintainAspectRatio: false,
         animation: false, // 讓拉動 Slider 時更流暢
         scales: {
-          x: { grid: { display: false } },
-          y: { beginAtZero: false, min: minY, max: maxY, }
+          x: {
+            type: 'linear', // 強制 X 軸為數值線，而非標籤
+            position: 'bottom',
+            min: minX,
+            max: maxX
+          },
+          y: {
+            type: 'linear',
+            min: minY,
+            max: maxY
+          }
+          ///x: { grid: { display: false } },
+          ///y: { beginAtZero: false, min: minY, max: maxY, }
         },
         interaction: {
           mode: 'index',     // 滑鼠靠近 X 軸時，顯示該 X 軸上「所有」數據
@@ -308,6 +379,7 @@
   }
 function init() {
   const variableX = workspace.getVariable('x') || workspace.createVariable('x');
+  const variableY = workspace.getVariable('y') || workspace.createVariable('y');
 
   // --- 函數 1: f(x) = x * x ---
   const startF = workspace.newBlock('start_node');
@@ -345,43 +417,67 @@ function init() {
 
   sinBlock.getInput('NUM').connection.connect(x3.outputConnection);
   startG.getInput('CONTENT').connection.connect(sinBlock.outputConnection);
+
+
+  // --- 內建初始化 y = 0 ---
+  /*
+  const startY0 = workspace.newBlock('start_node');
+  startY0.setFieldValue('y0', 'NAME');
+  startY0.setFieldValue('Y_MODE', 'MODE'); // 設定模式為 y =
+  startY0.initSvg(); startY0.render(); startY0.moveBy(50, 50);
+  const num0 = workspace.newBlock('math_number');
+  num0.setFieldValue('0', 'NUM');
+  num0.initSvg(); num0.render();
+  startY0.getInput('CONTENT').connection.connect(num0.outputConnection);  */
+
+  // --- 函數 3: h(x) = x * x * x ---
+  const startH = workspace.newBlock('start_node');
+  startH.setFieldValue('h', 'NAME');
+
+  // 1. 建立乘法與變數積木
+  const mulH1 = workspace.newBlock('math_arithmetic');
+  mulH1.setFieldValue('MULTIPLY', 'OP');
+  const mulH2 = workspace.newBlock('math_arithmetic');
+  mulH2.setFieldValue('MULTIPLY', 'OP');
+
+  const x4 = workspace.newBlock('variables_get');
+  x4.setFieldValue(variableX.getId(), 'VAR');
+  const x5 = workspace.newBlock('variables_get');
+  x5.setFieldValue(variableX.getId(), 'VAR');
+  const x6 = workspace.newBlock('variables_get');
+  x6.setFieldValue(variableX.getId(), 'VAR');
+
+  // 2. 關鍵：對所有積木執行 initSvg (否則連線座標會出錯)
+  [startH, mulH1, mulH2, x4, x5, x6].forEach(b => b.initSvg());
+
+  // 3. 進行組裝 (x * x) * x
+  mulH1.getInput('A').connection.connect(x4.outputConnection);
+  mulH1.getInput('B').connection.connect(x5.outputConnection);
+  mulH2.getInput('A').connection.connect(mulH1.outputConnection);
+  mulH2.getInput('B').connection.connect(x6.outputConnection);
+  startH.getInput('CONTENT').connection.connect(mulH2.outputConnection);
+
+  // 4. 最後渲染頂層積木，它會遞迴渲染所有內嵌積木
+  startH.render();
+
+    startH.initSvg(); startH.render();
+    startH.moveBy(20, 300); // 再往下移動，避免重疊
+
+    // 繪製初始圖表
+    drawAll();
+  }  
   
-// --- 函數 3: h(x) = x * x * x ---
-const startH = workspace.newBlock('start_node');
-startH.setFieldValue('h', 'NAME');
+  // --- 內建初始化一個 x = 0 ---
+  const startX0 = workspace.newBlock('start_node');
+  startX0.setFieldValue('i', 'NAME');
+  startX0.setFieldValue('X_EQ', 'MODE'); // 設定為 x = 模式
+  startX0.initSvg(); startX0.render(); startX0.moveBy(20, 450);
+  const num0 = workspace.newBlock('math_number');
+  num0.setFieldValue('0', 'NUM');
+  num0.initSvg(); num0.render();
+  startX0.getInput('CONTENT').connection.connect(num0.outputConnection);
 
-// 1. 建立乘法與變數積木
-const mulH1 = workspace.newBlock('math_arithmetic');
-mulH1.setFieldValue('MULTIPLY', 'OP');
-const mulH2 = workspace.newBlock('math_arithmetic');
-mulH2.setFieldValue('MULTIPLY', 'OP');
-
-const x4 = workspace.newBlock('variables_get');
-x4.setFieldValue(variableX.getId(), 'VAR');
-const x5 = workspace.newBlock('variables_get');
-x5.setFieldValue(variableX.getId(), 'VAR');
-const x6 = workspace.newBlock('variables_get');
-x6.setFieldValue(variableX.getId(), 'VAR');
-
-// 2. 關鍵：對所有積木執行 initSvg (否則連線座標會出錯)
-[startH, mulH1, mulH2, x4, x5, x6].forEach(b => b.initSvg());
-
-// 3. 進行組裝 (x * x) * x
-mulH1.getInput('A').connection.connect(x4.outputConnection);
-mulH1.getInput('B').connection.connect(x5.outputConnection);
-mulH2.getInput('A').connection.connect(mulH1.outputConnection);
-mulH2.getInput('B').connection.connect(x6.outputConnection);
-startH.getInput('CONTENT').connection.connect(mulH2.outputConnection);
-
-// 4. 最後渲染頂層積木，它會遞迴渲染所有內嵌積木
-startH.render();
-
-  startH.initSvg(); startH.render();
-  startH.moveBy(20, 300); // 再往下移動，避免重疊
-
-  // 繪製初始圖表
-  drawAll();
-}
+  
   // 初始化
   window.addEventListener('load', () => {
     init();
