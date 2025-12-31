@@ -358,6 +358,10 @@
             color: black;
             font-weight: bold;
             transition: opacity 1s;
+            border-radius: 0; /* 明確設定方角 */
+            border: none;       /* 沒有邊框 */
+            outline: none;      /* 避免瀏覽器自帶輪廓 */
+            box-shadow: none;   /* 避免陰影像邊框 */
         }
         .fadeOut { opacity: 0; pointer-events: none; }
 
