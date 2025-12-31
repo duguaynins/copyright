@@ -1,0 +1,69 @@
+
+<link rel="canonical" href="https://copyright.nins.cc/">
+<title translate="no">nins/maps</title>
+<!--title translate="no">これが自由だ</title-->
+
+<button onclick="showMyLocation()">📡</button>
+
+<input type="text" id="location" placeholder="輸入地點或經緯度">
+<button onclick="addMap()">📍</button>
+<!--iframe
+  src="https://www.google.com/maps?q=台北101&output=embed"
+  width="100%" height="450" style="border:0;" loading="lazy">
+</iframe!-->
+<iframe id="mapFrame"
+  src="https://www.google.com/maps?q=25.033964,121.564468&output=embed"
+  width="100%" height="300" style="border:0;" loading="lazy">
+</iframe>
+<!--iframe
+  width="100%" height="450" style="border:0;" loading="lazy"
+  src="https://www.google.com/maps/dir/?api=1&origin=台北車站&destination=台北101&travelmode=driving&output=embed">
+</iframe>
+<iframe
+  width="100%" height="450" style="border:0;" loading="lazy"
+  src="https://www.google.com/maps/dir/?api=1&origin=25.0478,121.5319&destination=25.033964,121.564468&travelmode=walking&output=embed">
+</iframe!-->
+
+<script>
+function showMyLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(pos => {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      const iframe = document.getElementById('mapFrame');
+      iframe.src = `https://www.google.com/maps?q=${lat},${lng}&output=embed`;
+    }, () => {
+      alert("無法取得定位");
+    });
+  } else {
+    alert("瀏覽器不支援定位功能");
+  }
+}
+</script>
+
+
+
+<div id="mapContainer"></div>
+
+<script>
+function addMap() {
+  const loc = document.getElementById('location').value;
+  if (!loc) return; /// alert("請輸入位置");
+
+  // 建立新的 iframe
+  const iframe = document.createElement("iframe");
+  iframe.width = "100%";
+  iframe.height = "300";
+  iframe.style.border = "0";
+  iframe.loading = "lazy";
+  iframe.src = `https://www.google.com/maps?q=${encodeURIComponent(loc)}&output=embed`;
+  ///src="https://www.google.com/maps?q=台北101&output=embed"
+  ///src="https://www.google.com/maps?q=25.033964,121.564468&output=embed"
+
+  // 插入到容器裡
+  document.getElementById('mapContainer').appendChild(iframe);
+
+  // 可選：清空輸入框
+  document.getElementById('location').value = "";
+}
+</script>
