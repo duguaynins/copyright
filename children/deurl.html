@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <meta name="description" content="© 2024 NINS (by JPGT). By using any of the services, it means you have agreed to any content and all content!">
     
-    <link rel="canonical" href="https://deurl.nins.cc/">
+    <link rel="canonical" href="https://copyright.nins.cc/">
     <title translate="no">nins/deurl</title>
     <style>
       #content {
@@ -291,7 +291,7 @@ async function HuggingFaceAPI(inputs=null) {
 async function deurl(params) { 
   console.log('USER:', params);
   const { url } = params;
-  if (!url) { return "???"; }
+  if (!url) { document.getElementById("input_msg").value = "https://2025.deurl.nins.cc/"; return "???"; }
 
   const inputs = { "inputs": url };
   const outputs = await HuggingFaceAPI({
@@ -307,6 +307,8 @@ async function deurl(params) {
 }
 
 async function send() {
+    document.getElementById("content").innerHTML = "Waiting for decoding...";
+
     const url = document.getElementById("input_msg").value;
     const msg = await deurl({ "url": url });
 
@@ -319,6 +321,20 @@ document.getElementById("input_msg").addEventListener("keydown", function(e) {
         e.preventDefault();  // 阻止 Enter 鍵的預設行為（即防止跳轉到下一個輸入框）
         send();
     }
+});
+
+///document.getElementById("input_msg").addEventListener("focus", () => {  });
+///document.getElementById("input_msg").addEventListener("focus", function () {
+document.getElementById("input_msg").addEventListener("focus", (event) => {
+    if (event.target.value) { return; }
+    document.getElementById("content").innerHTML = "Please enter the URL."; console.log("已具焦");
+});
+
+///document.getElementById("input_msg").addEventListener("blur", () => {  });
+///document.getElementById("input_msg").addEventListener("blur", function () {
+document.getElementById("input_msg").addEventListener("blur", (event) => {
+    if (event.target.value) { return; }
+    document.getElementById("content").innerHTML = "Please enter the URL."; console.log("已失焦");
 });
 </script>
 
