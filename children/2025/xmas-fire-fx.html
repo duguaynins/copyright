@@ -321,6 +321,11 @@
 <body>
     <!--div id="google_translate_element" style="display:none;"></div-->
   
+  
+    <audio id="NinsXmas" style="display:none;" src="https://copyright.nins.cc/children/2025/xmas.mp3" loop ></audio>
+    <button id="startOverlay" style="z-index: 99998;" onclick="this.classList.add('fadeOut'); /*initAudio();playXmasBGM();*/ document.getElementById('NinsXmas').play();">
+        <span translate="no" id="merryXmas"></span>
+    </button>
     
     <button disabled="" id="disabled" style="
       position: fixed;
@@ -342,10 +347,6 @@
       animation: fadeOut 3s forwards;
       pointer-events: none;  /* 動畫期間不阻擋互動（可選）*/
     "></button>
-    
-    <button id="startOverlay" style="z-index: 99998;" onclick="this.classList.add('fadeOut'); initAudio();playXmasBGM();">
-        <span translate="no" id="merryXmas"></span>
-    </button>
     
     <div style="
       position: fixed;
