@@ -2,6 +2,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -219,14 +220,57 @@
         to { opacity: 0; }
       }
       .disabled {
-        pointer-events: none; /* 不能點 */
+        /* pointer-events: none; 不能點 */
         /* opacity: 0.5;         視覺上灰掉 */
       }
+    </style>
+  
+    <style>
+        /* 覆蓋層樣式 */
+        #startOverlay {
+            position: fixed;
+            inset: 0;
+            background: white;
+            /*z-index: 99999;*/
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: black;
+            font-weight: bold;
+            transition: opacity 1s;
+            border-radius: 0; /* 明確設定方角 */
+            border: none;       /* 沒有邊框 */
+            outline: none;      /* 避免瀏覽器自帶輪廓 */
+            box-shadow: none;   /* 避免陰影像邊框 */
+            flex-direction: column; /* 改為垂直排列 */
+            cursor: pointer;
+            cursor: default;
+        }
+        .fadeOut { opacity: 0; pointer-events: none; }
+        /* 讓圖片成為彈性主體 */
+        #startOverlay img {
+            flex: 1;           /* 佔據剩餘所有空間 */
+            min-height: 0;     /* 防止圖片撐破 flex 容器 */
+            width: auto;       /* 保持比例 */
+            max-width: 100%;   /* 寬度不超過螢幕 */
+            object-fit: contain; /* 確保圖片在空間內完整顯示，不被裁切 */
+        }
     </style>
 </head>
 <body>
     <!--div id="google_translate_element" style="display:block;"></div-->
   
+    <audio id="NinsXmas" style="display:none;" src="https://copyright.nins.cc/children/2025/xmas.mp3" loop ></audio>
+    <button disabled id="startOverlay" style="z-index: 99998;" onclick="this.classList.add('fadeOut'); /*initAudio();playXmasBGM();*/ document.getElementById('NinsXmas').play();">
+        <span id="say" style="color: #777; font-weight:100;">Give a "Vivre Card/Soul Paper" to everything that matters!”</span>
+        
+        <img src="https://copyright.nins.cc/children/2025/xmas.png" style=" vertical-align: middle;">
+        <span translate="no" id="merryXmas" style="display: none;"></span>
+
+        <u id="ads" translate="no" style="color: #2222ff; font-weight:100;">https://2025.uris.nins.cc/</u>
+        <progress id="progress" value="0" max="3000"></progress>
+        <span id="time" translate="no">0 ms</span>
+    </button>
     
     <button disabled="" id="disabled" style="
       position: fixed;
@@ -318,8 +362,8 @@
       <button id="openLog" style="width: 100%; background: black;" onclick="document.getElementById('DialogTrans').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
       <br>
       <iframe data-creative-load-listener="" id="200_287_express_html_inpage_0.if" src="https://s0.2mdn.net/sadbundle/11781765405462098489/index.html?ev=01_262" width="300" height="250" frameborder="0" scrolling="no" allowfullscreen="true" style="width: 300px; height: 250px;"></iframe>
-      <progress id="progress" value="0" max="3000"></progress>
-      <span id="time">0 ms</span>
+      <progress id="progress_v1" value="0" max="3000"></progress>
+      <span id="time_v1">0 ms</span>
       <br>
       <button id="openLog" style="width: 100%; background: black;" onclick="document.getElementById('DialogTrans').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
   </dialog>
@@ -443,7 +487,8 @@
 
               <div style="display: block;">
               <label for="SkipAds">📣（skip-ads: </label>
-              <input  id="SkipAds" type="checkbox" checked="" onclick="document.getElementById('DialogAds').showModal();startSkipAdsProgress();">）<br></div>
+              <input  id="SkipAds" type="checkbox" checked="">）***<br></div>
+              <!--input  id="SkipAds" type="checkbox" checked="" onclick="document.getElementById('DialogAds').showModal();startSkipAdsProgress();">）<br></div!-->
               <!--input  id="SkipAds"type="checkbox" checked="" onclick="document.getElementById('DialogAds').showModal(); setTimeout(() => { document.getElementById('DialogAds').close(); }, 2200);">）<br-->
               <!--input  id="SkipAds"type="checkbox" checked="" onclick="if(!this.checked){document.getElementById('DialogAds').showModal();}">）<br-->
           </div>
@@ -463,6 +508,8 @@
   
 <!-- HTML ================================================== -->
 <script>
+  document.getElementById('merryXmas').innerHTML = "☃️🦌🎄✨⭐<br>[ © nins ] x [ Merry Xmas 2025 ]";
+
   function startSkipAdsProgress() {
     const progress = document.getElementById("progress");
     const timeText = document.getElementById("time");
@@ -475,8 +522,12 @@
     timeText.textContent = "0 ms";
 
     ///setTimeout(update, 16);
-    setTimeout( () => { document.getElementById("DialogAds").classList.add("disabled") }, 3);
-    setTimeout( () => { document.getElementById("DialogAds").classList.remove("disabled") }, 3000);
+    ///setTimeout( () => { document.getElementById("DialogAds").classList.add("disabled") }, 3);
+    ///setTimeout( () => { document.getElementById("DialogAds").classList.remove("disabled") }, 3000);
+    ///setTimeout( () => { document.getElementById("startOverlay").classList.add("disabled") }, 3);
+    ///setTimeout( () => { document.getElementById("startOverlay").classList.remove("disabled") }, 3000);
+    setTimeout( () => { document.getElementById("startOverlay").disabled = true; }, 3);
+    setTimeout( () => { document.getElementById("startOverlay").disabled = false; }, 3000);
 
     const timer = setInterval(() => {
       current += interval;
@@ -492,6 +543,8 @@
       }
     }, interval);
   }
+
+  startSkipAdsProgress();
 </script>
 <!-- ADS ================================================== -->
 
@@ -1524,7 +1577,8 @@ console.log(version);
               
         // 正式進入頻道**
         channel.presence.enter();
-        document.getElementById('DialogAds').showModal();startSkipAdsProgress();  ///test:20251221***
+        ///document.getElementById('DialogAds').showModal();startSkipAdsProgress();  ///test:20251221***ads
+
         // 監聽**
         ///channel.attach(() => {
         ///channel.presence.get((err, members) => {
