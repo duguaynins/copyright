@@ -260,9 +260,9 @@
 <body>
     <!--div id="google_translate_element" style="display:block;"></div-->
   
-    <audio id="NinsXmas" style="display:none;" src="https://copyright.nins.cc/children/2025/xmas.mp3" ></audio>
+    <audio id="NinsXmas" style="display:none;" src="https://copyright.nins.cc/children/2025/xmas.mp3" loop ></audio>
     <button id="startOverlay" disabled
-      onclick="this.classList.add('fadeOut');document.getElementById('NinsXmas').play();"
+      onclick="this.classList.add('fadeOut');document.getElementById('NinsXmas').play();document.getElementById('NinsXmas').loop = false;"
       style="
       position: fixed;
       bottom: 0;
@@ -280,14 +280,14 @@
       font-size: 2vw;
       z-index: 99998;">
         <br>
-        <span id="say" style="color: #777; font-weight:100;">Give a "Vivre Card/Soul Paper" to everything that matters!”</span>
+        <span id="say" style="color: #777; font-weight:700;">Give a "Vivre Card/Soul Paper" to everything that matters!”</span>
         
         
         <img src="https://copyright.nins.cc/children/2025/xmas.png" style=" vertical-align: middle;">
         <span translate="no" id="merryXmas" style="display: none;"></span>
         
         <br>
-        <u id="ads" translate="no" style="color: #2222ff; font-weight:100;">https://2025.uris.nins.cc/</u>
+        <u id="ads" translate="no" style="color: #2222ff; font-weight:700;">https://2025.uris.nins.cc/</u>
         <progress id="progress" value="0" max="3000"></progress>
         <span id="time" translate="no">0 ms</span>
         <br>
@@ -565,7 +565,8 @@
     }, interval);
   }
 
-  startSkipAdsProgress();
+  ///startSkipAdsProgress();
+  setTimeout( () => { startSkipAdsProgress(); }, 1000);
 </script>
 <!-- ADS ================================================== -->
 
