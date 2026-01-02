@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -685,11 +686,35 @@
       <pre id="logOutput" style="max-height:200px; overflow:auto; margin:0;"></pre><br>
       <button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogCheck').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
   </dialog>
+  
+  <dialog id="DialogEncoding" translate="no" style="height: 90vh; width: 90vw; overflow: hidden;">
+      <iframe src="https://copyright.nins.cc/children/encoding" style="width: 100%; height: 100%; border: none;"></iframe>
+      <button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogEncoding').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
+  </dialog>
 
 <!-- HTML ================================================== -->
     
 <!-- 放置你原有的布局 -->
 
+
+<!-- dialog close 0 ================================================== -->
+<script>
+document.querySelectorAll("dialog").forEach(dialog => {
+    dialog.addEventListener("click", function (event) {
+      const rect = this.getBoundingClientRect();
+      const isInDialog =
+        event.clientX >= rect.left &&
+        event.clientX <= rect.right &&
+        event.clientY >= rect.top &&
+        event.clientY <= rect.bottom;
+  
+      if (!isInDialog) {
+        this.close();
+      }
+    });
+});
+</script>
+<!-- dialog close 1 ================================================== -->
 
 <script>
     const url_href = window.location.href;
@@ -803,7 +828,7 @@ if (!redirect && redirect !== null) {
     document.getElementById("sliderButton").style.display = "none";
 
     document.getElementById('miniURL').innerHTML = `✅ <a href='${url}'>${url}</a> 🌐`;
-    document.getElementById('message').innerHTML = `✅ Fallback redirect is active and the page is locked. To create a redirect, please visit the original URL. <span translate="no">(<a href='https://uris.nins.cc?' translate="no">https://uris.nins.cc</a> 🌐)</span>`;
+    document.getElementById('message').innerHTML = `✅ Fallback redirect is active and the page is locked. To create a redirect, please visit the original URL. <span translate="no">(<a href='https://uris.nins.cc/?' translate="no">https://uris.nins.cc</a> 🌐)</span>`;
 
 } else if (!redirect && !urisMain) {
     // New page
@@ -846,8 +871,9 @@ function onlyCopy() {
     let redirect = checkUriData(information);
     if (!redirect) return;
 
-    const url = `https://uris.nins.cc?data=${encodeURIComponent(information)}`;
-    const encoding = "https://encoding.nins.cc/?data=" + encodeURIComponent(url);
+    const url = `https://uris.nins.cc/?data=${encodeURIComponent(information)}`;
+    ///const encoding = "https://encoding.nins.cc/?data=" + encodeURIComponent(url);
+    const encoding = "https://copyright.nins.cc/children/encoding?data=" + encodeURIComponent(url);
     
     navigator.clipboard.writeText(url).then(() => {
         copyButton.textContent = "✅";  // Copied 🔗  // 🎁
@@ -857,9 +883,8 @@ function onlyCopy() {
         ///document.getElementById('message').innerHTML = "🎁 Link has been copied and is ready to paste!";
         document.getElementById('message').innerHTML = "🎁 Link has been copied! Paste it wherever you like!";
 
-        ///const encoding = "https://encoding.nins.cc/?data=" + encodeURIComponent(url);
-        ///window.open(encoding, "_blank", "noopener,noreferrer");
-        setTimeout(() => { window.open(encoding, "_blank", "noopener,noreferrer"); }, 2000);
+        document.getElementById('DialogEncoding').innerHTML = `<iframe src=\'${encoding}\' style=\'width:100%; height:100%; border:none; overflow:hidden;\' scrolling=\'no\'></iframe>`;
+        document.getElementById('DialogEncoding').showModal();
     });
 }
 function updateAndCopy() {
@@ -869,7 +894,7 @@ function updateAndCopy() {
     if (!information) {
         const url = "https://uris.nins.cc/?data=";
         document.getElementById('miniURL').innerHTML = `💡 <a href='${url}'>${url}</a> 🌐`;  ///'💡 https://uris.nins.cc/?data=#';
-        ///document.getElementById('miniURL').innerHTML = '💡 https://uris.nins.cc?data=';
+        ///document.getElementById('miniURL').innerHTML = '💡 https://uris.nins.cc/?data=';
         copyButton.textContent = "⚠️";
         ///copyButton.textContent = "⚠️ Missing 🔗";
         //////setTimeout(() => (copyButton.textContent = "🔗"), 2000);  // Copy URL 
@@ -882,7 +907,7 @@ function updateAndCopy() {
     if (!redirect) {
         const url = "https://uris.nins.cc/?data=";
         document.getElementById('miniURL').innerHTML = `💡 <a href='${url}'>${url}</a> 🌐`;  ///'💡 https://uris.nins.cc/?data=#';
-        ///document.getElementById('miniURL').innerHTML = '💡 https://uris.nins.cc?data=';
+        ///document.getElementById('miniURL').innerHTML = '💡 https://uris.nins.cc/?data=';
         copyButton.textContent = "⚠️";
         ///copyButton.textContent = "⚠️ ERROR 🔗";
         //////setTimeout(() => (copyButton.textContent = "🔗"), 2000);  // Copy URL 
@@ -891,14 +916,15 @@ function updateAndCopy() {
 
     
     ///const url = `${url_op}?data=${encodeURIComponent(information)}`;
-    ///const url = `https://uris.nins.cc?data=${encodeURIComponent(information)}`;
-    ///const url = `https://uris.nins.cc?data=${(information)}`;
+    ///const url = `https://uris.nins.cc/?data=${encodeURIComponent(information)}`;
+    ///const url = `https://uris.nins.cc/?data=${(information)}`;
     /*
     const url = "";
-    if (isEncoded(recipient)) { url = `https://uris.nins.cc?data=${(information)}` } // ✅
-    else { url = `https://uris.nins.cc?data=${encodeURIComponent(information)}`; } */
-    const url = `https://uris.nins.cc?data=${encodeURIComponent(information)}`;
-    const encoding = "https://encoding.nins.cc/?data=" + encodeURIComponent(url);
+    if (isEncoded(recipient)) { url = `https://uris.nins.cc/?data=${(information)}` } // ✅
+    else { url = `https://uris.nins.cc/?data=${encodeURIComponent(information)}`; } */
+    const url = `https://uris.nins.cc/?data=${encodeURIComponent(information)}`;
+    ///const encoding = "https://encoding.nins.cc/?data=" + encodeURIComponent(url);
+    const encoding = "https://copyright.nins.cc/children/encoding?data=" + encodeURIComponent(url);
 
     ///document.getElementById('message').innerHTML = `✅ <a href='${url}'>${url}</a> 🌐`;
     ///document.getElementById('miniURL').innerHTML = `✅ <a href='${url}'>${url}</a> 🌐`;
