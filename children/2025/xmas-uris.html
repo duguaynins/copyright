@@ -1,6 +1,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -883,8 +884,9 @@ function onlyCopy() {
         ///document.getElementById('message').innerHTML = "🎁 Link has been copied and is ready to paste!";
         document.getElementById('message').innerHTML = "🎁 Link has been copied! Paste it wherever you like!";
 
-        document.getElementById('DialogEncoding').innerHTML = `<iframe src=\'${encoding}\' style=\'width:100%; height:100%; border:none; overflow:hidden;\' scrolling=\'no\'></iframe>`;
-        document.getElementById('DialogEncoding').showModal();
+        ///document.getElementById('DialogEncoding').innerHTML = `<iframe src=\'${encoding}\' style=\'width:100%; height:100%; border:none; overflow:hidden;\' scrolling=\'no\'></iframe>`;
+        ///document.getElementById('DialogEncoding').showModal();
+        setTimeout(() => { window.open(encoding, "_blank", "noopener,noreferrer"); }, 2000);
     });
 }
 function updateAndCopy() {
