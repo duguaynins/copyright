@@ -1,8 +1,4 @@
 
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -256,7 +252,7 @@
                     "></canvas><br>
               </div>
 
-              <div style="background: #FFFFFF; color: black; display: block;" id="download">
+              <div style="background: #FFFFFF; color: black;">
                   <h1 translate="no" style="margin: 0;">© 2024 NINS. 👻</h1>
                   <p translate="no" style="margin: 0; color: red;">(by JPGT)</p>
                   <!--p>🔺🔺🔺</p!-->
@@ -328,6 +324,15 @@
           </div></div>
           <strong style="background-color: black; color: white; font-size: max(1vh,1vw);" translate="no">© 2024 NINS (by JPGT).</strong>
     </div>
+
+    <dialog id="DialogImage">
+      <div id="download" style="background: #FFFFFF; color: black;
+      display: flex;
+      justify-content: center;  /* 水平置中 */
+      align-items: center;      /* 垂直置中 */ 
+      overflow: hidden;">
+      </div>
+    </dialog>
 
     <script>
       function downloadPNG(canvas) {
@@ -641,9 +646,10 @@
 
         const img = new Image();
         img.src = a.toDataURL("image/png");  ///document.getElementById(a).  // 來源地
-        ///img.style.width = "100%";
-        ///img.style.height = "auto";
-        img.style.maxWidth = "90%";
+        img.style.width = "90vw";
+        img.style.height = "auto";
+        img.style.maxWidth = "70%";
+        img.style.maxHeight = "70%";
         /*
         const ctx = canvas.getContext("2d");
         img.onload = () => {
@@ -653,14 +659,20 @@
 
         b.innerHTML = "";
         b.appendChild(img);
-      }
 
+        document.getElementById("DialogImage").showModal();
+      }
+      /*
       document.getElementById('download').addEventListener("click", () => {
         downloadPNG(canvas);
-      });
+      });  */
 
       document.querySelectorAll("canvas").forEach(canvas => {  // 論巡
         canvas.addEventListener("click", async () => {
+
+          copyCanvas(canvas, document.getElementById("download"));
+          return;
+          
           // 若尚未進入全螢幕 → 請求全螢幕
           if (!document.fullscreenElement) {
             try {
@@ -715,4 +727,3 @@
     </script>
 </body>
 </html>
-
