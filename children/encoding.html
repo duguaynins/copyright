@@ -659,8 +659,6 @@
 
         b.innerHTML = "";
         b.appendChild(img);
-
-        document.getElementById("DialogImage").showModal();
       }
       /*
       document.getElementById('download').addEventListener("click", () => {
@@ -670,8 +668,9 @@
       document.querySelectorAll("canvas").forEach(canvas => {  // 論巡
         canvas.addEventListener("click", async () => {
 
-          copyCanvas(canvas, document.getElementById("download"));
-          return;
+          ///copyCanvas(canvas, document.getElementById("download"));
+          ///document.getElementById("DialogImage").showModal();
+          ///return;
           
           // 若尚未進入全螢幕 → 請求全螢幕
           if (!document.fullscreenElement) {
@@ -725,25 +724,5 @@
         document.getElementById('InputRoom').dispatchEvent(event);
       });
     </script>
-
-<!-- dialog close 0 ================================================== -->
-<script>
-document.querySelectorAll("dialog").forEach(dialog => {
-    dialog.addEventListener("click", function (event) {
-      const rect = this.getBoundingClientRect();
-      const isInDialog =
-        event.clientX >= rect.left &&
-        event.clientX <= rect.right &&
-        event.clientY >= rect.top &&
-        event.clientY <= rect.bottom;
-  
-      if (!isInDialog) {
-        this.close();
-      }
-    });
-});
-</script>
-<!-- dialog close 1 ================================================== -->
 </body>
 </html>
-
