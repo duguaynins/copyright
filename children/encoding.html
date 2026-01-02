@@ -641,6 +641,9 @@
 
         const img = new Image();
         img.src = a.toDataURL("image/png");  ///document.getElementById(a).  // 來源地
+        ///img.style.width = "100%";
+        ///img.style.height = "auto";
+        img.style.maxWidth = "90%";
         /*
         const ctx = canvas.getContext("2d");
         img.onload = () => {
@@ -712,3 +715,4 @@
     </script>
 </body>
 </html>
+
