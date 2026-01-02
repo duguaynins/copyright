@@ -725,5 +725,25 @@
         document.getElementById('InputRoom').dispatchEvent(event);
       });
     </script>
+
+<!-- dialog close 0 ================================================== -->
+<script>
+document.querySelectorAll("dialog").forEach(dialog => {
+    dialog.addEventListener("click", function (event) {
+      const rect = this.getBoundingClientRect();
+      const isInDialog =
+        event.clientX >= rect.left &&
+        event.clientX <= rect.right &&
+        event.clientY >= rect.top &&
+        event.clientY <= rect.bottom;
+  
+      if (!isInDialog) {
+        this.close();
+      }
+    });
+});
+</script>
+<!-- dialog close 1 ================================================== -->
 </body>
 </html>
+
