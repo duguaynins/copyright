@@ -2,6 +2,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -231,8 +232,6 @@
           <div style="margin: 10px;" onclick="document.getElementById('DialogShare').showModal()">
           nins/encoding
           </div></div>
-          <u translate="yes" style="text-decoration:none; color:black; background: #eee;">By sending a message to this service, it means you have agreed to any content and all content!</u>
-          
           
           <div id="content" style="background: #FFFFFF; width: 100%; flex: 1; border: 1px solid #ccc; overflow:auto; position: relative;">
               <!--img id="linkCode" onclick="openLink()" alt='QR Code' style="width:100%;"-->
@@ -257,7 +256,7 @@
                     "></canvas><br>
               </div>
 
-              <div style="background: #FFFFFF; color: black; display: block;">
+              <div style="background: #FFFFFF; color: black; display: block;" id="download">
                   <h1 translate="no" style="margin: 0;">© 2024 NINS. 👻</h1>
                   <p translate="no" style="margin: 0; color: red;">(by JPGT)</p>
                   <!--p>🔺🔺🔺</p!-->
@@ -637,6 +636,26 @@
       ///const canvas = document.getElementById("qrcode");
       ///const canvases = document.querySelectorAll("canvas");  // 論巡
 
+      function copyCanvas(a, b) {
+        const canvas = b;  ///document.getElementById(b);  // 目的地
+
+        const img = new Image();
+        img.src = a.toDataURL("image/png");  ///document.getElementById(a).  // 來源地
+        /*
+        const ctx = canvas.getContext("2d");
+        img.onload = () => {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0);
+        };  */
+
+        b.innerHTML = "";
+        b.appendChild(img);
+      }
+
+      document.getElementById('download').addEventListener("click", () => {
+        downloadPNG(canvas);
+      });
+
       document.querySelectorAll("canvas").forEach(canvas => {  // 論巡
         canvas.addEventListener("click", async () => {
           // 若尚未進入全螢幕 → 請求全螢幕
@@ -650,8 +669,12 @@
               if (screen.orientation && screen.orientation.lock) {
                 screen.orientation.lock("landscape").catch(() => {});
               }
+              console.log("full!!!");
+              copyCanvas(canvas, document.getElementById("download"));
+              
             } catch (e) {
               console.log(e);
+              copyCanvas(canvas, document.getElementById("download"));
             }
           } else {
             // 若已在全螢幕 → 退出
