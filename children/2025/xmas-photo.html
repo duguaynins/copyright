@@ -462,21 +462,28 @@
 
 
 
-<div id="content" style="background: #CCCCCC; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
+<div id="content" style="background: white; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
 
-    <img id="displayImg" src="https://copyright.nins.cc/children/2025/xmas.png" style="width: 100%; height: 100%; object-fit: cover;
-        border: 10px solid white; /* 白色主框線 */
-        outline: 2px solid #ff3b00; /* 最外層紅色細線 */">
+    <img id="displayImg" src="https://copyright.nins.cc/children/2025/xmas.png" style="max-width: 100%; max-height: 100%; object-fit: cover;
+        border: 10px solid #eeeeee; /* 白色主框線 */
+        outline: 2px solid #ff3b00; /* 最外層紅色細線 */
+        object-fit: contain;">
 
-    <button onclick="document.getElementById('fileInput').click()"  class="main"
-            style="position: absolute; bottom: 80px; margin: 10px; padding: 10px; background: green; color: white; border-radius: 8px; opacity: 0.8;">
+    <!--button onclick="document.getElementById('fileInput').click()"  class="main"
+            style="position: absolute; bottom: 20px; margin: 10px; padding: 10px; background: green; color: white; border-radius: 8px; opacity: 0.8;">
         🖼️
-    </button>
-    <input type="file" id="fileInput" style="display:none" accept="image/*">
+    </button!-->
+    <!--input type="file" id="fileInput" style="display:none" accept="image/*"!-->
         
-<input type="file" id="fileInput" style="display:none" accept="image/*">
+
                     
 </div>
+
+<input type="file" id="fileInput" style="display:none" accept="image/*">
+<button onclick="document.getElementById('fileInput').click()"  class="main"
+        style="background: green; color: white; opacity: 0.8;">
+    🖼️
+</button>
 <!--button class="btn-fire" onclick="launch();" style="background: red; border-radius: 0%" translate="no">FIRE</button-->
 <!-- 放置你原有的布局 -->
             
@@ -510,7 +517,8 @@
             reader.onload = function(event) {
                 const contentArea = document.getElementById('content');
                 ///contentArea.innerHTML = `<img src="${event.target.result}" style="max-width:100%; border-radius:10px;">`;
-                contentArea.innerHTML = `<img src="${event.target.result}" style="width: 100%; height: 100%; object-fit: cover;
+                contentArea.innerHTML = `<img src="${event.target.result}" style="object-fit: cover;
+                max-width: 100%; max-height: 100%;
                 border: 10px solid pink; /* 白色主框線 */
                 outline: 2px solid #ff3b00; /* 最外層紅色細線 */">`;
                 ///contentArea.innerHTML = `<img src="${event.target.result}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 0;">`;
