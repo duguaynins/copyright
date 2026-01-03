@@ -121,8 +121,21 @@
 
 <xml id="toolbox" style="display:none">
   <category name="All" colour="#777777">
+    <block type="point_node">
+      <field name="NAME">P</field>
+      <value name="X_VAL">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <value name="Y_VAL">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+    </block>
+    <!--block type="point_node"></block!-->
     <block type="start_node"></block>
-    <block type="point_node"></block>
     <block type="math_single"></block>
     <block type="math_arithmetic"></block>
     <block type="variables_get"><field name="VAR">x</field></block>
@@ -163,7 +176,7 @@
   Blockly.Blocks['point_node'] = {
     init: function() {
       this.appendDummyInput()
-          .appendField("標記點")
+          .appendField("")
           .appendField(new Blockly.FieldTextInput("P"), "NAME");
       this.appendValueInput("X_VAL").setCheck("Number").appendField("x =");
       this.appendValueInput("Y_VAL").setCheck("Number").appendField("y =");
@@ -350,9 +363,9 @@
       datasets.push({
         label: pName,
         data: [{ x: px, y: py }],
-        backgroundColor: '#000000', // 點的顏色
-        borderColor: '#ff0000',
-        pointRadius: 6,             // 讓點變大明顯
+        backgroundColor: '#ffffff', // 點的顏色
+        borderColor: '#000000',
+        pointRadius: 8,             // 讓點變大明顯
         pointHoverRadius: 8,
         showLine: false,             // 重要：不連成線
         order: 1, // 函數層級設為 2 (較後方)
