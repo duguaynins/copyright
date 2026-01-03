@@ -173,10 +173,12 @@
   }
 
   // Blockly 定義
+  ///Blockly.Msg["math_single"] = "📌A";
+  ///Blockly.Msg["math_arithmetic"] = "📌B";
   Blockly.Blocks['point_node'] = {
     init: function() {
       this.appendDummyInput()
-          .appendField("")
+          .appendField("")  ///📌
           .appendField(new Blockly.FieldTextInput("P"), "NAME");
       this.appendValueInput("X_VAL").setCheck("Number").appendField("x =");
       this.appendValueInput("Y_VAL").setCheck("Number").appendField("y =");
@@ -265,6 +267,33 @@
     return null;
   }
 
+  function blockToText(block) {  // 20260103#1
+    if (!block) return "";
+    const type = block.type;
+
+    if (type === 'variables_get') {
+      const varId = block.getFieldValue('VAR');
+      return workspace.getVariableById(varId).name; // 回傳 "x" 或 "y"
+    }
+    
+    if (type === 'math_number') return block.getFieldValue('NUM');
+    
+    if (type === 'math_arithmetic') {
+      const a = blockToText(block.getInputTargetBlock('A'));
+      const b = blockToText(block.getInputTargetBlock('B'));
+      const op = block.getFieldValue('OP');
+      const opMap = { 'ADD': '+', 'MINUS': '-', 'MULTIPLY': '*', 'DIVIDE': '/', 'POWER': '^' };
+      return `(${a} ${opMap[op]} ${b})`;
+    }
+
+    if (type === 'math_single') {
+      const arg = blockToText(block.getInputTargetBlock('NUM'));
+      const op = block.getFieldValue('OP');
+      return `${op.toLowerCase()}(${arg})`;
+    }
+    return "";
+  }
+
   let chart = null;
   function drawAll(Xinput=null, Yinput=null) {
     const startBlocks = workspace.getBlocksByType('start_node');
@@ -317,6 +346,10 @@
       if (!target) return;
 
       const mode = startBlock.getFieldValue('MODE'); // 'Y_EQ' 或 'X_EQ'
+      const funcName = startBlock.getFieldValue('NAME');  // 20260103#1
+      const formula = blockToText(target); // 取得公式字串  // 20260103#1
+      const fullLabel = mode === 'Y_EQ' ? `${funcName}(x): y = ${formula}` : `${funcName}(y): x = ${formula}`;  // 20260103#1
+
       const dataPoints = [];
 
       if (mode === 'Y_EQ') {
@@ -336,7 +369,8 @@
       }
 
       datasets.push({
-        label: startBlock.getFieldValue('NAME'),
+        ///label: startBlock.getFieldValue('NAME'),
+        label: fullLabel,  // 20260103#1
         data: dataPoints, // Chart.js 支援 {x: , y: } 格式的數據物件
         borderColor: colorPalette[index % colorPalette.length],
         showLine: true,
