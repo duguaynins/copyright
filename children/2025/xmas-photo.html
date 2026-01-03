@@ -399,12 +399,13 @@
         /* 滑桿樣式 */
         input[type="range"] { flex: 1; cursor: pointer; }
         
-        #clickInput { opacity: 1.0; background:#ffd700; }
-        #clickInput:hover {
+
+        .clickInput { opacity: 1.0; background:#ffd700; }
+        .clickInput:hover {
           background-color: #cdcdcd;
           color: black;
         }
-        #clickInput:active {
+        .clickInput:active {
           background-color: #222222;
           color: white;
         }
@@ -473,7 +474,7 @@
           
 <!-- 放置你原有的布局 -->
 
-<button id="clickInputA" class="main" onclick="COPYRIGHT()">👻</button>
+<button id="clickInputA" class="main clickInput" onclick="COPYRIGHT()">👻</button>
 
 
 <div id="content" style="background: #008000; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
@@ -493,7 +494,7 @@
 </div>
 
 
-<button id="clickInputB" class="main" onclick="document.getElementById('fileInput').click()">🖼️</button>
+<button id="clickInputB" class="main clickInput" onclick="document.getElementById('fileInput').click()">🖼️</button>
 
 <input type="file" id="fileInput" style="display:none" accept="image/*">
 <!-- 放置你原有的布局 -->
