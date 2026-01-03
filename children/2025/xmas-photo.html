@@ -396,6 +396,17 @@
 
         /* 滑桿樣式 */
         input[type="range"] { flex: 1; cursor: pointer; }
+        
+        #clickInput { background-color: #eee; }
+        #clickInput:hover {
+          background-color: #cdcdcd;
+          color: black;
+        }
+        #clickInput:active {
+          background-color: #222222;
+          color: white;
+        }
+        
     </style>
     <!--style>
         @keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
@@ -480,8 +491,8 @@
 </div>
 
 <input type="file" id="fileInput" style="display:none" accept="image/*">
-<button onclick="document.getElementById('fileInput').click()"  class="main"
-        style="background: green; color: white; opacity: 0.8;">
+<button id="clickInput" onclick="document.getElementById('fileInput').click()"  class="main"
+        style="opacity: 0.8;">
     🖼️
 </button>
 <!--button class="btn-fire" onclick="launch();" style="background: red; border-radius: 0%" translate="no">FIRE</button-->
@@ -524,7 +535,7 @@
                 ///contentArea.innerHTML = `<img src="${event.target.result}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 0;">`;
             };
             reader.readAsDataURL(file);
-            document.getElementById('content').style.background = "white";
+            document.getElementById('content').style.background = "black";
         }
     });
  </script>
