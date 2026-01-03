@@ -1,6 +1,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -219,7 +220,7 @@
         50%      { border-color: transparent; }
       }
       .main {
-          border: 2px solid red;
+          /* border: 2px solid red; */
           padding: 8px;
           /**animation: blinkBorder 1s infinite;  //===*/
           /* 呼吸式動畫：平滑過渡 */
@@ -227,6 +228,11 @@
           /* 閃爍式動畫：瞬間切換 */
           animation: hardBlink 1.0s steps(1, start) infinite;
       }
+      @keyframes hardOutline {
+        0%, 100% { Outline-color: red; }
+        50%      { Outline-color: transparent; }
+      }
+      .click { animation: hardOutline 1.0s steps(1, start) infinite; }
       
       input:hover {
         background-color: #cdcdcd;
@@ -524,6 +530,7 @@ align-items: center;">
   </dialog>
     
   <dialog id="DialogColor" translate="no">
+      <input type="checkbox" id="borderToggle">
       <input id="imgbgColorA" class="" value="#ffd700" type="color" class="color-bg" style=" width: 100%; opacity:1.0; z-index:1;
       border: none;
       outline: none;
@@ -548,6 +555,26 @@ align-items: center;">
 <!-- HTML ================================================== -->
     
 <!-- 放置你原有的布局 -->
+ <script>
+
+  document.getElementById('borderToggle').addEventListener('change', function () {
+    ///const checkbox = document.getElementById('borderToggle');
+    const image = document.getElementById('displayImg');
+    
+    if (this.checked) {
+      ///image.className = "main";
+      image.classList.add("click");
+      image.style.border = '10px solid #eeeeee';
+      image.style.outline = '2px solid #ff3b00';
+    } else {
+      ///image.className = "";
+      image.classList.remove("click");
+      image.style.border = 'none';
+      image.style.outline = 'none';
+    }
+  });
+</script>
+
 <script src="https://unpkg.com/interactjs/dist/interact.min.js"></script>
 <script>
 interact('#displayImg')
@@ -627,7 +654,7 @@ interact('#displayImg')
               object-fit: contain; object-fit: cover;
               position: relative; display: block;
               /* border: 10px solid pink; /* 白色主框線 */
-              outline: 2px solid #ff3b00; /* 最外層紅色細線 */
+              /* outline: 2px solid #ff3b00; /* 最外層紅色細線 */
               touch-action: none;">`;
               ///contentArea.innerHTML = `<img src="${event.target.result}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 0;">`;
           };
@@ -637,6 +664,7 @@ interact('#displayImg')
           ///document.getElementById('content').style.background = "#cdcdcd";
           ///document.getElementById('imgbgColorB').value = "#cdcdcd";
           document.getElementById('DialogColor').showModal();
+          document.getElementById('borderToggle').checked = false;
       }
   });
 </script>
@@ -1012,9 +1040,7 @@ function COPYRIGHT() {
   window.open("https://copyright.nins.cc/", "_blank", "noopener,noreferrer");
 }
 </script>
-    
 </body>
-
 </html>
 
 
