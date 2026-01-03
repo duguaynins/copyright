@@ -470,16 +470,25 @@
           </div></div>
           
 <!-- 放置你原有的布局 -->
+<input id="imgbgColorA" class="" value="#008000" type="color" class="color-bg" style=" width: 100%; opacity:1.0; z-index:1;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  padding: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  background: none;">
+<button id="clickInput" class="main" onclick="COPYRIGHT()" style="opacity: 1.0; background:yellow;">👻</button>
 
 
-
-<div id="content" style="background: white; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
+<div id="content" style="background: #008000; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
 
 <img id="displayImg" src="https://copyright.nins.cc/children/2025/xmas.png" style="
-    max-width: 100%; max-height: 100%; width: min(70vh,70vw); object-fit: contain;
-    border: 10px solid #eeeeee; /* 白色主框線 */
+    max-width: 100%; max-height: 100%; 
+    object-fit: contain; object-fit: cover;
+    /* border: 10px solid #eeeeee; /* 白色主框線 */
     outline: 2px solid #ff3b00; /* 最外層紅色細線 */
-    object-fit: contain;">
+    ">
 
 <!--button onclick="document.getElementById('fileInput').click()"  class="main"
         style="position: absolute; bottom: 20px; margin: 10px; padding: 10px; background: green; color: white; border-radius: 8px; opacity: 0.8;">
@@ -489,13 +498,16 @@
 </div>
 
 
-
+<button id="clickInput" class="main" onclick="document.getElementById('fileInput').click()" style="opacity: 1.0; background:yellow;">🖼️</button>
+<input id="imgbgColorB" class="" value="#008000" type="color" class="color-bg" style=" width: 100%; opacity:1.0; z-index:1;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  padding: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  background: none;">
 <input type="file" id="fileInput" style="display:none" accept="image/*">
-<button id="clickInput" onclick="document.getElementById('fileInput').click()"  class="main"
-        style="opacity: 0.8;">
-    🖼️
-</button>
-<!--button class="btn-fire" onclick="launch();" style="background: red; border-radius: 0%" translate="no">FIRE</button-->
 <!-- 放置你原有的布局 -->
             
           <!--strong></strong-->
@@ -519,26 +531,85 @@
 <!-- HTML ================================================== -->
     
 <!-- 放置你原有的布局 -->
- 
- <script>
-    document.getElementById('fileInput').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const contentArea = document.getElementById('content');
-                ///contentArea.innerHTML = `<img src="${event.target.result}" style="max-width:100%; border-radius:10px;">`;
-                contentArea.innerHTML = `<img src="${event.target.result}" style="
-                max-width: 100%; max-height: 100%; width: min(70vh,70vw); object-fit: contain;
-                border: 10px solid pink; /* 白色主框線 */
-                outline: 2px solid #ff3b00; /* 最外層紅色細線 */">`;
-                ///contentArea.innerHTML = `<img src="${event.target.result}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 0;">`;
-            };
-            reader.readAsDataURL(file);
-            document.getElementById('content').style.background = "black";
-        }
-    });
- </script>
+<script src="https://unpkg.com/interactjs/dist/interact.min.js"></script>
+<script>
+interact('#displayImg')
+.draggable({
+  listeners: {
+    move (event) {
+      const target = event.target;
+      const x = (parseFloat(target.dataset.x) || 0) + event.dx;
+      const y = (parseFloat(target.dataset.y) || 0) + event.dy;
+
+      target.style.transform = `translate(${x}px, ${y}px)`;
+      target.dataset.x = x;
+      target.dataset.y = y;
+    }
+  }
+})
+.resizable({
+  edges: { left: true, right: true, bottom: true, top: true },
+  listeners: {
+    move (event) {
+      const target = event.target;
+
+      let x = parseFloat(target.dataset.x) || 0;
+      let y = parseFloat(target.dataset.y) || 0;
+
+      // ⭐ 實際改變尺寸
+      target.style.width  = event.rect.width + 'px';
+      target.style.height = event.rect.height + 'px';
+
+      // ⭐ 修正左 / 上邊拉動時的位置
+      x += event.deltaRect.left;
+      y += event.deltaRect.top;
+
+      target.style.transform = `translate(${x}px, ${y}px)`;
+
+      target.dataset.x = x;
+      target.dataset.y = y;
+    }
+  }
+});
+/*
+.resizable({
+  edges: { left: true, right: true, bottom: true, top: true }
+});  */
+</script>
+
+
+<script>
+  document.getElementById('imgbgColorA').addEventListener('input', function () {
+      document.getElementById('content').style.background = this.value;
+      document.getElementById('imgbgColorB').value = this.value;
+  });
+  document.getElementById('imgbgColorB').addEventListener('input', function () {
+      document.getElementById('content').style.background = this.value;
+      document.getElementById('imgbgColorA').value = this.value;
+  });
+  document.getElementById('fileInput').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+          const reader = new FileReader();
+          reader.onload = function(event) {
+              const contentArea = document.getElementById('content');
+              ///contentArea.innerHTML = `<img src="${event.target.result}" style="max-width:100%; border-radius:10px;">`;
+              contentArea.innerHTML = `<img src="${event.target.result}" id="displayImg" style="
+              max-width: 100%; max-height: 100%; 
+              object-fit: contain; object-fit: cover;
+              position: relative; display: block;
+              /* border: 10px solid pink; /* 白色主框線 */
+              outline: 2px solid #ff3b00; /* 最外層紅色細線 */">`;
+              ///contentArea.innerHTML = `<img src="${event.target.result}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 0;">`;
+          };
+          reader.readAsDataURL(file);
+          document.getElementById('content').style.background = "#cdcdcd";
+          document.getElementById('imgbgColorA').value = "#cdcdcd";
+          document.getElementById('content').style.background = "#cdcdcd";
+          document.getElementById('imgbgColorB').value = "#cdcdcd";
+      }
+  });
+</script>
 
 
 
@@ -849,14 +920,14 @@ console.error(new Date().toLocaleString(), 'This is an error test.');
       if (lang.replace(/_/g, "-").split("-")[0] === "en") {
         ///document.getElementById("input_msg").style.display = "block";
         ///document.getElementById("input_msgbtn").style.display = "block";
-        document.getElementById("content").style.background = "#CDCDCD";
+        document.getElementById("content").style.background = "#008000";
         ///document.getElementById('Input').textAlign = 'center';
       }
   
       waitForTranslationById('notice', () => {
         ///document.getElementById("input_msg").style.display = "block";
         ///document.getElementById("input_msgbtn").style.display = "block";
-        document.getElementById("content").style.background = "#CDCDCD";
+        document.getElementById("content").style.background = "#008000";
         ///document.getElementById('Input').textAlign = 'center';
       });
 
@@ -905,6 +976,11 @@ console.error(new Date().toLocaleString(), 'This is an error test.');
   });
 </script>
 <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script>
+function COPYRIGHT() {
+  window.open("https://copyright.nins.cc/", "_blank", "noopener,noreferrer");
+}
+</script>
     
 </body>
 
