@@ -520,6 +520,7 @@ align-items: center;">
     </div>
   
   <dialog id="DialogTrans" translate="no">
+      <input type="text" id="imgInput" placeholder="image...">
       <div id="google_translate_element" style="display:block;"></div><br>      
       <button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogTrans').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
   </dialog>
@@ -556,7 +557,13 @@ align-items: center;">
     
 <!-- 放置你原有的布局 -->
  <script>
-
+document.getElementById('imgInput').addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    ///console.log("Enter 送出");
+    document.getElementById("displayImg").src = document.getElementById("imgInput").value;
+  }
+});
+   
   document.getElementById('borderToggle').addEventListener('change', function () {
     ///const checkbox = document.getElementById('borderToggle');
     const image = document.getElementById('displayImg');
@@ -1042,6 +1049,7 @@ function COPYRIGHT() {
 </script>
 </body>
 </html>
+
 
 
 
