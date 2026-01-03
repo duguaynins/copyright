@@ -688,7 +688,8 @@ interact('#displayImg')
                 snow.style.filter = `blur(1.5px)`;
             }
 
-            document.body.appendChild(snow);
+            ///document.body.appendChild(snow);
+            document.getElementById('app').appendChild(snow);
 
             snow.addEventListener('animationend', () => {
                 snow.remove();
