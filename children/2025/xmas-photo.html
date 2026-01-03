@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -417,7 +418,7 @@
 </style-->
 <!-- 放置你原有的布局 -->
 </head>
-<body>
+<body id="body">
     <!--div id="google_translate_element" style="display:none;"></div-->
   
   
@@ -498,7 +499,7 @@ align-items: center;">
 </div>
 
 
-<button id="clickInputB" class="main clickInput" onclick="document.getElementById('fileInput').click()">🖼️</button>
+<button id="clickInputB" class="main clickInput" onclick="document.getElementById('fileInput').click();document.getElementById('DialogColor').showModal()">🖼️</button>
 
 <input type="file" id="fileInput" style="display:none" accept="image/*">
 <!-- 放置你原有的布局 -->
@@ -595,6 +596,15 @@ interact('#displayImg')
 
 
 <script>
+  function goFullscreen() {
+    const el = document.getElementById('body');
+
+    if (el.requestFullscreen) {
+      el.requestFullscreen();
+    } else if (el.webkitRequestFullscreen) {
+      el.webkitRequestFullscreen(); // Android 舊版
+    }
+  }
   document.getElementById('imgbgColorA').addEventListener('input', function () {
       document.getElementById('clickInputA').style.background = this.value;
       document.getElementById('clickInputB').style.background = this.value;
