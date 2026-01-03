@@ -448,7 +448,7 @@
       pointer-events: none;  /* 動畫期間不阻擋互動（可選）*/
     "></button>
     
-    <div style="
+    <div id="app" style="
       position: fixed;
       bottom: 0;
       top: 0; /* 距離頂部 0 */
@@ -483,7 +483,7 @@ display: flex;
 justify-content: center;
 align-items: center;">
 
-<img id="displayImg" src="https://copyright.nins.cc/children/2025/xmas.png" style="
+<img id="displayImg" src="https://copyright.nins.cc/children/2025/xmas.png" onclick="goFullscreen();" style="
     max-width: 100%; max-height: 100%; 
     object-fit: contain; object-fit: cover;
     /* border: 10px solid #eeeeee; /* 白色主框線 */
@@ -499,7 +499,7 @@ align-items: center;">
 </div>
 
 
-<button id="clickInputB" class="main clickInput" onclick="document.getElementById('fileInput').click();document.getElementById('DialogColor').showModal()">🖼️</button>
+<button id="clickInputB" class="main clickInput" onclick="document.getElementById('fileInput').click();document.getElementById('DialogColor').showModal();">🖼️</button>
 
 <input type="file" id="fileInput" style="display:none" accept="image/*">
 <!-- 放置你原有的布局 -->
@@ -597,7 +597,7 @@ interact('#displayImg')
 
 <script>
   function goFullscreen() {
-    const el = document.getElementById('body');
+    const el = document.getElementById('app');
 
     if (el.requestFullscreen) {
       el.requestFullscreen();
@@ -621,7 +621,7 @@ interact('#displayImg')
           reader.onload = function(event) {
               const contentArea = document.getElementById('content');
               ///contentArea.innerHTML = `<img src="${event.target.result}" style="max-width:100%; border-radius:10px;">`;
-              contentArea.innerHTML = `<img src="${event.target.result}" id="displayImg" style="
+              contentArea.innerHTML = `<img src="${event.target.result}" onclick="goFullscreen();" id="displayImg" style="
               max-width: 100%; max-height: 100%; 
               object-fit: contain; object-fit: cover;
               position: relative; display: block;
