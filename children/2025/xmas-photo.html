@@ -477,7 +477,10 @@
 <button id="clickInputA" class="main clickInput" onclick="COPYRIGHT()">👻</button>
 
 
-<div id="content" style="background: #008000; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
+<div id="content" style="background: #008000; overflow: hidden; width:100%; flex:1; border: 1px solid #ccc; color: black;
+display: flex;
+justify-content: center;
+align-items: center;">
 
 <img id="displayImg" src="https://copyright.nins.cc/children/2025/xmas.png" style="
     max-width: 100%; max-height: 100%; 
@@ -546,6 +549,7 @@
 <script src="https://unpkg.com/interactjs/dist/interact.min.js"></script>
 <script>
 interact('#displayImg')
+/*
 .draggable({
   listeners: {
     move (event) {
@@ -558,9 +562,9 @@ interact('#displayImg')
       target.dataset.y = y;
     }
   }
-})
+})  */
 .resizable({
-  edges: { left: true, right: true, bottom: true, top: true },
+  edges: { left: false, right: true, bottom: true, top: false },
   listeners: {
     move (event) {
       const target = event.target;
