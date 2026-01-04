@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>圖片自動排列 A4</title>
+
+<style>
+  body {
+    font-family: Arial;
+  }
+
+  .a4 {
+    width: 21cm;
+    height: 29.7cm;
+    border: 1px solid #000;
+    padding: 1cm;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 2cm);
+    grid-auto-rows: 2cm;
+    gap: 5mm;
+    box-sizing: border-box;
+  }
+
+  .a4 img {
+    width: 2cm;
+    height: 2cm;
+    object-fit: cover;
+  }
+
+  @media print {
+    body * {
+      visibility: hidden;
+    }
+    .a4, .a4 * {
+      visibility: visible;
+    }
+    .a4 {
+      position: absolute;
+      left: 0;
+      top: 0;
+      border: none;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h3>選擇圖片</h3>
+<input type="file" accept="image/*" multiple onchange="loadImages(event)">
+
+<button onclick="window.print()">列印 / 另存 PDF</button>
+
+<hr>
+
+<div class="a4" id="a4"></div>
+
+<script>
+function loadImages(event) {
+  const files = event.target.files;
+  const container = document.getElementById('a4');
+  container.innerHTML = '';
+
+  Array.from(files).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      container.appendChild(img);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+</script>
+
+</body>
+</html>
