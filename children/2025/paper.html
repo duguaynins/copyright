@@ -49,11 +49,35 @@
 <h3>選擇一張圖片（會自動重複排滿 A4）</h3>
 <input type="file" accept="image/*" onchange="fillA4(event)">
 <button onclick="window.print()">列印 / 存成 PDF</button>
+<button onclick="savePDF()">下載 A4 PDF</button>
+
 
 <hr>
 
 <div class="a4" id="a4"></div>
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+async function savePDF() {
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF('p', 'mm', 'a4');
+
+  const element = document.getElementById('a4');
+
+  await pdf.html(element, {
+    x: 0,
+    y: 0,
+    width: 210, // A4 寬 mm
+    windowWidth: element.scrollWidth
+  });
+
+  pdf.save('A4圖片排列.pdf');
+}
+</script>
+
+
+  
 <script>
 function fillA4(event) {
   const file = event.target.files[0];
