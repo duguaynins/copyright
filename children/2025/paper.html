@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<title>圖片自動排列 A4</title>
+<title>A4 重複圖片排列</title>
 
 <style>
   body {
@@ -12,13 +12,14 @@
   .a4 {
     width: 21cm;
     height: 29.7cm;
-    border: 1px solid #000;
     padding: 1cm;
+    box-sizing: border-box;
+    border: 1px solid #000;
+
     display: grid;
     grid-template-columns: repeat(auto-fill, 2cm);
     grid-auto-rows: 2cm;
     gap: 5mm;
-    box-sizing: border-box;
   }
 
   .a4 img {
@@ -36,8 +37,8 @@
     }
     .a4 {
       position: absolute;
-      left: 0;
       top: 0;
+      left: 0;
       border: none;
     }
   }
@@ -45,30 +46,43 @@
 </head>
 <body>
 
-<h3>選擇圖片</h3>
-<input type="file" accept="image/*" multiple onchange="loadImages(event)">
-
-<button onclick="window.print()">列印 / 另存 PDF</button>
+<h3>選擇一張圖片（會自動重複排滿 A4）</h3>
+<input type="file" accept="image/*" onchange="fillA4(event)">
+<button onclick="window.print()">列印 / 存成 PDF</button>
 
 <hr>
 
 <div class="a4" id="a4"></div>
 
 <script>
-function loadImages(event) {
-  const files = event.target.files;
-  const container = document.getElementById('a4');
-  container.innerHTML = '';
+function fillA4(event) {
+  const file = event.target.files[0];
+  if (!file) return;
 
-  Array.from(files).forEach(file => {
-    const reader = new FileReader();
-    reader.onload = e => {
+  const reader = new FileReader();
+  reader.onload = e => {
+    const container = document.getElementById('a4');
+    container.innerHTML = '';
+
+    // A4 可用尺寸（扣掉 padding）
+    const a4WidthCm = 21 - 2;    // 左右各 1cm
+    const a4HeightCm = 29.7 - 2; // 上下各 1cm
+
+    const imgSizeCm = 2;
+    const gapCm = 0.5;
+
+    const cols = Math.floor(a4WidthCm / (imgSizeCm + gapCm));
+    const rows = Math.floor(a4HeightCm / (imgSizeCm + gapCm));
+    const total = cols * rows;
+
+    for (let i = 0; i < total; i++) {
       const img = document.createElement('img');
       img.src = e.target.result;
       container.appendChild(img);
-    };
-    reader.readAsDataURL(file);
-  });
+    }
+  };
+
+  reader.readAsDataURL(file);
 }
 </script>
 
