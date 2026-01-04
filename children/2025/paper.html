@@ -50,12 +50,34 @@
 <input type="file" accept="image/*" onchange="fillA4(event)">
 <button onclick="window.print()">列印 / 存成 PDF</button>
 <button onclick="savePDF()">下載 A4 PDF</button>
+<button onclick="saveJPG()">下載 A4 JPG</button>
+  
 
 
 <hr>
 
 <div class="a4" id="a4"></div>
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+function saveJPG() {
+  const element = document.getElementById('a4');
+
+  html2canvas(element, {
+    scale: 3,          // 提高解析度（重要）
+    useCORS: true,
+    backgroundColor: '#ffffff'
+  }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = 'A4圖片排列.jpg';
+    link.href = canvas.toDataURL('image/jpeg', 1.0);
+    link.click();
+  });
+}
+</script>
+  
+  
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
