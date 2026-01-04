@@ -11,15 +11,10 @@
 <meta name="description" content="© 2024 NINS (by JPGT). By using any of the services, it means you have agreed to any content and all content!">
 <link rel="canonical" href="https://copyright.nins.cc/">
 <title>nins/paper</title>
-
-<style>
-  body {
-    font-family: Arial;
-  }
-
-  .a4 {
-    width: 21cm;
-    height: 29.7cm;
+<!--style>
+    .a4 {
+    /* width: 21cm; */
+    /* height: 29.7cm; */
     padding: 1cm;
     box-sizing: border-box;
     border: 1px solid #000;
@@ -32,17 +27,58 @@
     justify-content: center;
     align-content: center;
   }
-  .a4x {
-    
+  .a4 {
     width: 100%;
     max-width: 21cm;        /* 可選：限制最大寬度 */
     aspect-ratio: 210 / 297;
   }
 
   .a4 img {
-    width: 2cm;
-    height: 2cm;
-    object-fit: cover;
+    /* width: 2cm;   /* 固定的格子寬度 */
+    /* height: 2cm;  /* 固定的格子高度 */
+    width: 14%;
+    max-width: 2cm;        /* 可選：限制最大寬度 */
+    max-height: 2cm;        /* 可選：限制最大寬度 */
+    aspect-ratio: 1 / 1;
+    object-fit: contain; /* 關鍵：等比縮放並完整顯示，不裁切 */
+    background: #f0f0f0; /* 選填：如果圖片不是正方形，顯示底色避免留白太突兀 */
+  }
+</style!-->
+<style>
+  /* 移除 body 預設邊距，確保列印從 0,0 開始 */
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial;
+  }
+.a4 {
+    /* 固定為 A4 比例 */
+    width: 100%;
+    max-width: 21cm;        /* 可選：限制最大寬度 */
+    aspect-ratio: 210 / 297;
+    
+    padding: 1cm;
+    box-sizing: border-box;
+    border: 1px solid #000;
+
+    display: grid;
+    /* 強制設定為 7 欄 */
+    grid-template-columns: repeat(7, 1fr); 
+    /* 強制設定為 11 列 */
+    grid-template-rows: repeat(11, 1fr);
+    gap: 5mm;
+
+    justify-content: center;
+    align-content: center;
+    margin: 0 auto; /* 置中顯示 */
+    background: white;
+  }
+
+  .a4 img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; 
+    background: #f0f0f0;
   }
 
   @media print {
@@ -78,8 +114,13 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
+/*
 function saveJPG() {
   const element = document.getElementById('a4');
+
+  // 強制設定寬度，避免縮放視窗影響截圖品質
+  const originalWidth = element.style.width;
+  ///element.style.width = '210mm';
 
   html2canvas(element, {
     scale: 3,          // 提高解析度（重要）
@@ -89,6 +130,28 @@ function saveJPG() {
     const link = document.createElement('a');
     link.download = 'A4圖片排列.jpg';
     link.href = canvas.toDataURL('image/jpeg', 1.0);
+    link.click();
+  });
+
+  element.style.width = originalWidth;
+}*/
+
+function saveJPG() {
+  const element = document.getElementById('a4');
+
+  // 截圖前確保寬度是正確的 A4 寬度
+  html2canvas(element, {
+    scale: 4,               // 提高到 4 倍解析度（適合列印）
+    useCORS: true,
+    backgroundColor: '#ffffff',
+    width: element.offsetWidth,   // 抓取元素實際寬度
+    height: element.offsetHeight, // 抓取元素實際高度
+    windowWidth: element.scrollWidth,
+    windowHeight: element.scrollHeight
+  }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = 'A4_7x11_HighRes.jpg';
+    link.href = canvas.toDataURL('image/jpeg', 1.0); // 1.0 代表最高畫質
     link.click();
   });
 }
@@ -115,9 +178,30 @@ async function savePDF() {
 }
 </script>
 
-
-  
 <script>
+function fillA4(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    const container = document.getElementById('a4');
+    container.innerHTML = '';
+
+    // 直接固定總數為 7 * 11 = 77
+    const total = 77;
+
+    for (let i = 0; i < total; i++) {
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      container.appendChild(img);
+    }
+  };
+
+  reader.readAsDataURL(file);
+}
+</script>
+<!--script>
 function fillA4(event) {
   const file = event.target.files[0];
   if (!file) return;
@@ -147,8 +231,7 @@ function fillA4(event) {
 
   reader.readAsDataURL(file);
 }
-</script>
+</script!-->
 
 </body>
 </html>
-
