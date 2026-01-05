@@ -477,12 +477,9 @@
         }
 
         /* 閃爍動畫 */
-        @keyframes hardBlink {
+        @keyframes hardBlink_v1 {
             0%, 100% { border-color: #ff3b00; box-shadow: 0 0 10px #ff3b00; }
             50% { border-color: transparent; box-shadow: none; }
-        }
-        .scan-effect {
-            animation: hardBlink 1s steps(1, start) infinite;
         }
 
         /* 控制列 */
@@ -552,6 +549,27 @@
         .fadeOut { opacity: 0; pointer-events: none; }
         #sliderButton > button { flex: 1; }
         
+        /* 動畫定義：呼吸一次 */
+        @keyframes breatheOnce {
+          0%   { color: #cdcdcd; }
+          50%  { color: black; }  /*red*/
+          100% { color: #cdcdcd; }
+        }
+    
+        .breatheOnce {
+          animation: breatheOnce 1s ease-in-out;  /*2s*/
+        }
+        
+        @keyframes breathKkeep {
+          0% { border-color: rgba(255, 180, 0, 0.0); }
+          50% { border-color: rgb(255, 0, 0); }
+          100% { border-color: rgba(255, 180, 0, 0.0); }
+        }
+        .breatheKeep {
+          border: 2px solid orange;
+          padding: 8px;
+          animation: breathKkeep 2s ease-in-out infinite;
+        }
     </style>
     <!--style>
         @keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
@@ -658,10 +676,10 @@
                       overflow-x: auto;     /* 可水平滾動 */
           ">
               
-              <button class="main xmas" type="button" id="copyButton" onclick="">🔗</button>
-              <button class="main xmas" type="button" onclick="document.getElementById('InputInfo').value='mailto:';updateAndCopy();">📧</button>
-              <button class="main xmas" type="button" onclick="document.getElementById('InputInfo').value='tel:';updateAndCopy();">📞</button>
-              <button class="main xmas" type="button" onclick="document.getElementById('InputInfo').value='sms:';updateAndCopy();">💬</button>
+              <button class="breatheKeep xmas" type="button" id="copyButton" onclick="">🔗</button>
+              <button class="breatheKeep xmas" type="button" onclick="document.getElementById('InputInfo').value='mailto:';updateAndCopy();">📧</button>
+              <button class="breatheKeep xmas" type="button" onclick="document.getElementById('InputInfo').value='tel:';updateAndCopy();">📞</button>
+              <button class="breatheKeep xmas" type="button" onclick="document.getElementById('InputInfo').value='sms:';updateAndCopy();">💬</button>
           </div>
 
           <input class="main" id="InputInfo" type="text" name="noMemory" autocomplete="off" placeholder="" style="width: 100%; text-align: left; box-sizing: border-box;">
