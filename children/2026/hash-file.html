@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>檔案 Hash 比對</title>
+</head>
+<body>
+
+<div id="test">
+  <h3>檔案是否相同（SHA-256）</h3>
+
+  <input type="file" id="file1"><br><br>
+  <input type="file" id="file2"><br><br>
+
+  <button onclick="compareFiles()">開始比對</button>
+
+  <pre id="result"></pre>
+</div>
+
+<script>
+async function hashFile(file) {
+  // 讀取檔案內容
+  const buffer = await file.arrayBuffer();
+
+  // 計算 SHA-256
+  const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+
+  // 轉成 hex 字串
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+
+  return hashHex;
+}
+
+async function compareFiles() {
+  const f1 = document.getElementById('file1').files[0];
+  const f2 = document.getElementById('file2').files[0];
+  const result = document.getElementById('result');
+
+  if (!f1 || !f2) {
+    result.textContent = '請選擇兩個檔案';
+    return;
+  }
+
+  result.textContent = '計算中，請稍候...';
+
+  // 平行計算 Hash
+  const [hash1, hash2] = await Promise.all([
+    hashFile(f1),
+    hashFile(f2)
+  ]);
+
+  result.textContent =
+    `檔案 1 Hash:\n${hash1}\n\n` +
+    `檔案 2 Hash:\n${hash2}\n\n` +
+    (hash1 === hash2 ? '✅ 檔案完全相同' : '❌ 檔案不同');
+}
+</script>
+
+
+
+</body>
+</html>
