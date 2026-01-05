@@ -398,7 +398,7 @@ document.getElementById('InputQR').addEventListener('change', function(e) {
                 console.log("QR Code!:", code.data);
                 ///resultText.innerText = "掃描結果：" + code.data;
                 document.getElementById('content').innerHTML = "Scan complete. QR code found! Send Query available!";
-                document.getElementById('input_msg').value = code.data;
+                document.getElementById('input_msg').value = code.data;send();
             } else {
                 console.log("QR Code?:", "");
                 ///resultText.innerText = "掃描失敗：無法在圖片中找到有效的 QR Code。";
