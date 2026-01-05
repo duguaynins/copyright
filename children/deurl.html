@@ -216,7 +216,9 @@
           </div></div>
           
 <!-- 放置你原有的布局 -->
-
+<button class="main" type="button" onclick="document.getElementById('InputQR').click();">🖼️</button>
+<input type="file" id="InputQR" style="display: none;" accept="image/*">
+<canvas id="canvasQR" style="display:none;"></canvas>
 
 <div id="content" style="background: #CCCCCC; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
 Here the final destination after decoding will be displayed.
@@ -248,6 +250,7 @@ Here the final destination after decoding will be displayed.
 <!-- HTML ================================================== -->
     
 <!-- 放置你原有的布局 -->
+
 <script>
 /*
 async function HuggingFaceAPI(dir="duguaynins/RedirectAPI", path="/textMining/predict", data="Hello!!") {
@@ -309,6 +312,7 @@ async function send() {
     document.getElementById("content").innerHTML = "Waiting for decoding...";
 
     const url = document.getElementById("input_msg").value;
+    if (!url.startsWith("http")) { document.getElementById("content").innerHTML = "Invalid URL format!!!";return; }
     const msg = await deurl({ "url": url });
 
     document.getElementById("content").innerHTML = `<p translate="no">${msg}</p>`;
@@ -343,9 +347,9 @@ document.getElementById("input_msg").addEventListener("blur", (event) => {
 
 // 提示文字清單
 const placeholders = [
-    "google.com",
+    ///"google.com",
     "https://google.com/",
-    "deurl.nins.cc",
+    ///"deurl.nins.cc",
     "https://deurl.nins.cc/",
     ///"Enter the URL to decode its destination...",
 ];
@@ -359,6 +363,54 @@ setInterval(() => {
     index = (index + 1) % placeholders.length; // 循環切換
 }, 2000);
 
+</script>
+
+
+<!-- QR ================================================== -->
+<script src="https://copyright.nins.cc/children/0001/jsQR.min.js"></script>
+<script>
+document.getElementById('InputQR').addEventListener('change', function(e) {
+  
+    const canvas = document.getElementById('canvasQR');
+    const ctx = canvas.getContext('2d');
+
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+            // 1. 設定畫布大小與圖片一致
+            canvas.width = img.width;
+            canvas.height = img.height;
+            
+            // 2. 將圖片畫到畫布上
+            ctx.drawImage(img, 0, 0, img.width, img.height);
+            
+            // 3. 取得畫布的像素資料
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            
+            // 4. 使用 jsQR 解析
+            const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+            if (code) {
+                console.log("QR Code!:", code.data);
+                ///resultText.innerText = "掃描結果：" + code.data;
+                document.getElementById('content').innerHTML = "Scan complete. QR code found! Send Query available!";
+                document.getElementById('input_msg').value = code.data;
+            } else {
+                console.log("QR Code?:", "");
+                ///resultText.innerText = "掃描失敗：無法在圖片中找到有效的 QR Code。";
+                document.getElementById('content').innerHTML = "Scan complete. No QR code found. Send Query unavailable.";
+                document.getElementById('input_msg').value = "***";
+
+            }
+        };
+        img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+});
 </script>
 
 <!-- 放置你原有的布局 -->
