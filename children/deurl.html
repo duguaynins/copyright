@@ -407,8 +407,10 @@ document.getElementById('InputQR').addEventListener('change', function(e) {
                 ///resultText.innerText = "掃描失敗：無法在圖片中找到有效的 QR Code。";
                 document.getElementById('content').innerHTML = "Scan complete. No QR code found. Send Query unavailable.";
                 document.getElementById('input_msg').value = "***";
-
             }
+          
+            document.getElementById("input_msg").disabled = false;
+            document.getElementById("InputQR").disabled = false;
         };
         img.src = event.target.result;
     };
