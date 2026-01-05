@@ -309,6 +309,8 @@ async function deurl(params) {
 }
 
 async function send() {
+    document.getElementById("InputQR").disabled = true;
+    document.getElementById("input_msg").disabled = true;
     document.getElementById("content").innerHTML = "Waiting for decoding...";
 
     const url = document.getElementById("input_msg").value;
@@ -316,7 +318,8 @@ async function send() {
     const msg = await deurl({ "url": url });
 
     document.getElementById("content").innerHTML = `<p translate="no">${msg}</p>`;
-
+    document.getElementById("input_msg").disabled = false;
+    document.getElementById("InputQR").disabled = false;
 }
 
 document.getElementById("input_msg").addEventListener("keydown", function(e) {    
