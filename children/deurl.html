@@ -309,12 +309,16 @@ async function deurl(params) {
 }
 
 async function send() {
-    document.getElementById("InputQR").disabled = true;
-    document.getElementById("input_msg").disabled = true;
+    ///document.getElementById("InputQR").disabled = true;
+    ///document.getElementById("input_msg").disabled = true;
     document.getElementById("content").innerHTML = "Waiting for decoding...";
 
     const url = document.getElementById("input_msg").value;
     if (!url.startsWith("http")) { document.getElementById("content").innerHTML = "Invalid URL format!!!";return; }
+
+    document.getElementById("InputQR").disabled = true;
+    document.getElementById("input_msg").disabled = true;
+  
     const msg = await deurl({ "url": url });
 
     document.getElementById("content").innerHTML = `<p translate="no">${msg}</p>`;
@@ -409,8 +413,8 @@ document.getElementById('InputQR').addEventListener('change', function(e) {
                 document.getElementById('input_msg').value = "***";
             }
           
-            document.getElementById("input_msg").disabled = false;
-            document.getElementById("InputQR").disabled = false;
+            ///document.getElementById("input_msg").disabled = false;
+            ///document.getElementById("InputQR").disabled = false;
         };
         img.src = event.target.result;
     };
