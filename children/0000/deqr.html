@@ -1,0 +1,46 @@
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+
+<input type="file" id="upload-qr" accept="image/*">
+<p id="result">掃描結果：等待上傳...</p>
+<canvas id="canvas" style="display:none;"></canvas>
+
+<script>
+const fileInput = document.getElementById('upload-qr');
+///const resultText = document.getElementById('result');
+///const canvas = document.getElementById('canvas');
+///const ctx = canvas.getContext('2d');
+
+document.getElementById('upload-qr').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+            // 1. 設定畫布大小與圖片一致
+            ///canvas.width = img.width;
+            ///canvas.height = img.height;
+            
+            // 2. 將圖片畫到畫布上
+            ///ctx.drawImage(img, 0, 0, img.width, img.height);
+            
+            // 3. 取得畫布的像素資料
+            ///const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            
+            // 4. 使用 jsQR 解析
+            const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+            if (code) {
+                console.log("QR Code!:", code.data);
+                ///resultText.innerText = "掃描結果：" + code.data;
+            } else {
+                console.log("QR Code?:", "");
+                ///resultText.innerText = "掃描失敗：無法在圖片中找到有效的 QR Code。";
+            }
+        };
+        img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+});
+</script>
