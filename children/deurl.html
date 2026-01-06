@@ -148,6 +148,10 @@
           animation: hardBlink 1.0s steps(1, start) infinite;
       }
       
+      @keyframes hardUse {
+        0%, 100% { border-color: green; }
+        50%      { border-color: transparent; }
+      }
       .use { background-color: white; }
       .use:hover {
         background-color: #cdcdcd;
@@ -159,8 +163,9 @@
       }
       .use:focus {
         outline: none;              /* 移除預設藍色邊框 */
-        border: 2px solid red;       /* 或使用 #f44336 */
-        box-shadow: 0 0 5px red;
+        /* border: 2px solid green;       /* 或使用 #f44336 */
+        /* box-shadow: 0 0 5px red; */
+        /* animation: hardUse 1.0s steps(1, start) infinite; */
       }
     </style>
 </head>
@@ -216,9 +221,9 @@
           </div></div>
           
 <!-- 放置你原有的布局 -->
-<button class="main use" type="button" onclick="document.getElementById('InputQR').click();">🖼️</button>
-<input type="file" id="InputQR" style="display: none;" accept="image/*">
-<canvas id="canvasQR" style="display:none;"></canvas>
+<button class="main use" type="button" onclick="document.getElementById('input_qr').click();">🖼️</button>
+<input type="file" id="input_qr" style="display: none;" accept="image/*">
+<canvas id="canvas_qr" style="display:none;"></canvas>
 
 <div id="content" style="background: #CCCCCC; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
 Here the final destination after decoding will be displayed.
@@ -309,21 +314,21 @@ async function deurl(params) {
 }
 
 async function send() {
-    ///document.getElementById("InputQR").disabled = true;
+    ///document.getElementById("input_qr").disabled = true;
     ///document.getElementById("input_msg").disabled = true;
     document.getElementById("content").innerHTML = "Waiting for decoding...";
 
     const url = document.getElementById("input_msg").value;
     if (!url.startsWith("http")) { document.getElementById("content").innerHTML = "Invalid URL format!!!";return; }
 
-    document.getElementById("InputQR").disabled = true;
+    document.getElementById("input_qr").disabled = true;
     document.getElementById("input_msg").disabled = true;
   
     const msg = await deurl({ "url": url });
 
     document.getElementById("content").innerHTML = `<p translate="no">${msg}</p>`;
     document.getElementById("input_msg").disabled = false;
-    document.getElementById("InputQR").disabled = false;
+    document.getElementById("input_qr").disabled = false;
 }
 
 document.getElementById("input_msg").addEventListener("keydown", function(e) {    
@@ -376,9 +381,9 @@ setInterval(() => {
 <!-- QR ================================================== -->
 <script src="https://copyright.nins.cc/children/0001/jsQR.min.js"></script>
 <script>
-document.getElementById('InputQR').addEventListener('change', function(e) {
+document.getElementById('input_qr').addEventListener('change', function(e) {
   
-    const canvas = document.getElementById('canvasQR');
+    const canvas = document.getElementById('canvas_qr');
     const ctx = canvas.getContext('2d');
 
     const file = e.target.files[0];
@@ -414,7 +419,7 @@ document.getElementById('InputQR').addEventListener('change', function(e) {
             }
           
             ///document.getElementById("input_msg").disabled = false;
-            ///document.getElementById("InputQR").disabled = false;
+            ///document.getElementById("input_qr").disabled = false;
         };
         img.src = event.target.result;
     };
