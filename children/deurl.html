@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -147,18 +148,17 @@
           animation: hardBlink 1.0s steps(1, start) infinite;
       }
       
-      input:hover {
+      .use { background-color: white; }
+      .use:hover {
         background-color: #cdcdcd;
         color: black;
       }
-      input:active {
+      .use:active {
         background-color: #222222;
         color: white;
       }
-      input:focus {
+      .use:focus {
         outline: none;              /* 移除預設藍色邊框 */
-        /* border: 2px solid #4CAF50;  改為綠色邊框 */
-        /* box-shadow: 0 0 5px #4CAF50; */
         border: 2px solid red;       /* 或使用 #f44336 */
         box-shadow: 0 0 5px red;
       }
@@ -216,7 +216,7 @@
           </div></div>
           
 <!-- 放置你原有的布局 -->
-<button class="main" type="button" onclick="document.getElementById('InputQR').click();">🖼️</button>
+<button class="main use" type="button" onclick="document.getElementById('InputQR').click();">🖼️</button>
 <input type="file" id="InputQR" style="display: none;" accept="image/*">
 <canvas id="canvasQR" style="display:none;"></canvas>
 
@@ -224,7 +224,7 @@
 Here the final destination after decoding will be displayed.
 </div>
 
-<input id="input_msg" style="display:none" class="main" type="text" name="noMemory" autocomplete="on" placeholder="Enter the URL to decode its destination..." style="width:100%; text-align: center;"/>
+<input id="input_msg" style="display:block" class="main use" type="text" name="noMemory" autocomplete="on" placeholder="Please enter an image, or the URL to decode its destination..." style="width:100%; text-align: center;"/>
 <button id="input_msgbtn" style="display:none" onclick="send()">Send and Recv</button>
 
 <!-- 放置你原有的布局 -->
@@ -337,14 +337,14 @@ document.getElementById("input_msg").addEventListener("keydown", function(e) {
 ///document.getElementById("input_msg").addEventListener("focus", function () {
 document.getElementById("input_msg").addEventListener("focus", (event) => {
     if (event.target.value) { return; }
-    document.getElementById("content").innerHTML = "Please enter the URL."; console.log("已具焦");
+    document.getElementById("content").innerHTML = "Please enter the URL and send it. or enter an image."; console.log("已具焦");
 });
 
 ///document.getElementById("input_msg").addEventListener("blur", () => {  });
 ///document.getElementById("input_msg").addEventListener("blur", function () {
 document.getElementById("input_msg").addEventListener("blur", (event) => {
     if (event.target.value) { return; }
-    document.getElementById("content").innerHTML = "Please enter the URL."; console.log("已失焦");
+    document.getElementById("content").innerHTML = "Please enter the URL and send it. or enter an image."; console.log("已失焦");
 });
 </script>
 
@@ -508,14 +508,14 @@ console.log(version);
       console.log('combo?', !!combo);
         
       if (lang.replace(/_/g, "-").split("-")[0] === "en") {
-        document.getElementById("input_msg").style.display = "block";
+        ///document.getElementById("input_msg").style.display = "block";
         ///document.getElementById("input_msgbtn").style.display = "block";
         document.getElementById("content").style.background = "#FFFFFF";
         ///document.getElementById('Input').textAlign = 'center';
       }
   
       waitForTranslationById('notice', () => {
-        document.getElementById("input_msg").style.display = "block";
+        ///document.getElementById("input_msg").style.display = "block";
         ///document.getElementById("input_msgbtn").style.display = "block";
         document.getElementById("content").style.background = "#FFFFFF";
         ///document.getElementById('Input').textAlign = 'center';
