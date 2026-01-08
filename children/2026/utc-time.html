@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>UTC 與時差顯示</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; }
+  .time-box { margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<div class="time-box">
+  <strong>UTC 時間：</strong><span id="utc-time"></span>
+</div>
+<div class="time-box">
+  <strong>本地時區相對 UTC 的時差：</strong><span id="utc-offset"></span>
+</div>
+
+<script>
+function updateTime() {
+  const now = new Date();
+
+  // 取得 UTC 時間
+  const utcTime = new Date(now.getTime());  /// + now.getTimezoneOffset() * 60000
+  document.getElementById("utc-time").textContent = utcTime.toISOString().replace('T', ' ').split('.')[0];
+
+  // 取得本地時區相對 UTC 的時差（小時）
+  const offsetMinutes = -now.getTimezoneOffset(); // 注意符號，getTimezoneOffset 回傳與 UTC 的差值（分鐘），UTC-本地）
+  const offsetHours = offsetMinutes / 60;
+  const sign = offsetHours >= 0 ? '+' : '-';
+  ///document.getElementById("utc-offset").textContent = `${sign}${Math.abs(offsetHours)} 小時`;
+  const hours = String(Math.abs(Math.round(offsetHours))).padStart(2, '0'); // 兩位數
+  const minutes = String(Math.abs(offsetMinutes)%60).padStart(2,'0');
+  console.log(`UTC 偏移: ${sign}${hours}:${minutes}`);
+  document.getElementById("utc-offset").textContent = `${sign}${hours}:${minutes}`;
+  setInterval(updateTime, 50);  // 每秒更新一次
+}
+
+updateTime();
+
+</script>
+
+</body>
+</html>
