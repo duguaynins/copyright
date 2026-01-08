@@ -326,9 +326,19 @@ async function send() {
     document.getElementById("input_msg").disabled = true;
   
     const msg = await deurl({ "url": url });
-    const q = "https://www.google.com/search?udm=50&aep=1&aic=0&q=" + msg;
+    const google = "https://www.google.com/search?udm=50&aep=1&aic=0&q=" + msg;
+    const openai = "https://chatgpt.com/?prompt=" + msg;
 
-    document.getElementById("content").innerHTML = `<p translate="no">${msg}</p><br><a translate="no" href=${q}>search?q=${msg}</a>`;
+    document.getElementById("content").innerHTML = `
+    <p translate="no">${msg}</p>
+    <br><a translate="no" href=${google}>Gemini</a>
+    <br><a translate="no" href=${openai}>ChatGPT</a>`;
+
+    /*
+    document.getElementById("content").innerHTML += `
+    <p translate="no">${msg}</p>
+    <br><a translate="no" href=${google}>q=${msg}</a>
+    <br><a translate="no" href=${openai}>p=${msg}</a>`;  */
 
 
     document.getElementById("input_msg").disabled = false;
