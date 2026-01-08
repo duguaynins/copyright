@@ -13,9 +13,12 @@
   <link rel="canonical" href="https://copyright.nins.cc/">
   <title translate="no">nins/children</title>
   <style>
-    body {
-      overflow: hidden;
-    }
+      body {
+        overflow: hidden;
+      }
+      iframe.skiptranslate, #goog-gt-tt {
+          display: none !important;
+      }
   </style>
   <style>
     input, textarea, button, select {
@@ -177,22 +180,6 @@
     }
   </style>
   <style>
-      .skiptranslate {
-        display: none !important;   /* 避免 display:none 影響內容顯示 */
-        position: static !important;   /* 防止位置異常 */
-        width: 0px !important;
-        height: 0px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        border: none !important;
-        background: none !important;
-        /*font-size: inherit !important;*/
-      }
-      iframe {
-        display: none !important;
-      }
-  </style>
-  <style>
     .feature-grid {
       display: flex;
       flex-wrap: wrap;
@@ -296,7 +283,6 @@
   </style>
 </head>
 <body>
-    <div id="google_translate_element" style="display:none;"></div>
   
     
     <button disabled="" id="disabled" style="
@@ -342,7 +328,7 @@
     ">
           <strong id="anything" style="background-color: black; color: white; font-size: max(1vh,1vw);"><b translate="no">© nins. </b>Choose the abilities you need.</strong>
           <div style="background: #FFFFFF; color: black;" translate="no">
-          <div style="margin: 10px;" onclick="document.getElementById('DialogShare').showModal()">
+          <div style="margin: 10px;" onclick="document.getElementById('DialogCheck').showModal()">
           nins/children
           </div></div>
           
@@ -475,129 +461,43 @@
             
           <!--strong></strong-->
           <div style="background: #FF3B00; color: white;" translate="yes">
-          <div style="margin: 10px;" onclick="document.getElementById('DialogTool').showModal()">
+          <div style="margin: 10px;" onclick="document.getElementById('DialogTrans').showModal()">
           By using any of the services, it means you have agreed to any content and all content!
           </div></div>
           <strong style="background-color: black; color: white; font-size: max(1vh,1vw);" translate="no">© 2024 NINS (by JPGT).</strong>
     </div>
 
 
-    <script>  // main.js
-      // 字體大小
-      ///const size = 16;
-      ///document.body.style.fontSize = `${size}px`;
-      ///event.preventDefault(); // 阻止原本的跳轉  // 將先執行 onclick，再依據 href 跳轉
-      // 按鈕方法
-      
-      function openApp(repo, path="", dir="/children/", file="") {
-        const href = "https://" + repo + ".nins.cc" + path;console.log(href);
-        window.open(href, "_blank", "noopener,noreferrer");
-      }
-      // 按鈕方法
-      function openTest(event, el) {
-        ///const href = "/apps/transing.html";
-        const href = "https://beta.nins.jpgt.one/children/transing.html";console.log(href);
-        window.open(href, "_blank", "noopener,noreferrer");
-      }
-    </script>
   
-    <script>  // nins.js
-    /*
-    const overlay = document.getElementById('NINS');
+<!-- HTML ================================================== -->
+    
+<!-- 放置你原有的布局 -->
+ 
+<script>  // main.js
+  function openApp(repo, path="", dir="/children/", file="") {
+    const href = "https://" + repo + ".nins.cc" + path;console.log(href);
+    window.open(href, "_blank", "noopener,noreferrer");
+  }
+  // 按鈕方法
+  function openTest(event, el) {
+    ///const href = "/apps/transing.html";
+    const href = "https://beta.nins.jpgt.one/children/transing.html";console.log(href);
+    window.open(href, "_blank", "noopener,noreferrer");
+  }
+</script>
 
-    overlay.style.pointerEvents = 'none';
-
-    // 幾秒後開放點擊（例如 3 秒）****
-    setTimeout(() => {
-      
-      overlay.style.display = 'none';        // 隱藏物件  // 直接隱藏  ///!!!
-      overlay.style.pointerEvents = 'auto'; // 確保可以點擊
-      ///overlay.classList.add('clickable');
-      ///document.getElementById("google_translate_element").style.display = "none";
-      document.getElementById("disabled").style.display = "none";  ///!!!  // 取消覆蓋改為漸變
-      document.getElementById("copyright").textContent = "　© 2024 NINS. 👻👻👻 ";
-      document.getElementById("copyright").innerHTML += '<span class="cursor">　</span>'
-    }, 3000);
-    
-    
-    // 動畫點擊****
-    overlay.addEventListener('click', () => {
-      overlay.classList.add('fade-out');
-      overlay.style.pointerEvents = 'none';
-
-      // 等 transition 結束後，再加上 hidden 隱藏元素
-      overlay.addEventListener('transitionend', () => {
-        overlay.classList.add('hidden');
-      }, { once: true }); // 確保只觸發一次
-    });
-    
-    // 打字效果顯示****
-    function type(element, text, index = 0) {   ///let index = 0;
-      if (index < text.length+1) {
-        ///element.textContent += element.textContent[index++];  //???
-        element.innerText = text.substring(0, index);
-        element.innerHTML += '<span class="cursor">　</span>'
-        ///setTimeout(type, 60);  //???
-        setTimeout(() => type(element, text, index + 1), 60);  // 用箭頭函數帶參數
-        ///index++;
-      } else {
-        ///element.innerHTML += '<span class="cursor">　</span>'
-      }
-    }
-    ///setTimeout(() => type(document.getElementById("copyright"), "　shivers, worlds!."), 0);
-    ///setTimeout(() => type(document.getElementById("copyright"), "　👻👻👻."), 1500);
-    ///setTimeout(() => type(document.getElementById("copyright"), "　© 2024 NINS."), 3000);
-    
-    ///setTimeout(() => type(document.getElementById("copyright"), "　shivers, worlds!. ✨ "), 0);
-    setTimeout(() => type(document.getElementById("copyright"), "　© 2024 NINS. 👻 "), 0);*/
-    </script>
-
-    <script type="text/javascript">  // google.js
-      // GOOGLE TRANSLATE
-      // 自動翻譯***
-      ///document.cookie = "googtrans=/en/zh-TW; path=/";
-      ///location.reload();
-    
-      function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-          pageLanguage: 'en',  ///'en', 改為根據中間語言(ilang) 或 頁面語言(locale)  ///鼓勵輸入中間語言，翻譯必定可以顯示英文。
-          includedLanguages: '',  ///zh-TW,ja,ko,en,hi,zh-CN
-          autoDisplay: false,
-          ///layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-        }, 'google_translate_element');
-      }
-      
-    
-      function autoTranslate(lang) {
-        const tryTranslate = () => {
-          const combo = document.querySelector('.goog-te-combo');
-          if (combo) {
-            combo.value = lang;
-            combo.dispatchEvent(new Event('change'));
-          } else {
-            setTimeout(tryTranslate, 300); // 遞迴檢查
-          }
-        };
-        tryTranslate();
-      }
-    
-      window.addEventListener('load', () => {
-        setTimeout(() => {
-          const tlang = navigator.language || navigator.userLanguage || "en-US";
-          autoTranslate(tlang);
-          
-          ///document.getElementById(":1.container").style.display = "";
-        }, 1500);
-      });
-    </script>
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
-
-  
+<!-- 放置你原有的布局 -->
+ 
+<!-- DIALOG ================================================== -->
+<script src="https://copyright.nins.cc/children/0001/nins-dialog.js"></script>
+<!-- TRANSLATE ================================================== -->
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script src="https://copyright.nins.cc/children/0001/nins-translate.js"></script>
 <!-- UPDATE ================================================== -->
 <script src="https://copyright.nins.cc/children/0001/nins-update.js"></script>
+
+<!--script async src="app.js"></script!-->
 </body>
 </html>
-
 
 
