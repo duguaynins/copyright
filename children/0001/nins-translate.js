@@ -1,8 +1,10 @@
+document.body.insertAdjacentHTML('beforeend', `
+    <dialog id="DialogTrans" translate="no">
+        <div id="google_translate_element" style="display:block;"></div>
+    </dialog>
+`);
+
 // GOOGLE TRANSLATE
-// 自動翻譯***
-///document.cookie = "googtrans=/en/zh-TW; path=/";
-///location.reload();
-const params = new URLSearchParams(window.location.search);
 
 function googleTranslateElementInit() {
     new google.translate.TranslateElement({
@@ -74,7 +76,8 @@ function autoTranslate(lang) {
             console.log("新語言代碼:", combo.value);
             ///console.log("新語言文字:", combo.options[combo.selectedIndex].text);
         });
-
+        
+        const params = new URLSearchParams(window.location.search);
         const options = Array.from(combo.options).map(opt => opt.value);console.log('可用語言代碼:', options);
         console.log("autoTranslate?:", lang);
         ///combo.value = lang;

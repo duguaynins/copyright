@@ -1,7 +1,4 @@
 document.body.insertAdjacentHTML('beforeend', `
-    <dialog id="DialogTrans" translate="no">
-        <div id="google_translate_element" style="display:block;"></div>
-    </dialog>
     <dialog id="DialogCheck" translate="no">
         <pre id="logOutput" style="max-height:200px; overflow:auto; margin:0;">...</pre>
     </dialog>
