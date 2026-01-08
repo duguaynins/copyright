@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -325,8 +326,11 @@ async function send() {
     document.getElementById("input_msg").disabled = true;
   
     const msg = await deurl({ "url": url });
+    const q = "https://www.google.com/search?udm=50&aep=1&aic=0&q=" + msg;
 
-    document.getElementById("content").innerHTML = `<p translate="no">${msg}</p>`;
+    document.getElementById("content").innerHTML = `<p translate="no">${msg}</p><br><a translate="no" href=${q}>search?q=${msg}</a>`;
+
+
     document.getElementById("input_msg").disabled = false;
     document.getElementById("input_qr").disabled = false;
 }
