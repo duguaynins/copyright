@@ -247,7 +247,7 @@
         /* border: 2px solid #4CAF50;  改為綠色邊框 */
         /* box-shadow: 0 0 5px #4CAF50; */
         border: 2px solid red;       /* 或使用 #f44336 */
-        box-shadow: 0 0 5px red;
+        /* box-shadow: 0 0 5px red; */
       }
     </style>
 <!-- 放置你原有的布局 -->
@@ -320,8 +320,8 @@
 
         /* 閃爍動畫 */
         @keyframes hardBlink {
-            0%, 100% { border-color: #ff3b00; box-shadow: 0 0 10px #ff3b00; }
-            50% { border-color: transparent; box-shadow: none; }
+            0%, 100% { border-color: #ff3b00; /* box-shadow: 0 0 10px #ff3b00; */ }
+            50% { border-color: transparent; /* box-shadow: none; */ }
         }
         .scan-effect {
             animation: hardBlink 1s steps(1, start) infinite;
@@ -1049,7 +1049,6 @@ function COPYRIGHT() {
 </script>
 </body>
 </html>
-
 
 
 
