@@ -531,44 +531,65 @@
   
 <!-- HTML ================================================== -->
 <script>
-  document.getElementById('merryXmas').innerHTML = "☃️🦌🎄✨⭐<br>[ © nins ] x [ Merry Xmas 2025 ]";
 
-  function startSkipAdsProgress() {
-    const progress = document.getElementById("progress");
-    const timeText = document.getElementById("time");
+        
+        // 建立 MutationObserver 監聽 InputMsg 的 style 屬性
+        const observer = new MutationObserver(() => {
+            const roomInput = document.getElementById('InputRoom');
+            const msgInput = document.getElementById('InputMsg');
+            
+            if (msgInput.style.display === 'none' || msgInput.style.display === '') {
+                // InputMsg 沒顯示 → 顯示 InputRoom
+                roomInput.style.display = 'block';
+            } else {
+                // InputMsg 正在顯示 → 隱藏 InputRoom
+                roomInput.style.display = 'none';
+            }
+        });
+        
+        // 開始觀察
+        observer.observe(document.getElementById('InputMsg'), { attributes: true, attributeFilter: ['style'] });
 
-    const totalTime = Number(progress.max); // 直接讀 max
-    const interval = 50;
 
-    let current = 0;
-    progress.value = 0;
-    timeText.textContent = "0 ms";
-
-    ///setTimeout(update, 16);
-    ///setTimeout( () => { document.getElementById("DialogAds").classList.add("disabled") }, 3);
-    ///setTimeout( () => { document.getElementById("DialogAds").classList.remove("disabled") }, 3000);
-    ///setTimeout( () => { document.getElementById("startOverlay").classList.add("disabled") }, 3);
-    ///setTimeout( () => { document.getElementById("startOverlay").classList.remove("disabled") }, 3000);
-    setTimeout( () => { document.getElementById("startOverlay").disabled = true; }, 3);
-    setTimeout( () => { document.getElementById("startOverlay").disabled = false; }, 3000);
-
-    const timer = setInterval(() => {
-      current += interval;
-      progress.value = current;
-      timeText.textContent = current + " ms";
-
-      if (current >= totalTime) {
-        progress.value = totalTime;
-        ///progress.style.setProperty('--progress-color', '#4caf50'); // 綠色
-        clearInterval(timer);
-        timeText.textContent = "done!";
-        timeText.textContent = "skip?!";
-      }
-    }, interval);
-  }
-
-  ///startSkipAdsProgress();
-  setTimeout( () => { startSkipAdsProgress(); }, 1000);
+    
+        document.getElementById('merryXmas').innerHTML = "☃️🦌🎄✨⭐<br>[ © nins ] x [ Merry Xmas 2025 ]";
+        
+        function startSkipAdsProgress() {
+            const progress = document.getElementById("progress");
+            const timeText = document.getElementById("time");
+        
+            const totalTime = Number(progress.max); // 直接讀 max
+            const interval = 50;
+        
+            let current = 0;
+            progress.value = 0;
+            timeText.textContent = "0 ms";
+        
+            ///setTimeout(update, 16);
+            ///setTimeout( () => { document.getElementById("DialogAds").classList.add("disabled") }, 3);
+            ///setTimeout( () => { document.getElementById("DialogAds").classList.remove("disabled") }, 3000);
+            ///setTimeout( () => { document.getElementById("startOverlay").classList.add("disabled") }, 3);
+            ///setTimeout( () => { document.getElementById("startOverlay").classList.remove("disabled") }, 3000);
+            setTimeout( () => { document.getElementById("startOverlay").disabled = true; }, 3);
+            setTimeout( () => { document.getElementById("startOverlay").disabled = false; }, 3000);
+        
+            const timer = setInterval(() => {
+              current += interval;
+              progress.value = current;
+              timeText.textContent = current + " ms";
+        
+              if (current >= totalTime) {
+                progress.value = totalTime;
+                ///progress.style.setProperty('--progress-color', '#4caf50'); // 綠色
+                clearInterval(timer);
+                timeText.textContent = "done!";
+                timeText.textContent = "skip?!";
+              }
+            }, interval);
+        }
+        
+        ///startSkipAdsProgress();
+        setTimeout( () => { startSkipAdsProgress(); }, 1000);
 </script>
 <!-- ADS ================================================== -->
 
@@ -2372,5 +2393,6 @@ console.log(version);
     </script>
 </body>
 </html>
+
 
 
