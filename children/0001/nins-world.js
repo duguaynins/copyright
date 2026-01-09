@@ -108,11 +108,14 @@ document.head.appendChild(style);
     }
 
     // 初始化下雪
+    setInterval(createSnow, 150); 
+    for (let i = 0; i < 60; i++) { setTimeout(createSnow, i * 30); }
+    /*
     window.addEventListener('DOMContentLoaded', () => {
         setInterval(createSnow, 150); 
         // 初始噴發一些雪花
         for(let i=0; i<15; i++) {
             setTimeout(createSnow, i * 150);
         }
-    });
+    });  */
 })();
