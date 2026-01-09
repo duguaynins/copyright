@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-en">
 <head>
 <meta charset="UTF-8">
 <title>nins/utc</title>
@@ -8,26 +8,55 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  box-sizing: border-box;  /* 推薦加上，避免寬高計算誤差 */
   border: 0; 
   outline: 0;
+  overflow: hidden;  /* 需要的自己額外開啟 */
 }
 
 html, body { 
-  overflow: hidden;
-  font-size: 5vw;
-  margin: 0;
-  padding: 0;
-  /* background-color: #000000; */
   display: flex;
   flex-direction: column;
-  /* font-family: Arial, sans-serif; */
+  font-family: system-ui, Arial, sans-serif;
+  /* font-size: 5vw; */
+  /* background-color: #000000; */
 }
 
-.column { flex-direction: column; /* 垂直 */ }
-.row { flex-direction: row; /* 水平 */ }
+input, textarea, button, select {
+  /*font-size: inherit; /* 主動繼承 body 字體大小 */
+  font-size: 18px;
+}
 
-.box {
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.6); /* 半透明背景 */
+}
+dialog {
+  /*display: flex; */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1rem;
+  border: none;
+  border-radius: 8px;
+  background-color: black;
+  color: white;
+  min-width: 90vw;  /* 不要太窄 */
+  max-width: 90vw;  /* 不要太寬 */
+  width: 90vw;
+}
+dialog > * {
+  /*display: block; */
+  /*margin-left: auto; */
+  /*margin-right: auto; */
+  /*text-align: center;  文字置中 */
+}
+
+.x-row { flex-direction: row; /* 水平 */ }
+.y-column { flex-direction: column; /* 垂直 */ }
+
+.center {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -47,19 +76,45 @@ html, body {
 }
 
 .app { width: 100vw; height: 100vh; }
-.fill { width: 100%; height: 100%; }
+.fill { width: 100%; height: 100%; padding: 8px; }
 
-@keyframes hardBlink {
+.zIndex {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+  height: auto;
+}
+.fadeOut { opacity: 0; pointer-events: none; }
+
+.active { background: white; color: #000000; }
+.active:hover { background-color: #cdcdcd; color: black; /*覆蓋時*/ }
+.active:active { background-color: #222222; color: white; /*點下時*/ }
+.active:focus {
+  background:rgb(255, 225, 230);
+  outline: none;              /* 移除預設藍色邊框 */
+  /* border: 2px solid green; */
+  /* box-shadow: 0 0 5px red; */
+}
+
+@keyframes breatheOnce {
+  0%   { color: #cdcdcd; }
+  50%  { color: black; }  /*red*/
+  100% { color: #cdcdcd; }
+}
+.breathe {
+  animation: breatheOnce 1s ease-in-out;  /*2s*/
+}
+
+@keyframes flashForever { /* hardBlink */
   0%, 100% { border-color: red; }
   50%      { border-color: transparent; }
 }
-.main { border: 2px solid red; animation: hardBlink 1.0s steps(1, start) infinite; }
-.day {
-    border: 2px solid red;
-    padding: 8px;
-    animation: hardBlink 1.0s steps(1, start) infinite;
-    background:rgb(255, 225, 230);
-}
+.main { border: 2px solid red; animation: flashForever 1.0s steps(1, start) infinite;  }
+.day {  border: 2px solid red; animation: flashForever 1.0s steps(1, start) infinite;  }
 .no {
     pointer-events: none; /* 禁止滑鼠事件 */
     /*opacity: 0.6; /* 可選：顯示為灰色 */
@@ -71,7 +126,7 @@ html, body {
 
 <body>
 
-<div class="column app box main" translate="no">
+<div class="center y-column app main active zIndex" translate="no" style="font-size: 5vw;">
 <div class="box">
   <strong><span id="utc-time"></span></strong>
 </div>
@@ -90,7 +145,7 @@ html, body {
 
 <script>
 
-updateTime(true);
+///updateTime();
 
 </script>
 </body>
