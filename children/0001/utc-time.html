@@ -171,11 +171,10 @@ dialog > * {
 
 <!-- 放置你原有的布局：HTML -->
 
-<div class="zIndex app center y-column active" style="z-index: 90909;  /* 確保在最高層 */
+<div class="zIndex app center y-column" style="z-index: 90909;  /* 確保在最高層 */
   cursor: default;
   /*background: linear-gradient(white, transparent);*/
   background: white;
-  pointer-events: none;  /* 動畫期間不阻擋互動（可選）*/
 ">
 
   
@@ -186,9 +185,9 @@ dialog > * {
     </div></div>
 
 
-    <div id="content" style="" class="app center y-column" translate="no">
-        <strong><span id="utc-time" style="font-size: 5vw"></span></strong>
-        <h1><span id="utc-offset" style="font-size: 15vw"></span></h1>
+    <div id="content" style="color: white; background: #eee;" class="app center y-column active" translate="no">
+        <strong><span id="utc-time" style="font-size: 5vw;"></span></strong>
+        <h1><span id="utc-offset" style="font-size: 15vw;"></span></h1>
     </div>
 
 
@@ -207,7 +206,6 @@ dialog > * {
   cursor: default;
   /*background: linear-gradient(white, transparent);*/
   background: white;
-  pointer-events: none;  /* 動畫期間不阻擋互動（可選）*/
 " disabled></button>
 
 
