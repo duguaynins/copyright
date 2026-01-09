@@ -66,6 +66,7 @@ function updateTime(print=null) {
   return times
 }
 ///updateTime(); // 先執行一次
-///setTimeout(updateVer, 1); // 幾時之後只執行一次
+setTimeout(updateTime, 1); // 幾時之後只執行一次
 ///setInterval(updateTime, 1); // 每幾時之後執行一次
-setInterval(() => updateTime(), 1);
+///setInterval(() => updateTime(), 1);
+
