@@ -21,6 +21,10 @@ function updateVer(print=null) {
     if (isSameMinute(times, Date.now()) ) {
       ///null;
       ///window.location.reload(true);  ///***
+      if (!sessionStorage.getItem('reloaded')) {
+        sessionStorage.setItem('reloaded', 'true');
+        window.location.reload(true);
+      }
     }
     else {
       url.searchParams.set('t', Date.now());
@@ -70,6 +74,7 @@ function updateTime(print=null) {
 setTimeout(updateTime, 1); // 幾時之後只執行一次
 ///setInterval(updateTime, 1); // 每幾時之後執行一次
 ///setInterval(() => updateTime(), 1);
+
 
 
 
