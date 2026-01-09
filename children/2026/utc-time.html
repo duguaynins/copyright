@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>UTC 與時差顯示</title>
+<title>nins/utc</title>
 <style>
   
 * {
@@ -13,39 +13,65 @@
   outline: 0;
 }
 
-body { 
-  font-family: Arial, sans-serif;
+html, body { 
+  overflow: hidden;
+  font-size: 5vw;
+  margin: 0;
+  padding: 0;
+  /* background-color: #000000; */
+  display: flex;
+  flex-direction: column;
+  /* font-family: Arial, sans-serif; */
 }
 
 .column { flex-direction: column; /* 垂直 */ }
 .row { flex-direction: row; /* 水平 */ }
+
 .box {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.up {
+.left {
   align-items: flex-start;
 }
-.down {
+.right {
   align-items: flex-end;
 }
-.left {
+.up {
   justify-content: flex-start;
 }
-.right {
+.down {
   justify-content: flex-end;
 }
 
 .app { width: 100vw; height: 100vh; }
 .fill { width: 100%; height: 100%; }
+
+@keyframes hardBlink {
+  0%, 100% { border-color: red; }
+  50%      { border-color: transparent; }
+}
+.main { border: 2px solid red; animation: hardBlink 1.0s steps(1, start) infinite; }
+.day {
+    border: 2px solid red;
+    padding: 8px;
+    animation: hardBlink 1.0s steps(1, start) infinite;
+    background:rgb(255, 225, 230);
+}
+.no {
+    pointer-events: none; /* 禁止滑鼠事件 */
+    /*opacity: 0.6; /* 可選：顯示為灰色 */
+    background:#000000;
+    color:white;
+}
 </style>
 </head>
 
 <body>
 
-<div class="column app box">
+<div class="column app box main" translate="no">
 <div class="box">
   <strong><span id="utc-time"></span></strong>
 </div>
@@ -54,35 +80,18 @@ body {
 </div>
 <div>
 
+<!-- UPDATE ================================================== -->
+<script src="https://copyright.nins.cc/children/0001/nins-update.js"></script>
+<!-- DIALOG ================================================== -->
+<script src="https://copyright.nins.cc/children/0001/nins-dialog.js"></script>
+<!-- TRANSLATE ================================================== -->
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script src="https://copyright.nins.cc/children/0001/nins-translate.js"></script>
+
 <script>
-function updateTime() {
-  const now = new Date();
 
-  // 取得 UTC 時間
-  const utcTime = new Date();  /// + now.getTimezoneOffset() * 60000
-  ///const utcTime = new Date(now.getTime());  /// + now.getTimezoneOffset() * 60000
-  ///document.getElementById("utc-time").textContent = utcTime.toISOString()  ///.replace('T', 'T_')  ///.split('.')[0];
-
-  // 取得本地時區相對 UTC 的時差（小時）
-  const offsetMinutes = -now.getTimezoneOffset(); // 注意符號，getTimezoneOffset 回傳與 UTC 的差值（分鐘），UTC-本地）
-  const offsetHours = offsetMinutes / 60;
-  const sign = offsetHours >= 0 ? '+' : '-';
-  ///document.getElementById("utc-offset").textContent = `${sign}${Math.abs(offsetHours)} 小時`;
-  const hours = String(Math.abs(Math.round(offsetHours))).padStart(2, '0'); // 兩位數
-  const minutes = String(Math.abs(offsetMinutes)%60).padStart(2,'0');
-  console.log(`UTC 偏移: ${sign}${hours}:${minutes}`);
-
-  const times = utcTime.toISOString().replace('T', 'T') + "" + `${sign}${hours}:${minutes}`;
-  document.getElementById("utc-offset").textContent = `${sign}${hours}:${minutes}`;
-  document.getElementById("utc-time").textContent = utcTime.toISOString();  ///.replace('T', 'T') + "" + `${sign}${hours}:${minutes}`;  ///.split('.')[0];
-  setInterval(updateTime, 50);  // 每秒更新一次
-
-  return times
-}
-
-updateTime();
+updateTime(true);
 
 </script>
-
 </body>
 </html>
