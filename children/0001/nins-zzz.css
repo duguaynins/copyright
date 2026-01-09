@@ -1,0 +1,152 @@
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;  /* 推薦加上，避免寬高計算誤差 */
+  border: 0; 
+  outline: 0;
+  overflow: hidden;  /* 需要的自己額外開啟 */
+  text-align: center;  /* left / center / right / justify */
+}
+
+iframe.skiptranslate, #goog-gt-tt {
+    display: none !important;
+}
+
+html, body { 
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, Arial, sans-serif;
+  /* font-size: 5vw; */
+  /* background-color: #000000; */
+}
+
+input, textarea, button, select {
+  /*font-size: inherit; /* 主動繼承 body 字體大小 */
+  font-size: 18px;
+}
+
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.6); /* 半透明背景 */
+}
+dialog {
+  position: fixed;  /* absolute 或 fixed 或 relative */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /*display: flex; */
+  padding: 1rem;
+  border: none;
+  border-radius: 8px;
+  background-color: black;
+  color: white;
+  min-width: 90vw;
+  max-width: 90vw;  /* 不要太寬 */
+  min-height: 80vh;
+  max-height: 80vh;  /* 不要太高 */
+}
+dialog > * {
+  position: relative;  /* absolute 或 fixed 或 relative */
+  /*display: block; */
+  /*margin-left: auto; */
+  /*margin-right: auto; */
+  /*text-align: center;  文字置中 */
+}
+
+.emoji::before { color: gold; content: "👻"; /* 在文字前加星號 */ }
+.emoji::after { color: green; content: "👻"; /* 在文字前加星號 */ }
+
+.x-row { flex-direction: row; /* 水平 */ }
+.y-column { flex-direction: column; /* 垂直 */ }
+
+
+.center {
+  justify-content: center;
+  align-items: center;
+}
+
+.left {
+  align-items: flex-start;
+}
+.right {
+  align-items: flex-end;
+}
+.up {
+  justify-content: flex-start;
+}
+.down {
+  justify-content: flex-end;
+}
+
+.app { width: 100vw; height: 100vh; display: flex; }
+.fill { width: 100%; height: 100%; padding: 8px; }
+
+.zIndex {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+  height: auto;
+}
+
+
+
+.active { background: white; color: #000000; }
+.active:hover { background-color: #cdcdcd; color: black; /*覆蓋時*/ }
+.active:active { background-color: #222222; color: white; /*點下時*/ }
+.active:focus {
+  background:rgb(255, 225, 230);
+  outline: none;              /* 移除預設藍色邊框 */
+  /* border: 2px solid green; */
+  /* box-shadow: 0 0 5px red; */
+}
+
+@keyframes breatheOnce {
+  0%   { color: #cdcdcd; }
+  50%  { color: black; }  /*red*/
+  100% { color: #cdcdcd; }
+}
+.breathe {
+  animation: breatheOnce 1s ease-in-out;  /*2s*/
+}
+
+@keyframes flashForever { /* hardBlink */
+  0%, 100% { border-color: red; }
+  50%      { border-color: transparent; }
+}
+.main { border: 2px solid red; animation: flashForever 1.0s steps(1, start) infinite;  }
+.day {  border: 2px solid red; animation: flashForever 1.0s steps(1, start) infinite;  }
+.no {
+    pointer-events: none; /* 禁止滑鼠事件 */
+    background:#000000;
+    color:white;
+    /*opacity: 0.6; /* 可選：顯示為灰色 */
+
+    /*opacity: 0;  /* 全部的不透明度 */
+    /*background: transparent;  /* 背景的不透明度 */
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+.fadeOut { 
+  /* opacity: 0;  */            /* 不啟用此 */
+  pointer-events: none; 
+  /* animation: fadeOut 3s forwards;  */
+  animation-name: fadeOut;      /* 指定動畫 */
+  animation-duration: 2s;       /* 動畫持續時間 */
+  animation-delay: 0.2s;          /* 延遲開始時間 */
+  animation-fill-mode: forwards; /* 動畫結束保持最終狀態 */ 
+}
+
+#anything { width: 100%; background-color: black; color: white; font-size: max(1vh,1vw); }
+#title { width: 100%; background: white; color: black; }
+#content { width: 100%; flex: 1; }
+#notice { width: 100%; background: #FF3B00; color: white; }
+#copyright { width: 100%; background-color: black; color: white; font-size: max(1vh,1vw); }
