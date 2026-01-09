@@ -10,8 +10,9 @@
 }
 
 iframe.skiptranslate, #goog-gt-tt {
-    display: none !important;
     pointer-events: none !important;
+    /* display: none !important; */
+    /* visibility: hidden !important; */
 }
 
 html, body { 
@@ -152,3 +153,4 @@ dialog > * {
 #notice { width: 100%; background: #FF3B00; color: white; }
 
 #copyright { width: 100%; background-color: black; color: white; font-size: max(1vh,1vw); }
+
