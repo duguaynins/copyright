@@ -538,7 +538,7 @@
             const roomInput = document.getElementById('InputRoom');
             const msgInput = document.getElementById('InputMsg');
             
-            if (msgInput.style.display === 'none' || msgInput.style.display === '') {
+            if ( !(msgInput.style.display === 'block' || msgInput.style.display === '') ) {
                 // InputMsg 沒顯示 → 顯示 InputRoom
                 roomInput.style.display = 'block';
                 console.log("InputRoom =>>", "block");
@@ -2395,6 +2395,7 @@ console.log(version);
     </script>
 </body>
 </html>
+
 
 
 
