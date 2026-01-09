@@ -1,6 +1,7 @@
 document.body.insertAdjacentHTML('beforeend', `
     <dialog id="DialogTrans" translate="no">
         <div id="google_translate_element" style="display:block;"></div>
+        <button style="width: 100%;" onclick="document.getElementById('DialogTrans').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
     </dialog>
 `);
 
@@ -112,4 +113,5 @@ setTimeout(() => {
     autoTranslate( (navigator.language || navigator.userLanguage || "en-US") );          
     ///document.getElementById(":1.container").style.display = "";
 }, 1000); */
+
 });
