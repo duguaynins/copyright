@@ -21,19 +21,23 @@ function updateVer(print=null) {
     if (isSameMinute(times, Date.now()) ) {
       ///null;
       ///window.location.reload(true);  ///***
-      if (!sessionStorage.getItem('reloaded')) {
+      if (sessionStorage.getItem('reloaded') !== 'true') {
+
+      ///if (!sessionStorage.getItem('reloaded')) {
         sessionStorage.setItem('reloaded', 'true');
         window.location.reload(true);
       }
     }
     else {
       url.searchParams.set('t', Date.now());
+      sessionStorage.setItem('reloaded', 'false');
       window.location.replace(url.toString());  // 使用 replace，避免無限返回
     }
   }
   if (!url.searchParams.has('t')) {  // 無
     if (true) {
       url.searchParams.set('t', Date.now());
+      sessionStorage.setItem('reloaded', 'false');
       window.location.replace(url.toString());  // 使用 replace，避免無限返回
     }
   }
@@ -74,6 +78,7 @@ function updateTime(print=null) {
 setTimeout(updateTime, 1); // 幾時之後只執行一次
 ///setInterval(updateTime, 1); // 每幾時之後執行一次
 ///setInterval(() => updateTime(), 1);
+
 
 
 
