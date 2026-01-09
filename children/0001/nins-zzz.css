@@ -46,7 +46,8 @@ dialog {
   color: white;
   min-width: 90vw;
   max-width: 90vw;  /* 不要太寬 */
-  min-height: 80vh;
+  width: 90vw;
+  min-height: 10vh;
   max-height: 80vh;  /* 不要太高 */
 }
 dialog > * {
@@ -153,5 +154,6 @@ dialog > * {
 #notice { width: 100%; background: #FF3B00; color: white; }
 
 #copyright { width: 100%; background-color: black; color: white; font-size: max(1vh,1vw); }
+
 
 
