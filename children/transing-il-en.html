@@ -541,9 +541,11 @@
             if (msgInput.style.display === 'none' || msgInput.style.display === '') {
                 // InputMsg 沒顯示 → 顯示 InputRoom
                 roomInput.style.display = 'block';
+                console.log("InputRoom =>>", "block");
             } else {
                 // InputMsg 正在顯示 → 隱藏 InputRoom
                 roomInput.style.display = 'none';
+                console.log("InputRoom =>>", "none");
             }
         });
         
