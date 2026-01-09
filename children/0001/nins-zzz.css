@@ -51,7 +51,7 @@ dialog {
   max-height: 80vh;  /* 不要太高 */
 }
 dialog > * {
-  position: relative;  /* absolute 或 fixed 或 relative */
+  /* position: relative; */  /* absolute 或 fixed 或 relative */
   /*display: block; */
   /*margin-left: auto; */
   /*margin-right: auto; */
@@ -154,6 +154,7 @@ dialog > * {
 #notice { width: 100%; background: #FF3B00; color: white; }
 
 #copyright { width: 100%; background-color: black; color: white; font-size: max(1vh,1vw); }
+
 
 
 
