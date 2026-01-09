@@ -1,6 +1,7 @@
 document.body.insertAdjacentHTML('beforeend', `
     <dialog id="DialogCheck" translate="no">
         <pre id="logOutput" style="max-height:200px; overflow:auto; margin:0;">...</pre>
+        <button style="width: 100%;" onclick="document.getElementById('DialogCheck').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
     </dialog>
 `);
 
@@ -49,6 +50,7 @@ const version = (new Date().toLocaleString(), 'v1.20251203.1315 (This is an erro
 ///console.warn(version);
 console.info(version);
 console.log(version);
+
 
 
 
