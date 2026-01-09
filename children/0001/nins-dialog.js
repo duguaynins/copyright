@@ -40,7 +40,7 @@ const logOutput = document.getElementById('DialogCheck').getElementsByTagName('p
 
 // 測試
 const version = (new Date().toLocaleString(), 'v1.20251203.1315 (This is an error test.)');
-console.error(version);
-console.warn(version);
+///console.error(version);
+///console.warn(version);
 console.info(version);
 console.log(version);
