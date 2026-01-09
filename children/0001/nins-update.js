@@ -12,7 +12,7 @@ function isSameMinute(timestamp1, timestamp2) {
 }
 
 ///(function () {  })();
-function updateVer(auto=null) {
+function updateVer(print=null) {
   const url = new URL(window.location.href);
 
   // 判斷是否已有時間戳
@@ -33,10 +33,12 @@ function updateVer(auto=null) {
     }
   }
 }
-updateVer();
+///updateVer();
+setTimeout(updateVer, 1);
+///setInterval(updateVer, 1);
+///setInterval(() => updateVer(true), 1);
 
-
-function updateTime(auto=null) {
+function updateTime(print=null) {
   const now = new Date();
 
   // 取得 UTC 時間
@@ -57,15 +59,13 @@ function updateTime(auto=null) {
 
   document.getElementById("utc-offset").textContent = `${sign}${hours}:${minutes}`;
   document.getElementById("utc-time").textContent = utcTime.toISOString();  ///.replace('T', 'T') + "" + `${sign}${hours}:${minutes}`;  ///.split('.')[0];
-  if (auto) { 
-    ///setInterval(updateTime, 50); 
-    setInterval(() => updateTime(true), 50);
-  }  // 每幾時更新一次
-  else {
-    console.log(`${times}`);
-  }
+    
+  if (print) { console.log(`${times}`); }
+  else { }
 
   return times
 }
-
-updateTime();
+///updateTime(); // 先執行一次
+///setTimeout(updateVer, 1); // 幾時之後只執行一次
+///setInterval(updateTime, 1); // 每幾時之後執行一次
+setInterval(() => updateTime(), 1);
