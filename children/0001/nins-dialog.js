@@ -6,6 +6,11 @@ document.body.insertAdjacentHTML('beforeend', `
 
 
 document.querySelectorAll("dialog").forEach(dialog => {
+    dialog.addEventListener("click", e => {  ///***
+        if (e.target === dialog) {
+            dialog.close();
+        }
+    });
     dialog.addEventListener("click", function (event) {
     const rect = this.getBoundingClientRect();
     const isInDialog =
@@ -44,5 +49,6 @@ const version = (new Date().toLocaleString(), 'v1.20251203.1315 (This is an erro
 ///console.warn(version);
 console.info(version);
 console.log(version);
+
 
 
