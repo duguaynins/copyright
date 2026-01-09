@@ -1,4 +1,4 @@
-function updateVer(timestamp1, timestamp2) {
+function isSameMinute(timestamp1, timestamp2) {
   const date1 = new Date(Number(timestamp1));
   const date2 = new Date(Number(timestamp2));
 
@@ -11,13 +11,14 @@ function updateVer(timestamp1, timestamp2) {
   );
 }
 
-(function () {
+///(function () {  })();
+function updateVer(auto=null) {
   const url = new URL(window.location.href);
 
   // 判斷是否已有時間戳
   if (url.searchParams.has('t')) {  // 有
     const times = url.searchParams.get('t');
-    if (updateVer(times, Date.now()) ) {
+    if (isSameMinute(times, Date.now()) ) {
       null;
     }
     else {
@@ -31,8 +32,8 @@ function updateVer(timestamp1, timestamp2) {
       window.location.replace(url.toString());  // 使用 replace，避免無限返回
     }
   }
-
-})();
+}
+updateVer();
 
 
 function updateTime(auto=null) {
