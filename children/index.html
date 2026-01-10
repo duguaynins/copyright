@@ -82,8 +82,13 @@
 </head>
 <body>
   
+  <button class="zIndex fadeOut" style="z-index: 99999;  /* 確保在最高層 */
+  cursor: default;
+  /*background: linear-gradient(white, transparent);*/
+  background: white;
+" disabled></button>
     
-    <button disabled="" id="disabled" style="
+    <!--button disabled="" id="disabled" style="
       position: fixed;
       bottom: 0;
       top: 0; /* 距離頂部 0 */
@@ -102,7 +107,7 @@
       background: white;
       animation: fadeOut 3s forwards;
       pointer-events: none;  /* 動畫期間不阻擋互動（可選）*/
-    "></button>
+    "></button!-->
     
     
     <div style="
@@ -304,6 +309,7 @@
   
 </body>
 </html>
+
 
 
 
