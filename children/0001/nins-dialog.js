@@ -5,7 +5,7 @@ document.body.insertAdjacentHTML('beforeend', `
     </dialog>
 `);
 
-
+/*
 document.querySelectorAll("dialog").forEach(dialog => {
     dialog.addEventListener("click", e => {  ///***
         if (e.target === dialog) {
@@ -24,7 +24,7 @@ document.querySelectorAll("dialog").forEach(dialog => {
         this.close();
     }
     });
-});
+});  */
 
 
 
@@ -50,6 +50,7 @@ const version = (new Date().toLocaleString(), 'v1.20251203.1315 (This is an erro
 ///console.warn(version);
 console.info(version);
 console.log(version);
+
 
 
 
