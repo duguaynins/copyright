@@ -143,8 +143,8 @@ dialog > * {
   pointer-events: none; 
   /* animation: fadeOut 3s forwards;  */
   animation-name: fadeOut;      /* 指定動畫 */
-  animation-duration: 2s;       /* 動畫持續時間 */
-  animation-delay: 0.5s;          /* 延遲開始時間 */
+  animation-duration: 2.2s;       /* 動畫持續時間 */
+  animation-delay: 0.8s;          /* 延遲開始時間 */
   animation-fill-mode: forwards; /* 動畫結束保持最終狀態 */ 
 }
 
@@ -154,6 +154,7 @@ dialog > * {
 #notice { width: 100%; background: #FF3B00; color: white; }
 
 #copyright { width: 100%; background-color: black; color: white; font-size: max(1vh,1vw); }
+
 
 
 
