@@ -6,6 +6,11 @@ document.body.insertAdjacentHTML('beforeend', `
   onclick="this.classList.add('fadeOut'); /*initAudio();playXmasBGM();*/ document.getElementById('NinsXmas').play();">
     <span translate="no" id="merryXmas">!!!</span>
 </button>
+<button class="zIndex fadeOut" style="z-index: 99999;  /* 確保在最高層 */
+  cursor: default;
+  /*background: linear-gradient(white, transparent);*/
+  background: white;
+" disabled></button>
 `);
 
 document.getElementById('merryXmas').innerHTML = "☃️🦌🎄✨⭐<br>[ © nins ] x [ Merry Xmas 2025 ]";
