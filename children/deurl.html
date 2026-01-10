@@ -2,6 +2,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -231,8 +232,13 @@
 Here the final destination after decoding will be displayed.
 </div>
 
-<button type="button" translate="no" onclick="document.getElementById('input_msg').value='https://';">https://</button>
-<input id="input_msg" style="display:block" class="main use" type="text" name="url" autocomplete="on" placeholder="Please enter an image, or the URL to decode its destination..." style="width:100%; text-align: center;"/>
+
+<div class="input-btn-wrapper" style="display: flex; align-items: stretch; width:100%; text-align: center;">
+  <button type="button" translate="no" onclick="document.getElementById('input_msg').value='https://';">💡<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">https://</p></button>
+  <input id="input_msg" class="main use" type="text" name="url" autocomplete="on" placeholder="Please enter an image, or the URL to decode its destination..." style="flex: 1;"/>
+  <button type="button" translate="no">🚀<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">enter</p></button>
+</div>
+
 <button id="input_msgbtn" style="display:none" onclick="send()">Send and Recv</button>
 
 <!-- 放置你原有的布局 -->
