@@ -140,7 +140,8 @@ dialog > * {
   from { opacity: 1; }
   to { opacity: 0; }
 }
-.fadeOut { 
+.fadeOutNodelay { animation: fadeOut 3s forwards; }
+.fadeOutAdelay { 
   /* opacity: 0;  */            /* 不啟用此 */
   pointer-events: none; 
   /* animation: fadeOut 3s forwards;  */
@@ -156,6 +157,7 @@ dialog > * {
 #notice { width: 100%; background: #FF3B00; color: white; }
 
 #copyright { width: 100%; background-color: black; color: white; font-size: max(1vh,1vw); }
+
 
 
 
