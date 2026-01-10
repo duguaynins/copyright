@@ -11,11 +11,11 @@ function isSameMinute(timestamp1, timestamp2) {
   );
 }
 
-function isOver2000ms(timestamp1, timestamp2) {
-  return Math.abs(Number(timestamp2) - Number(timestamp1)) > 2000;
+function isOver000ms(timestamp1, timestamp2) {
+  return Math.abs(Number(timestamp2) - Number(timestamp1)) > 5800;
 }
-function notOver2000ms(timestamp1, timestamp2) {
-  return Math.abs(Number(timestamp2) - Number(timestamp1)) <= 2000;
+function notOver000ms(timestamp1, timestamp2) {
+  return Math.abs(Number(timestamp2) - Number(timestamp1)) <= 5800;
 }
 
 ///(function () {  })();
@@ -40,10 +40,12 @@ function updateVer(print=null) {
   if (url.searchParams.has('t')) {  // 有
     const times = url.searchParams.get('t');
     
-    if ( notOver2000ms(times, Date.now()) ) {  ///isSameMinute(times, Date.now())
+    if ( notOver000ms(times, Date.now()) ) {  ///isSameMinute(times, Date.now())
       if (sessionStorage.getItem('reloaded') !== 'true') {
         sessionStorage.setItem('reloaded', 'true');
         window.location.reload(true);
+      } else {
+        sessionStorage.setItem('reloaded', 'false');
       }
     }
     else {
@@ -99,6 +101,7 @@ function updateTime(print=null) {
 setTimeout(updateTime, 1); // 幾時之後只執行一次
 ///setInterval(updateTime, 1); // 每幾時之後執行一次
 ///setInterval(() => updateTime(), 1);
+
 
 
 
