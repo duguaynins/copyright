@@ -12,7 +12,18 @@ function isSameMinute(timestamp1, timestamp2) {
 }
 
 ///(function () {  })();
-function updateVer(print=null) {
+function updateVer(print=null) {  
+  // 變成奇數次都會強制刷新
+      if (sessionStorage.getItem('reloaded') !== 'true') {
+        sessionStorage.setItem('reloaded', 'true');
+        window.location.reload(true);
+      } else {
+        sessionStorage.removeItem('reloaded');
+      }
+}
+
+
+function updateVer_v1(print=null) {
   const url = new URL(window.location.href);
 
   // 判斷是否已有時間戳
