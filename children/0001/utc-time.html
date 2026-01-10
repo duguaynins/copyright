@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -74,10 +75,12 @@
 
 ///updateTime();
 
-const [times, offset] = updateTime();
-document.getElementById("utc-time").innerHTML = times;
-document.getElementById("utc-offset").innerHTML = offset;
-setInterval(() => updateTime(), 100);
+function loop() {
+  const [times, offset] = updateTime();
+  document.getElementById("utc-time").innerHTML = times;
+  document.getElementById("utc-offset").innerHTML = offset;
+}
+setInterval(() => loop(), 100);
 
 </script>
 </body>

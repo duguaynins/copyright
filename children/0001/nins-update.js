@@ -19,24 +19,24 @@ function updateVer(print=null) {
   if (url.searchParams.has('t')) {  // 有
     const times = url.searchParams.get('t');
     if (isSameMinute(times, Date.now()) ) {
-      ///null;
-      ///window.location.reload(true);  ///***
       if (sessionStorage.getItem('reloaded') !== 'true') {
-
-      ///if (!sessionStorage.getItem('reloaded')) {
         sessionStorage.setItem('reloaded', 'true');
         window.location.reload(true);
       }
     }
     else {
-      url.searchParams.set('t', Date.now());
+      url.searchParams.delete('t');
+      url.searchParams.append('t', Date.now());
+      ///url.searchParams.set('t', Date.now());
       sessionStorage.setItem('reloaded', 'false');
       window.location.replace(url.toString());  // 使用 replace，避免無限返回
     }
   }
   if (!url.searchParams.has('t')) {  // 無
     if (true) {
-      url.searchParams.set('t', Date.now());
+      url.searchParams.delete('t');
+      url.searchParams.append('t', Date.now());
+      ///url.searchParams.set('t', Date.now());
       sessionStorage.setItem('reloaded', 'false');
       window.location.replace(url.toString());  // 使用 replace，避免無限返回
     }
@@ -52,8 +52,6 @@ function updateTime(print=null) {
 
   // 取得 UTC 時間
   const utcTime = new Date();  /// + now.getTimezoneOffset() * 60000
-  ///const utcTime = new Date(now.getTime());  /// + now.getTimezoneOffset() * 60000
-  ///document.getElementById("utc-time").textContent = utcTime.toISOString()  ///.replace('T', 'T_')  ///.split('.')[0];
 
   // 取得本地時區相對 UTC 的時差（小時）
   const offsetMinutes = -now.getTimezoneOffset(); // 注意符號，getTimezoneOffset 回傳與 UTC 的差值（分鐘），UTC-本地）
@@ -79,7 +77,6 @@ function updateTime(print=null) {
 setTimeout(updateTime, 1); // 幾時之後只執行一次
 ///setInterval(updateTime, 1); // 每幾時之後執行一次
 ///setInterval(() => updateTime(), 1);
-
 
 
 
