@@ -18,7 +18,8 @@ function updateVer(print=null) {
         sessionStorage.setItem('reloaded', 'true');
         window.location.reload(true);
       } else {
-        sessionStorage.removeItem('reloaded');
+        sessionStorage.setItem('reloaded', 'false');
+        ///sessionStorage.removeItem('reloaded');
       }
 }
 
