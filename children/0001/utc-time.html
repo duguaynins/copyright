@@ -73,15 +73,16 @@
 <script>
 
 ///updateTime();
-setInterval(() => updateTime(), 100);
+
 const [times, offset] = updateTime();
 document.getElementById("utc-time").innerHTML = times;
 document.getElementById("utc-offset").innerHTML = offset;
-  
+setInterval(() => updateTime(), 100);
 
 </script>
 </body>
 </html>
+
 
 
 
