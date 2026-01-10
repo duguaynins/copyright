@@ -11,8 +11,15 @@ function isSameMinute(timestamp1, timestamp2) {
   );
 }
 
+function isOver2000ms(timestamp1, timestamp2) {
+  return Math.abs(Number(timestamp2) - Number(timestamp1)) > 2000;
+}
+function notOver2000ms(timestamp1, timestamp2) {
+  return Math.abs(Number(timestamp2) - Number(timestamp1)) <= 2000;
+}
+
 ///(function () {  })();
-function updateVer(print=null) {  
+function updateVer_v0(print=null) {  
   // 變成奇數次都會強制刷新
       if (sessionStorage.getItem('reloaded') !== 'true') {
         sessionStorage.setItem('reloaded', 'true');
@@ -24,13 +31,16 @@ function updateVer(print=null) {
 }
 
 
-function updateVer_v1(print=null) {
+function updateVer(print=null) {
   const url = new URL(window.location.href);
+  const t = url.searchParams.get('t');
+  const now = Date.now();
 
   // 判斷是否已有時間戳
   if (url.searchParams.has('t')) {  // 有
     const times = url.searchParams.get('t');
-    if (isSameMinute(times, Date.now()) ) {
+    
+    if ( notOver2000ms(times, Date.now()) ) {  ///isSameMinute(times, Date.now())
       if (sessionStorage.getItem('reloaded') !== 'true') {
         sessionStorage.setItem('reloaded', 'true');
         window.location.reload(true);
