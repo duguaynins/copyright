@@ -63,21 +63,23 @@ function updateTime(print=null) {
   const hours = String(Math.abs(Math.round(offsetHours))).padStart(2, '0'); // 兩位數
   const minutes = String(Math.abs(offsetMinutes)%60).padStart(2,'0');
 
-  const times = utcTime.toISOString().replace('T', 'T') + "" + `${sign}${hours}:${minutes}`;
+  const offset = `${sign}${hours}:${minutes}`;
+  const times = utcTime.toISOString().replace('T', 'T');/// + "" + `${sign}${hours}:${minutes}`;
   ///console.log(`${times}`);
 
-  document.getElementById("utc-offset").textContent = `${sign}${hours}:${minutes}`;
-  document.getElementById("utc-time").textContent = utcTime.toISOString();  ///.replace('T', 'T') + "" + `${sign}${hours}:${minutes}`;  ///.split('.')[0];
+  ///document.getElementById("utc-offset").textContent = `${sign}${hours}:${minutes}`;
+  ///document.getElementById("utc-time").textContent = utcTime.toISOString();  ///.replace('T', 'T') + "" + `${sign}${hours}:${minutes}`;  ///.split('.')[0];
     
   if (print) { console.log(`${times}`); }
   else { }
 
-  return times
+  return [times, offset]
 }
 ///updateTime(); // 先執行一次
 setTimeout(updateTime, 1); // 幾時之後只執行一次
 ///setInterval(updateTime, 1); // 每幾時之後執行一次
 ///setInterval(() => updateTime(), 1);
+
 
 
 
