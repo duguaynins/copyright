@@ -3,10 +3,10 @@
 document.body.insertAdjacentHTML('beforeend', `
 <audio id="NinsXmas" style="display:none;" src="https://copyright.nins.cc/children/2025/xmas.mp3" loop ></audio>
 <button class="zIndex" style="z-index: 99998;" 
-  onclick="this.classList.add('fadeOut'); /*initAudio();playXmasBGM();*/ document.getElementById('NinsXmas').play();">
+  onclick="this.classList.add('fadeOutNodelay'); /*initAudio();playXmasBGM();*/ document.getElementById('NinsXmas').play();">
     <span translate="no" id="merryXmas">!!!</span>
 </button>
-<button class="zIndex fadeOut" style="z-index: 99999;  /* 確保在最高層 */
+<button class="zIndex fadeOutAdelay" style="z-index: 99999;  /* 確保在最高層 */
   cursor: default;
   /*background: linear-gradient(white, transparent);*/
   background: white;
