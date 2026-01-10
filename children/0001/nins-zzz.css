@@ -124,8 +124,8 @@ dialog > * {
   0%, 100% { border-color: red; }
   50%      { border-color: transparent; }
 }
-.main { border: 2px solid red; animation: flashForever 1.0s steps(1, start) infinite;  }
-.day {  border: 2px solid red; animation: flashForever 1.0s steps(1, start) infinite;  }
+.main { border: 2px solid red; animation: flashForever 1.0s steps(1, start) infinite; background: white; }
+.day {  border: 2px solid red; animation: flashForever 1.0s steps(1, start) infinite; background: rgb(255, 225, 230); }
 .no {
     pointer-events: none; /* 禁止滑鼠事件 */
     background:#000000;
@@ -156,6 +156,7 @@ dialog > * {
 #notice { width: 100%; background: #FF3B00; color: white; }
 
 #copyright { width: 100%; background-color: black; color: white; font-size: max(1vh,1vw); }
+
 
 
 
