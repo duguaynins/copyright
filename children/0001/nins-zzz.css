@@ -15,6 +15,8 @@ iframe.skiptranslate, #goog-gt-tt {
     /* visibility: hidden !important; */
 }
 
+body { font-size: clamp(14px, 2.2vw, 18px); }
+h1, h2, h3, h4, h5, h6 { font-size: clamp(22px, 2.5vw, 33px);; }
 html, body { 
   display: flex;
   flex-direction: column;
@@ -160,6 +162,7 @@ dialog > * {
 #notice { width: 100%; background: #FF3B00; color: white; }
 
 #copyright { width: 100%; background-color: black; color: white; font-size: max(1vh,1vw); }
+
 
 
 
