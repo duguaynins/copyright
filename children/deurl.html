@@ -334,10 +334,13 @@ async function send() {
     document.getElementById("input_qr").disabled = true;
     document.getElementById("input_msg").disabled = true;
     document.querySelectorAll('button').forEach(button => { button.disabled = true; });
-  
+
+    const lang = (navigator.language || navigator.userLanguage || "en-US");
+    ///const url...
     const msg = await deurl({ "url": url });
-    const openai = "https://chatgpt.com/?prompt=" + msg;
-    const google = "https://www.google.com/search?udm=50&aep=1&aic=0&q=" + msg;
+    const prompt = `lang*===${lang}.;${url}*===unsafe?;${msg}*===unsafe?;`;
+    const openai = "https://chatgpt.com/?prompt=" + prompt;
+    const google = "https://www.google.com/search?udm=50&aep=1&aic=0&q=" + prompt;
 
     ///🤖🧠🎯
     document.getElementById("content").innerHTML = `
@@ -612,5 +615,6 @@ console.log(version);
     
 </body>
 </html>
+
 
 
