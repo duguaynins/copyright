@@ -1,9 +1,4 @@
 
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -324,11 +319,14 @@ async function deurl(params) {
   return outputs.result;
 }
 
+let stopFlag = null;
+let okFlag = false;
+
 async function send() {
     ///document.getElementById("input_qr").disabled = true;
     ///document.getElementById("input_msg").disabled = true;
+    stopFlag = true;
     document.getElementById("content").innerHTML = "Waiting for decoding...";
-
 
     const url = document.getElementById("input_msg").value;
     if (!url.startsWith("http")) { document.getElementById("content").innerHTML = "Invalid URL format!!!";return; }
@@ -358,16 +356,19 @@ async function send() {
     document.querySelectorAll('button').forEach(button => { button.disabled = false; });
     document.getElementById("input_msg").disabled = false;
     document.getElementById("input_qr").disabled = false;
+
+    stopFlag = false;
+    okFlag = true;
 }
 
 
 ///document.getElementById("input_msg").addEventListener("focus", () => {  });
 ///document.getElementById("input_msg").addEventListener("focus", function () {
-let stopFlag = null;
 document.getElementById("input_msg").addEventListener("focus", (event) => {
     ///if (event.target.value) { return; }
-    if (stopFlag) { return; }
+    if (stopFlag || okFlag) { return; }
     document.getElementById("content").innerHTML = "Please enter the URL and send it.🚀🚀🚀"; console.log("已具焦");
+    if (event.target.value) { return; }
     document.getElementById("input_msg").value = "https://world.nins.cc/";  ///***
 });
 
@@ -375,7 +376,7 @@ document.getElementById("input_msg").addEventListener("focus", (event) => {
 ///document.getElementById("input_msg").addEventListener("blur", function () {
 document.getElementById("input_msg").addEventListener("blur", (event) => {
     ///if (event.target.value && event.target.value !== "https://world.nins.cc/") { return; }
-    if (stopFlag) { return; }
+    if (stopFlag || okFlag) { return; }
     document.getElementById("content").innerHTML = "or select a QR image.🖼️🖼️🖼️"; console.log("已失焦");
     ///document.getElementById("input_msg").value = "";  ///***
 });
@@ -383,9 +384,9 @@ document.getElementById("input_msg").addEventListener("blur", (event) => {
 document.getElementById("input_msg").addEventListener("keydown", function(e) {    
     if (e.key === "Enter") {
         e.preventDefault();  // 阻止 Enter 鍵的預設行為（即防止跳轉到下一個輸入框）
-        stopFlag = true;
+        ///stopFlag = true;
         send();
-        stopFlag = false;
+        ///stopFlag = false;
     }
 });
 </script>
@@ -399,7 +400,7 @@ const placeholders = [
     ///"google.com",
     "https://google.com/",
     ///"deurl.nins.cc",
-    "https://deurl.nins.cc/",
+    "https://world.nins.cc/",
     ///"Enter the URL to decode its destination...",
 ];
 
