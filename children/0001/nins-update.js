@@ -10,15 +10,15 @@ document.head.insertAdjacentHTML('beforeend', `
 }
 .ninsStartAdelay { 
   pointer-events: none; 
-  animation: ninsStart 2.2s forwards 1.0s;
-  transform: translateZ(0);
+  animation: ninsStart 2.2s forwards 0.8s;
+  /* transform: translateZ(0); */
 }
-.ninsStartAdelay_v1 { 
+.ninsStartAdelay_vt { 
   pointer-events: none; 
   animation-name: ninsStart;      /* 指定動畫 */
   animation-duration: 2.2s;       /* 動畫持續時間 */
   animation-delay: 0.8s;          /* 延遲開始時間 */
-  animation-fill-mode: forwards; /* 動畫結束保持最終狀態 */ 
+  animation-fill-mode: forwards;  /* 動畫結束保持最終狀態 */ 
 }
 .zIndex {
   position: fixed;
@@ -144,6 +144,7 @@ function updateTime(print=null) {
 setTimeout(updateTime, 1); // 幾時之後只執行一次
 ///setInterval(updateTime, 1); // 每幾時之後執行一次
 ///setInterval(() => updateTime(), 1);
+
 
 
 
