@@ -340,6 +340,7 @@ async function send() {
 
     const lang = (navigator.language || navigator.userLanguage || "en-US");
     const task = "Carefully infomatoion Security Analysis for URLs";
+    const need = "Shows a high level of prudence (%) in useing";
     ///const task = "URL information security analysis";
     ///const url...
     const msg = await deurl({ "url": url });
@@ -347,7 +348,7 @@ async function send() {
     const prompt_v2 = `"${lang}"===mylang."${url}"===unsafe?"${msg}"===unsafe?`;
     const prompt_v3 = `lang="${lang}".\n${url}==="unsafe"?\n${msg}==="unsafe"?\n`;
     const prompt_v4 = `lang=${lang}.\n${url}==="unsafe(%)"?\n${msg}==="unsafe(%)"?\n`;
-    const prompt = `lang=${lang}.\n${task}.\n${url}.\n${msg}.\n`;
+    const prompt = `lang=${lang}.\n${task}.\n${need}.\n${url}.\n${msg}.\n`;
     const openai = "https://chatgpt.com/?prompt=" + encodeURIComponent( prompt );
     const google = "https://www.google.com/search?udm=50&aep=1&aic=0&q=" + encodeURIComponent( prompt );
 
@@ -624,6 +625,7 @@ console.log(version);
     
 </body>
 </html>
+
 
 
 
