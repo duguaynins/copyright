@@ -234,9 +234,9 @@ The final HTTPS destination after decoding will be displayed here.
 
 <div class="input-btn-wrapper" style="display: flex; align-items: stretch; width:100%; text-align: center;">
   <!--button type="button" class="main " translate="no" onclick="document.getElementById('input_msg').value='https://';">💡<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">https://</p></button!-->
-  <button type="button" class="main " translate="no" onclick="send()">🚀<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">enter</p></button>
+  <button type="button" class="main use" translate="no" onclick="send()">🚀<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">enter</p></button>
   <input id="input_msg" class="main use" type="text" name="url" autocomplete="off" placeholder="After entering the URL, please press Enter or Send!" style="flex: 1;"/>
-  <button type="button" class="main " translate="no" onclick="send()">🚀<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">enter</p></button>
+  <button type="button" class="main use" translate="no" onclick="send()">🚀<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">enter</p></button>
 </div>
 
 <button id="input_msgbtn" style="display:none" onclick="send()">Send and Recv</button>
@@ -339,7 +339,8 @@ async function send() {
     document.querySelectorAll('button').forEach(button => { button.disabled = true; });
 
     const lang = (navigator.language || navigator.userLanguage || "en-US");
-    const task = "URL information security analysis";
+    const task = "Carefully infomatoion Security Analysis for URLs";
+    ///const task = "URL information security analysis";
     ///const url...
     const msg = await deurl({ "url": url });
     const prompt_v1 = `lang*==="${lang}".;unsafe*==="${url}"?;unsafe*==="${msg}"?;`;
@@ -623,6 +624,7 @@ console.log(version);
     
 </body>
 </html>
+
 
 
 
