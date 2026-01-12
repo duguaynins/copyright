@@ -34,7 +34,7 @@ document.head.insertAdjacentHTML('beforeend', `
 `);
 document.body.insertAdjacentHTML('beforeend', `
 <button class="zIndex ninsStartAdelay" style="z-index: 99999;  /* 確保在最高層 */
-  cursor: default;
+  cursor: default; border: none; outline: none;
   /*background: linear-gradient(white, transparent);*/
   background: white;
 " disabled></button>
@@ -144,6 +144,7 @@ function updateTime(print=null) {
 setTimeout(updateTime, 1); // 幾時之後只執行一次
 ///setInterval(updateTime, 1); // 每幾時之後執行一次
 ///setInterval(() => updateTime(), 1);
+
 
 
 
