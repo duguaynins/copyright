@@ -336,13 +336,14 @@ async function send() {
     document.querySelectorAll('button').forEach(button => { button.disabled = true; });
 
     const lang = (navigator.language || navigator.userLanguage || "en-US");
+    const task = "Information security analysis.";
     ///const url...
     const msg = await deurl({ "url": url });
     const prompt_v1 = `lang*==="${lang}".;unsafe*==="${url}"?;unsafe*==="${msg}"?;`;
     const prompt_v2 = `"${lang}"===mylang."${url}"===unsafe?"${msg}"===unsafe?`;
     const prompt_v3 = `lang="${lang}".\n${url}==="unsafe"?\n${msg}==="unsafe"?\n`;
     const prompt_v4 = `lang=${lang}.\n${url}==="unsafe(%)"?\n${msg}==="unsafe(%)"?\n`;
-    const prompt = `lang=${lang}.\n${url}.\n${msg}.\n`;
+    const prompt = `lang=${lang}.\n${task}.\n${url}.\n${msg}.\n`;
     const openai = "https://chatgpt.com/?prompt=" + encodeURIComponent( prompt );
     const google = "https://www.google.com/search?udm=50&aep=1&aic=0&q=" + encodeURIComponent( prompt );
 
@@ -619,6 +620,7 @@ console.log(version);
     
 </body>
 </html>
+
 
 
 
