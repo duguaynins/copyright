@@ -6,13 +6,11 @@ document.head.insertAdjacentHTML('beforeend', `
 }
 .ninsStartNodelay { 
   pointer-events: none; 
-  animation: fadeOut 3s forwards; 
+  animation: ninsStart 3s forwards; 
 }
 .ninsStartAdelay { 
-  /* opacity: 0;  */            /* 不啟用此 */
   pointer-events: none; 
-  /* animation: fadeOut 3s forwards;  */
-  animation-name: fadeOut;      /* 指定動畫 */
+  animation-name: ninsStart;      /* 指定動畫 */
   animation-duration: 2.2s;       /* 動畫持續時間 */
   animation-delay: 0.8s;          /* 延遲開始時間 */
   animation-fill-mode: forwards; /* 動畫結束保持最終狀態 */ 
@@ -131,6 +129,7 @@ function updateTime(print=null) {
 setTimeout(updateTime, 1); // 幾時之後只執行一次
 ///setInterval(updateTime, 1); // 每幾時之後執行一次
 ///setInterval(() => updateTime(), 1);
+
 
 
 
