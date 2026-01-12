@@ -339,7 +339,8 @@ async function send() {
     ///const url...
     const msg = await deurl({ "url": url });
     const prompt_v1 = `lang*==="${lang}".;unsafe*==="${url}"?;unsafe*==="${msg}"?;`;
-    const prompt = `"${lang}"===mylang."${url}"===unsafe?"${msg}"===unsafe?`;
+    const prompt_v2 = `"${lang}"===mylang."${url}"===unsafe?"${msg}"===unsafe?`;
+    const prompt = `lang=${lang}.\n${url}=unsafe?\n${msg}===unsafe?\n`;
     const openai = "https://chatgpt.com/?prompt=" + encodeURIComponent( prompt );
     const google = "https://www.google.com/search?udm=50&aep=1&aic=0&q=" + encodeURIComponent( prompt );
 
@@ -616,6 +617,7 @@ console.log(version);
     
 </body>
 </html>
+
 
 
 
