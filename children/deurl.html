@@ -339,9 +339,11 @@ async function send() {
     document.querySelectorAll('button').forEach(button => { button.disabled = true; });
 
     const lang = (navigator.language || navigator.userLanguage || "en-US");
+    const task_v1 = "URL information security analysis";
     const task = "Carefully infomatoion Security Analysis for URLs";
-    const need = "Shows a high level of prudence (%) in useing";
-    ///const task = "URL information security analysis";
+    const need_v1 = "Shows a high level of prudence (%) in useing";
+    const need = "Shows the recommended degree of caution (%) when operating under zero-trust";
+    
     ///const url...
     const msg = await deurl({ "url": url });
     const prompt_v1 = `lang*==="${lang}".;unsafe*==="${url}"?;unsafe*==="${msg}"?;`;
@@ -625,6 +627,7 @@ console.log(version);
     
 </body>
 </html>
+
 
 
 
