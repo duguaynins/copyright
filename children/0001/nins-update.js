@@ -20,6 +20,16 @@ document.head.insertAdjacentHTML('beforeend', `
   animation-delay: 0.8s;          /* 延遲開始時間 */
   animation-fill-mode: forwards; /* 動畫結束保持最終狀態 */ 
 }
+.zIndex {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+  height: auto;
+}
 </style>
 `);
 document.body.insertAdjacentHTML('beforeend', `
@@ -134,6 +144,7 @@ function updateTime(print=null) {
 setTimeout(updateTime, 1); // 幾時之後只執行一次
 ///setInterval(updateTime, 1); // 每幾時之後執行一次
 ///setInterval(() => updateTime(), 1);
+
 
 
 
