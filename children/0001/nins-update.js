@@ -1,3 +1,33 @@
+document.head.insertAdjacentHTML('beforeend', `
+<style>
+@keyframes ninsStart {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+.ninsStartNodelay { 
+  pointer-events: none; 
+  animation: fadeOut 3s forwards; 
+}
+.ninsStartAdelay { 
+  /* opacity: 0;  */            /* 不啟用此 */
+  pointer-events: none; 
+  /* animation: fadeOut 3s forwards;  */
+  animation-name: fadeOut;      /* 指定動畫 */
+  animation-duration: 2.2s;       /* 動畫持續時間 */
+  animation-delay: 0.8s;          /* 延遲開始時間 */
+  animation-fill-mode: forwards; /* 動畫結束保持最終狀態 */ 
+}
+</style>
+`);
+document.body.insertAdjacentHTML('beforeend', `
+<button class="zIndex ninsStartAdelay" style="z-index: 99999;  /* 確保在最高層 */
+  cursor: default;
+  /*background: linear-gradient(white, transparent);*/
+  background: white;
+" disabled></button>
+`);
+
+
 function isSameMinute(timestamp1, timestamp2) {
   const date1 = new Date(Number(timestamp1));
   const date2 = new Date(Number(timestamp2));
@@ -101,6 +131,7 @@ function updateTime(print=null) {
 setTimeout(updateTime, 1); // 幾時之後只執行一次
 ///setInterval(updateTime, 1); // 每幾時之後執行一次
 ///setInterval(() => updateTime(), 1);
+
 
 
 
