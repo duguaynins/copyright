@@ -10,7 +10,7 @@ document.head.insertAdjacentHTML('beforeend', `
 }
 .ninsStartAdelay { 
   pointer-events: none; 
-  animation: ninsStart 2.22s forwards 0.58s;
+  animation: ninsStart 2.20s forwards 0.80s;
   /* transform: translateZ(0); */
 }
 .ninsStartAdelay_vt { 
@@ -144,6 +144,7 @@ function updateTime(print=null) {
 setTimeout(updateTime, 1); // 幾時之後只執行一次
 ///setInterval(updateTime, 1); // 每幾時之後執行一次
 ///setInterval(() => updateTime(), 1);
+
 
 
 
