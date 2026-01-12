@@ -336,7 +336,7 @@ async function send() {
     document.querySelectorAll('button').forEach(button => { button.disabled = true; });
 
     const lang = (navigator.language || navigator.userLanguage || "en-US");
-    const task = "Information security analysis.";
+    const task = "URL information security analysis";
     ///const url...
     const msg = await deurl({ "url": url });
     const prompt_v1 = `lang*==="${lang}".;unsafe*==="${url}"?;unsafe*==="${msg}"?;`;
@@ -620,6 +620,7 @@ console.log(version);
     
 </body>
 </html>
+
 
 
 
