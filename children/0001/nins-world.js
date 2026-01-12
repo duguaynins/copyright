@@ -7,7 +7,7 @@ document.body.insertAdjacentHTML('beforeend', `
     <span translate="no" id="merryXmas">!!!</span>
 </button>
 <button class="zIndex fadeOutAdelay" style="z-index: 99999;  /* 確保在最高層 */
-  cursor: default;
+  cursor: default; border: none; outline: none;
   /*background: linear-gradient(white, transparent);*/
   background: white;
 " disabled></button>
