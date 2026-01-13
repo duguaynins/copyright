@@ -78,7 +78,7 @@ function autoTranslate(lang) {
             ///console.log("新語言文字:", combo.options[combo.selectedIndex].text);
         });
         
-        const params = new URLSearchParams(window.location.search);
+        ///const params = new URLSearchParams(window.location.search);
         const options = Array.from(combo.options).map(opt => opt.value);console.log('可用語言代碼:', options);
         console.log("autoTranslate?:", lang);
         ///combo.value = lang;
@@ -86,7 +86,7 @@ function autoTranslate(lang) {
             ?  lang 
             :  options.find(opt => opt.startsWith(lang))  
             || options.find(opt => opt.startsWith(lang.slice(0, 2))) 
-            || params.get("sl");  /// null
+            || null;  /// null or params.get("sl")
         combo.dispatchEvent(new Event('change'));
         console.log("autoTranslate!:", combo.value);
         } else {
@@ -100,8 +100,9 @@ window.addEventListener('load', () => {
 console.log("window...load");
     
 waitForCombo((combo) => {
+    const params = new URLSearchParams(window.location.search);
     console.log("autoTranslate...waitForCombo");
-    autoTranslate( (navigator.language || navigator.userLanguage || "en-US") );
+    autoTranslate( params.get("hl") || (navigator.language || navigator.userLanguage || "en-US") );
     ///console.log("combo 已生成:", combo);
     ///combo.value = 'en';
     ///combo.dispatchEvent(new Event('change'));
@@ -115,3 +116,4 @@ setTimeout(() => {
 }, 1000); */
 
 });
+
