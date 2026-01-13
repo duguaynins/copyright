@@ -3,6 +3,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -253,6 +254,8 @@
     </style>
 </head>
 <body>
+<!-- UPDATE ================================================== -->
+<script src="https://copyright.nins.cc/children/0001/nins-update.js"></script>
     <!--div id="google_translate_element" style="display:block;"></div-->
   
     <audio id="NinsXmas" style="display:none;" src="https://copyright.nins.cc/children/2025/xmas.mp3" loop ></audio>
@@ -1028,11 +1031,12 @@ console.log(version);
         console.log("Voices loaded:", voices.length);
         console.log("Voices loaded:", voices);
         
+        /*
         voices.forEach((voice, index) => {
           console.log(
             `${index + 1}. 名稱: ${voice.name}, 語言: ${voice.lang}, 是否預設: ${voice.default}`
           );
-        });
+        });  */
       
         if (voices.length > 0) {
             ///alert("GET TTS VOICE＝: " + voices.length);
@@ -1226,11 +1230,13 @@ console.log(version);
                   const nowUTC = new Date().toISOString();
                   const hourUTC = new Date(nowUTC).getUTCHours();  // 取得 UTC 小時（0-23）
                   const emoji_clock = EmojisClock[hourUTC];
+                  const [times, offset] = updateTime();
+                  const ninsTimes = times;/// + offset;
                   
-                  // 段開顯示**
+                  // 離線顯示**
                   ably.close(); // Close existing connection if it exists
                   const p = document.createElement('p');
-                  p.innerHTML = `${emoji_clock}${nowUTC}<br>（⛔${uuid_user || 'USER'}）`;p.style.color = 'red';  ///🔴
+                  p.innerHTML = `${emoji_clock}${ninsTimes}<br>（⛔${uuid_user || 'USER'}）`;p.style.color = 'red';  ///🔴
                   p.setAttribute('translate', 'no');  //???
                   document.getElementById("chatbox").prepend(p);
                   
@@ -1363,10 +1369,14 @@ console.log(version);
         const distance = await semantic({ "smsg": smsg, "rmsg": imsg }); // duguaynins/SemanticDistance
         console.log("語意距離：" + distance + "***");
 
+        // 世界時間***  ///20260113
+        const [times, offset] = updateTime();
+        const ninsTimes = times + offset;
+        
         // 測試：統一顯示語意距離
         ///channel.subscribe
         channel.publish('message', {
-          time: (emoji_clock + nowUTC),
+          time: (emoji_clock + ninsTimes),
           rl_text: imsg, ///("🔄" + rmsg),
           il_text: tmsg, ///("🤖" + imsg),
           sl_text: smsg, ///("🔣" + smsg),
@@ -1634,12 +1644,14 @@ console.log(version);
             const nowUTC = new Date().toISOString();
             const hourUTC = new Date(nowUTC).getUTCHours();  // 取得 UTC 小時（0-23）
             const emoji_clock = EmojisClock[hourUTC];
+            const [times, offset] = updateTime();
+            const ninsTimes = times;/// + offset;
             
             // 紀錄事件**
             console.log(`${member.clientId} has entered.`);
             channel.presence.get((err, members) => {
               const p = document.createElement('p');
-              p.innerHTML = `${emoji_clock}${nowUTC}<br>（🟢${member.clientId || 'USER'}）`;p.style.color = 'green';
+              p.innerHTML = `${emoji_clock}${ninsTimes}<br>（🟢${member.clientId || 'USER'}）`;p.style.color = 'green';
               p.setAttribute('translate', 'no');  //???
               document.getElementById("chatbox").prepend(p);
               if (!err) { console.log('Members:', members.length);document.getElementById("copyright").innerHTML = `👻（${room}, ${members.length}）`; }
@@ -1655,12 +1667,14 @@ console.log(version);
             const nowUTC = new Date().toISOString();
             const hourUTC = new Date(nowUTC).getUTCHours();  // 取得 UTC 小時（0-23）
             const emoji_clock = EmojisClock[hourUTC];
+            const [times, offset] = updateTime();
+            const ninsTimes = times;/// + offset;
             
             // 紀錄事件**
             console.log(`${member.clientId} has left.`);
             channel.presence.get((err, members) => {
               const p = document.createElement('p');
-              p.innerHTML = `${emoji_clock}${nowUTC}<br>（🔴${member.clientId || 'USER'}）`;p.style.color = 'red';
+              p.innerHTML = `${emoji_clock}${ninsTimes}<br>（🔴${member.clientId || 'USER'}）`;p.style.color = 'red';
               p.setAttribute('translate', 'no');  //???
               document.getElementById("chatbox").prepend(p);
               if (!err) { console.log('Members:', members.length);document.getElementById("copyright").innerHTML = `👻（${room}, ${members.length}）`; }
