@@ -1238,7 +1238,10 @@ console.log(version);
                   const p = document.createElement('p');
                   p.innerHTML = `${emoji_clock}${ninsTimes}<br>（⛔${uuid_user || 'USER'}）`;p.style.color = 'red';  ///🔴
                   p.setAttribute('translate', 'no');  //???
-                  document.getElementById("chatbox").prepend(p);
+                  ///document.getElementById("chatbox").prepend(p);
+                  ///document.getElementById("chatbox").insertBefore(p, document.getElementById("anchor"));
+                  document.getElementById('anchor').after(p);
+          
                   
                   // 阻隔使用**
                   ///document.getElementById("disabled").disabled = true;
@@ -1605,6 +1608,7 @@ console.log(version);
               <p translate="no">⚠️© 2024 NINS. 👻</p>
               `
         document.getElementById("chatbox").prepend(p);
+        document.getElementById("chatbox").insertAdjacentHTML('afterbegin', '<div id="anchor"></div>');
           
         document.getElementById('InputRoom').disabled = true;  // 禁用
         document.getElementById('InputRoom').style.display = 'none';
@@ -1653,7 +1657,10 @@ console.log(version);
               const p = document.createElement('p');
               p.innerHTML = `${emoji_clock}${ninsTimes}<br>（🟢${member.clientId || 'USER'}）`;p.style.color = 'green';
               p.setAttribute('translate', 'no');  //???
-              document.getElementById("chatbox").prepend(p);
+              ///document.getElementById("chatbox").prepend(p);
+              ///document.getElementById("chatbox").insertBefore(p, document.getElementById("anchor"));
+              document.getElementById('anchor').after(p);
+
               if (!err) { console.log('Members:', members.length);document.getElementById("copyright").innerHTML = `👻（${room}, ${members.length}）`; }
             });
             if (member.clientId === uuid_user) {
@@ -1676,7 +1683,10 @@ console.log(version);
               const p = document.createElement('p');
               p.innerHTML = `${emoji_clock}${ninsTimes}<br>（🔴${member.clientId || 'USER'}）`;p.style.color = 'red';
               p.setAttribute('translate', 'no');  //???
-              document.getElementById("chatbox").prepend(p);
+              ///document.getElementById("chatbox").prepend(p);
+              ///document.getElementById("chatbox").insertBefore(p, document.getElementById("anchor"));
+              document.getElementById('anchor').after(p);
+
               if (!err) { console.log('Members:', members.length);document.getElementById("copyright").innerHTML = `👻（${room}, ${members.length}）`; }
             });
             if (member.clientId === uuid_user) {
@@ -1770,9 +1780,16 @@ console.log(version);
             ）</span>
           `;
           
-          //document.getElementById("chatbox").appendChild(p);  // 取消CCS時，改用此。
-          document.getElementById("chatbox").prepend(div); // 加在最上層，但因為 column-reverse 是「視覺底部」。
-          box.scrollTop = box.scrollHeight;
+          // 添加紀錄
+          const anchor = document.getElementById('anchor');
+          ///document.getElementById("chatbox").appendChild(p);  // 取消CCS時，改用此。
+          ///document.getElementById("chatbox").prepend(div); // 加在最上層，但因為 column-reverse 是「視覺底部」。
+          ///document.getElementById("chatbox").insertBefore(div, anchor);
+          document.getElementById('anchor').after(div);
+
+          // 滾動紀錄
+          ///box.scrollTop = box.scrollHeight; 
+          ///autoScroll();
 
           // 取得 select 元素
           var Playxlang = document.getElementById("Playxlang").value;
@@ -1783,6 +1800,10 @@ console.log(version);
           if (Playxlang === "2") { document.getElementById(`${randomID}_tl`).click(); }
           if (Playxlang === "1") { document.getElementById(`${randomID}_il`).click(); }
           if (Playxlang === "0") {  }
+
+          if (Playxlang === "") {  document.getElementById(`${randomID}_tl`).click(); 
+                                   document.getElementById("Playxlang").value = "2";  }
+          
         });
         
         
@@ -1790,9 +1811,28 @@ console.log(version);
         ///document.getElementById("InputMsg").value = "I joined the " + room + " channel.";
         ///document.getElementById("ButtonMsg").click();
         document.getElementById("InputMsg").focus();
+        ///box.scrollTop = box.scrollHeight; 
+        autoScroll();
     }
-    
-    
+
+    function autoScroll() {
+        const chatBox = document.getElementById('chatbox');
+        const anchor = document.getElementById('anchor');
+        if (!chatBox || !anchor) return;
+
+        const threshold = 100; // 距離底部 100px 以內才觸發
+        const isAtBottom = chatBox.scrollHeight - chatBox.scrollTop - chatBox.clientHeight <= threshold;
+
+        if (true) {
+            
+            requestAnimationFrame(() => {
+                chatBox.scrollTop = chatBox.scrollHeight;
+                ///const anchorOffset = anchor.offsetTop - chatBox.offsetTop;
+                ///chatBox.scrollTo({ top: anchorOffset, behavior: 'smooth' });
+            });
+        }
+    }
+
     function languageScript(tag) {
       return tag.split('-').slice(0, 2).join('-');
     }
