@@ -41,7 +41,7 @@ function waitForTranslationById(elementId, callback) {
             callback();
             break;
         }
-        }
+    }
 });
 
 observer.observe(target, {
@@ -57,17 +57,17 @@ function autoTranslate(lang) {
         console.log('combo?', !!combo);
         
         if (lang.replace(/_/g, "-").split("-")[0] === "en") {
-        ///document.getElementById("input_msg").style.display = "block";
-        ///document.getElementById("input_msgbtn").style.display = "block";
-        document.getElementById("content").style.background = "#008000";
-        ///document.getElementById('Input').textAlign = 'center';
+            ///document.getElementById("input_msg").style.display = "block";
+            ///document.getElementById("input_msgbtn").style.display = "block";
+            document.getElementById("content").style.background = "#008000";
+            ///document.getElementById('Input').textAlign = 'center';
         }
 
         waitForTranslationById('notice', () => {
-        ///document.getElementById("input_msg").style.display = "block";
-        ///document.getElementById("input_msgbtn").style.display = "block";
-        document.getElementById("content").style.background = "#008000";
-        ///document.getElementById('Input').textAlign = 'center';
+            ///document.getElementById("input_msg").style.display = "block";
+            ///document.getElementById("input_msgbtn").style.display = "block";
+            document.getElementById("content").style.background = "#008000";
+            ///document.getElementById('Input').textAlign = 'center';
         });
 
         if (!combo) { setTimeout(tryTranslate, 300); return; }
@@ -118,5 +118,6 @@ setTimeout(() => {
 }, 1000); */
 
 });
+
 
 
