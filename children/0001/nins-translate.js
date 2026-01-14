@@ -17,15 +17,15 @@ function googleTranslateElementInit() {
 }
 
 function waitForCombo(callback) {
-// 等待載入翻譯語言
-// 這是一種調用方法？ 並且使用方法的內部變數？
-const timer = setInterval(() => {
-    const combo = document.querySelector('.goog-te-combo');
-    if (combo) {
-    clearInterval(timer);
-    callback(combo);
-    }
-}, 300);
+    // 等待載入翻譯語言
+    // 這是一種調用方法？ 並且使用方法的內部變數？
+    const timer = setInterval(() => {
+        const combo = document.querySelector('.goog-te-combo');
+        if (combo) {
+        clearInterval(timer);
+        callback(combo);
+        }
+    }, 300);
 }
 
 function waitForTranslationById(elementId, callback) {
@@ -118,6 +118,7 @@ window.addEventListener('load', () => {
     }, 1000); */
 
 });
+
 
 
 
