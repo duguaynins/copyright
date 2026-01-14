@@ -35,20 +35,20 @@ function waitForTranslationById(elementId, callback) {
 
     const observer = new MutationObserver((mutations, obs) => {
         for (const mutation of mutations) {
-        // 偵測子節點或文字內容是否改變
-        if (mutation.type === "childList" || mutation.type === "characterData") {
-            obs.disconnect(); // 翻譯完成，停止觀察
-            callback();
-            break;
+            // 偵測子節點或文字內容是否改變
+            if (mutation.type === "childList" || mutation.type === "characterData") {
+                obs.disconnect(); // 翻譯完成，停止觀察
+                callback();
+                break;
+            }
         }
-    }
-});
+    });
 
-observer.observe(target, {
-    childList: true,   // 子節點增減
-    subtree: true,     // 包含所有子孫節點
-    characterData: true // 文字內容改變
-});
+    observer.observe(target, {
+        childList: true,   // 子節點增減
+        subtree: true,     // 包含所有子孫節點
+        characterData: true // 文字內容改變
+    });
 }
 
 function autoTranslate(lang) {
@@ -99,25 +99,26 @@ function autoTranslate(lang) {
 }
 
 window.addEventListener('load', () => {
-console.log("window...load");
-    
-waitForCombo((combo) => {
-    const params = new URLSearchParams(window.location.search);
-    console.log("autoTranslate...waitForCombo");
-    autoTranslate( params.get("hl") || (navigator.language || navigator.userLanguage || "en-US") );
-    ///console.log("combo 已生成:", combo);
-    ///combo.value = 'en';
-    ///combo.dispatchEvent(new Event('change'));
-});
-/*
-setTimeout(() => {
-    console.log("autoTranslate...setTimeout");
-    ///const slang = navigator.language || navigator.userLanguage || "en-US";
-    autoTranslate( (navigator.language || navigator.userLanguage || "en-US") );          
-    ///document.getElementById(":1.container").style.display = "";
-}, 1000); */
+    console.log("window...load");
+        
+    waitForCombo((combo) => {
+        const params = new URLSearchParams(window.location.search);
+        console.log("autoTranslate...waitForCombo");
+        autoTranslate( params.get("hl") || (navigator.language || navigator.userLanguage || "en-US") );
+        ///console.log("combo 已生成:", combo);
+        ///combo.value = 'en';
+        ///combo.dispatchEvent(new Event('change'));
+    });
+    /*
+    setTimeout(() => {
+        console.log("autoTranslate...setTimeout");
+        ///const slang = navigator.language || navigator.userLanguage || "en-US";
+        autoTranslate( (navigator.language || navigator.userLanguage || "en-US") );          
+        ///document.getElementById(":1.container").style.display = "";
+    }, 1000); */
 
 });
+
 
 
 
