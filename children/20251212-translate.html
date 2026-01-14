@@ -217,8 +217,8 @@ iframe.skiptranslate, #goog-gt-tt { display: block; pointer-events: auto; }
         let tl = new URL(window.location.href).searchParams.get("tl") || navigator.language || navigator.userLanguage || "zh-TW";
         let text = new URL(window.location.href).searchParams.get("text") || "Please enter text in the URL.";
 
-        document.getElementById("content").innerHTML = `<label translate="no" id="sl" onclick="handleTTS('sl', '${sl}')">（<span translate="no">🔣${text}</span><span translate="no">👄${sl}</span>）</label><br>
-                                                        <label translate="no" id="tl" onclick="handleTTS('tl', '${tl}')">（<span translate="yes">🤖${text}</span><span translate="no">👄${tl}</span>）</label>`;
+        document.getElementById("content").innerHTML = `<p translate="no" id="sl" onclick="handleTTS('sl', '${sl}')">（<span translate="no">🔣${text}</span><span translate="no">👄${sl}</span>）</p><br>
+                                                        <p translate="no" id="tl" onclick="handleTTS('tl', '${tl}')">（<span translate="yes">🤖${text}</span><span translate="no">👄${tl}</span>）</p>`;
 
         setTimeout(() => { if (!navigator.userAgent.includes("Chrome")) { console.log("USE GOOGLE!"); window.open("https://www.google.com/chrome", "_blank", "noopener,noreferrer"); } else { console.log("HEY GOOGLE!") }  }, 2000);
     }
