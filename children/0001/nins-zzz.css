@@ -36,7 +36,7 @@ dialog::backdrop {
 }
 dialog {
   background-color: white;
-  color: white;
+  color: black;
   
   position: fixed;  /* absolute 或 fixed 或 relative */
   top: 50%;
@@ -162,6 +162,7 @@ dialog > * {
 #notice { width: 100%; background: #FF3B00; color: white; }
 
 #copyright { width: 100%; background-color: black; color: white; font-size: max(1vh,1vw); }
+
 
 
 
