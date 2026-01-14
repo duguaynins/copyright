@@ -70,27 +70,29 @@ function autoTranslate(lang) {
         ///document.getElementById('Input').textAlign = 'center';
         });
 
-        if (!combo) { setTimeout(tryTranslate, 300); }
+        if (!combo) { setTimeout(tryTranslate, 300); return; }
         if (combo) {
-        document.querySelector('.goog-te-combo').addEventListener('change', () => {
-            console.log("語言已切換!");
-            console.log("新語言代碼:", combo.value);
-            ///console.log("新語言文字:", combo.options[combo.selectedIndex].text);
-        });
-        
-        ///const params = new URLSearchParams(window.location.search);
-        const options = Array.from(combo.options).map(opt => opt.value);console.log('可用語言代碼:', options);
-        console.log("autoTranslate?:", lang);
-        ///combo.value = lang;
-        combo.value = options.includes(lang) 
-            ?  lang 
-            :  options.find(opt => opt.startsWith(lang))  
-            || options.find(opt => opt.startsWith(lang.slice(0, 2))) 
-            || null;  /// null or params.get("sl")
-        combo.dispatchEvent(new Event('change'));
-        console.log("autoTranslate!:", combo.value);
+            if (!combo.options || combo.options.length === 0) { setTimeout(tryTranslate, 300); return; }
+            
+            document.querySelector('.goog-te-combo').addEventListener('change', () => {
+                console.log("語言已切換!");
+                console.log("新語言代碼:", combo.value);
+                ///console.log("新語言文字:", combo.options[combo.selectedIndex].text);
+            });
+            
+            ///const params = new URLSearchParams(window.location.search);
+            const options = Array.from(combo.options).map(opt => opt.value);console.log('可用語言代碼:', options);
+            console.log("autoTranslate?:", lang);
+            ///combo.value = lang;
+            combo.value = options.includes(lang) 
+                ?  lang 
+                :  options.find(opt => opt.startsWith(lang))  
+                || options.find(opt => opt.startsWith(lang.slice(0, 2))) 
+                || null;  /// null or params.get("sl")
+            combo.dispatchEvent(new Event('change'));
+            console.log("autoTranslate!:", combo.value);
         } else {
-        setTimeout(tryTranslate, 300); // 遞迴檢查
+            setTimeout(tryTranslate, 300); // 遞迴檢查
         }
     };
     tryTranslate();
@@ -116,4 +118,5 @@ setTimeout(() => {
 }, 1000); */
 
 });
+
 
