@@ -1,6 +1,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -1478,6 +1479,12 @@ console.log(version);
     
     
     
+    function isValid(str) {  ///20260116
+      // null / undefined / 空字串 / 包含空白都不合法
+      return str !== null && str !== undefined && !/\s/.test(str) && str !== "";
+      console.log("space???");
+    }
+    
     // 連線後的禁用****
     // 收到訊息時更新聊天室  
     async function sendSocket() {      
@@ -1498,8 +1505,12 @@ console.log(version);
         let apikey = document.getElementById('InputRoom').value.split('&&')[1] || ("");  // ALL, BETA  ///!!!
         let token = params.get("token") || ("nins");  ///!!!
 
-        if (token==="nins") { 
-          
+        ///const room = room?.toLowerCase() ?? "";
+        if ( !isValid(room) ) { console.log("!isValid(room)"); return; }  ///20260116
+        document.getElementById('InputRoom').value = room;
+        room = room.toLowerCase();
+
+        if (token==="nins") {  ///20260116
             document.getElementById('InputRoom').disabled = true;  // 已禁用
             document.getElementById('InputRoom').style.display = 'none';
             const email = room;
