@@ -531,7 +531,8 @@
 <!-- HTML ================================================== -->
 
 <script>
-document.addEventListener("mouseup", (event) => {  ///20260116
+///document.addEventListener("mouseup", (event) => {  }  ///20260116
+document.addEventListener("pointerup", (event) => {
     // 1. 獲取選取的文字內容
     const selectionObj = window.getSelection();
     const selectedText = selectionObj.toString().trim();
