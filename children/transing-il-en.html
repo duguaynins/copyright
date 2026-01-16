@@ -1,9 +1,5 @@
 
 
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -533,6 +529,36 @@
   
   
 <!-- HTML ================================================== -->
+
+<script>
+document.addEventListener("mouseup", (event) => {  ///20260116
+    // 1. 獲取選取的文字內容
+    const selectionObj = window.getSelection();
+    const selectedText = selectionObj.toString().trim();
+
+    if (selectedText) {
+        // 2. 獲取觸發事件的元素 ID
+        // event.target 代表滑鼠放開時所在的那個元素
+        const elementId = event.target.id ? event.target.id : "此元素沒有 ID";
+
+        // 3. 獲取該元素內的完整原始句子 (完整文本)
+        const fullSentence = event.target.innerText;
+
+        // 輸出結果
+        console.log("--- 選取資訊 ---");
+        console.log("被選取的 ID:", elementId);
+        console.log("選取的字詞:", selectedText);
+        console.log("完整句子內容:", fullSentence);
+
+        if (elementId.includes("_")) {  
+            handleTTS(elementId, [elementId, selectedText, fullSentence]);  ///xlang
+        }
+    }
+});
+</script>
+
+
+<!-- ADS ================================================== -->
 <script>
 
         
@@ -1849,6 +1875,7 @@ console.log(version);
     
     function handleVoice(language) {
       // 設定預設語音
+      ///if (!language) { language = languageRegion(navigator.language || navigator.userLanguage || "en-US"); }  ///20260116
       ///const language = languageRegion(navigator.language || navigator.userLanguage || "en-US");  // 閱讀母語
       const voice = voices.filter(v => v.lang === language)[0] ||
                     ///voices.find(v => v.lang.startsWith( new URL(window.location.href).searchParams.get("lang")||language )) || 
@@ -1865,8 +1892,10 @@ console.log(version);
     
     // 處理文字轉語音****
     // 的按鈕點擊事件****
-    function handleTTS(id, lang = "") {
+    function handleTTS(id, select=[null,null,null]) {
         ///document.getElementById(id).style.display = "";
+        const [selectId, selectText, selectAll] = select;
+
         
         if (document.getElementById(id).style.display === "none") {
             document.getElementById(id).style.display = "";
@@ -1915,7 +1944,7 @@ console.log(version);
         ///const lang = tlang.slice(0, 2);
         const msg = new window.SpeechSynthesisUtterance();  // "你好，歡迎使用語音系統
         // 不設定 msg.lang，結果不一定正確（可能變英文腔）
-        msg.text = content;
+        msg.text = selectText || content;  ///20260116
         msg.lang = language;           // 語言代碼
         msg.rate = talkrate;           // 語速 0.1 ~ 10
         msg.volume = 1;                // 音量 0~1
@@ -2449,7 +2478,4 @@ console.log(version);
     </script>
 </body>
 </html>
-
-
-
 
