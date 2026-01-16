@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -726,6 +727,25 @@ console.log(version);
           ///return {result: {confidences: null, label: '<b translate="no">'+escapeHtml(err.stack)+'</b>' }};  ///err.name+err.message
           return {result: {confidences: null, label: `<a translate="no" href="mailto:duguaynins@gmail.com?subject=${encodeURIComponent( new Date().toISOString() )}&body=${encodeURIComponent( err.stack )}">mailto:duguaynins@gmail.com</a>` }};  ///escapeHtml(err.stack)
         }
+      }
+
+      async function channels(params) { 
+        console.log('頻道確認:', params);
+        const { email } = params;
+        ///const { smsg, rmsg } = params;
+        ///if (smsg === rmsg) { return "{goog:1.0||meta:1.0}"; }
+
+        const inputs = { "inputs": { "a": email } };
+        const outputs = await HuggingFaceAPI({
+          group: "duguaynins",
+          space: "RedirectAPI",
+          path: `channels/ably?email=${email}`,  ///embeddings/meta
+          payload: inputs,
+        }); 
+
+        console.log("INPUT:", inputs);
+        console.log("OUTPUT:", outputs);
+        return outputs.result;///.label
       }
 
       async function semantic(params) { 
@@ -1460,7 +1480,7 @@ console.log(version);
     
     // 連線後的禁用****
     // 收到訊息時更新聊天室  
-    function sendSocket() {      
+    async function sendSocket() {      
         lastSentTime = Date.now();
     
         // 取消以下兩行
@@ -1477,6 +1497,18 @@ console.log(version);
         let room = document.getElementById('InputRoom').value.split('&&')[0] || ("WORLD");  // ALL, BETA  ///!!!
         let apikey = document.getElementById('InputRoom').value.split('&&')[1] || ("");  // ALL, BETA  ///!!!
         let token = params.get("token") || ("nins");  ///!!!
+
+        if (token==="nins") { 
+          
+            document.getElementById('InputRoom').disabled = true;  // 已禁用
+            document.getElementById('InputRoom').style.display = 'none';
+            const email = room;
+            const boolgo = await channels({ "email": email });
+            console.log(boolgo);
+            document.getElementById('InputRoom').style.display = '';
+            document.getElementById('InputRoom').disabled = false;  // 不禁用
+            if (!boolgo) { return; }
+        }
         
         ///document.getElementById('InputRoom').value = ("WORLD");  ///!!!
         document.getElementById('InputRoom').disabled = true;  // 禁用
@@ -1543,12 +1575,14 @@ console.log(version);
                 }
             }
             else if (token) {
-                updateQR(token);
                 ///if (token === "nins") {  room = "WORLD"; document.getElementById('InputRoom').value = ("WORLD"); }
-                if (!document.getElementById('SkipAds').checked) { room = document.getElementById('InputRoom').value; }
-                else { room = "WORLD"; document.getElementById('InputRoom').value = ("WORLD"); }
                 console.log("TOKEN: ", token);
                 console.log("ROOM: ", room);
+                ///if (!document.getElementById('SkipAds').checked) { room = document.getElementById('InputRoom').value; }
+                ///else { room = "WORLD"; document.getElementById('InputRoom').value = ("WORLD"); }
+                console.log("TOKEN: ", token);
+                console.log("ROOM: ", room);
+                updateQR(token);
                 ably = new Ably.Realtime({ authUrl: 'https://duguaynins-RedirectAPI.hf.space/realtime/ably', authMethod: 'POST', authHeaders: { 'clientId': uuid_user, 'Beta': `TOEKN ${token}`, 'Authorization': `Bearer ${0}` } });
             }
             
