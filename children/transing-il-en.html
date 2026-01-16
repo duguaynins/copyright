@@ -533,17 +533,28 @@
 <script>
 ///document.addEventListener("mouseup", (event) => {  }  ///20260116
 document.addEventListener("pointerup", (event) => {
-    // 1. 獲取選取的文字內容
+    // #. 獲取選取的文字內容
     const selectionObj = window.getSelection();
+    if (!selectionObj || selectionObj.rangeCount === 0) return;
+
     const selectedText = selectionObj.toString().trim();
+    if (!selectedText) return;
+
 
     if (selectedText) {
-        // 2. 獲取觸發事件的元素 ID
-        // event.target 代表滑鼠放開時所在的那個元素
-        const elementId = event.target.id ? event.target.id : "此元素沒有 ID";
+        // 1, 取得選取文字真正所在的節點
+        const range = selectionObj.getRangeAt(0);
+        let node = range.startContainer;
+        console.log(node);///if (!node) return;
+        
+        if (node.nodeType === Node.TEXT_NODE) { node = node.parentElement; }
+        console.log(node);///if (!node) return;
 
-        // 3. 獲取該元素內的完整原始句子 (完整文本)
-        const fullSentence = event.target.innerText;
+        // 2. 獲取觸發事件的元素 ID
+        const elementId = node.id || "此元素沒有 ID";
+        const elementId_v1 = event.target.id ? event.target.id : "此元素沒有 ID";
+        const fullSentence = node.innerText;
+        const fullSentence_v1 = event.target.innerText;
 
         // 輸出結果
         console.log("--- 選取資訊 ---");
