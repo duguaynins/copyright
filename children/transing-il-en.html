@@ -2,6 +2,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -178,7 +179,15 @@
       .breathe {
         animation: breatheOnce 1s ease-in-out;  /*2s*/
       }
-      
+
+      /* 文字閃爍動畫 */
+      @keyframes textBlink {
+          0%, 100% { color: red; }       /* 起始與結束顏色 */
+          50%      { color: black; }     /* 間隔顏色 */
+      }
+
+      .textBlinkOnce { animation: textBlink 1s steps(1, start); }
+
       @keyframes blinkBorder {
           0%, 100% { border-color: #FF3B00; }
           50%      { border-color: transparent; }
@@ -1506,11 +1515,18 @@ console.log(version);
         let token = params.get("token") || ("nins");  ///!!!
 
         ///const room = room?.toLowerCase() ?? "";
-        if ( !isValid(room) ) { console.log("!isValid(room)"); return; }  ///20260116
+        if ( !isValid(room) ) { 
+            if (true) {
+                document.querySelector('#chatbox').classList.add('textBlinkOnce');
+                setTimeout(() => { document.querySelector('#chatbox').classList.remove('textBlinkOnce'); }, 1000);
+                console.log("if ( !isValid(room) )"); 
+                return;
+            }
+        }  ///20260116
         document.getElementById('InputRoom').value = room;
         room = room.toLowerCase();
 
-        if (token==="nins") {  ///20260116
+        if (token==="nins") {  ///20260116            
             document.getElementById('InputRoom').disabled = true;  // 已禁用
             document.getElementById('InputRoom').style.display = 'none';
             const email = room;
@@ -1518,7 +1534,12 @@ console.log(version);
             console.log(boolgo);
             document.getElementById('InputRoom').style.display = '';
             document.getElementById('InputRoom').disabled = false;  // 不禁用
-            if (!boolgo) { return; }
+            if (!boolgo) { 
+                document.querySelector('#chatbox').classList.add('textBlinkOnce');
+                setTimeout(() => { document.querySelector('#chatbox').classList.remove('textBlinkOnce'); }, 1000);
+                console.log("if (!boolgo)"); 
+                return; 
+            }
         }
         
         ///document.getElementById('InputRoom').value = ("WORLD");  ///!!!
