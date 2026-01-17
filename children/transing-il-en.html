@@ -2553,6 +2553,10 @@ console.log(version);
     document.addEventListener('DOMContentLoaded', function () {
         setTimeout(() => autoConnect(), 2500); // 自動連線  1000~3000
     });
+    
+    document.getElementById("InputRoom").addEventListener("focus", (event) => {
+        document.getElementById("InputRoom").value = "WORLD";  ///***
+    });
     </script>
 </body>
 </html>
