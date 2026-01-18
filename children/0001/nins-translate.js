@@ -60,6 +60,7 @@ function autoTranslate(lang) {
             ///document.getElementById("input_msg").style.display = "block";
             ///document.getElementById("input_msgbtn").style.display = "block";
             document.getElementById("content").style.background = "#008000";
+            document.getElementById("content").style.color = "white";
             ///document.getElementById('Input').textAlign = 'center';
         }
 
@@ -67,6 +68,7 @@ function autoTranslate(lang) {
             ///document.getElementById("input_msg").style.display = "block";
             ///document.getElementById("input_msgbtn").style.display = "block";
             document.getElementById("content").style.background = "#008000";
+            document.getElementById("content").style.color = "white";
             ///document.getElementById('Input').textAlign = 'center';
         });
 
@@ -118,6 +120,7 @@ window.addEventListener('load', () => {
     }, 1000); */
 
 });
+
 
 
 
