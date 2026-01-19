@@ -20,6 +20,19 @@ document.head.insertAdjacentHTML('beforeend', `
   animation-delay: 0.8s;          /* 延遲開始時間 */
   animation-fill-mode: forwards;  /* 動畫結束保持最終狀態 */ 
 }
+.ninsfadeoutNodelay { 
+  pointer-events: none; 
+  animation: ninsStart 3s forwards; 
+}
+.ninsfadeoutAdelay { 
+  pointer-events: none; 
+  animation: ninsStart 2.20s forwards 0.58s;
+  /* transform: translateZ(0); */
+}
+
+
+
+
 .zIndex {
   position: fixed;
   top: 0;
@@ -33,13 +46,27 @@ document.head.insertAdjacentHTML('beforeend', `
 </style>
 `);
 document.body.insertAdjacentHTML('beforeend', `
-<button class="zIndex ninsStartAdelay" style="z-index: 99999;  /* 確保在最高層 */
+<button class="zIndex ninsfadeoutAdelay" style="z-index: 99999;  /* 確保在最高層 */
   cursor: default; border: none; outline: none;
   /*background: linear-gradient(white, transparent);*/
   background: white;
 " disabled></button>
 `);
 
+document.body.insertAdjacentHTML('beforeend', `
+<audio id="NinsXmas" style="display:none;" src="https://copyright.nins.cc/children/2025/xmas.mp3" loop ></audio>
+
+<button class="zIndex ninsfadeoutAdelay" style="z-index: 99999;  /* 確保在最高層 */
+  cursor: default; border: none; outline: none;
+  /*background: linear-gradient(white, transparent);*/
+  background: white;
+" disabled></button>
+
+<button class="zIndex" style="z-index: 99998;" 
+  onclick="this.classList.add('ninsfadeoutNodelay'); document.getElementById('NinsXmas').play(); document.getElementById('NinsXmas').pause();">
+    <span translate="no" id="merryXmas">!!!</span>
+</button>
+`);
 
 function isSameMinute(timestamp1, timestamp2) {
   const date1 = new Date(Number(timestamp1));
@@ -144,6 +171,7 @@ function updateTime(print=null) {
 setTimeout(updateTime, 1); // 幾時之後只執行一次
 ///setInterval(updateTime, 1); // 每幾時之後執行一次
 ///setInterval(() => updateTime(), 1);
+
 
 
 
