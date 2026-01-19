@@ -2,11 +2,13 @@
 
 document.body.insertAdjacentHTML('beforeend', `
 <audio id="NinsXmas" style="display:none;" src="https://copyright.nins.cc/children/2025/xmas.mp3" loop ></audio>
-<button class="zIndex" style="z-index: 99998;" 
+
+<button class="zIndex ninsStartAdelay" style="z-index: 99998;" 
   onclick="this.classList.add('fadeOutNodelay'); document.getElementById('NinsXmas').play(); document.getElementById('NinsXmas').pause();">
     <span translate="no" id="merryXmas">!!!</span>
 </button>
-<button class="zIndex fadeOutAdelay" style="z-index: 99999;  /* 確保在最高層 */
+
+<button class="zIndex ninsStartAdelay" style="z-index: 99999;  /* 確保在最高層 */
   cursor: default; border: none; outline: none;
   /*background: linear-gradient(white, transparent);*/
   background: white;
