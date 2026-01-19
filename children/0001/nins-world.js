@@ -1,4 +1,19 @@
 // snow.html
+document.body.insertAdjacentHTML('beforeend', `
+<audio id="NinsXmas" style="display:none;" src="https://copyright.nins.cc/children/2025/xmas.mp3" loop ></audio>
+
+<button class="zIndex ninsfadeoutAdelay" style="z-index: 99999;
+  cursor: default; border: none; outline: none;
+  background: white;
+" disabled></button>
+
+<button class="zIndex" style="z-index: 99998;" 
+  onclick="this.classList.add('ninsfadeoutNodelay'); document.getElementById('NinsXmas').play(); document.getElementById('NinsXmas').pause();">
+    <span translate="no" id="merryXmas">!!!</span>
+</button>
+`);
+
+document.getElementById('merryXmas').innerHTML = "☃️🦌🎄✨⭐<br>[ © nins ] x [ Merry Xmas 2025 ]";
 /*
 document.body.insertAdjacentHTML('beforeend', `
 <audio id="NinsXmas" style="display:none;" src="https://copyright.nins.cc/children/2025/xmas.mp3" loop ></audio>
@@ -18,7 +33,6 @@ document.getElementById('merryXmas').innerHTML = "☃️🦌🎄✨⭐<br>[ © n
 */
 
 // snow.css
-
 const style = document.createElement('style');
 style.textContent = `
 .snow {
