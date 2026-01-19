@@ -3,8 +3,8 @@
 document.body.insertAdjacentHTML('beforeend', `
 <audio id="NinsXmas" style="display:none;" src="https://copyright.nins.cc/children/2025/xmas.mp3" loop ></audio>
 
-<button class="zIndex ninsStartAdelay" style="z-index: 99998;" 
-  onclick="this.classList.add('fadeOutNodelay'); document.getElementById('NinsXmas').play(); document.getElementById('NinsXmas').pause();">
+<button class="zIndex" style="z-index: 99998;" 
+  onclick="this.classList.add('ninsStartAdelay'); document.getElementById('NinsXmas').play(); document.getElementById('NinsXmas').pause();">
     <span translate="no" id="merryXmas">!!!</span>
 </button>
 
