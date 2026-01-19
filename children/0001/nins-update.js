@@ -52,13 +52,12 @@ document.body.insertAdjacentHTML('beforeend', `
   background: white;
 " disabled></button>
 `);
-
+/*
 document.body.insertAdjacentHTML('beforeend', `
 <audio id="NinsXmas" style="display:none;" src="https://copyright.nins.cc/children/2025/xmas.mp3" loop ></audio>
 
-<button class="zIndex ninsfadeoutAdelay" style="z-index: 99999;  /* 確保在最高層 */
+<button class="zIndex ninsfadeoutAdelay" style="z-index: 99999;
   cursor: default; border: none; outline: none;
-  /*background: linear-gradient(white, transparent);*/
   background: white;
 " disabled></button>
 
@@ -68,6 +67,8 @@ document.body.insertAdjacentHTML('beforeend', `
 </button>
 `);
 
+document.getElementById('merryXmas').innerHTML = "☃️🦌🎄✨⭐<br>[ © nins ] x [ Merry Xmas 2025 ]";
+*/
 function isSameMinute(timestamp1, timestamp2) {
   const date1 = new Date(Number(timestamp1));
   const date2 = new Date(Number(timestamp2));
@@ -171,6 +172,7 @@ function updateTime(print=null) {
 setTimeout(updateTime, 1); // 幾時之後只執行一次
 ///setInterval(updateTime, 1); // 每幾時之後執行一次
 ///setInterval(() => updateTime(), 1);
+
 
 
 
