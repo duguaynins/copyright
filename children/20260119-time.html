@@ -45,7 +45,7 @@
     <div style="margin: 10px;" onclick="document.getElementById('DialogCheck').showModal();console.log(new Date().toLocaleString(), '🙉');">
     nins/time
     </div></div>
-    <button id="" class="main active" style="width: 100%; padding: 8px;" onclick="document.getElementById('DialogColor').showModal();">🖼️</button>
+    <button id="" class="main active" style="width: 100%; padding: 8px;" onclick="document.getElementById('DialogColor').showModal();loop();">🖼️</button>
     <!--input type="color" id="utc-color" style="width: 100%;" value="#000000"!-->
 
     <div id="content" onclick="" style="" class="app center y-column active" translate="no">
@@ -112,7 +112,7 @@ loop();
 ///document.getElementById("download-btn").addEventListener("click", () => { /**/ });
 
 function download() {
-  loop();
+  ///loop();
   
   let colortt = document.getElementById("color-text").value;
   let colorbg = document.getElementById("color-bg").value;
