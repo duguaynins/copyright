@@ -1342,7 +1342,9 @@ console.log(version);
         // 確保內容***
         const input = document.getElementById('InputMsg');
         const msg = input.value;
-        if (!msg) { document.getElementById('InputMsg').focus();return; }  // 判斷內容存在與否
+        
+        if (!msg) {              document.getElementById('InputMsg').focus();return; }  // 判斷內容存在與否
+        if (msg.trim() !== "") { document.getElementById('InputMsg').focus();return; }
         
         // 正規化去除使用者輸入的表情***
         const emojiRegex = /([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|\uD83E[\uDD00-\uDDFF])/g;
@@ -2560,4 +2562,5 @@ console.log(version);
     </script>
 </body>
 </html>
+
 
