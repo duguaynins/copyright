@@ -147,20 +147,20 @@ function getCycle(testweek=null, testday=null) {
   const now = new Date();
 
   const day = now.getDay();  ///本地時間，非UTC
-  console.log(day);  ///得到星期
+  ///console.log(day);  ///得到星期
 
   const hours =
     now.getHours() +
     now.getMinutes() / 60 +
     now.getSeconds() / 3600;  ///當天轉為小時制
-  console.log(hours);
+  ///console.log(hours);
 
   const dayProgress = hours / 24;
 
   // 本週進度（0 ~ <7）
   const weekProgress = (day + dayProgress) / 7;
-  console.log(weekProgress);
-  console.log(dayProgress);
+  ///console.log(weekProgress);
+  ///console.log(dayProgress);
 
   // 正規化成 0~1
   if (true) {
