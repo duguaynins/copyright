@@ -185,11 +185,11 @@ function update(testweek=null, testday=null) {
   const [weekProgress, dayProgress] = getCycle(testweek,testday);
   let hue = 360 * weekProgress;  ///0~360
   let saturation = 0 + Math.sin(dayProgress * Math.PI) * 99;
-  let lightness = 50 + Math.sin(dayProgress * Math.PI) * 22;
+  let lightness = 50 + Math.sin(dayProgress * Math.PI) * 50;  ///20260120
   ///let saturation = 100 * (1 - dayProgress); // 0 ~ 100
   ///let lightness = 50 + 50 * (0.5 - dayProgress);   // 0 ~ 100
 
-  bg = `hsla(${hue}, ${saturation}%, ${lightness}%, 1.0)`;   /* 色相  鮮豔度  亮度 */  
+  bg = `hsla(${hue}, ${100}%, ${lightness}%, 1.0)`;   /* 色相  鮮豔度  亮度 */  ///20260120
   ct = `hsl(${hue}, ${saturation}%, 0%)`;  ///黑色
 
   document.getElementById("color-bg").value = bg;
