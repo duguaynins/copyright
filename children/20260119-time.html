@@ -180,12 +180,12 @@ function update(testweek=null, testday=null) {
 
   const [weekProgress, dayProgress] = getCycle(testweek,testday);
   let hue = 360 * weekProgress;  ///0~360
-  let saturation = 0 + Math.sin(dayProgress * Math.PI) * 100;
+  let saturation = 0 + Math.sin(dayProgress * Math.PI) * 99;
   let lightness = 50 + Math.sin(dayProgress * Math.PI) * 22;
   ///let saturation = 100 * (1 - dayProgress); // 0 ~ 100
   ///let lightness = 50 + 50 * (0.5 - dayProgress);   // 0 ~ 100
 
-  bg = `hsla(${hue}, ${saturation}%, ${lightness}%, 0.5)`;   /* 色相  鮮豔度  亮度 */  
+  bg = `hsla(${hue}, ${saturation}%, ${lightness}%, 1.0)`;   /* 色相  鮮豔度  亮度 */  
   ct = `hsl(${hue}, ${saturation}%, 0%)`;  ///黑色
 
   document.getElementById("color-bg").value = bg;
@@ -244,6 +244,8 @@ document.getElementById("slider-week").addEventListener("input", e => {
 function download() {
   ///update();
   console.log("🖼️");
+  setInterval(() => update(), 1000);  ///1000*60*5
+
   const buttons = document.querySelectorAll("button"); // 選所有 <button>
   buttons.forEach(btn => btn.disabled = true);
   buttons.forEach(btn => btn.style.background = "#999999");
