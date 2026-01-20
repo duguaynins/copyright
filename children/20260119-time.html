@@ -172,7 +172,11 @@ function getCycle(testweek=null, testday=null) {
 }
 
 
-
+function loop() {
+  const [times, offset] = updateTime();
+  document.getElementById("utc-time").innerHTML = times;
+  document.getElementById("utc-offset").innerHTML = offset;
+}
 function update(testweek=null, testday=null) {
   const [times, offset] = updateTime();
   document.getElementById("utc-time").innerHTML = times;
@@ -195,8 +199,8 @@ function update(testweek=null, testday=null) {
   document.getElementById("content").style.color = ct;
   return [bg, ct];
 }
-///setInterval(() => update(), 1);  ///1000*60*5
 update();
+const intervalId = setInterval(() => update(), 1);  ///1000*60*5
 
 
 
@@ -244,16 +248,14 @@ document.getElementById("slider-week").addEventListener("input", e => {
 function download() {
   ///update();
   console.log("🖼️");
-  setInterval(() => update(), 1000);  ///1000*60*5
+  
+  // 在某個時機終止
+  clearInterval(intervalId);
+  setInterval(() => update(), 1000);
 
   const buttons = document.querySelectorAll("button"); // 選所有 <button>
   buttons.forEach(btn => btn.disabled = true);
   buttons.forEach(btn => btn.style.background = "#999999");
-  
-  let colortt = document.getElementById("color-text").value;
-  let colorbg = document.getElementById("color-bg").value;
-  const timeText = document.getElementById("utc-time").innerText;
-  const offsetText = document.getElementById("utc-offset").innerText;
 
   // 建立 canvas
   const canvas = document.createElement("canvas");
@@ -272,14 +274,22 @@ function download() {
   ctx.textAlign = "center";     // 水平置中
   ctx.textBaseline = "middle"; // 垂直置中（你少了這個）
 
+  // 時間顏色
+  const old_week = parseFloat(document.getElementById("slider-week").value);
+  const old_day = parseFloat(document.getElementById("slider-day").value);
+  let colortt = document.getElementById("color-text").value;
+  let colorbg = document.getElementById("color-bg").value;
+  [colorbg, colortt] = update(old_week, old_day);
+  const timeText = document.getElementById("utc-time").innerText;
+  const offsetText = document.getElementById("utc-offset").innerText;
+  
   // 檢查顏色
   /*
   if (colortt===colorbg) {  
     colortt = "#000000";
     colorbg = weekColors[dayIndex];
   }  */
-  [colorbg, colortt] = update();
-  
+
   // 背景白色
   ctx.fillStyle = colorbg;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
