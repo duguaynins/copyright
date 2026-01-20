@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -57,6 +58,7 @@
     </div>
 
 
+    <p id="id-color">#CDCDCD</p>
     <input type="range" id="slider-day" min="0.01" max="0.99" value="0.5" style="width: 100%;" step="0.0001">
     <button id="" class="main active" style="width: 100%; padding: 8px;" onclick="download();" translate="no">💾</button>
 
@@ -104,6 +106,20 @@
 
 <!-- 放置你原有的布局：JS -->
 <script>
+  
+const weekDays = ["日／日", "一／月", "二／火", "三／水", "四／木", "五／金", "六／土"];
+///const weekHues = [0, 30, 60, 120, 210, 270, 360];
+const weekHues = [0, 30, 60, 120, 180, 210, 270];
+const weekColors = [
+  "#E57373", // 日／日　柔和紅
+  "#64B5F6", // 一／月　清爽藍
+  "#FFB74D", // 二／火　暖橘
+  "#81C784", // 三／水　清新綠
+  "#4DB6AC", // 四／木　青綠
+  "#9575CD", // 五／金　淡紫
+  "#FFF176"  // 六／土　柔黃
+];
+
 function hslToHex(h, s, l) {
   s /= 100;
   l /= 100;
@@ -177,19 +193,39 @@ function loop() {
   document.getElementById("utc-time").innerHTML = times;
   document.getElementById("utc-offset").innerHTML = offset;
 }
+
+
 function update(testweek=null, testday=null) {
   const [times, offset] = updateTime();
   document.getElementById("utc-time").innerHTML = times;
   document.getElementById("utc-offset").innerHTML = offset;
 
   const [weekProgress, dayProgress] = getCycle(testweek,testday);
-  let hue = 360 * weekProgress;  ///0~360
-  let saturation = 0 + Math.sin(dayProgress * Math.PI) * 99;
-  let lightness = 50 + Math.sin(dayProgress * Math.PI) * 50;  ///20260120
-  ///let saturation = 100 * (1 - dayProgress); // 0 ~ 100
-  ///let lightness = 50 + 50 * (0.5 - dayProgress);   // 0 ~ 100
 
-  bg = `hsla(${hue}, ${100}%, ${lightness}%, 1.0)`;   /* 色相  鮮豔度  亮度 */  ///20260120
+  let daysIndex = null;  ///20260121
+  let hue = null;
+  let saturation = null;
+  let lightness = null;
+
+  if (false) {
+      hue = 360 * weekProgress;  ///0~360
+      saturation = 0 + Math.sin(dayProgress * Math.PI) * 99;
+      ///lightness = 50 + Math.sin(dayProgress * Math.PI) * 50;  ///20260120
+      lightness = 100 - Math.sin(dayProgress * Math.PI) * 50;  ///20260121
+      ///saturation = 100 * (1 - dayProgress); // 0 ~ 100
+      ///lightness = 50 + 50 * (0.5 - dayProgress);   // 0 ~ 100
+      saturation = 100;
+  }
+  else if (true) {
+      daysIndex = new Date().getDay();  ///getUTCDay()
+      daysIndex = Math.floor( weekProgress*7 );
+      hue = weekHues[daysIndex];
+      saturation = 100;
+      lightness = 100 - Math.sin(dayProgress * Math.PI) * 50;  ///20260121
+      if (hue===180) { lightness = 100; }
+  }
+
+  bg = `hsla(${hue}, ${saturation}%, ${lightness}%, 1.0)`;   /* 色相  鮮豔度  亮度 */  ///20260120
   ct = `hsl(${hue}, ${saturation}%, 0%)`;  ///黑色
 
   document.getElementById("color-bg").value = bg;
@@ -197,6 +233,8 @@ function update(testweek=null, testday=null) {
   
   document.getElementById("content").style.background = bg;
   document.getElementById("content").style.color = ct;
+
+  document.getElementById("id-color").innerHTML = bg;
   return [bg, ct];
 }
 update();
