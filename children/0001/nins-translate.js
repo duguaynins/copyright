@@ -59,17 +59,17 @@ function autoTranslate(lang) {
         if (lang.replace(/_/g, "-").split("-")[0] === "en") {
             ///document.getElementById("input_msg").style.display = "block";
             ///document.getElementById("input_msgbtn").style.display = "block";
-            document.getElementById("content").style.background = "#008000";
-            document.getElementById("content").style.color = "white";
             ///document.getElementById('Input').textAlign = 'center';
+            ///document.getElementById("content").style.background = "#008000";
+            ///document.getElementById("content").style.color = "white";
         }
 
         waitForTranslationById('notice', () => {
             ///document.getElementById("input_msg").style.display = "block";
             ///document.getElementById("input_msgbtn").style.display = "block";
-            document.getElementById("content").style.background = "#008000";
-            document.getElementById("content").style.color = "white";
             ///document.getElementById('Input').textAlign = 'center';
+            ///document.getElementById("content").style.background = "#008000";
+            ///document.getElementById("content").style.color = "white";
         });
 
         if (!combo) { setTimeout(tryTranslate, 300); return; }
@@ -120,6 +120,7 @@ window.addEventListener('load', () => {
     }, 1000); */
 
 });
+
 
 
 
