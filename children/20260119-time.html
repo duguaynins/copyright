@@ -251,7 +251,7 @@ function download() {
   
   // 在某個時機終止
   clearInterval(intervalId);
-  setInterval(() => update(), 1000);
+  ///setInterval(() => update(), 1000);
 
   const buttons = document.querySelectorAll("button"); // 選所有 <button>
   buttons.forEach(btn => btn.disabled = true);
@@ -327,8 +327,5 @@ document.getElementById('color-bg').addEventListener('input', function () {
   
 </body>
 </html>
-
-
-
 
 
