@@ -185,7 +185,7 @@ function hexToHSL(hex) {
     h /= 6;
   }
 
-  return `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`;
+  ///return `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`;
   return [
     Math.round(h * 360),  //h
     Math.round(s * 100),  //s
@@ -416,6 +416,7 @@ document.getElementById('color-bg').addEventListener('input', function () {
   
 </body>
 </html>
+
 
 
 
