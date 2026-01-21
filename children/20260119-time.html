@@ -267,7 +267,7 @@ function update(testweek=null, testday=null) {
       ///lightness = 50 + 50 * (0.5 - dayProgress);   // 0 ~ 100
       saturation = 100;
   }
-  else if (true) {
+  else if (false) {
       daysIndex = new Date().getDay();  ///getUTCDay()
       daysIndex = Math.floor( weekProgress*7 );
       hue = weekHues[daysIndex];
@@ -281,8 +281,8 @@ function update(testweek=null, testday=null) {
       hex = weekHexs[daysIndex];
       const [h,s,l] = hexToHSL[hex];
       hue = h;
-      saturation = 100;
-      lightness = 100 - Math.sin(dayProgress * Math.PI) * 50;  ///20260121
+      saturation = s;
+      lightness = l;  ///20260121
       if (hue===180) { lightness = 100; }
   }
 
@@ -426,6 +426,7 @@ document.getElementById('color-bg').addEventListener('input', function () {
   
 </body>
 </html>
+
 
 
 
