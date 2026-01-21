@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -267,7 +268,7 @@ function update(testweek=null, testday=null) {
       ///lightness = 50 + 50 * (0.5 - dayProgress);   // 0 ~ 100
       saturation = 100;
   }
-  else if (true) {
+  else if (false) {
       daysIndex = new Date().getDay();  ///getUTCDay()
       daysIndex = Math.floor( weekProgress*7 );
       hue = weekHues[daysIndex];
@@ -279,7 +280,7 @@ function update(testweek=null, testday=null) {
       daysIndex = new Date().getDay();  ///getUTCDay()
       daysIndex = Math.floor( weekProgress*7 );
       hex = weekHexs[daysIndex];
-      const [h,s,l] = hexToHSL[hex];
+      const [h,s,l] = hexToHSL(hex);
       hue = h;
       saturation = s;
       lightness = l;  ///20260121
