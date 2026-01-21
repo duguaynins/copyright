@@ -275,6 +275,16 @@ function update(testweek=null, testday=null) {
       lightness = 100 - Math.sin(dayProgress * Math.PI) * 50;  ///20260121
       if (hue===180) { lightness = 100; }
   }
+  else if (true) {
+      daysIndex = new Date().getDay();  ///getUTCDay()
+      daysIndex = Math.floor( weekProgress*7 );
+      hex = weekHexs[daysIndex];
+      const [h,s,l] = hexToHSL[hex];
+      hue = h;
+      saturation = 100;
+      lightness = 100 - Math.sin(dayProgress * Math.PI) * 50;  ///20260121
+      if (hue===180) { lightness = 100; }
+  }
 
   bg = `hsla(${hue}, ${saturation}%, ${lightness}%, 1.0)`;   /* 色相  鮮豔度  亮度 */  ///20260120
   ct = `hsl(${hue}, ${saturation}%, 0%)`;  ///黑色
@@ -416,6 +426,7 @@ document.getElementById('color-bg').addEventListener('input', function () {
   
 </body>
 </html>
+
 
 
 
