@@ -124,10 +124,21 @@ const weekHexs = [
   "#FFE0C2", // 一／月　橙
   "#FFF4CC", // 二／火　黃
   "#E6F0D5", // 三／水　綠
-  "#FFFFFF", // 四／木　白
-  "#DCEAF5", // 五／金　藍
+  "#DCEAF5", // 四／木　白
+  "#FFFFFF", // 五／金　藍
   "#E8DCF1"  // 六／土　紫
 ];
+const defaultDays = [  ///20260121
+  "2025-12-28T00:00:00.000Z",
+  "2025-12-29T00:00:00.000Z",
+  "2025-12-30T00:00:00.000Z",
+  "2025-12-31T23:59:59.999Z",
+  ///"2026-01-01T00:00:00.000Z",  //#
+  "2025-12-25T00:00:00.000Z",
+  "2025-12-26T00:00:00.000Z",
+  "2025-12-27T00:00:00.000Z",
+];
+/*
 const weekColors = [
   "#E57373", // 日／日　柔和紅
   "#64B5F6", // 一／月　清爽藍
@@ -136,7 +147,7 @@ const weekColors = [
   "#4DB6AC", // 四／木　青綠
   "#9575CD", // 五／金　淡紫
   "#FFF176"  // 六／土　柔黃
-];
+];  */
 
 function hslToHex(h, s, l) {
   s /= 100;
@@ -247,22 +258,29 @@ function getCycle(testweek=null, testday=null) {
   }
 }
 
-
+/*
 function loop() {
-  const [times, offset] = updateTime();
+  let [times, offset] = updateTime();
+  if (testweek != null && testday != null) {  }
   document.getElementById("utc-time").innerHTML = times;
   document.getElementById("utc-offset").innerHTML = offset;
-}
+}  */
 
 
 function update(testweek=null, testday=null) {
-  const [times, offset] = updateTime();
+  let daysIndex = null;  ///20260121
+  const [weekProgress, dayProgress] = getCycle(testweek,testday);
+
+  let [times, offset] = updateTime();
+  if (testweek != null && testday != null) { 
+      daysIndex = new Date().getDay();  ///getUTCDay()
+      daysIndex = Math.floor( weekProgress*7 ); console.log(daysIndex); if (daysIndex===7) { return; }
+      times = defaultDays[daysIndex]; 
+  }
   document.getElementById("utc-time").innerHTML = times;
   document.getElementById("utc-offset").innerHTML = offset;
 
-  const [weekProgress, dayProgress] = getCycle(testweek,testday);
 
-  let daysIndex = null;  ///20260121
   let hue = null;
   let saturation = null;
   let lightness = null;
@@ -278,15 +296,15 @@ function update(testweek=null, testday=null) {
   }
   else if (false) {
       daysIndex = new Date().getDay();  ///getUTCDay()
-      daysIndex = Math.floor( weekProgress*7 );
+      daysIndex = Math.floor( weekProgress*7 ); console.log(daysIndex); if (daysIndex===7) { return; }
       hue = weekHues[daysIndex];
       saturation = 30;
       lightness = 100 - Math.cos(dayProgress * Math.PI) * 22;  ///20260121
-      if (hue===180) { lightness = 100; }
+      if (hue===280) { lightness = 100; }
   }
   else if (true) {
       daysIndex = new Date().getDay();  ///getUTCDay()
-      daysIndex = Math.floor( weekProgress*7 );
+      daysIndex = Math.floor( weekProgress*7 ); console.log(daysIndex); if (daysIndex===7) { return; }
       hex = weekHexs[daysIndex];
       const [h,s,l] = hexToHSL(hex);
       hue = h;
@@ -311,6 +329,7 @@ function update(testweek=null, testday=null) {
   document.getElementById("id-color").innerHTML = bg;
   return [bg, ct];
 }
+
 update();
 let intervalIndex = 0;
 let intervalId = 0;
@@ -371,7 +390,7 @@ document.getElementById("slider-week").addEventListener("input", e => {
 ///document.getElementById("download-btn").addEventListener("click", () => { /**/ });
 
 function download() {
-  update();
+  update();  ///20260121
   console.log("🖼️");
   
   // 在某個時機終止
@@ -400,11 +419,13 @@ function download() {
   ctx.textBaseline = "middle"; // 垂直置中（你少了這個）
 
   // 時間顏色
-  const old_week = parseFloat(document.getElementById("slider-week").value);
-  const old_day = parseFloat(document.getElementById("slider-day").value);
   let colortt = document.getElementById("color-text").value;
   let colorbg = document.getElementById("color-bg").value;
-  [colorbg, colortt] = update(old_week, old_day);
+
+  const old_week = parseFloat(document.getElementById("slider-week").value);
+  const old_day = parseFloat(document.getElementById("slider-day").value);
+  ///[colorbg, colortt] = update(old_week, old_day);
+  [colorbg, colortt] = update();
   const timeText = document.getElementById("utc-time").innerText;
   const offsetText = document.getElementById("utc-offset").innerText;
   
@@ -452,7 +473,6 @@ document.getElementById('color-bg').addEventListener('input', function () {
   
 </body>
 </html>
-
 
 
 
