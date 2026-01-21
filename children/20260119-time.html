@@ -48,9 +48,17 @@
     nins/time
     </div></div>
 
-    <button id="" class="main active" style="width: 100%; padding: 8px;" onclick="update();" translate="no">🔃</button>
+    <button id="" class="main active" style="width: 100%; padding: 8px;" onclick="change();" translate="no">🔃</button>
     <!--input type="color" id="utc-color" style="width: 100%;" value="#000000"!-->
     <input type="range" id="slider-week" min="0" max="1" value="0.5" style="width: 100%;" step="0.0001">
+    <input
+      type="date"
+      id="birthday"
+      min="0001-01-01"
+      max="9999-12-31"
+      value="1996-09-25"
+      required
+    >
 
 
     <div id="content" onclick="" style="" class="app center y-column active" translate="no">
@@ -73,7 +81,7 @@
 <!--dialog id="DialogColor" translate="no" open=""></dialog!-->
 <dialog id="DialogColor" translate="no">
     <p><input type="checkbox" id="borderToggle"></p>
-    <p><input type="date" id="birthday"></p>
+    <p><input type="date" id="birthday_v1"></p>
 
     <p><input id="color-text" class="" value="#008000" type="color" style=" width: 100%; opacity:1.0; z-index:1;
     border: none;
@@ -300,7 +308,20 @@ function update(testweek=null, testday=null) {
   return [bg, ct];
 }
 update();
-const intervalId = setInterval(() => update(), 1);  ///1000*60*5
+let intervalIndex = 0;
+let intervalId = 0;
+intervalId = setInterval(() => update(), 1);  ///1000*60*5
+
+function change() {
+  intervalIndex = intervalIndex + 1;
+
+  if (intervalIndex % 2 === 1) {
+    clearInterval(intervalId);
+  } else {
+    intervalId = setInterval(() => update(), 1);
+  }
+  
+}
 
 
 
