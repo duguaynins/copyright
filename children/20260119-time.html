@@ -280,8 +280,8 @@ function update(testweek=null, testday=null) {
       daysIndex = new Date().getDay();  ///getUTCDay()
       daysIndex = Math.floor( weekProgress*7 );
       hue = weekHues[daysIndex];
-      saturation = 50;
-      lightness = 100 - Math.sin(dayProgress * Math.PI) * 50;  ///20260121
+      saturation = 30;
+      lightness = 100 - Math.cos(dayProgress * Math.PI) * 22;  ///20260121
       if (hue===180) { lightness = 100; }
   }
   else if (true) {
@@ -292,11 +292,15 @@ function update(testweek=null, testday=null) {
       hue = h;
       saturation = s;
       lightness = l;  ///20260121
-      if (hue===180) { lightness = 100; }
+      ///lightness = 100 - Math.cos(dayProgress * Math.PI) * 22;  ///20260121
+      if (hue===0) { lightness = 100; }
   }
-
   bg = `hsla(${hue}, ${saturation}%, ${lightness}%, 1.0)`;   /* 色相  鮮豔度  亮度 */  ///20260120
-  ct = `hsl(${hue}, ${saturation}%, 0%)`;  ///黑色
+  ct = `hsl(${hue}, ${0}%, ${Math.floor( (1-dayProgress) *100 )}%)`;  ///黑色
+  
+  console.log(dayProgress);
+  console.log(ct);
+
 
   document.getElementById("color-bg").value = bg;
   document.getElementById("color-text").value = ct;
