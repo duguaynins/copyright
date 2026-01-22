@@ -23,7 +23,7 @@ async function loadAllAssets() {
   ///await loadCSS('https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css');
   ///await loadJS('https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js');
   ///await loadJS('/js/map-widget.js');
-  await loadCSS('https://copyright.nins.cc/children/0001/nins-pirozu.css');
+  await loadCSS('https://copyright.nins.cc/children/0001/nins-zzz.css');  ///pirozu
   await loadJS('https://copyright.nins.cc/children/0001/nins-update.js');
   await loadJS('https://copyright.nins.cc/children/0001/nins-world.js');
   ///await loadJS('https://copyright.nins.cc/children/0001/nins-ads.js');
