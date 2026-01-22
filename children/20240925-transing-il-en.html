@@ -289,7 +289,7 @@
   ">
         <strong id="anything" style="background-color: black; color: white; font-size: max(1vh,1vw);"><b translate="no">© nins. </b>Use chat channels to easily start communicating with anyone.</strong>
         <div style="background: #FFFFFF; color: black;" translate="no">
-        <div style="height: 2vh; margin: 10px;" onclick="document.getElementById('DialogCheck').showModal();console.log(new Date().toLocaleString(), '🙉');">
+        <div style="margin: 10px;" onclick="document.getElementById('DialogCheck').showModal();console.log(new Date().toLocaleString(), '🙉');">
         nins/transing
         </div></div>
         <div style="margin: 0vw; display: flex; flex-direction: row; border: 1px solid #cdcdcd;" translate="no">
@@ -310,11 +310,11 @@
             <span id="SemanticDistance" style="font-size:1vw; width:100%; text-align:center; color:black;">（Semantic Distance）</span>
         </div-->
         
-        <div id="chatbox" style="border:1px solid #ccc; overflow:auto; width:100%; text-align:left; flex:1;">init</div>
+        <div id="chatbox" class="left" style="border:1px solid #ccc; overflow:auto; width:100%; text-align:left; flex:1;">init</div>
         
         <input type="range" id="InputRate" min="0.1" max="2.0" step="0.1" value="1" style="width:100%;" />
-        <input  style="display:none" class="main" id="InputRoom" type="text" name="noMemory" autocomplete="off" placeholder="input connection number..." style="width:100%; text-align: center;"/>
-        <input  style="display:none" class="main" id="InputMsg"  type="text" name="noMemory" autocomplete="off" placeholder="input message text..." style="width:100%; text-align: center;"/>
+        <input  style="display:none" class="main left" id="InputRoom" type="text" name="noMemory" autocomplete="off" placeholder="input connection number..." style="width:100%; text-align: center;"/>
+        <input  style="display:none" class="main left" id="InputMsg"  type="text" name="noMemory" autocomplete="off" placeholder="input message text..." style="width:100%; text-align: center;"/>
         <button style="display:none" id="ButtonRoom" onclick="sendSocket()" style="width:100%;" class="button" >📶Send connection</button>
         <button style="display:none" id="ButtonMsg" onclick="sendMessage()" style="width:100%;" class="button" >🚀Send Message</button>
         
@@ -1108,7 +1108,7 @@ console.log(version);
         console.log("同步初始化，視窗高度：" + window.innerHeight + " px");
         console.log("同步初始化，視窗寬度：" + window.innerWidth + " px");
         document.getElementById('chatbox').textContent = "After using the 'Send Connection' button and successfully establishing the connection, you can use 'Send Message' to communicate.";    
-        document.getElementById('chatbox').textContent = "Currently, only the *WORLD* channel is available. The limit will be removed soon.";
+        document.getElementById('chatbox').textContent = "Currently, only the *default* channel is available. The limit will be removed soon.";
       });
     
     // 初始化
@@ -1116,7 +1116,7 @@ console.log(version);
         console.log("非同步初始化，視窗高度：" + window.innerHeight + " px");
         console.log("非同步初始化，視窗寬度：" + window.innerWidth + " px");
         document.getElementById('chatbox').textContent = "After using the 'Send Connection' button and successfully establishing the connection, you can use 'Send Message' to communicate.";    
-        document.getElementById('chatbox').textContent = "Currently, only the *WORLD* channel is available. The limit will be removed soon.";
+        document.getElementById('chatbox').textContent = "Currently, only the *default* channel is available. The limit will be removed soon.";
       });
     
     // 初始化：默認掃描連線
