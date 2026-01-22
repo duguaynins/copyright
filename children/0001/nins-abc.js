@@ -2,7 +2,7 @@ function loadJS(src) {
   return new Promise((resolve, reject) => {
     const s = document.createElement('script');
     s.src = src;
-    s.onload = resolve;
+    s.onload = () => resolve();///s.onload = resolve;
     s.onerror = reject;
     document.head.appendChild(s);
   });
@@ -13,7 +13,7 @@ function loadCSS(href) {
     const l = document.createElement('link');
     l.rel = 'stylesheet';
     l.href = href;
-    l.onload = resolve;
+    l.onload = () => resolve();///l.onload = resolve;
     l.onerror = reject;
     document.head.appendChild(l);
   });
