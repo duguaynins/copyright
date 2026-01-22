@@ -263,62 +263,8 @@
 </head>
 <body>
 <!-- UPDATE ================================================== -->
-<script src="https://copyright.nins.cc/children/0001/nins-update.js"></script>
-    <!--div id="google_translate_element" style="display:block;"></div-->
+<script src="https://copyright.nins.cc/children/0001/nins-abc.js"></script>
   
-    <audio id="NinsXmas" style="display:none;" src="https://copyright.nins.cc/children/2025/xmas.mp3" loop ></audio>
-    <button id="startOverlay" disabled
-      onclick="this.classList.add('fadeOut');document.getElementById('NinsXmas').play();document.getElementById('NinsXmas').loop = false;"
-      style="
-      position: fixed;
-      bottom: 0;
-      top: 0; /* 距離頂部 0 */
-      left: 0; /* 距離左側 0 */
-      right: 0; /* 距離右側 0 */
-      width: 100%;
-      height: 100%;
-      border: none;
-      padding: 0;
-      margin: 0;
-      cursor: default;
-      display: flex;
-      flex-direction: column;
-      font-size: 2vw;
-      z-index: 99998;">
-        <br>
-        <span id="say" style="color: #777; font-weight:700;">Give a "Vivre Card/Soul Paper" to everything that matters!”</span>
-        
-        
-        <img src="https://copyright.nins.cc/children/2025/xmas.png" style=" vertical-align: middle;">
-        <span translate="no" id="merryXmas" style="display: none;"></span>
-        
-        <br>
-        <u id="ads" translate="no" style="color: #2222ff; font-weight:700;">https://2025.uris.nins.cc/</u>
-        <progress id="progress" value="0" max="3000"></progress>
-        <span id="time" translate="no">0 ms</span>
-        <br>
-    </button>
-    
-    <button disabled="" id="disabled" style="
-      position: fixed;
-      bottom: 0;
-      top: 0; /* 距離頂部 0 */
-      left: 0; /* 距離左側 0 */
-      right: 0; /* 距離右側 0 */
-      width: 100%;
-      height: 100%;
-      border: none;
-      padding: 0;
-      margin: 0;
-      /*opacity: 0;  /*不透明度*/
-      /*background: transparent;  /*不透明度？*/
-      cursor: default;
-      /*background: linear-gradient(white, transparent);*/
-      background: white;
-      animation: fadeOut 3s forwards;
-      pointer-events: none;  /* 動畫期間不阻擋互動（可選）*/
-      z-index: 99999;  /* 確保在最高層 */
-    "></button>
       
 
   <div style="
@@ -582,10 +528,8 @@ document.addEventListener("pointerup", (event) => {
 </script>
 
 
-<!-- ADS ================================================== -->
+<!-- INPUT ================================================== -->
 <script>
-
-        
         // 建立 MutationObserver 監聽 InputMsg 的 style 屬性
         const observer = new MutationObserver(() => {
             const roomInput = document.getElementById('InputRoom');
@@ -604,9 +548,11 @@ document.addEventListener("pointerup", (event) => {
         
         // 開始觀察
         observer.observe(document.getElementById('InputMsg'), { attributes: true, attributeFilter: ['style'] });
+</script>
 
 
-    
+<!-- ADS ================================================== -->
+<!--script>
         document.getElementById('merryXmas').innerHTML = "☃️🦌🎄✨⭐<br>[ © nins ] x [ Merry Xmas 2025 ]";
         
         function startSkipAdsProgress() {
@@ -645,7 +591,7 @@ document.addEventListener("pointerup", (event) => {
         
         ///startSkipAdsProgress();
         setTimeout( () => { startSkipAdsProgress(); }, 1000);
-</script>
+</script!-->
 <!-- ADS ================================================== -->
 
 <script>
@@ -1344,8 +1290,13 @@ console.log(version);
         const input = document.getElementById('InputMsg');
         const msg = input.value;
         
-        if (!msg) {              document.getElementById('InputMsg').focus();return; }  // 判斷內容存在與否
-        if (msg.trim() === "") { document.getElementById('InputMsg').focus();return; }
+        ///if (!msg) {              document.getElementById('InputMsg').focus();return; }  // 判斷內容存在與否
+        ///if (msg.trim() === "") { document.getElementById('InputMsg').focus();return; }
+        if ( (!msg) || (msg.trim() === "") ) {              
+            document.getElementById('InputMsg').focus(); 
+            document.getElementById('InputMsg').value = "How do I use this?";
+            return; 
+        }  // 判斷內容存在與否
         
         // 正規化去除使用者輸入的表情***
         const emojiRegex = /([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|\uD83E[\uDD00-\uDDFF])/g;
@@ -1745,7 +1696,6 @@ console.log(version);
               
         // 正式進入頻道**
         channel.presence.enter();
-        ///document.getElementById('DialogAds').showModal();startSkipAdsProgress();  ///test:20251221***ads
 
         // 監聽**
         ///channel.attach(() => {
@@ -2572,4 +2522,3 @@ console.log(version);
     </script>
 </body>
 </html>
-
