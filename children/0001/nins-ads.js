@@ -4,21 +4,14 @@ document.head.insertAdjacentHTML('beforeend', `
   from { opacity: 1; }
   to { opacity: 0; }
 }
-.ninsStartNodelay { 
+.ninsfadeoutNodelay { 
   pointer-events: none; 
   animation: ninsStart 3s forwards; 
 }
-.ninsStartAdelay { 
+.ninsfadeoutAdelay { 
   pointer-events: none; 
   animation: ninsStart 2.20s forwards 0.58s;
   /* transform: translateZ(0); */
-}
-.ninsStartAdelay_vt { 
-  pointer-events: none; 
-  animation-name: ninsStart;      /* 指定動畫 */
-  animation-duration: 2.2s;       /* 動畫持續時間 */
-  animation-delay: 0.8s;          /* 延遲開始時間 */
-  animation-fill-mode: forwards;  /* 動畫結束保持最終狀態 */ 
 }
 .zIndex {
   position: fixed;
@@ -36,7 +29,7 @@ document.head.insertAdjacentHTML('beforeend', `
 document.body.insertAdjacentHTML('beforeend', `
 <audio id="NinsXmas" style="display:none;" src="https://copyright.nins.cc/children/2025/xmas.mp3" loop ></audio>
 <button id="startOverlay" disabled
-  onclick="this.classList.add('fadeOut');document.getElementById('NinsXmas').play();document.getElementById('NinsXmas').loop = false;"
+  onclick="this.classList.add('ninsfadeoutNodelay');document.getElementById('NinsXmas').play();document.getElementById('NinsXmas').loop = false;"
   style="
   position: fixed;
   bottom: 0;
