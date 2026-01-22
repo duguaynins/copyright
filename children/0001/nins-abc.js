@@ -31,4 +31,5 @@ async function loadAllAssets() {
   ///await loadJS('https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit');
 }
 
-loadAllAssets().then(() => initWidget());
+///loadAllAssets().then(() => initWidget());
+loadAllAssets().then(() => {/**/});
