@@ -1,6 +1,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -51,15 +52,30 @@
     <button id="" class="main active" style="width: 100%; padding: 8px;" onclick="change();" translate="no">🔃</button>
     <!--input type="color" id="utc-color" style="width: 100%;" value="#000000"!-->
     <input type="range" id="slider-week" min="0" max="1" value="0.5" style="width: 100%;" step="0.0001">
-    <input
+    
+    <div class="input-btn-wrapper center" style="
+    justify-content: space-between;
+    display: flex; align-items: stretch; width:100%; text-align: center;" translate="no">
+    
+    <span>🍰<input
       type="date"
       id="birthday"
       min="0001-01-01"
-      max="9999-12-31"
-      value="1996-09-25"
+      max="9999-12-31" value=""
       required
-      style="width: 100%;"
-    >
+    >✨</span>
+    
+    <span>👻<input type="checkbox">✨</span>
+
+    <span>😴<input type="time"
+     min="00:00" max="23:59" value="">✨</span>
+
+    <!--input type="datetime"!-->
+
+    <!--input type="date" value="1996-09-25">
+    <input type="time" value="12:30">
+    <input type="datetime-local" value="2026-01-23T14:30"!-->
+    </div>
 
 
     <div id="content" onclick="" style="" class="app center y-column active" translate="no">
