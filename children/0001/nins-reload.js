@@ -1,7 +1,7 @@
 document.body.appendChild(Object.assign(document.createElement('div'), {
   id: 'ptr',
   ///className: 'my-class',
-  textContent: `
+  innerHTML: `
   
     <svg id="svg" width="30" height="30">
         <circle cx="15" cy="15" r="12" fill="none" stroke="#eee" stroke-width="3" />
