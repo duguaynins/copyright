@@ -48,7 +48,10 @@ document.body.appendChild(Object.assign(document.createElement('script'), {
         if (!pulling || e.pageY < startY) return;
         const move = Math.min((e.pageY - startY) * 0.4, 80);
         ptr.style.opacity = 1;
-        ptr.style.transform = `translate(-50%, ${move - 60}px)`;
+        
+
+        
+        ptr.style.transform = 'translate(-50%, ' + (move - 60) + 'px)';
         p.style.strokeDashoffset = 75.4 * (1 - Math.min(move / 60, 1));
     });
 
@@ -70,6 +73,7 @@ document.body.appendChild(Object.assign(document.createElement('script'), {
     
     `
 }));
+///ptr.style.transform = `translate(-50%, ${move - 60}px)`;
 
 
 /*
