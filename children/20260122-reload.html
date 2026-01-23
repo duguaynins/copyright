@@ -1,0 +1,76 @@
+<div id="universal-ptr" style="
+    position: fixed; top: 0; left: 0; width: 100%; height: 60px; 
+    display: flex; align-items: center; justify-content: center; 
+    background: #f8f9fa; z-index: 9999; transform: translateY(-100%);
+    transition: transform 0.2s ease; border-bottom: 1px solid #ddd;
+">
+    <div id="ptr-icon" style="
+        width: 18px; height: 18px; border: 2px solid #ccc; 
+        border-top-color: #007bff; border-radius: 50%; margin-right: 10px;
+    "></div>
+    <span id="ptr-text" style="font-size: 14px; color: #666;">下拉刷新</span>
+</div>
+
+<script>
+(function() {
+    const ptr = document.getElementById('universal-ptr');
+    const ptrText = document.getElementById('ptr-text');
+    const ptrIcon = document.getElementById('ptr-icon');
+    let startY = 0;
+    let pulling = false;
+
+    // 監聽整個視窗
+    window.addEventListener('pointerdown', e => {
+        // 只有在頁面最頂端才啟動
+        if (window.scrollY <= 5) { 
+            startY = e.pageY;
+            pulling = true;
+            ptr.style.transition = 'none'; // 讓跟隨手感即時
+        }
+    });
+
+    window.addEventListener('pointermove', e => {
+        if (!pulling) return;
+        const diff = e.pageY - startY;
+
+        if (diff > 0) {
+            // 限制最大下拉長度為 100px
+            const move = Math.min(diff * 0.5, 100); 
+            ptr.style.transform = `translateY(${move - 60}px)`;
+            
+            if (move > 70) {
+                ptrText.innerText = '放開以刷新';
+                ptrIcon.style.transform = 'rotate(180deg)';
+            } else {
+                ptrText.innerText = '下拉刷新';
+                ptrIcon.style.transform = 'rotate(0deg)';
+            }
+        }
+    });
+
+    window.addEventListener('pointerup', e => {
+        if (!pulling) return;
+        pulling = false;
+        ptr.style.transition = 'transform 0.3s ease';
+
+        const finalDiff = e.pageY - startY;
+        if (finalDiff * 0.5 > 70) {
+            // 執行刷新
+            ptr.style.transform = 'translateY(0)';
+            ptrText.innerText = '加載中...';
+            ptrIcon.style.animation = 'ptr-spin 1s linear infinite';
+            
+            // 這裡放你的邏輯，例如：
+            setTimeout(() => location.reload(), 1000);
+        } else {
+            // 彈回隱藏
+            ptr.style.transform = 'translateY(-100%)';
+        }
+    });
+
+    // 注入旋轉動畫 CSS
+    const style = document.createElement('style');
+    style.innerHTML = `@keyframes ptr-spin { to { transform: rotate(360deg); } }`;
+    document.head.appendChild(style);
+})();
+</script>
