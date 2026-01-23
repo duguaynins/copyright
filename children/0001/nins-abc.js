@@ -26,11 +26,13 @@ async function loadAllAssets() {
   ///await loadJS('https://copyright.nins.cc/children/0001/nins-update.js');
   
   await loadCSS('https://copyright.nins.cc/children/0001/nins-zzz.css');  ///pirozu
+  await loadJS('https://copyright.nins.cc/children/0001/nins-reload.js');  
   
   await loadJS('https://copyright.nins.cc/children/0001/nins-world.js');
   ///await loadJS('https://copyright.nins.cc/children/0001/nins-ads.js');
-  ///await loadJS('https://copyright.nins.cc/children/0001/nins-translate.js');
-  ///await loadJS('https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit');
+  
+  await loadJS('https://copyright.nins.cc/children/0001/nins-translate.js');
+  await loadJS('https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit');
 }
 
 ///loadAllAssets().then(() => initWidget());
