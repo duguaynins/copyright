@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="auto">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>roams/©</title>
+<style>
+    
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+body, html { width: 100%; height: 100%; overflow: hidden; }
+header { position: absolute; top: 0; left: 0; width: 100%; padding: 1rem 2rem; z-index: 10; display: flex; justify-content: space-between; color: #fff; }
+header a { margin-left: 1.5rem; color: #fff; font-weight: 600; }
+
+.hero-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #fff;
+    z-index: 10;
+}
+.hero-text h1 { font-size: 3.9rem; margin-bottom: 1rem; }
+.hero-text p { font-size: 1.5rem; margin-bottom: 2rem; }
+
+#background {
+    position: absolute;
+    top: 0; left: 0;
+    width: 200%;
+    height: 200%;
+    background-color: #1f2937;
+    cursor: grab;
+    z-index: 1;
+}
+
+canvas { position: absolute; top: 0; left: 0; z-index: 2; pointer-events: none; }
+
+a.cta {
+    display: inline-block;
+    padding: 0.8rem 1.8rem;
+    background: #4F46E5;
+    color: #fff;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+a.cta:hover { background: #3730A3; }
+
+</style>
+</head>
+<body translate="no">
+
+<!--header>
+    <div class="logo">roams.cc</div>
+    <nav>
+        <a href="#">功能介紹</a>
+        <a href="#">訂閱</a>
+        <a href="#">登入</a>
+    </nav>
+</header!-->
+
+<div id="background"></div>
+<canvas id="grid"></canvas>
+
+<div class="hero-text" translate="yes">
+    <h1>Inherit Your Existing Social Circles</h1>
+    <p><div id="google_translate_element"></div></p>
+    <p>Freely move and reshape your social world</p>
+    <!--a class="cta" href="#">立即體驗／社交由妳</a!-->
+    <a class="cta" href="#">google forms</a>
+    <!--a class="cta" href="#">社交由妳自己</a!-->
+</div>
+
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement(
+    {
+      pageLanguage: 'en',
+      includedLanguages: 'en,zh-TW,ja,ko',  ///'zh-TW,en,ja,ko'
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    },
+    'google_translate_element'
+  );
+}
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<!--script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script!-->
+
+
+<script>
+const canvas = document.getElementById('grid');
+const ctx = canvas.getContext('2d');
+let width = window.innerWidth;
+let height = window.innerHeight;
+canvas.width = width;
+canvas.height = height;
+
+const gridSize = 50; // 每格50px代表1cm
+let offsetX = 0;
+let offsetY = 0;
+let isDragging = false;
+let startX, startY;
+
+function drawGrid() {
+    ctx.clearRect(0, 0, width, height);
+    ctx.strokeStyle = '#555';
+    ctx.lineWidth = 1;
+    ctx.font = '12px Inter';
+    ctx.fillStyle = '#fff';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+
+    // 垂直線
+    for (let x = offsetX % gridSize; x < width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+        ctx.fillText(Math.floor((x - offsetX)/gridSize) + 'cm', x, 0);
+    }
+
+    // 水平線
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    for (let y = offsetY % gridSize; y < height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+        ctx.fillText(Math.floor((y - offsetY)/gridSize) + 'cm', 0, y);
+    }
+}
+
+drawGrid();
+
+const bg = document.getElementById('background');
+bg.addEventListener('mousedown', e => {
+    isDragging = true;
+    startX = e.clientX - offsetX;
+    startY = e.clientY - offsetY;
+    bg.style.cursor = 'grabbing';
+});
+window.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    offsetX = e.clientX - startX;
+    offsetY = e.clientY - startY;
+    drawGrid();
+});
+window.addEventListener('mouseup', () => {
+    isDragging = false;
+    bg.style.cursor = 'grab';
+});
+window.addEventListener('resize', () => {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+    drawGrid();
+});
+</script>
+
+</body>
+</html>
