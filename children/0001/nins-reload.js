@@ -1,6 +1,7 @@
 document.body.appendChild(Object.assign(document.createElement('div'), {
   id: 'ptr',
   ///className: 'my-class',
+  style: 'position: absolute; z-index: 909095800;', // 直接在這裡設定
   innerHTML: `
   
     <svg id="svg" width="30" height="30">
