@@ -177,7 +177,7 @@ setTimeout(updateTime, 1); // 幾時之後只執行一次
 
 
 
-
+/*
 
 document.body.appendChild(Object.assign(document.createElement('div'), {
   id: 'ptr',
@@ -190,11 +190,10 @@ document.body.appendChild(Object.assign(document.createElement('div'), {
 document.head.appendChild(Object.assign(document.createElement('style'), {
     textContent: `
     body { margin: 0; touch-action: pan-x; }
-    /* 進度文字動畫 */
     .loading #progress-text { animation: pulse 0.8s infinite alternate; }
     @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.1); } }
     `
-}));
+}));  ///進度文字動畫
 
 document.body.appendChild(Object.assign(document.createElement('script'), { 
     textContent: `
@@ -258,3 +257,4 @@ document.body.appendChild(Object.assign(document.createElement('script'), {
     `
 }));
 
+*/
