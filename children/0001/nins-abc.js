@@ -37,3 +37,13 @@ async function loadAllAssets() {
 
 ///loadAllAssets().then(() => initWidget());
 loadAllAssets().then(() => {/**/});
+
+
+/*
+
+<!-- NINS ================================================== -->
+<script src="https://copyright.nins.cc/children/0001/nins-update.js"></script>
+<script src="https://copyright.nins.cc/children/0001/nins-world.js"></script>
+<script src="https://copyright.nins.cc/children/0001/nins-ads.js"></script>
+<script src="https://copyright.nins.cc/children/0001/nins-abc.js"></script>
+*/
