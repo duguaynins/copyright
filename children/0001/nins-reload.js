@@ -67,11 +67,13 @@ document.body.appendChild(Object.assign(document.createElement('script'), {
             ///txt.innerText = '100%';
             ptr.classList.add('loading');
             ptr.style.background = "#007bff";
+            ptr.style.background = "#cdcdcd";
             
             setTimeout(() => { 
                 ///txt.innerText = 'Updating...';
                 ///txt.style.color = "#28a745";
                 ptr.style.background = "#28a745";
+                ptr.style.background = "#000000";
                 txt.style.color = "#ffffff";
             }, 200);
             
