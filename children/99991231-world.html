@@ -2,6 +2,11 @@
 <body>
 <script src="https://copyright.nins.cc/children/0001/nins-update.js"></script>
 <script src="https://copyright.nins.cc/children/0001/nins-world.js"></script>
+<style>
+.leaflet-marker-icon {
+  transition: all 0.3s linear;
+}
+</style>
 
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -10,59 +15,187 @@
 <div id="free-map" style="height: 400px;"></div>
 <input id="point-name">
 <button onclick="send();" translate="no">🚀</button>
+<button onclick="GPS();" translate="no">📶</button>
 <button onclick="output();" translate="no">💾</button>
+<button onclick="degreen();" translate="no">🟢</button>
+<button onclick="dered();" translate="no">🔴</button>
+<button onclick="deall();" translate="no">⚪</button>
 
 
 
 
 <script>
+  let USER = null;
+
+  const GREEN = "GPS";
+  function degreen() {
+    localStorage.removeItem(GREEN);
+    console.log("degreen!!!");
+  }
+
+  const RED = "Search";
+  function dered() {
+    localStorage.removeItem(RED);
+    console.log("dered!!!");
+  }
+
+  function deall() {
+    localStorage.clear();
+    console.log("deall!!!");
+  }
+</script>
+
+
+<script>
   // 3. 初始化地圖，設定座標 [緯度, 經度] 與 縮放等級
   var map = L.map('free-map').setView([0.0, 0.0], 1);
+  
   var allMarkers = []; // 用來存放 marker 物件的陣列
+  ///var allMarkers = JSON.parse(localStorage.getItem(storage)) || [];
 
   async function initMap(gp, name) {  
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
+
+    const BufRED = JSON.parse(localStorage.getItem(RED)) || [];
+    BufRED.forEach((marker, index) => {
+      const gps = marker.gps
+      const name = marker.name
+      const tag = marker.time
+      const time = marker.time
+      const data = [{ gps: gps, name: name, tag: RED, time: time }];  ///***
+
+      console.log(index, data);
+      useCoordsGenPoint(data);
+    })
+    
+    const BufGREEN = JSON.parse(localStorage.getItem(GREEN)) || [];
+    BufGREEN.forEach((marker, index) => {
+      const gps = marker.gps
+      const name = marker.name
+      const tag = marker.time
+      const time = marker.time
+      const data = [{ gps: gps, name: name, tag: GREEN, time: time }];  ///***
+
+      console.log(index, data);
+      useCoordsGenPoint(data);
+    })
+
+    allMarkers = [].concat(BufRED).concat(BufGREEN);
   }
   
-  async function useCoordsGenPoint(gps, name) {  
-    const zoom = 1;  // 越小版圖越大
-    ///map.setView(gps, zoom);  // 移動地圖
-    L.marker(gps).addTo(map)  // 標記地點
-      .bindPopup(name)
-      .openPopup();
+  async function useCoordsGenPoint(data) {  ///zoom=18
+    let zoom = 3;  // 越小版圖越大
+    const { gps, name, tag, time } = data[0];
+
+    ///if (zoom) { map.setView(gps, zoom); }  // 移動地圖
+    ///map.setView(gps, map.getZoom());
+
+    ///map.setView(gps, zoom);
+    ///console.log(map.getZoom());  ///1~18
+
+    ///map.panTo(gps);
+    ///map.setView(gps, zoom);
+    ///map.flyTo(gps, map.getZoom());
+    ///map.setView(gps, zoom);
+      
+    if (tag==="now") {
+      zoom = 10;
+      L.marker(gps).addTo(map)  // 標記地點
+        .bindPopup(time)  ///***
+        .openPopup();
+      
+      /*
+      L.circle([35.676, 139.763], {
+          radius: 500,       // 半徑 500 米
+          color: 'red',
+          fillColor: '#f03',
+          fillOpacity: 0.3
+      }).addTo(map);  */
+    }
+    if (tag===RED) {
+      ///zoom = 3;
+      L.circleMarker(gps, {
+        radius: 8,
+        color: 'red',
+        fillColor: 'red',
+        fillOpacity: 0.8
+      }).addTo(map)
+        .bindPopup(name)
+        .openPopup();
+    }
+    if (tag===GREEN) {
+      ///zoom = 3;
+      L.circleMarker(gps, {
+        radius: 8,
+        color: 'green',
+        fillColor: 'green',
+        fillOpacity: 0.8
+      }).addTo(map)
+        .bindPopup(time)  ///***
+        .openPopup();
+    }
+
+    
+    if (zoom===map.getZoom()) {
+      map.flyTo(gps, zoom, {
+        animate: true,
+        duration: 3   // 秒數，越大越平順
+      })
+    } else {
+      map.setView(gps, zoom);
+    }
   }
 
   // 4. 加入 OpenStreetMap 圖層 (這是地圖影像的來源)
   initMap();
 
   // 5. 加入一個標記點 (Marker)
-  ///useCoordsGenPoint([25.0330, 121.5654], '這是台北 101 附近');
+  ///useCoordsGenPoint_vt([25.0330, 121.5654], '這是台北 101 附近');
 
 
 </script>
 
 
 <script>
+  async function getNameByGPS(lat, lng) {
+    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
+
+    return fetch(url)
+      .then(res => {
+        if (!res.ok) throw new Error("Network response was not ok");
+        return res.json();
+      })
+      .then(data => data.display_name || "未知地點")
+      .catch(err => {
+        console.error("反向地理編碼錯誤:", err);
+        return "未知地點";
+      });
+  }
 
   async function useCoordsGenPointbyName(name) {
     const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(name)}`);
-    const data = await response.json();
+    const result = await response.json();
 
-    if (data && data.length > 0) {
-      const lat = data[0].lat;
-      const lon = data[0].lon;
+    if (result && result.length > 0) {
+      const lat = result[0].lat;
+      const lon = result[0].lon;
       console.log(`找到座標：${lat}, ${lon}`);
       ///return [lat, lon]
       
       // 將地圖移動到該點並插旗
       let [times, offset] = updateTime();
-      let gps = [lat, lon]; ///name = `${times}${offset}`;
+      let buf = `${times}${offset}`;
+      let gps = [lat, lon].map(Number); ///name = `${times}${offset}`;
+      const data = [{ gps: gps, name: name, tag: RED, time: buf }];  ///***
       
-      useCoordsGenPoint(gps, name);
-      allMarkers.push({ gps: [lat, lon], name: name }); // 存入資料
-      ///localStorage.setItem('myMapPoints', JSON.stringify(allMarkers));
+      useCoordsGenPoint(data);
+      ///allMarkers.push({ gps: gps, name: name, tag: RED }); // 存入資料
+      const oldData = JSON.parse(localStorage.getItem(RED)) || [];
+      const newData = oldData.concat( data );
+      localStorage.setItem(RED, JSON.stringify(newData));
+      console.log(newData);
 
       ///map.setView([lat, lon], 15);
       ///L.marker([lat, lon]).addTo(map).bindPopup(name).openPopup();
@@ -97,9 +230,8 @@
   }
   
   async function send() {  
-    const zoom = 1;  // 越小版圖越大
     const name = document.getElementById('point-name').value;
-    useCoordsGenPointbyName(name);
+    await useCoordsGenPointbyName(name);
   }
 
 </script>
@@ -107,10 +239,78 @@
 
 
 <script>
-  useCoordsGenPoint([25.0330, 121.5654], '這是台北 101 附近');
-  useCoordsGenPointbyName('日本東京');
+  // 這是範例測試
+  ///useCoordsGenPoint_vt([25.0330, 121.5654], '這是台北 101 附近');
+  ///useCoordsGenPointbyName_vt('日本東京');
+</script>
+<script>
+  function path() {
+    // 監聽方向
+    window.addEventListener('deviceorientationabsolute', function(e) {
+      // e.alpha 是手機繞著垂直軸旋轉的角度 (0-360)
+      var heading = e.alpha; 
+      
+      if (heading !== null) {
+        // 旋轉地圖容器 (需要一些 CSS 技巧處理邊緣空白)
+        document.getElementById('free-map').style.transform = `rotate(${-heading}deg)`;
+      }
+    }, true);
+  }
 
+  // 立刻請求 GPS
+  function keep() {
+    map.locate({
+      watch: true,       // 持續監測位置變化
+      setView: true,
+      enableHighAccuracy: true
+    });
+    map.on('locationfound', function(e) {
+        alert("定位持續：" + e.latlng);
+        USER.setLatLng(e.latlng);
+        map.panTo(e.latlng);
+    });
+    map.on('locationerror', function(e) {
+        alert("定位失敗：" + e.message);
+    });
+  }
+
+  function GPS() {
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+              async function(position) {
+                  // 成功取得 GPS
+                  const lat = position.coords.latitude;
+                  const lon = position.coords.longitude;
+                  
+                  // 時間軸
+                  let [times, offset] = updateTime();
+                  let gps = [lat, lon].map(Number);
+                  let buf = `${times}${offset}`;
+                  let name = "使用者位置"; 
+                  name = await getNameByGPS(lat, lon);
+                  const test = [{ gps: gps, name: name, tag: "now", time: buf }];  ///***
+
+                  // 將地圖移到使用者位置
+                  useCoordsGenPoint(test);
+                  USER = L.marker(gps).addTo(map).bindPopup(buf).openPopup(); ///keep();
+                  ///return [gps, name]
+
+                  // 存入 allMarkers
+                  const data = [{ gps: gps, name: name, tag: GREEN, time: buf }];  ///***
+                  const oldData = JSON.parse(localStorage.getItem(GREEN)) || [];
+                  const newData = oldData.concat( data );
+                  localStorage.setItem(GREEN, JSON.stringify(newData));
+                  console.log(newData);
+              },
+              function(error) {
+                  // 使用者拒絕或其他錯誤
+                  console.error("無法取得 GPS：", error.message);
+              }
+          );
+      } else {
+          console.error("此瀏覽器不支援 GPS 定位");
+      }
+  }
 
 </script>
-
 </body>
