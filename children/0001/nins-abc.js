@@ -27,8 +27,7 @@ async function loadAllAssets() {
   
   await loadCSS('https://copyright.nins.cc/children/0001/nins-zzz.css');  ///pirozu
   await loadJS('https://copyright.nins.cc/children/0001/nins-reload.js');  
-  
-  await loadJS('https://copyright.nins.cc/children/0001/nins-update.js');  
+  await loadJS('https://copyright.nins.cc/children/0001/nins-dialog.js');  
   ///await loadJS('https://copyright.nins.cc/children/0001/nins-world.js');
   ///await loadJS('https://copyright.nins.cc/children/0001/nins-ads.js');
   
