@@ -2,6 +2,8 @@
 
 
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -18,21 +20,15 @@
 
 <!-- 放置你原有的布局：CSS -->
 <style></style>
-<!-- 放置你原有的布局：CSS -->
-<link rel="stylesheet" href="https://copyright.nins.cc/children/0001/nins-zzz.css">
 
 </head>
 <body>
-
-<!-- WORLD ================================================== -->
-<!--script src="https://copyright.nins.cc/children/0001/nins-world.js"></script!-->
-<!-- UPDATE ================================================== -->
+  
+<!-- NINS ================================================== -->
 <script src="https://copyright.nins.cc/children/0001/nins-update.js"></script>
-<!-- DIALOG ================================================== -->
-<script src="https://copyright.nins.cc/children/0001/nins-dialog.js"></script>
-<!-- TRANSLATE ================================================== -->
-<script src="https://copyright.nins.cc/children/0001/nins-translate.js"></script>
-<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script src="https://copyright.nins.cc/children/0001/nins-world.js"></script>
+<!--script src="https://copyright.nins.cc/children/0001/nins-ads.js"></script!-->
+<script src="https://copyright.nins.cc/children/0001/nins-abc.js"></script>
 
 <!-- 放置你原有的布局：HTML -->
 
@@ -51,6 +47,7 @@
 
     <button id="" class="main active" style="width: 100%; padding: 8px;" onclick="change();" translate="no">🔃</button>
     <!--input type="color" id="utc-color" style="width: 100%;" value="#000000"!-->
+    <p id="id-background" style="background: #eee; width: 100%;">#CDCDCD</p>
     <input type="range" id="slider-week" min="0" max="1" value="0.5" style="width: 100%;" step="0.0001">
     
     <div class="input-btn-wrapper center" style="
@@ -59,12 +56,12 @@
     </div>
     
 
-    <p id="id-background" style="background: #CDCDCD; width: 100%;">#CDCDCD</p>
-    <span>🍰<input
+    <!--p id="id-background" style="background: #CDCDCD; width: 100%;">#CDCDCD</p!-->
+    <span style="display: none;">🍰<input
       type="date"
       id="birthday"
       min="0001-01-01"
-      max="9999-12-31" value=""
+      max="9999-12-31" value="9999-12-31"
       required
     >✨</span>
 
@@ -84,12 +81,14 @@
     </div>
 
 
-    <span>😴<input type="time"
-     min="00:00" max="23:59" value="">✨</span>
-    <p id="id-color" style="background: #CDCDCD; width: 100%;">#CDCDCD</p>
+    <span style="display: none;">😴<input type="time"
+      min="00:00" max="23:59" value="23:59"
+    >✨</span>
+    <!--p id="id-color" style="background: #CDCDCD; width: 100%;">#CDCDCD</p!-->
 
 
     <input type="range" id="slider-day" min="0.01" max="0.99" value="0.5" style="width: 100%;" step="0.0001">
+    <p id="id-color" style="background: #eee; width: 100%;">#CDCDCD</p>
     <button id="" class="main active" style="width: 100%; padding: 8px;" onclick="download();" translate="no">💾</button>
 
     <div id="notice" style="" translate="yes">
@@ -150,14 +149,15 @@ const weekHexs = [
   "#E8DCF1"  // 六／土　紫
 ];
 const defaultDays = [  ///20260121
-  "2025-12-28T00:00:00.000Z",
-  "2025-12-29T00:00:00.000Z",
-  "2025-12-30T00:00:00.000Z",
-  "2025-12-31T23:59:59.999Z",
-  ///"2026-01-01T00:00:00.000Z",  //#
-  "2025-12-25T00:00:00.000Z",
-  "2025-12-26T00:00:00.000Z",
-  "2025-12-27T00:00:00.000Z",
+  "2025-12-28T??:??:??.???Z",
+  "2025-12-29T??:??:??.???Z",
+  "2025-12-30T??:??:??.???Z",
+  "2025-12-31T??:??:??.???Z",
+  ///"2026-09-25T00:00:00.000Z",  //#
+  ///"2026-12-25T23:59:59.999Z",  //#
+  "2025-12-25T??:??:??.???Z",
+  "2025-12-26T??:??:??.???Z",
+  "2025-12-27T??:??:??.???Z",
 ];
 /*
 const weekColors = [
@@ -295,7 +295,7 @@ function update(testweek=null, testday=null) {
   let [times, offset] = updateTime();
   if (testweek != null && testday != null) { 
       daysIndex = new Date().getDay();  ///getUTCDay()
-      daysIndex = Math.floor( weekProgress*7 ); console.log(daysIndex); if (daysIndex===7) { return; }
+      daysIndex = Math.floor( weekProgress*7 ); if (daysIndex===7) { return; }
       times = defaultDays[daysIndex]; 
   }
   document.getElementById("utc-time").innerHTML = times;
@@ -317,7 +317,7 @@ function update(testweek=null, testday=null) {
   }
   else if (false) {
       daysIndex = new Date().getDay();  ///getUTCDay()
-      daysIndex = Math.floor( weekProgress*7 ); console.log(daysIndex); if (daysIndex===7) { return; }
+      daysIndex = Math.floor( weekProgress*7 ); if (daysIndex===7) { return; }
       hue = weekHues[daysIndex];
       saturation = 30;
       lightness = 100 - Math.cos(dayProgress * Math.PI) * 22;  ///20260121
@@ -325,7 +325,7 @@ function update(testweek=null, testday=null) {
   }
   else if (true) {
       daysIndex = new Date().getDay();  ///getUTCDay()
-      daysIndex = Math.floor( weekProgress*7 ); console.log(daysIndex); if (daysIndex===7) { return; }
+      daysIndex = Math.floor( weekProgress*7 ); if (daysIndex===7) { return; }
       hex = weekHexs[daysIndex];
       const [h,s,l] = hexToHSL(hex);
       hue = h;
@@ -337,8 +337,9 @@ function update(testweek=null, testday=null) {
   bg = `hsla(${hue}, ${saturation}%, ${lightness}%, 1.0)`;   /* 色相  鮮豔度  亮度 */  ///20260120
   ct = `hsl(${hue}, ${0}%, ${Math.floor( (1-dayProgress) *100 )}%)`;  ///黑色
   
-  console.log(dayProgress);
-  console.log(ct);
+  ///console.log(daysIndex);
+  ///console.log(dayProgress);
+  ///console.log(ct);
 
 
   document.getElementById("color-bg").value = bg;
@@ -495,6 +496,7 @@ document.getElementById('color-bg').addEventListener('input', function () {
   
 </body>
 </html>
+
 
 
 
