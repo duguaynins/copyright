@@ -4,22 +4,6 @@ document.head.insertAdjacentHTML('beforeend', `
   from { opacity: 1; }
   to { opacity: 0; }
 }
-.ninsStartNodelay { 
-  pointer-events: none; 
-  animation: ninsStart 3s forwards; 
-}
-.ninsStartAdelay { 
-  pointer-events: none; 
-  animation: ninsStart 2.20s forwards 0.58s;
-  /* transform: translateZ(0); */
-}
-.ninsStartAdelay_vt { 
-  pointer-events: none; 
-  animation-name: ninsStart;      /* 指定動畫 */
-  animation-duration: 2.2s;       /* 動畫持續時間 */
-  animation-delay: 0.8s;          /* 延遲開始時間 */
-  animation-fill-mode: forwards;  /* 動畫結束保持最終狀態 */ 
-}
 .ninsfadeoutNodelay { 
   pointer-events: none; 
   animation: ninsStart 3s forwards; 
@@ -29,10 +13,6 @@ document.head.insertAdjacentHTML('beforeend', `
   animation: ninsStart 2.20s forwards 0.58s;
   /* transform: translateZ(0); */
 }
-
-
-
-
 .zIndex {
   position: fixed;
   top: 0;
@@ -258,3 +238,4 @@ document.body.appendChild(Object.assign(document.createElement('script'), {
 }));
 
 */
+
