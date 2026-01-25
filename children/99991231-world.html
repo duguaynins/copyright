@@ -1,16 +1,24 @@
+
+<body>
+<script src="https://copyright.nins.cc/children/0001/nins-update.js"></script>
+<script src="https://copyright.nins.cc/children/0001/nins-world.js"></script>
+
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <div id="free-map" style="height: 400px;"></div>
 <input id="point-name">
 <button onclick="send();" translate="no">🚀</button>
+<button onclick="output();" translate="no">💾</button>
 
 
 
 
 <script>
   // 3. 初始化地圖，設定座標 [緯度, 經度] 與 縮放等級
-  var map = L.map('free-map').setView([25.0330, 121.5654], 13);
+  var map = L.map('free-map').setView([0.0, 0.0], 1);
+  var allMarkers = []; // 用來存放 marker 物件的陣列
 
   async function initMap(gp, name) {  
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -20,7 +28,7 @@
   
   async function useCoordsGenPoint(gps, name) {  
     const zoom = 1;  // 越小版圖越大
-    map.setView(gps, zoom);  // 移動地圖
+    ///map.setView(gps, zoom);  // 移動地圖
     L.marker(gps).addTo(map)  // 標記地點
       .bindPopup(name)
       .openPopup();
@@ -49,14 +57,44 @@
       ///return [lat, lon]
       
       // 將地圖移動到該點並插旗
-      let gps = [lat, lon];
+      let [times, offset] = updateTime();
+      let gps = [lat, lon]; ///name = `${times}${offset}`;
+      
       useCoordsGenPoint(gps, name);
+      allMarkers.push({ gps: [lat, lon], name: name }); // 存入資料
+      ///localStorage.setItem('myMapPoints', JSON.stringify(allMarkers));
+
       ///map.setView([lat, lon], 15);
       ///L.marker([lat, lon]).addTo(map).bindPopup(name).openPopup();
     } else {
       alert("找不到這個地點");
     }
   }  
+  
+  function output() {
+      if (allMarkers.length === 0) {
+          alert("目前地圖上沒有點位可以下載！");
+          return;
+      }
+
+      // 1. 將資料轉為 JSON 字串
+      const dataStr = JSON.stringify(allMarkers, null, 2);
+      
+      // 2. 建立 Blob 物件 (檔案內容)
+      const blob = new Blob([dataStr], { type: "application/json" });
+      
+      // 3. 建立下載連結並模擬點擊
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "markers_data.json"; // 檔案名稱
+      document.body.appendChild(link);
+      link.click();
+      
+      // 4. 清理記憶體
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+  }
   
   async function send() {  
     const zoom = 1;  // 越小版圖越大
@@ -71,4 +109,8 @@
 <script>
   useCoordsGenPoint([25.0330, 121.5654], '這是台北 101 附近');
   useCoordsGenPointbyName('日本東京');
+
+
 </script>
+
+</body>
