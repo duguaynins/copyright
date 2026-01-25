@@ -159,85 +159,12 @@ setTimeout(updateTime, 1); // 幾時之後只執行一次
 
 /*
 
-document.body.appendChild(Object.assign(document.createElement('div'), {
-  id: 'ptr',
-  style: 'position: fixed; inset: 0; z-index: 909095800; background: white; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none;', 
-  innerHTML: `
-    <div id="progress-text" style="font-size: 3rem; font-weight: bold; color: #007bff; font-family: sans-serif;">%</div>
-  `
-}));
-
-document.head.appendChild(Object.assign(document.createElement('style'), {
-    textContent: `
-    body { margin: 0; touch-action: pan-x; }
-    .loading #progress-text { animation: pulse 0.8s infinite alternate; }
-    @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.1); } }
-    `
-}));  ///進度文字動畫
-
-document.body.appendChild(Object.assign(document.createElement('script'), { 
-    textContent: `
-    const ptr = document.getElementById('ptr'), 
-          txt = document.getElementById('progress-text');
-    let startY = 0, pulling = false;
-
-    window.addEventListener('pointerdown', e => {
-        if (window.scrollY > 5) return;
-        startY = e.pageY; 
-        pulling = true;
-        ptr.style.transition = 'none';
-    });
-
-    window.addEventListener('pointermove', e => {
-        if (!pulling || e.pageY < startY) return;
-        
-        // 下拉距離計算 (0 到 150px 區間)
-        const diff = e.pageY - startY;
-        const move = Math.min(diff * 0.5, 100); 
-        
-        // 透明度隨進度增加 (0 到 1)
-        const progress = Math.min(move / 80, 1);
-        ptr.style.opacity = progress;
-        
-        // 數字百分比顯示
-        const percent = Math.floor(progress * 100);
-        ///txt.innerText = percent + '%';
-        
-        // 稍微給文字一點位移感
-        ///txt.style.transform = 'translateY(' + (20 - (progress * 20)) + 'px)';
-    });
-
-    window.addEventListener('pointerup', e => {
-        if (!pulling) return;
-        pulling = false;
-        
-        const diff = e.pageY - startY;
-        if (diff * 0.5 > 80) {
-            // 觸發重新整理
-            ptr.style.transition = 'opacity 0.3s ease';
-            ptr.style.opacity = 1;
-            ///txt.innerText = '100%';
-            ptr.classList.add('loading');
-            ptr.style.background = "#007bff";
-            
-            setTimeout(() => { 
-                ///txt.innerText = 'Updating...';
-                ///txt.style.color = "#28a745";
-                ptr.style.background = "#28a745";
-                txt.style.color = "#ffffff";
-            }, 200);
-            
-            setTimeout(() => { location.reload(); }, 800);
-        } else {
-            // 取消：全螢幕淡出
-            ptr.style.transition = 'opacity 0.3s ease';
-            ptr.style.opacity = 0;
-        }
-    });
-    `
-}));
+if (location.protocol === 'http:') {
+  location.replace('https://' + location.host + location.pathname + location.search + location.hash);
+}
 
 */
+
 
 
 
