@@ -2,7 +2,7 @@ document.body.appendChild(Object.assign(document.createElement('div'), {
   id: 'ptr',
   style: 'position: fixed; inset: 0; z-index: 909095800; background: white; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none;', 
   innerHTML: `
-    <div id="progress-text" style="font-size: 3rem; font-weight: bold; color: #007bff; font-family: sans-serif;">%</div>
+    <div id="progress-text" style="font-size: 3rem; font-weight: bold; color: #007bff; font-family: sans-serif;" translate="no">👻</div>
   `
 }));
 
