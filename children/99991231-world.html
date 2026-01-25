@@ -1,26 +1,31 @@
 
-<body>
-<script src="https://copyright.nins.cc/children/0001/nins-update.js"></script>
+<body translate="no">
+<!--script src="https://copyright.nins.cc/children/0001/nins-update.js"></script>
 <script src="https://copyright.nins.cc/children/0001/nins-world.js"></script>
-<style>
+<script src="https://copyright.nins.cc/children/0001/nins-abc.js"></script!-->
+<!--style>
 .leaflet-marker-icon {
   transition: all 0.3s linear;
 }
-</style>
+</style!-->
 
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <div id="free-map" style="height: 400px;"></div>
-<input id="point-name">
-<button onclick="send();" translate="no">🚀</button>
-<button onclick="GPS();" translate="no">📶</button>
-<button onclick="output();" translate="no">💾</button>
-<button onclick="degreen();" translate="no">🟢</button>
-<button onclick="dered();" translate="no">🔴</button>
-<button onclick="deall();" translate="no">⚪</button>
 
+<div style="display: flex; flex-direction: row;">
+    <input style="flex: 1;" id="point-name">
+</div>
+<div style="display: flex; flex-direction: row;">
+    <button style="flex: 1;" onclick="send();" translate="no">🚀</button>
+    <button style="flex: 1;" onclick="GPS();" translate="no">📶</button>
+    <!--button style="flex: 1;" onclick="degreen();" translate="no">🟢</button!-->
+    <!--button style="flex: 1;" onclick="dered();" translate="no">🔴</button!-->
+    <button style="flex: 1;" onclick="deall();" translate="no">🚮</button>
+    <button style="flex: 1;" onclick="output();" translate="no">💾</button>
+</div>
 
 
 
