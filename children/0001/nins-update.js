@@ -6,7 +6,7 @@ document.head.insertAdjacentHTML('beforeend', `
 }
 .ninsfadeoutNodelay { 
   pointer-events: none; 
-  animation: ninsStart 3s forwards; 
+  animation: ninsStart 2s forwards; 
 }
 .ninsfadeoutAdelay { 
   pointer-events: none; 
@@ -238,4 +238,5 @@ document.body.appendChild(Object.assign(document.createElement('script'), {
 }));
 
 */
+
 
