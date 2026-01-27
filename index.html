@@ -31,7 +31,7 @@
     }
   </script>
 
-  
+
   <style>
     body {
       overflow: hidden;
@@ -166,28 +166,6 @@
       
       
       flex-direction: column;
-      
-      background-color: white;
-      color: black;
-    }
-    
-    .NINS:hover {
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      background-color: #cdcdcd;
-      color: black;
-    }
-
-    .NINS:active {
-      background-color: #222222;
-      color: white;
-    }
-
-    .NINS.fade-out {
-      opacity: 0;
-    }
-
-    .NINS.hidden {
-      display: none;
     }
     
     #BOTTOM {
@@ -277,6 +255,20 @@
       border-radius: 8px;
       cursor: not-allowed;
     }
+    
+  </style>
+
+
+  <style>
+.use {  background: white; color: #000000; }
+.use:hover {  background: #cdcdcd; color: black; /*覆蓋時*/ }
+.use:active { background: #000000; color: white; /*點下時*/ }
+.use:focus {
+  background:rgb(255, 225, 230);
+  outline: none;              /* 移除預設藍色邊框 */
+  /* border: 2px solid green; */
+  /* box-shadow: 0 0 5px red; */
+}
   </style>
 
 </head>
@@ -300,7 +292,7 @@
       z-index: 10000;  /* 確保在最高層 */
     "></button>
   
-    <div class="NINS" id="NINS"  onclick="copyright();" style="
+    <div class="NINS use" id="NINS"  onclick="copyright();" style="
       position: fixed;
       bottom: 0;
       top: 0; /* 距離頂部 0 */
@@ -312,7 +304,7 @@
         <!--span id="copyright" translate="no">shivers, worlds!. 👻👻👻. © 2024 NINS. </span-->
         <!--span id="copyright" translate="no">shivers, worlds!. ✨ © 2024 NINS. 👻 </span-->
         <span style="width:100%; color:white;" id="mailto" translate="no"></span>
-        <span style="width:100%; color:black;" id="copyright" translate="no">© 2024 NINS. 👻👻👻</span>
+        <span style="width:100%; " id="copyright" translate="no" class="">© 2024 NINS. 👻👻👻</span>
         <span style="width:100%; color:white;" id="domain" translate="no">(nins.cc)</span>
         <span style="width:100%; color:white;" id="end" translate="no"></span>
     </div>
@@ -469,5 +461,4 @@
     
 </body>
 </html>
-
 
