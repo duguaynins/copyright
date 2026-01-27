@@ -82,24 +82,22 @@
 
     .app-card {
       /*border: 1px solid **black**;*/
-      ///border: 4px solid #000000;
       /*border-radius: 12px;*/
       padding: 1.5rem;
       text-align: center;
       transition: box-shadow 0.3s;
-      background-color: white;    ///FF3B00;
-      color: black;///gray;
+      background-color: white;
+      color: black;
     }
 
     .app-card:hover {
-      ///box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      background-color: #cdcdcd;    ///FF3B00;
-      color: black;///gray;
+      background-color: #cdcdcd;
+      color: black;
     }
 
     .app-card:active {
-      background-color: #222222;  ///#004080;
-      color: white;///gray;
+      background-color: #222222;
+      color: white;
     }
     
     .app-card h2 {
@@ -151,26 +149,26 @@
       opacity: 1;  /* 透明度 0 ~ 1（0 為完全透明，1 為不透明） */
       transition: opacity 1s ease;
       /*pointer-events: none;  不影響滑鼠事件，視需要加上 */
-      pointer-events: auto;  保證可以攔住事件  ///???
+      pointer-events: auto;
       
       white-space: pre-wrap;
       
       
       flex-direction: column;
       
-      background-color: white;  ///white, black
+      background-color: white;
       color: black;
     }
     
     .NINS:hover {
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      background-color: #cdcdcd;    ///FF3B00;
+      background-color: #cdcdcd;
       color: black;
     }
 
     .NINS:active {
-      background-color: #222222;  ///#004080;
-      color: white;///gray;
+      background-color: #222222;
+      color: white;
     }
 
     .NINS.fade-out {
@@ -219,8 +217,8 @@
       gap: 1rem;
       padding: 1rem;
       box-sizing: border-box;
-      background-color: #cdcdcd;    ///FF3B00;
-      background-color: white;    ///FF3B00;
+      background-color: #cdcdcd;
+      background-color: white;
       flex-direction: column;   /* 垂直排列關鍵 */
     }
 
@@ -233,20 +231,18 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
       text-align: center;
       transition: transform 0.2s;
-      background-color: white;    ///FF3B00;
-      color: black;///gray;
+      background-color: white;
+      color: black;
     }
 
     .feature-item:hover {
-      ///transform: translateY(-4px);
-      ///box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      background-color: #cdcdcd;    ///FF3B00;
-      color: black;///gray;
+      background-color: #cdcdcd;
+      color: black;
     }
 
     .feature-item:active {
-      background-color: #222222;  ///#004080;
-      color: white;///gray;
+      background-color: #222222;
+      color: white;
     }
 
 
@@ -293,7 +289,7 @@
       z-index: 10000;  /* 確保在最高層 */
     "></button>
   
-    <div class="NINS" id="NINS"  onclick="window.open('https://copyright.nins.cc/children/?', '_blank', 'noopener,noreferrer');" style="
+    <div class="NINS" id="NINS"  onclick="copyright();" style="
       position: fixed;
       bottom: 0;
       top: 0; /* 距離頂部 0 */
@@ -454,8 +450,12 @@
       });
     </script>
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script>
+      function copyright() {
+        window.open('https://children.nins.cc/', '_blank', 'noopener,noreferrer');
+      }
+    </script>
     
 </body>
 </html>
-
 
