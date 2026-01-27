@@ -3,7 +3,7 @@ document.body.appendChild(Object.assign(document.createElement('div'), {
   style: 'position: fixed; inset: 0; z-index: 909095800; background: white; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; pointer-events: none; font-family: system-ui, Arial, sans-serif;', 
   innerHTML: `
     <div id="progress-text" style="font-size: 3rem; font-weight: bold; color: #007bff;" translate="no">👻</div>
-    <p style="margin:0;" translate="no">[ © nins ] x [ duguaynins@gmail.com ]</p>
+    <!--p style="margin:0;" translate="no">[ © nins ] x [ duguaynins@gmail.com ]</p!-->
   `
 }));
 
