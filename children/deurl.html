@@ -1,5 +1,7 @@
 
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -16,26 +18,14 @@
       #content {
         user-select: none;
       }
-      input, button {
-          box-sizing: border-box; /* padding + border 包含在 width 內 */
+      #content {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;  /* 垂直置中 */
+          align-items: center;      /* 水平置中 */
+          text-align: center;       /* 文字置中 */
       }
-      iframe.skiptranslate, #goog-gt-tt {
-          display: none !important;
-      }
-      html, body {
-        overflow: hidden;
-        height: 100%;
-        position: fixed;
-        width: 100%;
-      }
-      dialog::backdrop {
-          background: rgba(0, 0, 0, 0.6); /* 半透明背景 */
-          /* background-color: black; */
-      }
-      dialog {
-          background: rgba(0, 0, 0, 0.6); /* 半透明背景 */
-          background-color: white;
-      }
+      .fat { padding: 8px; }
     </style>
     <!--style>
         .skiptranslate {
@@ -54,148 +44,20 @@
         }
     </style-->
     <style>
-      #content {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;  /* 垂直置中 */
-          align-items: center;      /* 水平置中 */
-          text-align: center;       /* 文字置中 */
-      }
-      input, textarea, button, select {
-        /*font-size: inherit; /* 主動繼承 body 字體大小 */
-        font-size: 18px;
-      }
-      html, body { font-size: 14px; }
-      html, body {
-        margin: 0;
-        /*font-family: Arial, sans-serif;*/
-        background-color: #ffffff;
-        background-color: #000000;
-        background-color: #cdcdcd;
-        color: #333;
-        user-select: none;
-      }
-  
-      header {
-        text-align: center;
-        padding: 2rem 1rem;
-        border-bottom: 1px solid #ddd;
-      }
-  
-      header h1 {
-        margin: 0;
-        font-size: 2.5rem;
-      }
-  
-      .intro {
-        text-align: center;
-        padding: 1rem 2rem;
-        max-width: 700px;
-        margin: auto;
-      }
-    </style>
-    
-    <style>
-    
-      @keyframes blink {
-        0% { border-color: black; }
-        50% { border-color: transparent; }
-        100% { border-color: black; }
-      }
-      
-      #BOTTOM {
-          height: 100vh;  /* 視窗高度可改成你需要的高度 */
-          width: 100vw;
-          background-color: #000000;
-          background-color: #cdcdcd;
-          color: #333;
-      }
-      .container {
-        position: relative;  /* 父容器設定為 relative，以便子元素的 absolute 定位能相對於它 */
-        width: 100%;
-        height: 100%;
-        background: #eee;
-        color: black;
-      }
     </style>
   
-    <style>
-      @keyframes fadeGradient {
-        from {
-          background: linear-gradient(white, white);
-        }
-        to {
-          background: linear-gradient(white, transparent);
-        }
-      }
-      @keyframes fadeOut {
-        from { opacity: 1; }
-        to { opacity: 0; }
-      }
-      
-      
-      @keyframes hardBlink {
-        0%, 100% { border-color: red; }
-        50%      { border-color: transparent; }
-      }
-      .main {
-          border: 2px solid red;
-          padding: 8px;
-          /**animation: blinkBorder 1s infinite;  //===*/
-          /* 呼吸式動畫：平滑過渡 */
-          /**animation: blinkBorder 1s ease-in-out infinite;  //===*/
-          /* 閃爍式動畫：瞬間切換 */
-          animation: hardBlink 1.0s steps(1, start) infinite;
-      }
-      
-      @keyframes hardUse {
-        0%, 100% { border-color: green; }
-        50%      { border-color: transparent; }
-      }
-      .use { /* background-color: white; */ }
-      .use:hover {
-        background-color: #cdcdcd;
-        color: black;
-      }
-      .use:active {
-        background-color: #222222;
-        color: white;
-      }
-      .use:focus {
-        outline: none;              /* 移除預設藍色邊框 */
-        /* border: 2px solid green;       /* 或使用 #f44336 */
-        /* box-shadow: 0 0 5px red; */
-        /* animation: hardUse 1.0s steps(1, start) infinite; */
-      }
-    </style>
+<style></style>
+<!--link rel="stylesheet" href="https://copyright.nins.cc/children/0001/nins-zzz.css"!-->
+
 </head>
 <body>
-<!-- UPDATE ================================================== -->
+
+<!-- NINS ================================================== -->
 <script src="https://copyright.nins.cc/children/0001/nins-update.js"></script>
+<script src="https://copyright.nins.cc/children/0001/nins-world.js"></script>
+<!--script src="https://copyright.nins.cc/children/0001/nins-ads.js"></script!-->
+<script src="https://copyright.nins.cc/children/0001/nins-abc.js"></script>
     
-    <!--div id="google_translate_element" style="display:none;"></div-->
-  
-    
-    <!--button disabled="" id="disabled" style="
-      position: fixed;
-      bottom: 0;
-      top: 0; /* 距離頂部 0 */
-      left: 0; /* 距離左側 0 */
-      right: 0; /* 距離右側 0 */
-      width: 100%;
-      height: 100%;
-      border: none;
-      padding: 0;
-      margin: 0;
-      /*opacity: 0;  /*不透明度*/
-      /*background: transparent;  /*不透明度？*/
-      cursor: default;
-      z-index: 99999;  /* 確保在最高層 */
-      /*background: linear-gradient(white, transparent);*/
-      background: white;
-      animation: fadeOut 3s forwards;
-      pointer-events: none;  /* 動畫期間不阻擋互動（可選）*/
-    "></button!-->
     
     
     <div style="
@@ -224,20 +86,22 @@
           </div></div>
           
 <!-- 放置你原有的布局 -->
-<button class="main use" type="button" onclick="document.getElementById('input_qr').click();">🖼️</button>
+<button type="button" class="main use fat" onclick="document.getElementById('input_qr').click();">🖼️<p translate="no" style="margin: 0; padding: 0; font-size: 1vh;" class="label">image</p></button>
 <input type="file" id="input_qr" style="display: none;" accept="image/*">
 <canvas id="canvas_qr" style="display:none;"></canvas>
 
 <div id="content" style="background: #CCCCCC; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
-The final HTTPS destination after decoding will be displayed here.
+<p style="color: gray;">or select a QR image.🖼️🖼️🖼️</p>
+<p>The final HTTPS destination after decoding will be displayed here.</p>
+<p style="color: green;">Please enter the URL and send it.🚀🚀🚀</p>
 </div>
 
 
 <div class="input-btn-wrapper" style="display: flex; align-items: stretch; width:100%; text-align: center;">
   <!--button type="button" class="main " translate="no" onclick="document.getElementById('input_msg').value='https://';">💡<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">https://</p></button!-->
-  <button type="button" class="main use" translate="no" onclick="send()">🚀<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">enter</p></button>
-  <input id="input_msg" class="main use" type="text" name="url" autocomplete="off" placeholder="After entering the URL, please press Enter!" style="flex: 1;"/>
-  <button type="button" class="main use" translate="no" onclick="send()">🚀<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">enter</p></button>
+  <button type="button" class="main use fat" translate="no" onclick="send()">🚀<p translate="no" style="margin: 0; padding: 0; font-size: 1vh;" class="label">enter</p></button>
+  <input id="input_msg" class="main use fat" type="text" name="url" autocomplete="off" placeholder="After entering the URL, please press Enter!" style="flex: 1;"/>
+  <button type="button" class="main use fat" translate="no" onclick="send()">🚀<p translate="no" style="margin: 0; padding: 0; font-size: 1vh;" class="label">enter</p></button>
 </div>
 
 <button id="input_msgbtn" style="display:none" onclick="send()">Send and Recv</button>
@@ -329,12 +193,23 @@ let okFlag = false;
 async function send() {
     ///document.getElementById("input_qr").disabled = true;
     ///document.getElementById("input_msg").disabled = true;
-    stopFlag = true;
+    ///stopFlag = true;
     document.getElementById("content").innerHTML = "Waiting for decoding...";
 
     const url = document.getElementById("input_msg").value;
-    if (!url.startsWith("http")) { document.getElementById("content").innerHTML = "Invalid URL format!!!";return; }
+    console.log("RAW:", JSON.stringify(url));
 
+    if (!url.startsWith("http")) { 
+      document.getElementById("content").innerHTML = `
+      <p translate="no" style="color: red;">[${url}]</p>
+      <p>Invalid URL format!!! Refer to available formats.</p>
+      <p translate="no" style="color: blue;">[${"https://google.com/"}]</p>
+      `;
+      ///stopFlag = false;
+      return; 
+    }
+
+    stopFlag = true;
     document.getElementById("input_qr").disabled = true;
     document.getElementById("input_msg").disabled = true;
     document.querySelectorAll('button').forEach(button => { button.disabled = true; });
@@ -347,22 +222,42 @@ async function send() {
     
     ///const url...
     const msg = await deurl({ "url": url });
+
     const prompt_v1 = `lang*==="${lang}".;unsafe*==="${url}"?;unsafe*==="${msg}"?;`;
     const prompt_v2 = `"${lang}"===mylang."${url}"===unsafe?"${msg}"===unsafe?`;
     const prompt_v3 = `lang="${lang}".\n${url}==="unsafe"?\n${msg}==="unsafe"?\n`;
     const prompt_v4 = `lang=${lang}.\n${url}==="unsafe(%)"?\n${msg}==="unsafe(%)"?\n`;
-    const prompt = `lang=${lang}.\n${task}.\n${need}.\n${url}.\n${msg}.\n`;
+
+    const bynins = `This is the result of a URL redirect analysis. The analysis technology prompt is provided by "nins.cc"!`;
+    const prompt = `lang=${lang}.\n${task}.\n${need}.\n---\n${url}.\n${msg}.\n${bynins}`;
     const openai = "https://chatgpt.com/?prompt=" + encodeURIComponent( prompt );
     const google = "https://www.google.com/search?udm=50&aep=1&aic=0&q=" + encodeURIComponent( prompt );
 
+    ///https://rdap.iana.org/domain/example.com
+    ///https://rdap.org/domain/sobatgaming.it.com
+    const domain = getDomain(msg);
+    const host = getHostname(msg);
+    const translate = `https://translate.google.com/translate?sl=auto&tl=zh-TW&u=${encodeURIComponent( msg )}`
+    ///const rdap = `https://rdap.iana.org/domain/${encodeURIComponent( domain )}`;
+    ///const rdap = `https://rdap.markmonitor.com/rdap/domain/${encodeURIComponent( domain )}`;
+    ///const rdap = `https://client.rdap.org/?type=domain&follow-referral=0&object=${encodeURIComponent( host )}`;
+    const rdap = `https://rdap.org/domain/${encodeURIComponent( domain )}`;
+
+    console.log("RDAP:", await fetchRdapJson(url));
+
     ///🤖🧠🎯
     document.getElementById("content").innerHTML = `
-    <p translate="no" style="color: blue;">${msg}</p>
+    <p translate="no" style="color: red;">[${url}]</p>
+    <p translate="no" style="color: red;">[${msg}]</p>
+    <!--a translate="no" target="_blank" rel="noopener noreferrer" href="${translate}">[${msg}]</a!-->
     <p translate="yes">Decoding complete! You can click "AI" to analyze the URL!🤖🤖🤖</p>
     <p translate="no">***
       <a translate="no" target="_blank" rel="noopener noreferrer" href="${openai}">ChatGPT</a>
        & 
       <a translate="no" target="_blank" rel="noopener noreferrer" href="${google}">Gemini</a>    
+    ***</p>
+    <p translate="no">***
+      <a translate="no" target="_blank" rel="noopener noreferrer" href="${rdap}">RDAP</a>
     ***</p>
     `;
 
@@ -386,16 +281,21 @@ async function send() {
 ///document.getElementById("input_msg").addEventListener("focus", function () {
 document.getElementById("input_msg").addEventListener("focus", (event) => {
     ///if (event.target.value) { return; }
+
     if (stopFlag || okFlag) { return; }
     document.getElementById("content").innerHTML = "Please enter the URL and send it.🚀🚀🚀"; console.log("已具焦");
     if (event.target.value) { return; }
-    document.getElementById("input_msg").value = "https://world.nins.cc/";  ///***
+    document.getElementById("input_msg").value = "https://nins.cc/";  ///***
+    document.getElementById("input_msg").value = "https://google.com/";  ///***
+    ///document.getElementById("input_msg").value = "https://instagram.com/";  ///***
+    ///document.getElementById("input_msg").value = "http://google.forms.nins.cc/";  ///***
 });
 
 ///document.getElementById("input_msg").addEventListener("blur", () => {  });
 ///document.getElementById("input_msg").addEventListener("blur", function () {
 document.getElementById("input_msg").addEventListener("blur", (event) => {
-    ///if (event.target.value && event.target.value !== "https://world.nins.cc/") { return; }
+    ///if (event.target.value && event.target.value !== "https://nins.cc/") { return; }
+    
     if (stopFlag || okFlag) { return; }
     document.getElementById("content").innerHTML = "or select a QR image.🖼️🖼️🖼️"; console.log("已失焦");
     ///document.getElementById("input_msg").value = "";  ///***
@@ -418,9 +318,9 @@ document.getElementById("input_msg").addEventListener("keydown", function(e) {
 // 提示文字清單
 const placeholders = [
     ///"google.com",
-    "https://google.com/",
+    "https://google.com/",  ///***
+    "https://nins.cc/",  ///***
     ///"deurl.nins.cc",
-    "https://world.nins.cc/",
     ///"Enter the URL to decode its destination...",
 ];
 
@@ -452,6 +352,7 @@ document.getElementById('input_qr').addEventListener('change', function(e) {
         const img = new Image();
         img.onload = function() {
             // 1. 設定畫布大小與圖片一致
+            document.getElementById('content').innerHTML = "The image has been received, please wait...";
             canvas.width = img.width;
             canvas.height = img.height;
             
@@ -472,7 +373,7 @@ document.getElementById('input_qr').addEventListener('change', function(e) {
             } else {
                 console.log("QR Code?:", "");
                 ///resultText.innerText = "掃描失敗：無法在圖片中找到有效的 QR Code。";
-                document.getElementById('content').innerHTML = "Scan complete. No QR code found.";  /// Send Query unavailable.
+                document.getElementById('content').innerHTML = "Please increase the clarity and submit only the barcode.";  /// Send Query unavailable.
                 document.getElementById('input_msg').value = "***";
             }
           
@@ -485,153 +386,111 @@ document.getElementById('input_qr').addEventListener('change', function(e) {
 });
 </script>
 
-<!-- 放置你原有的布局 -->
- 
-<!-- LOG ================================================== -->
+<!-- URL ================================================== -->
+<script src="https://cdn.jsdelivr.net/npm/tldts@7.0.19/dist/index.umd.min.js"></script>
 <script>
-const dialog = document.getElementById('DialogCheck');
-const logOutput = document.getElementById('logOutput');
 
-// 攔截 console.log 與 console.error
-['log', 'error'].forEach(level => {
-  const original = console[level];
-  console[level] = function(...args) {
-    original.apply(console, args);
-    const message = args.map(a => (typeof a === 'object' ? JSON.stringify(a) : a)).join(' ');
-    logOutput.insertAdjacentHTML('beforeend', `<div class="${level}">${message}</div>`);
-    // 滾動到底部
-    logOutput.scrollTop = logOutput.scrollHeight;
-  };
-});
+function getHostname(url) {
+  if (!/^https?:\/\//i.test(url)) { return null; }
+  let hostname = new URL(url).hostname;
+  return hostname;
+}
 
-// 測試
-const version = (new Date().toLocaleString(), 'v1.20240925.1314 (This is an error test.)');
-console.error(version);
-console.warn(version);
-console.info(version);
-console.log(version);
-</script>
-<!-- LOG ================================================== -->
-    
+function getDomain(url) {
+  if (!/^https?:\/\//i.test(url)) { return null; }
+  const domain = tldts.getDomain(url);
+  return domain;
+}
 
-<!-- TRANSLATE ================================================== -->
-<script type="text/javascript">  // google.js
-  // GOOGLE TRANSLATE
-  // 自動翻譯***
-  ///document.cookie = "googtrans=/en/zh-TW; path=/";
-  ///location.reload();
-
-  function googleTranslateElementInit() {
-    new google.translate.TranslateElement({
-      pageLanguage: 'en',  ///'en', 改為根據中間語言(ilang) 或 頁面語言(locale)  ///鼓勵輸入中間語言，翻譯必定可以顯示英文。
-      includedLanguages: '',  ///zh-TW,ja,ko,en,hi,zh-CN
-      autoDisplay: false,
-      ///layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-    }, 'google_translate_element');
-  }
+function getDomain_v1(url) {
   
-  function waitForCombo(callback) {
-    // 等待載入翻譯語言
-    // 這是一種調用方法？ 並且使用方法的內部變數？
-    const timer = setInterval(() => {
-      const combo = document.querySelector('.goog-te-combo');
-      if (combo) {
-        clearInterval(timer);
-        callback(combo);
-      }
-    }, 300);
+  url = url.replace(/^https?:\/\//, '');  // 先去掉 http:// 或 https://
+  url = url.split('/')[0];  // 去掉可能的路徑或參數
+
+  let domain = null;
+  domain = url;
+  
+  ///let parts = domain.split('.');
+  ///if (parts.length >= 2) { return parts.slice(-2).join('.'); }
+
+  return domain;
+}
+
+function getDomain_vt(url) {
+  try {
+    if (!/^https?:\/\//i.test(url)) { return null; }
+
+    // 解析 URL，取 hostname
+    let hostname = new URL(url).hostname; // x.a.b.com -> 'x.a.b.com'
+    let parts = hostname.split('.');
+
+    if (parts.length < 2) {
+      ///return hostname; // 非正常域名
+      return null;
+    }
+
+    let secondLast = parts[parts.length - 2]; // 倒數第二段
+
+    if (secondLast.length < 3 && parts.length >= 3) {
+      // 倒數第二段小於 3 字元，取三段
+      return parts.slice(-3).join('.');
+    } else {
+      // 倒數第二段 ≥ 3 字元，取兩段
+      return parts.slice(-2).join('.');
+    }
+  } catch (e) {
+    return null; // 非 URL 格式
   }
+}
 
-  function waitForTranslationById(elementId, callback) {
-    // 等待頁面翻譯完成
-    const target = document.getElementById(elementId);
-    if (!target) return;
+async function fetchRdapJson(url) {
 
-    const observer = new MutationObserver((mutations, obs) => {
-      for (const mutation of mutations) {
-        // 偵測子節點或文字內容是否改變
-        if (mutation.type === "childList" || mutation.type === "characterData") {
-          obs.disconnect(); // 翻譯完成，停止觀察
-          callback();
-          break;
-        }
-      }
-    });
+    // 檢查是否是 HTTP/HTTPS
+    if (!/^https?:\/\//i.test(url)) { return null; }
 
-    observer.observe(target, {
-      childList: true,   // 子節點增減
-      subtree: true,     // 包含所有子孫節點
-      characterData: true // 文字內容改變
-    });
-  }
+    try {
+        // 取 hostname
+        const hostname = new URL(url).hostname;
 
-  function autoTranslate(lang) {
-    const tryTranslate = () => {
-      const combo = document.querySelector('.goog-te-combo');
-      console.log('combo?', !!combo);
+        // 使用 tldts.getDomain() 取得主域名
+        const domain = tldts.getDomain(hostname);
+        const rdapEndpoint = `https://rdap.org/domain/${encodeURIComponent(domain)}`;
         
-      if (lang.replace(/_/g, "-").split("-")[0] === "en") {
-        ///document.getElementById("input_msg").style.display = "block";
-        ///document.getElementById("input_msgbtn").style.display = "block";
-        document.getElementById("content").style.background = "#FFFFFF";
-        ///document.getElementById('Input').textAlign = 'center';
-      }
-  
-      waitForTranslationById('notice', () => {
-        ///document.getElementById("input_msg").style.display = "block";
-        ///document.getElementById("input_msgbtn").style.display = "block";
-        document.getElementById("content").style.background = "#FFFFFF";
-        ///document.getElementById('Input').textAlign = 'center';
-      });
-
-      if (!combo) { setTimeout(tryTranslate, 300); }
-      if (combo) {
-        document.querySelector('.goog-te-combo').addEventListener('change', () => {
-          console.log("語言已切換!");
-          console.log("新語言代碼:", combo.value);
-          ///console.log("新語言文字:", combo.options[combo.selectedIndex].text);
+        // 3. 發送 fetch 請求
+        const response = await fetch(rdapEndpoint, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/rdap+json' // 指定接收 RDAP 標準格式
+            }
         });
 
-        const options = Array.from(combo.options).map(opt => opt.value);console.log('可用語言代碼:', options);
-        console.log("autoTranslate?:", lang);
-        ///combo.value = lang;
-        combo.value = options.includes(lang) 
-          ?  lang 
-          :  options.find(opt => opt.startsWith(lang))  
-          || options.find(opt => opt.startsWith(lang.slice(0, 2))) 
-          || null;
-        combo.dispatchEvent(new Event('change'));
-        console.log("autoTranslate!:", combo.value);
-      } else {
-        setTimeout(tryTranslate, 300); // 遞迴檢查
-      }
-    };
-    tryTranslate();
-  }
+        if (!response.ok) {
+            throw new Error(`RDAP 伺服器回傳錯誤: ${response.status}`);
+        }
 
-  window.addEventListener('load', () => {
-    console.log("window...load");
-      
-    waitForCombo((combo) => {
-      console.log("autoTranslate...waitForCombo");
-      autoTranslate( (navigator.language || navigator.userLanguage || "en-US") );
-      ///console.log("combo 已生成:", combo);
-      ///combo.value = 'en';
-      ///combo.dispatchEvent(new Event('change'));
-    });
-    /*
-    setTimeout(() => {
-      console.log("autoTranslate...setTimeout");
-      ///const slang = navigator.language || navigator.userLanguage || "en-US";
-      autoTranslate( (navigator.language || navigator.userLanguage || "en-US") );          
-      ///document.getElementById(":1.container").style.display = "";
-    }, 1000); */
-  });
+        // 4. 解析並回傳 JSON
+        const jsonData = await response.json();
+        return jsonData;
+
+    } catch (error) {
+        console.error("RDAP 請求失敗:", error.message);
+        // 如果是 CORS 錯誤，通常代表該域名所屬的註冊局禁止瀏覽器直接讀取
+        return null;
+    }
+}
 </script>
-<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
+<!-- 放置你原有的布局 -->
+ 
     
 </body>
 </html>
+
+
+
+
+
 
 
 
