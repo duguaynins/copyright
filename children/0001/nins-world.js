@@ -9,12 +9,13 @@ document.body.insertAdjacentHTML('beforeend', `
 
 <button class="zIndex" style="z-index: 99998;" 
   onclick="this.classList.add('ninsfadeoutNodelay'); document.getElementById('NinsXmas').play(); document.getElementById('NinsXmas').pause();">
-    <span translate="no" id="merryXmas">!!!</span>
+    <p translate="no" id="merryXmas">!!!</p>
+    <p translate="yes" id="ninsForms">???</p>
 </button>
 `);
 
 document.getElementById('merryXmas').innerHTML = "☃️🦌🎄✨⭐<br>[ © nins ] x [ Merry Xmas 2025 ]";
-document.getElementById('merryXmas').innerHTML = `☃️🦌🎄✨⭐<br>[ © nins ] x [ Merry Xmas 2025 ]<br>[<a target="_blank" rel="noopener noreferrer" href="https://docs.google.com/forms/d/e/1FAIpQLSct8PaArwmkAv10Eh5CEybu_88IoSj9V_QOLy07KiL6efu10g/viewform">Give Feedback</a>]`;
+document.getElementById('ninsForms').innerHTML = `[<a target="_blank" rel="noopener noreferrer" href="https://docs.google.com/forms/d/e/1FAIpQLSct8PaArwmkAv10Eh5CEybu_88IoSj9V_QOLy07KiL6efu10g/viewform">Give Feedback</a>]`;
 
 /*
 document.body.insertAdjacentHTML('beforeend', `
