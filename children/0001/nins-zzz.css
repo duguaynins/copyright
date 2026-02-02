@@ -6,7 +6,7 @@
   border: 0; 
   outline: 0;
   overflow: hidden;  /* 需要的自己額外開啟 */
-  text-align: center;  /* left / center / right / justify */
+  text-align: left;  /* left / center / right / justify */
   user-select: none; /* 全部禁止選取 */
 }
 .doselect {
@@ -166,6 +166,7 @@ dialog > * {
 #notice { width: 100%; background: #FF3B00; color: white; }
 
 #copyright { width: 100%; background-color: black; color: white; font-size: max(1vh,1vw); }
+
 
 
 
