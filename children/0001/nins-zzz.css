@@ -111,7 +111,7 @@ dialog > * {
 .use:hover { background-color: #cdcdcd; color: black; /*覆蓋時*/ }
 .use:active { background-color: #222222; color: white; /*點下時*/ }
 .use:focus {
-  background:rgb(255, 225, 230);
+  /* background:rgb(255, 225, 230); */
   outline: none;              /* 移除預設藍色邊框 */
   /* border: 2px solid green; */
   /* box-shadow: 0 0 5px red; */
@@ -166,6 +166,7 @@ dialog > * {
 #notice { width: 100%; background: #FF3B00; color: white; }
 
 #copyright { width: 100%; background-color: black; color: white; font-size: max(1vh,1vw); }
+
 
 
 
