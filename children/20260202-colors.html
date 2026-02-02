@@ -42,10 +42,12 @@
     <strong id="anything" style=""><b translate="no">© nins. </b>Display the absolute most useful time.</strong>
     <div id="title" style="" translate="no">
     <div style="margin: 10px;" onclick="document.getElementById('DialogCheck').showModal();console.log(new Date().toLocaleString(), '🙉');">
-    nins/time
+    nins/color
     </div></div>
 
-    <button id="" class="main active" style="width: 100%; padding: 8px;" onclick="change();" translate="no">🔃</button>
+    <button id="" class="main active" style="width: 100%; padding: 8px;" onclick="change();" translate="no">🔃
+        <p translate="no" style="margin: 0; padding: 0; font-size: 1vh;" class="label">color</p>
+    </button>
     <!--input type="color" id="utc-color" style="width: 100%;" value="#000000"!-->
     <p id="id-background" style="background: #eee; width: 100%;" translate="no">#CDCDCD</p>
     <input type="range" id="slider-week" min="0" max="1" value="0.5" style="width: 100%; display: none;" step="0.0001">
@@ -92,7 +94,9 @@
 
     <input type="range" id="slider-day" min="0.01" max="0.99" value="0.5" style="width: 100%; display: none;" step="0.0001">
     <p id="id-color" style="background: #eee; width: 100%;" translate="no">#CDCDCD</p>
-    <button id="" class="main active" style="width: 100%; padding: 8px;" onclick="download();" translate="no">💾</button>
+    <button id="" class="main active" style="width: 100%; padding: 8px;" onclick="download();" translate="no">💾
+        <p translate="no" style="margin: 0; padding: 0; font-size: 1vh;" class="label">save</p>
+    </button>
 
     <div id="notice" style="" translate="yes">
     <div style="margin: 10px;" onclick="document.getElementById('DialogTrans').showModal()">
@@ -360,6 +364,10 @@ function update(testweek=null, testday=null) {
 let intervalIndex = 0;
 let intervalId = 0;
 ///intervalId = setInterval(() => update(), 1);  ///1000*60*5  ///20260202
+
+document.getElementById("id-color").innerHTML = `hsl(${0}, ${0}%, ${0}%)`;
+document.getElementById("id-background").innerHTML = `hsl(${0}, ${0}%, ${0}%)`;
+
 
 function change() {
   
