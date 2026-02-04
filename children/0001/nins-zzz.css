@@ -91,6 +91,9 @@ dialog > * {
   justify-content: flex-end;
 }
 
+
+
+.content { width: 100%; flex: 1; }
 .app { width: 100vw; height: 100vh; display: flex; }
 .fill { width: 100%; height: 100%; padding: 8px; }
 
@@ -161,11 +164,11 @@ dialog > * {
 }
 
 #anything { width: 100%; background-color: black; color: white; font-size: max(1vh,1vw); }
-#title { width: 100%; background: white; color: black; }
+#title { width: 100%; background: #FF5800; color: white; }
 #content { width: 100%; flex: 1; }
 #notice { width: 100%; background: #FF3B00; color: white; }
-
 #copyright { width: 100%; background-color: black; color: white; font-size: max(1vh,1vw); }
+
 
 
 
