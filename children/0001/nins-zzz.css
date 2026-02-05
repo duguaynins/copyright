@@ -108,7 +108,7 @@ dialog > * {
 
 
 
-.use { background: white; color: #000000; }
+.use { background: #ffffff; color: white; /*fff0f0*/ }
 .use:hover { background-color: #cdcdcd; color: black; /*覆蓋時*/ }
 .use:active { background-color: #222222; color: white; /*點下時*/ }
 .use:focus {
@@ -171,6 +171,7 @@ dialog > * {
 
 .app { width: 100vw; height: 100vh; display: flex; }
 .content { width: 100%; flex: 1; }
+
 
 
 
