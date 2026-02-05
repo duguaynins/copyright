@@ -9,7 +9,8 @@
     <!--link rel="icon" type="image/png" sizes="48x48" href="/favicon.png"-->
     <!--link rel="shortcut icon" href="/favicon.ico"-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <link rel="canonical" href="https://uris.nins.cc/">
+    <meta name="description" content="© 2024 NINS (by JPGT). By using any of the services, it means you have agreed to any content and all content!">
+    <link rel="canonical" href="https://copyright.nins.cc/">
     <title translate="no">nins/uris</title>
     <style>
       body {
@@ -36,7 +37,7 @@
           color: white;
         }
         button {
-            border: 2px solid #FF3B00; /* 綠色邊框 */
+            border: 2px solid orange; /* 綠色邊框 */
             border-radius: 6px;        /* 圓角 */
             padding: 4px 12px;
             margin: 0px 0;
@@ -45,7 +46,7 @@
 
         /* 聚焦時（使用者點入）變色 */
         button:focus {
-            border-color: red;      /* 聚焦時變藍色 */
+            
         }
     </style>
 
@@ -106,8 +107,11 @@
         background: #eee;
         color: black;
       }
+      iframe.skiptranslate, #goog-gt-tt {
+          display: none !important;
+      }
     </style>
-    <style>
+    <!--style>
         .skiptranslate {
           display: none !important;   /* 避免 display:none 影響內容顯示 */
           position: static !important;   /* 防止位置異常 */
@@ -122,7 +126,7 @@
         iframe {
           display: none !important;
         }
-    </style>
+    </style!-->
 
     <style>
       @keyframes fadeGradient {
@@ -143,9 +147,11 @@
         0%, 100% { border-color: red; }
         50%      { border-color: transparent; }
       }
+      .fill { padding: 8px; }
       .main {
           border: 2px solid red;
-          padding: 8px;
+          margin: 0px;
+          /* padding: 8px; */
           /**animation: blinkBorder 1s infinite;  //===*/
           /* 呼吸式動畫：平滑過渡 */
           /**animation: blinkBorder 1s ease-in-out infinite;  //===*/
@@ -154,12 +160,12 @@
       }
       
       input:hover {
-        background-color: #cdcdcd;    ///FF3B00;
-        color: black;///gray;
+        background-color: #cdcdcd;
+        color: black;
       }
       input:active {
-        background-color: #222222;  ///#004080;
-        color: white;///gray;
+        background-color: #222222;
+        color: white;
       }
       input:focus {
         outline: none;              /* 移除預設藍色邊框 */
@@ -188,6 +194,7 @@
         display: none;
         flex-shrink: 0;        /* 防止被壓縮 */
       }
+      #sliderButton > button { flex: 1; }
     </style>
 </head>
 <body>
@@ -241,6 +248,7 @@
           nins/uris
           </div></div>
           <!-- 可選額外說明 -->
+          <button class="main" type="button" onclick="document.getElementById('DialogPaper').showModal();">🧭</button>
           
               <!-- 放置你原有的布局 -->
               <div id="content" style="background: #FFFFFF; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
@@ -266,26 +274,26 @@
               <!-- 放置你原有的布局 -->
             
           <!-- 可選輸入框 -->
-          <u translate="no" style='text-decoration:none; color:black;'>*{A-Z}  {a-z}  {0-9}  {-/_/./~/@}*</u>
+          <u translate="no" style='text-decoration:none; color:black;'>*{A-Z}  {a-z}  {0-9}  {-/_/./~/@/:}*</u>
           
-          <div id="sliderButton" style="
+          <div class="main" id="sliderButton" style="
                       display: flex;
                       /*flex-direction: row;  /* 上下==column */
                       /*justify-content: center;*/
                       justify-content: flex-start;  /* 左對齊較符合滾動預期 */
-                      flex-shrink: 0
+                      flex-shrink: 0;
                       align-items: center;  /* 水平置中 canvas */
                       /*overflow-y: auto;     /* 可垂直滾動 */
                       overflow-x: auto;     /* 可水平滾動 */
                   ">
               
-              <button style="width:25vw" id="copyButton" onclick="">🔗</button>
-              <button style="width:25vw" type="button" onclick="document.getElementById('InputInfo').value='mailto:';updateAndCopy();">📧</button>
-              <button style="width:25vw" type="button" onclick="document.getElementById('InputInfo').value='tel:';updateAndCopy();">📞</button>
-              <button style="width:25vw" type="button" onclick="document.getElementById('InputInfo').value='sms:';updateAndCopy();">💬</button>
+              <button type="button" id="copyButton" onclick="">🔗</button>
+              <button type="button" onclick="document.getElementById('InputInfo').value='mailto:';updateAndCopy();">📧</button>
+              <button type="button" onclick="document.getElementById('InputInfo').value='tel:';updateAndCopy();">📞</button>
+              <button type="button" onclick="document.getElementById('InputInfo').value='sms:';updateAndCopy();">💬</button>
               
           </div>
-          <input class="main" id="InputInfo" type="text" name="noMemory" autocomplete="off" placeholder="" style="width: 100%; text-align: left; box-sizing: border-box;">
+          <input class="main fill" id="InputInfo" type="text" name="noMemory" autocomplete="off" placeholder="" style="width: 100%; text-align: left; box-sizing: border-box;">
           <!--input class="main" id="InputInfo" type="text" name="noMemory" autocomplete="off" placeholder="" style="width: 100%; text-align: center;"-->
           <!--strong></strong-->
           <div style="background: #FF3B00; color: white;" translate="yes">
@@ -297,8 +305,14 @@
     <dialog id="DialogLog">
         <pre id="logOutput" style="max-height:200px; overflow:auto; margin:0;"></pre>
         <button id="openLog" onclick="document.getElementById('DialogLog').close();console.log('❌');">❌</button>
-
     </dialog>
+  
+  <dialog id="DialogPaper" translate="no" style="height: 80vh; width: 90vw; overflow: hidden;">
+      <iframe src="https://copyright.nins.cc/children/2025/paper" style="width: 100%; height: 100%; border: none;"></iframe>
+      <button id="openLog" style="width: 100%; display: none;" onclick="document.getElementById('DialogPaper').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
+  </dialog>
+
+
     <!-- HTML ================================================== -->
 
     <script>
@@ -658,6 +672,24 @@
             document.getElementById("message").innerHTML = '✨ Simply enter your information after "data=" to get your "free HTTPS URL" for your information.';
         
         }, { once: true }); // ✅ 只執行一次
+    </script>
+    
+    <script>
+    //////document.getElementById("InputRoom").focus();
+    document.querySelectorAll("dialog").forEach(dialog => {
+        dialog.addEventListener("click", function (event) {
+          const rect = this.getBoundingClientRect();
+          const isInDialog =
+            event.clientX >= rect.left &&
+            event.clientX <= rect.right &&
+            event.clientY >= rect.top &&
+            event.clientY <= rect.bottom;
+      
+          if (!isInDialog) {
+            this.close();
+          }
+        });
+    });
     </script>
     <!-- ================================================== -->
     
