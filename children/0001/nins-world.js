@@ -8,9 +8,11 @@ document.body.insertAdjacentHTML('beforeend', `
 " disabled></button>
 
 <button class="zIndex" style="z-index: 99998;" 
-  onclick="this.classList.add('ninsfadeoutNodelay'); document.getElementById('NinsXmas').play(); document.getElementById('NinsXmas').pause();">
+  onclick="this.classList.add('ninsfadeoutNodelay'); 
+           if (document.getElementById('checkBGM').checked) { document.getElementById('NinsXmas').play(); /*document.getElementById('NinsXmas').pause();*/ } ">
     <p translate="no" id="merryXmas">!!!</p>
     <p translate="yes" id="ninsForms">???</p>
+    <input type="checkbox" id="checkBGM" onchange="">
 </button>
 `);
 
