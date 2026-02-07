@@ -84,21 +84,15 @@
       color: #ffffff;
     }
 </style>
-<style></style>
-<link rel="stylesheet" href="https://copyright.nins.cc/children/0001/nins-zzz.css">
 
 </head>
 <body>
-
-<!-- WORLD ================================================== -->
-<script src="https://copyright.nins.cc/children/0001/nins-world.js"></script>
-<!-- UPDATE ================================================== -->
+  
+<!-- NINS ================================================== -->
 <script src="https://copyright.nins.cc/children/0001/nins-update.js"></script>
-<!-- DIALOG ================================================== -->
-<script src="https://copyright.nins.cc/children/0001/nins-dialog.js"></script>
-<!-- TRANSLATE ================================================== -->
-<script src="https://copyright.nins.cc/children/0001/nins-translate.js"></script>
-<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script src="https://copyright.nins.cc/children/0001/nins-world.js"></script>
+<!--script src="https://copyright.nins.cc/children/0001/nins-ads.js"></script!-->
+<script src="https://copyright.nins.cc/children/0001/nins-abc.js"></script>
     
     <!--button disabled="" id="disabled" style="
       position: fixed;
@@ -142,7 +136,7 @@
       flex-direction: column;
     ">
           <strong id="anything" style="background-color: black; color: white; font-size: max(1vh,1vw);"><b translate="no">© nins. </b>Choose the abilities you need.</strong>
-          <div style="background: #FFFFFF; color: black;" translate="no">
+          <div id="title" style="" translate="no">
           <div style="margin: 10px;" onclick="document.getElementById('DialogCheck').showModal()">
           nins/children
           </div></div>
@@ -155,8 +149,8 @@
                     <!--div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div-->
                     <h2 translate="no">⚠️ Notice ⚠️</h2>
                     <!--p>By using any of the services, it means you have agreed to any content and all content!</p-->
-                    <p  style="margin-bottom: 0;">By using any of the services, it means you have agreed to any content and all content!</p>
-                    <p  style="margin-top: 0; color: white;" translate="no">(© 2024 NINS (by JPGT). 👻👻👻)</p>
+                    <p  style="margin-bottom: 0; color: #999;">By using any of the services, it means you have agreed to any content and all content!</p>
+                    <p  style="margin-top: 0; color: orange;" translate="no">👻👻👻 © 2024 NINS (by JPGT). 👻👻👻</p>
                   </div>
 
                   <!--dialog></dialog-->
@@ -165,20 +159,33 @@
                     <p>🌍</p>
                   </details-->
                   
-                  <div class="feature-item" onclick="openApp(repo='time', path='/')" style="">
-                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
-                    <h2 translate="no">🌏 nins/time 🌎</h2>
-                    <p>Display the absolute most useful time.</p>
+                  <div class="feature-item day" onclick="openForm(repo='google.forms', path='/')" style="">
+                    <h2 translate="no">📜 nins/forms 📜</h2>
+                    <p>We’d love any brief feedback! We are helping to make sure all kindness is shared.</p>
+                    <!--p>Display the absolute most useful time.</p!-->
                   </div>
                   
-                  <div class="feature-item" onclick="openApp(repo='deurl', path='/')" style="">
+                  <div class="feature-item main" onclick="openApp(repo='deurl', path='/')" style="">
                     <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">👻</div>
                     <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⭐</div>
                     <h2 translate="no">🧿 nins/deurl 🧿</h2>
                     <p>Check a link’s destination here first, and don’t walk straight through the door into trouble.</p>
                   </div>
+                  
+                  <div class="feature-item" onclick="openApp(repo='time', path='/')" style="">
+                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
+                    <h2 translate="no">🌏 nins/time 🌎</h2>
+                    <p>Show your local time wherever you are, so people can quickly understand when you’re active!</p>
+                    <!--p>Display the absolute most useful time.</p!-->
+                  </div>
 
-                  <div class="feature-item day" onclick="openApp(repo='copyright', path='/children/2025/xmas-photo')" style="">
+                  <!--div class="feature-item" onclick="openApp(repo='copyright', path='/children/httpping')" style="">
+                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
+                    <h2 translate="no">📶 nins/httpping 📶</h2>
+                    <p>Test your connection.</p>
+                  </div!-->
+
+                  <!--div class="feature-item day" onclick="openApp(repo='copyright', path='/children/2025/xmas-photo')" style="">
                     <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🎄</div>
                     <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⭐</div>
                     <h2 translate="no">❤️ nins/heart ❤️</h2>
@@ -195,13 +202,7 @@
                     <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⭐</div>
                     <h2 translate="no">📈 nins/xy 📈</h2>
                     <p>Merry Xmas! Build math using blocks, and then observe their relationships!</p>
-                  </div>
-
-                  <div class="feature-item" onclick="openApp(repo='copyright', path='/children/httpping')" style="">
-                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
-                    <h2 translate="no">📶 nins/httpping 📶</h2>
-                    <p>Test your connection.</p>
-                  </div>
+                  </div!-->
 
                   <!--div class="feature-item" onclick="openApp(repo='copyright', path='/children/preview')" style="">
                     <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
@@ -214,7 +215,15 @@
                     <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">👻</div>
                     <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⭐</div>
                     <h2 translate="no">🔣 nins/translate 🔣</h2>
-                    <p>Use chat channels to easily start communicating with anyone.</p>
+                    <p  style="margin-bottom: 0;">Use chat channels to easily start communicating with anyone.</p>
+                    <p  style="margin-top: 0; color: orange;">Feel free to apply! no sensitive info needed.</p>
+                  </div>
+                  <div class="feature-item main unable" onclick="openApp(repo='uris', file='/', dir='')" style="">
+                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🎄</div>
+                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⭐</div>
+                    <h2 translate="no">🧭 nins/uris 🧭</h2>
+                    <p  style="margin-bottom: 0;">Quickly create your own contact URL in HTTPS. Give a "Vivre Card/Soul Paper" to everything that matters!</p>
+                    <p  style="margin-top: 0; color: orange;">Feel free to apply! no sensitive info needed.</p>
                   </div>
                   <!--div class="feature-item main" onclick="openApp(repo='uris', file='', dir='')" style="">
                     <h2 translate="no">🌐 nins/URIs 🌐</h2>
@@ -265,13 +274,21 @@
                     <p  style="margin-bottom: 0;">Quickly create your own contact URL in HTTPS.</p>
                     <p  style="margin-top: 0;">(For sms use, but simpler!)</p>
                   </div-->
+                  
+                  <div class="feature-item day" onclick="openForm(repo='google.forms', path='/')" style="">
+                    <h2 translate="no">📜 nins/forms 📜</h2>
+                    <p></p>
+                    <p  style="margin-bottom: 0;">We’d love any brief feedback! We are helping to make sure all kindness is shared.</p>
+                    <p  style="margin-top: 0; color: orange;" translate="no"></p>
+                    <!--p>Display the absolute most useful time.</p!-->
+                  </div>
 
                   <div class="feature-item" onclick="location.href='mailto:duguaynins@gmail.com'" style="width:auto; background:#444444; color:white;">
                   <!--div class="feature-item" onclick="window.open('https://sites.google.com/view/nins/', '_blank', 'noopener,noreferrer');" style="width:auto; background:#cdcdcd;"-->
                     <h2 translate="no">⚠️ Admins ⚠️</h2>
                     <!--p>duguaynins@gmail.com</p-->
-                    <p  style="margin-bottom: 0;">duguaynins@gmail.com</p>
-                    <p  style="margin-top: 0; color: white;" translate="no">(© 2024 NINS (by JPGT). 👻👻👻)</p>
+                    <p  style="margin-bottom: 0; color: #999;" translate="no">duguaynins@gmail.com</p>
+                    <p  style="margin-top: 0; color: orange;" translate="no">👻👻👻 © 2024 NINS (by JPGT). 👻👻👻</p>
                     <!--p>IMPORTANT!</p-->
                     <!--button disabled="">Coming Soon</button-->
                     <!--button>Go</button-->
@@ -296,13 +313,13 @@
  
 <script>  // main.js
   function openApp(repo, path="", dir="/children/", file="") {
-    const href = "https://" + repo + ".nins.cc" + path;console.log(href);
+    const href = "https://" + repo + ".nins.cc" + path;console.log(href);  ///https?
     window.open(href, "_blank", "noopener,noreferrer");
   }
   // 按鈕方法
-  function openTest(event, el) {
+  function openForm(repo, path) {
     ///const href = "/apps/transing.html";
-    const href = "https://beta.nins.jpgt.one/children/transing.html";console.log(href);
+    const href = "https://docs.google.com/forms/d/e/1FAIpQLSct8PaArwmkAv10Eh5CEybu_88IoSj9V_QOLy07KiL6efu10g/viewform?";console.log(href);
     window.open(href, "_blank", "noopener,noreferrer");
   }
 </script>
@@ -312,6 +329,8 @@
   
 </body>
 </html>
+
+
 
 
 
