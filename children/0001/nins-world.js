@@ -1,4 +1,4 @@
-// snow.html
+
 document.body.insertAdjacentHTML('beforeend', `
 <audio id="NinsXmas" style="display:none;" src="https://copyright.nins.cc/children/2025/xmas.mp3" loop ></audio>
 
