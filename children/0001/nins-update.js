@@ -156,7 +156,67 @@ setTimeout(updateTime, 1); // 幾時之後只執行一次
 
 
 
+function redirectIfMatched() {  ///rules
+  const rules = {
+    "https://transing.nins.cc/": "https://newsite.com/page1",
+    "https://example.com/page2": "https://newsite.com/page2"
+  };
 
+  console.log("完整 URL (href)***:", window.location.href);
+  console.log("協議 (protocol):", window.location.protocol);
+  console.log("主機 (host):", window.location.host);
+  console.log("域名 (hostname):", window.location.hostname);
+  console.log("埠號 (port):", window.location.port);
+  console.log("路徑 (pathname):", window.location.pathname);
+  console.log("查詢參數 (search):", window.location.search);
+  console.log("fragment/hash (#):", window.location.hash);
+  console.log("origin (協議+域名+port):", window.location.origin);
+  console.log("base URL (origin + pathname)***:", window.location.origin + window.location.pathname);
+
+  const params = new URLSearchParams(window.location.search);
+  if (params.has('beta')) { return; }
+
+  const currentUrl = window.location.href;
+  const keywords = [
+    "transing.nins.cc/",
+    "translate.nins.cc/",
+    "Users",
+  ];
+
+  // 遍歷所有要比對的關鍵字
+  for (const str of keywords) {
+    if (currentUrl.includes(str)) {
+      // 如果網址包含這個字串，跳轉
+      console.log("break:", str);
+      ///window.location.href = targetUrl;
+      ///break; // 跳出迴圈，避免重複跳轉
+      document.body.insertAdjacentHTML('beforeend', `
+      <button class="zIndex" style="z-index: 99999;  /* 確保在最高層 */
+        cursor: default; border: none; outline: none;
+        /*background: linear-gradient(white, transparent);*/
+        background: black; color: white;
+      " disabled>
+      <p>Unauthorized access</p>
+      <a href="https://www.youtube.com/@duguaynins" target="_blank" rel="noopener noreferrer" style="color: red;">
+        Co-founders
+      </a>
+      </button>
+      `);
+    }
+    else {
+      console.log("pass:", str);
+    }
+  }
+  /*
+  // 如果規則中存在目前網址，跳轉
+  if (currentUrl in rules) {
+    window.location.href = rules[currentUrl];
+  }
+  if (rules[currentUrl] || false) {
+    window.location.href = rules[currentUrl];
+  }  */
+}
+redirectIfMatched();
 /*
 
 if (location.protocol === 'http:') {
