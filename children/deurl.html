@@ -2,6 +2,10 @@
 
 
 
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -80,7 +84,7 @@
       flex-direction: column;
     ">
           <strong id="anything" style="background-color: black; color: white; font-size: max(1vh,1vw);"><b translate="no">© nins. </b>Check a link’s destination here first, and don’t walk straight through the door into trouble.</strong>
-          <div id="title" style="background: #FFFFFF; color: black;" translate="no">
+          <div id="title" style="" translate="no">
           <div style="margin: 10px;" onclick="document.getElementById('DialogCheck').showModal();console.log(new Date().toLocaleString(), '🙉');">
           nins/deurl
           </div></div>
@@ -96,11 +100,62 @@
 <p style="color: green;">Please enter the URL and send it.🚀🚀🚀</p>
 </div>
 
-
+<div id="url-slider" style="
+    display: flex;
+    flex-direction: row;         /* 水平排列 */
+    justify-content: flex-start; /* 左對齊 */
+    align-items: center;         /* 垂直置中 */
+    overflow-x: auto;            /* 可水平滾動 */
+    overflow-y: hidden;          /* 不需要垂直滾動 */
+    gap: 10px;                   /* 按鈕間距 */
+    padding: 10px;
+    white-space: nowrap;         /* 防止換行 */
+    background: #eee;
+    color: black;
+" translate="no">
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLScJ6WXtrF1sKVNKEbpQvsm77ZAi3qr6fHKQfpdZTjttSIioPA/viewform" target="_blank" rel="noopener noreferrer" class="use main day"
+        style="
+        flex: 0 0 auto;
+        padding: 8px 12px;
+        border: 1px solid #000;
+        border-radius: 999px;
+        text-decoration: none;
+        cursor: pointer;
+        white-space: nowrap;
+        ">
+        📜
+    </a>
+    
+    <!--button class="use main day"
+        onclick="document.getElementById('DialogMath').showModal();"
+        style="
+        margin-left: auto;
+        flex: 0 0 auto;
+        padding: 8px 12px;
+        border: 1px solid #000;
+        border-radius: 999px;
+        text-decoration: none;
+        cursor: pointer;
+        white-space: nowrap;
+        ">
+        🔢
+    </button!-->
+</div>
 <div class="input-btn-wrapper" style="display: flex; align-items: stretch; width:100%; text-align: center;">
   <!--button type="button" class="main " translate="no" onclick="document.getElementById('input_msg').value='https://';">💡<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">https://</p></button!-->
   <button type="button" class="main use fat" translate="no" onclick="send()">🚀<p translate="no" style="margin: 0; padding: 0; font-size: 1vh;" class="label">enter</p></button>
-  <input id="input_msg" class="main use fat" type="text" name="url" autocomplete="off" placeholder="After entering the URL, please press Enter!" style="flex: 1;"/>
+  <input id="input_msg" class="main use fat" type="text" name="url" autocomplete="off" placeholder="After entering the URL, please press Enter!" style="flex: 1;" list="list_msg"/>
+  <datalist id="list_msg_vt">
+      <option value="https://google.com/">
+      <option value="https://www.fclnews.com/">
+      <!--option value="https://cc.conins.org"!-->
+      <option value="https://bump.oen.tw/">
+      <option value="https://dumbmoney.tw/">
+      <option value="https://bit.ly/4dYnhfP">
+      <option value="https://ctbc.tw/0DIoEU">
+      <option value="https://ctbc.tw/bsYlnz">
+      <option value="https://ctbc.tw/rukJKu">
+  </datalist>
   <button type="button" class="main use fat" translate="no" onclick="send()">🚀<p translate="no" style="margin: 0; padding: 0; font-size: 1vh;" class="label">enter</p></button>
 </div>
 
@@ -125,10 +180,68 @@
       <pre id="logOutput" style="max-height:200px; overflow:auto; margin:0;"></pre><br>
       <button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogCheck').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
   </dialog>
+  
+  <dialog id="DialogMath" translate="no" style="height: 90vh; overflow: hidden;">
+      <iframe src="https://copyright.nins.cc/children/2025/xy" style="width: 100%; height: 100%; border: none;"></iframe>
+  </dialog>
 
 <!-- HTML ================================================== -->
     
 <!-- 放置你原有的布局 -->
+<script>
+const urls = [
+  "https://",
+  "https://google.com/",
+  "https://www.fclnews.com/",
+  "https://bump.oen.tw/",
+  "https://dumbmoney.tw/",
+  "https://bit.ly/4dYnhfP",
+  "https://ctbc.tw/0DIoEU",
+  "https://ctbc.tw/bsYlnz",
+  "https://ctbc.tw/rukJKu",
+  "https://pse.is/7s3wr8",
+  "https://t.me/",
+];
+
+const container = document.getElementById('url-slider');
+
+urls.forEach(url => {
+  const btn = document.createElement('button');
+  btn.textContent = url;
+  btn.style.flex = "0 0 auto";
+  btn.style.padding = "8px 12px";
+  btn.style.border = "1px solid #000"; // 邊框線
+  btn.style.borderRadius = "999px";       // 左右圓形  ///4px
+  ///btn.style.background = "#fff";       // 背景色
+  btn.style.cursor = "pointer";
+  btn.style.whiteSpace = "nowrap";
+  btn.className = "use";  // 加上 class
+  
+  ///btn.onclick = () => window.open(url, "_blank"); // 點擊打開新分頁
+  btn.onclick = () => {
+    document.getElementById('input_msg').value = url;  // 如果要換行可以用 "\n"
+  };
+  container.appendChild(btn);
+});
+
+container.insertAdjacentHTML('beforeend', `
+    <button class="use main day"
+        onclick="document.getElementById('DialogMath').showModal();"
+        style="
+        margin-left: auto;
+        flex: 0 0 auto;
+        padding: 8px 12px;
+        border: 1px solid #000;
+        border-radius: 999px;
+        text-decoration: none;
+        cursor: pointer;
+        white-space: nowrap;
+        ">
+        🔢
+    </button>
+`);
+</script>
+
 
 <script>
 /*
@@ -194,6 +307,7 @@ async function send() {
     ///document.getElementById("input_qr").disabled = true;
     ///document.getElementById("input_msg").disabled = true;
     ///stopFlag = true;
+    document.getElementById("input_msg").value =  document.getElementById("input_msg").value.trim();
     document.getElementById("content").innerHTML = "Waiting for decoding...";
 
     const url = document.getElementById("input_msg").value;
@@ -210,28 +324,20 @@ async function send() {
     }
 
     stopFlag = true;
+
     document.getElementById("input_qr").disabled = true;
     document.getElementById("input_msg").disabled = true;
     document.querySelectorAll('button').forEach(button => { button.disabled = true; });
 
     const lang = (navigator.language || navigator.userLanguage || "en-US");
     const task_v1 = "URL information security analysis";
-    const task = "Carefully infomatoion Security Analysis for URLs";
+    const task = `Carefully infomatoion Security Analysis for URLs`;
     const need_v1 = "Shows a high level of prudence (%) in useing";
-    const need = "Shows the recommended degree of caution (%) when operating under zero-trust";
+    const need = `Shows both recommended degrees of caution "(%)" when operating under zero-trust. Who provided the prompt. Check the domain owner and review the website content`;
     
     ///const url...
     const msg = await deurl({ "url": url });
-
-    const prompt_v1 = `lang*==="${lang}".;unsafe*==="${url}"?;unsafe*==="${msg}"?;`;
-    const prompt_v2 = `"${lang}"===mylang."${url}"===unsafe?"${msg}"===unsafe?`;
-    const prompt_v3 = `lang="${lang}".\n${url}==="unsafe"?\n${msg}==="unsafe"?\n`;
-    const prompt_v4 = `lang=${lang}.\n${url}==="unsafe(%)"?\n${msg}==="unsafe(%)"?\n`;
-
-    const bynins = `This is the result of a URL redirect analysis. The analysis technology prompt is provided by "nins.cc"!`;
-    const prompt = `lang=${lang}.\n${task}.\n${need}.\n---\n${url}.\n${msg}.\n${bynins}`;
-    const openai = "https://chatgpt.com/?prompt=" + encodeURIComponent( prompt );
-    const google = "https://www.google.com/search?udm=50&aep=1&aic=0&q=" + encodeURIComponent( prompt );
+    console.log("URL:", url);
 
     ///https://rdap.iana.org/domain/example.com
     ///https://rdap.org/domain/sobatgaming.it.com
@@ -241,9 +347,31 @@ async function send() {
     ///const rdap = `https://rdap.iana.org/domain/${encodeURIComponent( domain )}`;
     ///const rdap = `https://rdap.markmonitor.com/rdap/domain/${encodeURIComponent( domain )}`;
     ///const rdap = `https://client.rdap.org/?type=domain&follow-referral=0&object=${encodeURIComponent( host )}`;
-    const rdap = `https://rdap.org/domain/${encodeURIComponent( domain )}`;
+    
+    const rdap_in = `https://rdap.org/domain/${encodeURIComponent( getDomain(url) )}`;
+    const refer_in = await deurl({ "url": rdap_in });  ///20260202
+    console.log("RDAP:", rdap_in);
+    console.log("RDAP:", refer_in);
 
-    console.log("RDAP:", await fetchRdapJson(url));
+    const rdap_out = `https://rdap.org/domain/${encodeURIComponent( getDomain(msg) )}`;
+    const refer_out = await deurl({ "url": rdap_out });  ///20260202
+    console.log("RDAP:", rdap_out);
+    console.log("RDAP:", refer_out);
+
+    ///const reference = JSON.stringify( await fetchRdapJson(rdap_out) );
+
+    const prompt_v1 = `lang*==="${lang}".;unsafe*==="${url}"?;unsafe*==="${msg}"?;`;
+    const prompt_v2 = `"${lang}"===mylang."${url}"===unsafe?"${msg}"===unsafe?`;
+    const prompt_v3 = `lang="${lang}".\n${url}==="unsafe"?\n${msg}==="unsafe"?\n`;
+    const prompt_v4 = `lang=${lang}.\n${url}==="unsafe(%)"?\n${msg}==="unsafe(%)"?\n`;
+
+    const bynins = `This is the result of a URL redirect analysis. The analysis technology prompt is provided by "nins.cc"`;
+    ///const prompt = `${bynins}!\n---\nlang=${lang}.\n${task}.\n${need}.\n---\n${url}.\n${msg}.\n---\n${bynins}!\n---\n${reference}.\n---\n${bynins}!`;
+    ///const prompt = `notice=${bynins}!\n---\nlang=${lang}.\ntask=${task}.\nneed=${need}.\n---\ninput=${url}.\noutput=${msg}.\n---\nnotice=${bynins}!\n---\nrdap=${reference}.\n---\nnotice=${bynins}!`;
+    const prompt = `notice=${bynins}!\n---\nlang=${lang}.\ntask=${task}.\nneed=${need}.\n---\ninput=${url}.\nrdap=${refer_in}.\n---\noutput=${msg}.\nrdap=${refer_out}.\n---\nnotice=${bynins}!`;
+    const openai = `https://chatgpt.com/?prompt=` + encodeURIComponent( prompt );
+    const google = `https://www.google.com/search?udm=50&aep=1&aic=0&hl=${lang}&q=` + encodeURIComponent( prompt );
+
 
     ///🤖🧠🎯
     document.getElementById("content").innerHTML = `
@@ -251,13 +379,18 @@ async function send() {
     <p translate="no" style="color: red;">[${msg}]</p>
     <!--a translate="no" target="_blank" rel="noopener noreferrer" href="${translate}">[${msg}]</a!-->
     <p translate="yes">Decoding complete! You can click "AI" to analyze the URL!🤖🤖🤖</p>
-    <p translate="no">***
+    <!--p translate="no">***
       <a translate="no" target="_blank" rel="noopener noreferrer" href="${openai}">ChatGPT</a>
        & 
       <a translate="no" target="_blank" rel="noopener noreferrer" href="${google}">Gemini</a>    
-    ***</p>
+    ***</p!-->
+    <p translate="no">👉
+      <a translate="no" target="_blank" rel="noopener noreferrer" href="${openai}">ChatGPT</a>
+    👈</p>
     <p translate="no">***
-      <a translate="no" target="_blank" rel="noopener noreferrer" href="${rdap}">RDAP</a>
+      <span translate="no" style="color: green;">[${"nins.cc"}]</span>
+      <!--a translate="no" target="_blank" rel="noopener noreferrer" href="${"https://copyright.nins.cc/"}">[${"copyright.nins.cc"}]</a!-->
+      <!--a translate="no" target="_blank" rel="noopener noreferrer" href="${"https://copyright.nins.cc/"}">RDAP</a!-->
     ***</p>
     `;
 
@@ -285,8 +418,8 @@ document.getElementById("input_msg").addEventListener("focus", (event) => {
     if (stopFlag || okFlag) { return; }
     document.getElementById("content").innerHTML = "Please enter the URL and send it.🚀🚀🚀"; console.log("已具焦");
     if (event.target.value) { return; }
-    document.getElementById("input_msg").value = "https://nins.cc/";  ///***
-    document.getElementById("input_msg").value = "https://google.com/";  ///***
+    //document.getElementById("input_msg").value = "https://nins.cc/";  ///***
+    //document.getElementById("input_msg").value = "https://google.com/";  ///***
     ///document.getElementById("input_msg").value = "https://instagram.com/";  ///***
     ///document.getElementById("input_msg").value = "http://google.forms.nins.cc/";  ///***
 });
@@ -336,7 +469,7 @@ setInterval(() => {
 </script>
 
 
-<!-- QR ================================================== -->
+<!-- deQR ================================================== -->
 <script src="https://copyright.nins.cc/children/0001/jsQR.min.js"></script>
 <script>
 document.getElementById('input_qr').addEventListener('change', function(e) {
@@ -486,18 +619,6 @@ async function fetchRdapJson(url) {
     
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
