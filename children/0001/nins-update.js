@@ -1,8 +1,7 @@
 
 function redirectIfMatched() {  ///rules
   const rules = {
-    "https://transing.nins.cc/": "https://newsite.com/page1",
-    "https://example.com/page2": "https://newsite.com/page2"
+    "key": "value",
   };
 
   console.log("完整 URL (href)***:", window.location.href);
@@ -225,6 +224,7 @@ function updateTime(print=null) {
 setTimeout(updateTime, 1); // 幾時之後只執行一次
 ///setInterval(updateTime, 1); // 每幾時之後執行一次
 ///setInterval(() => updateTime(), 1);
+
 
 
 
