@@ -172,7 +172,7 @@ function updateVer(print=null) {
       }
     }
     else {
-      url.searchParams.delete('t');
+      ///url.searchParams.delete('t');  // 移動t到最後
       url.searchParams.append('t', Date.now());
       ///url.searchParams.set('t', Date.now());
       sessionStorage.setItem('reloaded', 'false');
@@ -181,7 +181,7 @@ function updateVer(print=null) {
   }
   if (!url.searchParams.has('t')) {  // 無
     if (true) {
-      url.searchParams.delete('t');
+      ///url.searchParams.delete('t');  // 移動t到最後
       url.searchParams.append('t', Date.now());
       ///url.searchParams.set('t', Date.now());
       sessionStorage.setItem('reloaded', 'false');
@@ -224,6 +224,7 @@ function updateTime(print=null) {
 setTimeout(updateTime, 1); // 幾時之後只執行一次
 ///setInterval(updateTime, 1); // 每幾時之後執行一次
 ///setInterval(() => updateTime(), 1);
+
 
 
 
