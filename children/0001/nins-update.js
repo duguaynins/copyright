@@ -42,7 +42,7 @@ function redirectIfMatched() {  ///rules
         background: black; color: white;
       " disabled>
       <p>Unauthorized access</p>
-      <a href="https://www.youtube.com/@duguaynins" target="_blank" rel="noopener noreferrer" style="color: red;">
+      <a href="https://www.youtube.com/@duguaynins" target="_blank" rel="noopener noreferrer" style="color: green;">
         Co-founders
       </a>
       </button>
@@ -226,6 +226,7 @@ function updateTime(print=null) {
 setTimeout(updateTime, 1); // 幾時之後只執行一次
 ///setInterval(updateTime, 1); // 每幾時之後執行一次
 ///setInterval(() => updateTime(), 1);
+
 
 
 
