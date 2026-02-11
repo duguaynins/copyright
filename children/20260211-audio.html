@@ -90,6 +90,7 @@ function draw() {
   ctx.fillStyle = "#fff";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+  const baseHeight = 5; // 每根柱子最小高度
   const barWidth = canvas.width / dataArray.length;
   let x = 0;
   /*
@@ -108,13 +109,16 @@ function draw() {
     ctx.fillRect(x, 0, barWidth, h);  // 柱子從頂部
     x += barWidth;
   }  */
+  
   for (let i = 0; i < dataArray.length; i++) {
     const h = dataArray[i] * 1;
     const amplitude = dataArray[i];       // 音量 0~255
+    const barHeight = baseHeight + amplitude * 2;
+
     const hue = Math.floor((amplitude / 255) * 360); // 每根柱子不同色相
-    ctx.fillStyle = `rgb(${hue}, 150, 255)`;
+    ctx.fillStyle = `hsl(${hue}, 100%, ${80}%)`;
     ///ctx.fillRect(x, canvas.height - h, barWidth, h);  // 柱子從底部
-    ctx.fillRect(x, 0, barWidth, h);  // 柱子從頂部
+    ctx.fillRect(x, 0, barWidth, barHeight);  // 柱子從頂部
     x += barWidth;
   }
 }
