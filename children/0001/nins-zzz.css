@@ -117,6 +117,18 @@ dialog > * {
   /* border: 2px solid green; */
   /* box-shadow: 0 0 5px red; */
 }
+.shivers {
+  --offset: 50;
+  /* transform: translateY(calc(var(--offset) * 1px)); */
+  animation: floatX 0.1s ease-in-out infinite;
+}
+@keyframes floatX {
+  0%   { transform: translateX(1px); }
+  50%  { transform: translateX(-1px); }
+  100% { transform: translateX(1px); }
+}
+
+
 
 @keyframes breatheOnce {
   0%   { color: #cdcdcd; }
@@ -171,6 +183,7 @@ dialog > * {
 
 .app { width: 100vw; height: 100vh; display: flex; }
 .content { width: 100%; flex: 1; }
+
 
 
 
