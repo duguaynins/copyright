@@ -184,6 +184,9 @@ dialog > * {
 .app { width: 100vw; height: 100vh; display: flex; }
 .content { width: 100%; flex: 1; }
 
+.stuffed { display: flex; }
+.stuff { flex: 1; }
+
 
 
 
