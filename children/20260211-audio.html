@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>Audio Visualizer</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: white;
+      color: black;
+      font-family: sans-serif;
+  display: block; /* 避免行內元素留下空隙 */
+    }
+    audio {
+      position: fixed;
+      z-index: 10;
+      width: 300px;
+      display: none; /* 一開始隱藏 */
+  box-sizing: border-box;
+    }
+    input {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 10;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<input type="file" accept="audio/*" />
+<audio id="audio" controls style="width: 100%; max-width: 100%;"></audio>
+
+<canvas id="canvas"></canvas>
+
+<script>
+const audio = document.getElementById("audio");
+const fileInput = document.querySelector("input");
+const canvas = document.getElementById("canvas");  // 設定畫布
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let audioCtx;
+let analyser;
+let dataArray;
+let source;
+
+fileInput.addEventListener("change", () => {
+  const file = fileInput.files[0];
+  if (!file) return;
+
+  // 設定音樂來源
+  audio.src = URL.createObjectURL(file);
+
+  // 顯示原生控制項
+  audio.style.display = "block";
+  audio.play(); // ← 自動播放
+  fileInput.style.display = "none";
+
+  // 初始化 AudioContext（只做一次）
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 256;
+    dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+    source = audioCtx.createMediaElementSource(audio);
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
+  }
+});
+
+// 播放時開始畫
+audio.addEventListener("play", () => {
+  if (audioCtx.state === "suspended") {
+    audioCtx.resume();
+  }
+  draw();
+});
+
+function draw() {
+  if (audio.paused) return;
+
+  requestAnimationFrame(draw);  // 瀏覽器每一幀（約 60fps）呼叫一次 draw
+  analyser.getByteFrequencyData(dataArray);  // 關鍵程式碼
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const barWidth = canvas.width / dataArray.length;
+  let x = 0;
+  
+  for (let i = 0; i < dataArray.length; i++) {  // 這段是整個視覺的核心
+    const h = dataArray[i] * 2;
+    ctx.fillStyle = `rgb(${h + 50}, 150, 255)`;  // 🌈 顏色跟音量走
+    ctx.fillRect(x, canvas.height - h, barWidth, h);
+    x += barWidth;
+  }
+  /*
+  for (let i = 0; i < dataArray.length; i++) {   // v2
+    const value = dataArray[i];                  // 音量
+    const barHeight = value * 2;
+
+    const hue = i / dataArray.length * 360;      // 頻率位置 → 顏色
+    const lightness = 30 + value / 255 * 40;     // 音量 → 亮度
+    ctx.fillStyle = `hsl(${hue}, 80%, ${lightness}%)`;
+
+    ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+    x += barWidth;
+  }  */
+}
+</script>
+
+</body>
+</html>
