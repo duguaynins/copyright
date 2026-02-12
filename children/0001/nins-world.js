@@ -38,6 +38,7 @@ document.getElementById('merryXmas').innerHTML = "☃️🦌🎄✨⭐<br>[ © n
 */
 
 // snow.css
+/*
 document.head.appendChild(
   Object.assign(document.createElement('style'), {
     textContent: `
@@ -75,8 +76,8 @@ document.head.appendChild(
 }
 `
   })
-);
-/*
+);  */
+
 const style = document.createElement('style');
 style.textContent = `
 .snow {
@@ -115,7 +116,7 @@ style.textContent = `
     }
 }
 `;
-document.head.appendChild(style);  */
+document.head.appendChild(style);
 
 
 // snow.js
