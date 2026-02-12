@@ -4,6 +4,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -263,6 +264,9 @@
 </head>
 <body>
 <!-- UPDATE ================================================== -->
+<script src="https://copyright.nins.cc/children/0001/nins-update.js"></script>
+<!--script src="https://copyright.nins.cc/children/0001/nins-world.js"></script!-->
+<!--script src="https://copyright.nins.cc/children/0001/nins-ads.js"></script!-->
 <script src="https://copyright.nins.cc/children/0001/nins-abc.js"></script>
   
       
@@ -289,7 +293,7 @@
   ">
         <strong id="anything" style="background-color: black; color: white; font-size: max(1vh,1vw);"><b translate="no">© nins. </b>Use chat channels to easily start communicating with anyone.</strong>
         <div style="background: #FFFFFF; color: black;" translate="no">
-        <div style="margin: 10px;" onclick="document.getElementById('DialogCheck').showModal();console.log(new Date().toLocaleString(), '🙉');">
+        <div style="height: 2vh; margin: 10px;" onclick="document.getElementById('DialogCheck').showModal();console.log(new Date().toLocaleString(), '🙉');">
         nins/transing
         </div></div>
         <div style="margin: 0vw; display: flex; flex-direction: row; border: 1px solid #cdcdcd;" translate="no">
@@ -310,11 +314,11 @@
             <span id="SemanticDistance" style="font-size:1vw; width:100%; text-align:center; color:black;">（Semantic Distance）</span>
         </div-->
         
-        <div id="chatbox" class="left" style="border:1px solid #ccc; overflow:auto; width:100%; text-align:left; flex:1;">init</div>
+        <div id="chatbox" style="border:1px solid #ccc; overflow:auto; width:100%; text-align:left; flex:1;">init</div>
         
         <input type="range" id="InputRate" min="0.1" max="2.0" step="0.1" value="1" style="width:100%;" />
-        <input  style="display:none" class="main left" id="InputRoom" type="text" name="noMemory" autocomplete="off" placeholder="input connection number..." style="width:100%;"/>
-        <input  style="display:none" class="main left" id="InputMsg"  type="text" name="noMemory" autocomplete="off" placeholder="input message text..." style="width:100%;"/>
+        <input  style="display:block" class="main" id="InputRoom" type="text" name="noMemory" autocomplete="off" placeholder="input connection number..." style="width:100%; text-align: center;"/>
+        <input  style="display:none" class="main" id="InputMsg"  type="text" name="noMemory" autocomplete="off" placeholder="input message text..." style="width:100%; text-align: center;"/>
         <button style="display:none" id="ButtonRoom" onclick="sendSocket()" style="width:100%;" class="button" >📶Send connection</button>
         <button style="display:none" id="ButtonMsg" onclick="sendMessage()" style="width:100%;" class="button" >🚀Send Message</button>
         
@@ -344,18 +348,8 @@
       <button id="openLog" style="width: 100%; background: black;" onclick="document.getElementById('DialogTrans').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
   </dialog>
   
-  <dialog id="DialogTrans" translate="no">
-      <div id="google_translate_element" style="display:block;"></div>
-      <!--br><button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogTrans').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button-->
-  </dialog>
-  
   <dialog id="DialogPreview" translate="no" style="height: 90vh; overflow: hidden;">
       <iframe src="https://copyright.nins.cc/children/preview" style="width: 100%; height: 100%; border: none;"></iframe>
-  </dialog>
-    
-  <dialog id="DialogCheck" translate="no">
-      <pre id="logOutput" style="max-height:200px; overflow:auto; margin:0;"></pre>
-      <!--br><button id="openLog" style="width: 100%;" onclick="document.getElementById('DialogCheck').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button-->
   </dialog>
   
   <dialog id="DialogShare" style="background-color: #000000; 
@@ -528,108 +522,7 @@ document.addEventListener("pointerup", (event) => {
 </script>
 
 
-<!-- INPUT ================================================== -->
-<script>
-        // 建立 MutationObserver 監聽 InputMsg 的 style 屬性
-        const observer = new MutationObserver(() => {
-            const roomInput = document.getElementById('InputRoom');
-            const msgInput = document.getElementById('InputMsg');
-            
-            if ( !(msgInput.style.display === 'block' || msgInput.style.display === '') ) {
-                // InputMsg 沒顯示 → 顯示 InputRoom
-                roomInput.style.display = 'block';
-                console.log("InputRoom =>>", "block");
-            } else {
-                // InputMsg 正在顯示 → 隱藏 InputRoom
-                roomInput.style.display = 'none';
-                console.log("InputRoom =>>", "none");
-            }
-        });
-        
-        // 開始觀察
-        observer.observe(document.getElementById('InputMsg'), { attributes: true, attributeFilter: ['style'] });
-</script>
 
-
-<!-- ADS ================================================== -->
-<!--script>
-        document.getElementById('merryXmas').innerHTML = "☃️🦌🎄✨⭐<br>[ © nins ] x [ Merry Xmas 2025 ]";
-        
-        function startSkipAdsProgress() {
-            const progress = document.getElementById("progress");
-            const timeText = document.getElementById("time");
-        
-            const totalTime = Number(progress.max); // 直接讀 max
-            const interval = 50;
-        
-            let current = 0;
-            progress.value = 0;
-            timeText.textContent = "0 ms";
-        
-            ///setTimeout(update, 16);
-            ///setTimeout( () => { document.getElementById("DialogAds").classList.add("disabled") }, 3);
-            ///setTimeout( () => { document.getElementById("DialogAds").classList.remove("disabled") }, 3000);
-            ///setTimeout( () => { document.getElementById("startOverlay").classList.add("disabled") }, 3);
-            ///setTimeout( () => { document.getElementById("startOverlay").classList.remove("disabled") }, 3000);
-            setTimeout( () => { document.getElementById("startOverlay").disabled = true; }, 3);
-            setTimeout( () => { document.getElementById("startOverlay").disabled = false; }, 3000);
-        
-            const timer = setInterval(() => {
-              current += interval;
-              progress.value = current;
-              timeText.textContent = current + " ms";
-        
-              if (current >= totalTime) {
-                progress.value = totalTime;
-                ///progress.style.setProperty('--progress-color', '#4caf50'); // 綠色
-                clearInterval(timer);
-                timeText.textContent = "done!";
-                timeText.textContent = "skip?!";
-              }
-            }, interval);
-        }
-        
-        ///startSkipAdsProgress();
-        setTimeout( () => { startSkipAdsProgress(); }, 1000);
-</script!-->
-<!-- ADS ================================================== -->
-
-<script>
-const dialog = document.getElementById('DialogCheck');
-const logOutput = document.getElementById('logOutput');
-/*
-const _log = console.log;
-console.log = function(...args) {
-  _log.apply(console, args);
-
-  const text = args.map(a =>
-    typeof a === 'object' ? JSON.stringify(a) : String(a)
-  ).join(' ');
-
-  logOutput.insertAdjacentHTML('beforeend', text + '\n');
-  logOutput.scrollTop = logOutput.scrollHeight; // ✅ 自動滾到底
-}; */
-
-// 攔截 console.log 與 console.error
-['log', 'error'].forEach(level => {
-  const original = console[level];
-  console[level] = function(...args) {
-    original.apply(console, args);
-    const message = args.map(a => (typeof a === 'object' ? JSON.stringify(a) : a)).join(' ');
-    logOutput.insertAdjacentHTML('beforeend', `<div class="${level}">${message}</div>`);
-    // 滾動到底部
-    logOutput.scrollTop = logOutput.scrollHeight;
-  };
-});
-
-// 測試
-const version = (new Date().toLocaleString(), 'v1.20251203.1315 (This is an error test.)');
-console.error(version);
-console.warn(version);
-console.info(version);
-console.log(version);
-</script>
-<!-- LOG ================================================== -->
 
 
   <script>
@@ -1108,7 +1001,7 @@ console.log(version);
         console.log("同步初始化，視窗高度：" + window.innerHeight + " px");
         console.log("同步初始化，視窗寬度：" + window.innerWidth + " px");
         document.getElementById('chatbox').textContent = "After using the 'Send Connection' button and successfully establishing the connection, you can use 'Send Message' to communicate.";    
-        document.getElementById('chatbox').textContent = "Currently, only the *default* channel is available. The limit will be removed soon.";
+        document.getElementById('chatbox').textContent = "Currently, only the *WORLD* channel is available. The limit will be removed soon.";
       });
     
     // 初始化
@@ -1116,7 +1009,7 @@ console.log(version);
         console.log("非同步初始化，視窗高度：" + window.innerHeight + " px");
         console.log("非同步初始化，視窗寬度：" + window.innerWidth + " px");
         document.getElementById('chatbox').textContent = "After using the 'Send Connection' button and successfully establishing the connection, you can use 'Send Message' to communicate.";    
-        document.getElementById('chatbox').textContent = "Currently, only the *default* channel is available. The limit will be removed soon.";
+        document.getElementById('chatbox').textContent = "Currently, only the *WORLD* channel is available. The limit will be removed soon.";
       });
     
     // 初始化：默認掃描連線
@@ -1696,6 +1589,7 @@ console.log(version);
               
         // 正式進入頻道**
         channel.presence.enter();
+        ///document.getElementById('DialogAds').showModal();startSkipAdsProgress();  ///test:20251221***ads
 
         // 監聽**
         ///channel.attach(() => {
@@ -2522,3 +2416,6 @@ console.log(version);
     </script>
 </body>
 </html>
+
+
+
