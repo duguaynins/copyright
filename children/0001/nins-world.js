@@ -38,6 +38,45 @@ document.getElementById('merryXmas').innerHTML = "☃️🦌🎄✨⭐<br>[ © n
 */
 
 // snow.css
+document.head.appendChild(
+  Object.assign(document.createElement('style'), {
+    textContent: `
+.snow {
+    position: fixed;
+    top: -50px;
+    color: white;
+    user-select: none;
+    pointer-events: none;
+    z-index: 100001;
+    text-shadow: 0 0 5px rgba(255,255,255,0.5);
+    will-change: transform, opacity;
+}
+
+.snow.bright {
+    text-shadow: 0 0 10px rgba(255,255,255,0.9),
+                 0 0 20px rgba(255,255,255,0.4);
+    font-weight: bold;
+}
+
+@keyframes fall {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 0;
+    }
+    10% { opacity: 1; }
+    50% {
+        transform: translate(var(--drift), 40vh) rotate(180deg);
+    }
+    80% { opacity: 0.8; }
+    100% {
+        transform: translate(calc(var(--drift) * 1.5), var(--end-y)) rotate(360deg);
+        opacity: 0;
+    }
+}
+`
+  })
+);
+/*
 const style = document.createElement('style');
 style.textContent = `
 .snow {
@@ -76,7 +115,7 @@ style.textContent = `
     }
 }
 `;
-document.head.appendChild(style);
+document.head.appendChild(style);  */
 
 
 // snow.js
