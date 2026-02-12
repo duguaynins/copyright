@@ -4,6 +4,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -39,13 +40,13 @@
 ">
 
   
-    <strong id="anything" style=""><b translate="no">© nins. </b>Display the absolute most useful time.</strong>
+    <!--strong id="anything" style=""><b translate="no">© nins. </b>Display the absolute most useful time.</strong>
     <div id="title" style="" translate="no">
     <div style="margin: 10px;" onclick="document.getElementById('DialogCheck').showModal();console.log(new Date().toLocaleString(), '🙉');">
     nins/color
-    </div></div>
+    </div></div!-->
 
-    <button id="" class="main active" style="width: 100%; padding: 8px;" onclick="change();" translate="no">🔃
+    <button id="" class="main use" style="width: 100%; padding: 8px;" onclick="change();" translate="no">🔃
         <p translate="no" style="margin: 0; padding: 0; font-size: 1vh;" class="label">color</p>
     </button>
     <!--input type="color" id="utc-color" style="width: 100%;" value="#000000"!-->
@@ -94,15 +95,15 @@
 
     <input type="range" id="slider-day" min="0.01" max="0.99" value="0.5" style="width: 100%; display: none;" step="0.0001">
     <p id="id-color" style="background: #eee; width: 100%;" translate="no">#CDCDCD</p>
-    <button id="" class="main active" style="width: 100%; padding: 8px;" onclick="download();" translate="no">💾
+    <button id="" class="main use" style="width: 100%; padding: 8px;" onclick="download();" translate="no">💾
         <p translate="no" style="margin: 0; padding: 0; font-size: 1vh;" class="label">save</p>
     </button>
 
-    <div id="notice" style="" translate="yes">
+    <!--div id="notice" style="" translate="yes">
     <div style="margin: 10px;" onclick="document.getElementById('DialogTrans').showModal()">
     By sending a message to this service, it means you have agreed to any content and all content!
     </div></div>
-    <strong id="copyright" style="" translate="no">© 2024 NINS (by JPGT).</strong>
+    <strong id="copyright" style="" translate="no">© 2024 NINS (by JPGT).</strong!-->
 
     
 <!--dialog id="DialogColor" translate="no" open=""></dialog!-->
@@ -484,7 +485,7 @@ function download() {
   const old_week = parseFloat(document.getElementById("slider-week").value);
   const old_day = parseFloat(document.getElementById("slider-day").value);
   ///[colorbg, colortt] = update(old_week, old_day);
-  [colorbg, colortt] = update();
+  ///[colorbg, colortt] = update();  ///20260212
   const timeText = document.getElementById("utc-time").innerText;
   const offsetText = document.getElementById("utc-offset").innerText;
   
