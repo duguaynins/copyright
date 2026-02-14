@@ -8,6 +8,9 @@
 
 
 
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -97,7 +100,12 @@
 <canvas id="canvas_qr" style="display:none;"></canvas>
 
 <div id="content" style="background: #CCCCCC; overflow:auto; width:100%; flex:1; border: 1px solid #ccc; color: black;">
-    <p>Subscribe to the channel to follow more apps.</p>
+    <!--p>Subscribe to the channel to follow more apps.</p!-->
+    <p>For you, subscribing may be a simple gesture.</p>
+    <p><b translate="no">🔔 <a href="https://youtube.com/@duguaynins"        
+        target="_blank"
+        rel="noopener noreferrer">youtube.com/@duguaynins</a> 🔔</b></p>
+    </p>But for us, it’s the driving force behind our continued updates!</p>
 </div>
 
 <div id="url-slider" style="
@@ -125,11 +133,23 @@
         ">
         ❤️
     </a>
+    <a href="https://youtube.com/@duguaynins/community" target="_blank" rel="noopener noreferrer" class="use main day"
+        style="
+        flex: 0 0 auto;
+        padding: 8px 12px;
+        border: 1px solid #000;
+        border-radius: 999px;
+        text-decoration: none;
+        cursor: pointer;
+        white-space: nowrap;
+        ">
+        🔔
+    </a>
 </div>
 <div class="input-btn-wrapper" style="display: flex; align-items: stretch; width:100%; text-align: center;">
   <!--button type="button" class="main " translate="no" onclick="document.getElementById('input_msg').value='https://';">❤️📄📚📜💡<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">https://</p></button!-->
   <button type="button" class="main use fat" translate="no" onclick="send()">🚀<p translate="no" style="margin: 0; padding: 0; font-size: 1vh;" class="label">enter</p></button>
-  <input id="input_msg" class="main use fat" type="text" name="url" autocomplete="off" placeholder="After entering the URL, please press Enter!" style="flex: 1;" list="list_msg"/>
+  <input id="input_msg" class="main use fat" type="text" name="url" autocomplete="off" placeholder="Oh! What would you like to communicate?" style="flex: 1;" list="list_msg"/>
   <datalist id="list_msg">
   </datalist>
   <button type="button" class="main use fat" translate="no" onclick="send()">🚀<p translate="no" style="margin: 0; padding: 0; font-size: 1vh;" class="label">enter</p></button>
@@ -167,6 +187,8 @@ const urls = [
   "你好",
   "안녕하세요",
   "สวัสดี",
+  "Bonjour",
+  "Guten Morgen",
 ];
 
 const container = document.getElementById('url-slider');
@@ -220,7 +242,7 @@ function send(){
 
     if(isMobileOrTablet){
         // 行動版使用 /m，避免跳 App
-        baseUrl = "https://translate.google.com/m";
+        baseUrl = "https://translate.google.com/";  ///m
     } else {
         baseUrl = "https://translate.google.com/";
     }
@@ -231,19 +253,58 @@ function send(){
     const tl = ( params.get("hl") || (navigator.language || navigator.userLanguage || "en-US") );  ///"en"
 
     // URL 編碼文字
+    const encode = encodeURIComponent(text);
     const url = `${baseUrl}?sl=${sl}&tl=${tl}&q=${encodeURIComponent(text)}`;
+    
+    const nins = `https://t.nins.cc/?data=${encode}`;
+    ///await navigator.clipboard.writeText(nins);
+    ///navigator.clipboard.writeText(nins);
+    
+    if (params.get("data")) {  // 只需要跳轉
+        window.open(url, "_blank", "noopener,noreferrer");
+        return;
+    }
+    else {  // 需要複製和跳轉
+        navigator.clipboard.writeText(nins)
+            .then(() => window.open(url, "_blank", "noopener,noreferrer") )
+            .catch(err => document.getElementById("content").innerHTML = "Resend." );
+    }
 
     // 開新視窗
-    window.open(url, "_blank", "noopener,noreferrer");
+    ///window.open(url, "_blank", "noopener,noreferrer");
+    ///window.location.replace(url);
 }
+window.addEventListener('DOMContentLoaded', () => {  // 處理跳轉
+    if (true) {
+        const params = new URLSearchParams(window.location.search);
+        document.getElementById('input_msg').value = params.get("data");
+        ///if (params.get("data")) { setTimeout(() => { send(); }, 5800); }  //***
+    }
+});
+
+let stopFlag = null;
+let okFlag = false;
 
 document.getElementById('input_msg').addEventListener('keydown', function(event) {  // 檢查是否按下 Enter 鍵
     if (event.key === "Enter") { send(); }
 });
-window.addEventListener('DOMContentLoaded', () => {
-    const params = new URLSearchParams(window.location.search);
-    document.getElementById('input_msg').value = params.get("data");
+document.getElementById("input_msg").addEventListener("focus", (event) => {
+    if (stopFlag || okFlag) { return; }
+    document.getElementById("content").innerHTML = "After sending, the translated link will be copied automatically!"; console.log("已具焦");
 });
+document.getElementById("input_msg").addEventListener("blur", (event) => {
+    if (stopFlag || okFlag) { return; }
+    document.getElementById("content").innerHTML = "Share your translation with anyone."; console.log("已失焦");
+});
+
+document.addEventListener('click', function (e) {
+    if (e.target.tagName === 'BUTTON') {
+        const params = new URLSearchParams(window.location.search);
+        document.getElementById('input_msg').value = params.get("data");
+        if (params.get("data")) { setTimeout(() => { send(); }, 5800); }  //***
+    }
+});
+
 </script>
 
 
@@ -253,6 +314,14 @@ window.addEventListener('DOMContentLoaded', () => {
     
 </body>
 </html>
+
+
+
+
+
+
+
+
 
 
 
