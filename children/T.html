@@ -145,6 +145,32 @@
         ">
         🔔
     </a>
+    <a class="use main day" id="T1"
+        style="
+        flex: 0 0 auto;
+        padding: 8px 12px;
+        border: 1px solid #000;
+        border-radius: 999px;
+        text-decoration: none;
+        cursor: pointer;
+        white-space: nowrap;
+        display: none;
+        ">
+        💡
+    </a>
+    <a class="use main day" id="T2"
+        style="
+        flex: 0 0 auto;
+        padding: 8px 12px;
+        border: 1px solid #000;
+        border-radius: 999px;
+        text-decoration: none;
+        cursor: pointer;
+        white-space: nowrap;
+        display: none;
+        ">
+        👀
+    </a>
 </div>
 <div class="input-btn-wrapper" style="display: flex; align-items: stretch; width:100%; text-align: center;">
   <!--button type="button" class="main " translate="no" onclick="document.getElementById('input_msg').value='https://';">❤️📄📚📜💡<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">https://</p></button!-->
@@ -181,7 +207,7 @@
     
 <!-- 放置你原有的布局 -->
 <script>
-const urls = [
+const strs = [
   "Hi",
   "こんにちは",
   "你好",
@@ -193,7 +219,7 @@ const urls = [
 
 const container = document.getElementById('url-slider');
 
-urls.forEach(url => {
+strs.forEach(url => {
   const btn = document.createElement('button');
   btn.textContent = url;
   btn.style.flex = "0 0 auto";
@@ -231,8 +257,10 @@ container.insertAdjacentHTML('beforeend', `
 `);
 </script>
 <script>
-function send(){
-    // 預設使用桌面版
+
+// 處理發送
+function urls(){
+
     let baseUrl = "https://";
     let text = document.getElementById('input_msg').value;
 
@@ -242,49 +270,100 @@ function send(){
 
     if(isMobileOrTablet){
         // 行動版使用 /m，避免跳 App
-        baseUrl = "https://translate.google.com/";  ///m
+        baseUrl = "https://translate.google.com/m";  ///m
     } else {
         baseUrl = "https://translate.google.com/";
     }
 
-    // 來源語言 auto，自動偵測
-    const sl = "auto";
-    // 目標語言英文，可改
-    const tl = ( params.get("hl") || (navigator.language || navigator.userLanguage || "en-US") );  ///"en"
+    // 處理語言代號
+    let voice = null;
+    let sl = "auto";
+    let tl = ( params.get("hl") || (navigator.language || navigator.userLanguage || "en-US") );  ///"en"
+
+    ///const combo = document.getElementById('goog-te-combo');  /// querySelector, getElementById
+    const combo = document.querySelector('.goog-te-combo');
+    if (combo) { voice = combo.value; }  // 通常會在這裡決定分享語音的語言
+    else { voice = tl; }
+
+    ///if (params.get("voice")) { voice = params.get("voice"); }  // 只用於跳轉的最終發音
+    if (params.get("data")===document.getElementById('input_msg').value) {
+        voice = params.get("voice") || tl;
+    }
+    
 
     // URL 編碼文字
     const encode = encodeURIComponent(text);
-    const url = `${baseUrl}?sl=${sl}&tl=${tl}&q=${encodeURIComponent(text)}`;
-    
-    const nins = `https://t.nins.cc/?data=${encode}`;
+    const url = `${baseUrl}?sl=${sl}&tl=${tl}&q=${encode}`;
+    const tts = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${voice}&q=${encode}`;
+    const nins = `https://t.nins.cc/?data=${encode}&voice=${voice}`;
+    console.log(voice);
+
+    return [url, tts, nins];
+}
+function send(){
+    // 預設使用桌面版
+    const params = new URLSearchParams(window.location.search);
+    const [url, tts, nins] = urls();
+
+    // 生成按鈕
     ///await navigator.clipboard.writeText(nins);
     ///navigator.clipboard.writeText(nins);
+    if (true) {
+        const btn1 = document.getElementById("T1");
+        if (btn1) {
+            ///btn.textContent = "▶️";
+            btn1.style.display = "block";
+            btn1.onclick = () => {
+                window.open( tts, '_blank', 'noopener,noreferrer' );
+                ///const audio = new Audio(tts);
+                ///audio.play();
+                ///return;
+            };
+        }
+        const btn2 = document.getElementById("T2");
+        if (btn2) {
+            ///btn.textContent = "▶️";
+            btn2.style.display = "block";
+            btn2.onclick = () => {
+                window.open( url, '_blank', 'noopener,noreferrer' );
+                ///const audio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${voice}&q=${encode}`);
+                ///audio.play();
+                ///return;
+                
+            };
+        }
+    }
     
+    // 跳轉和複製
     if (params.get("data")) {  // 只需要跳轉
-        window.open(url, "_blank", "noopener,noreferrer");
-        return;
+        ///window.open(url, "_blank", "noopener,noreferrer");
+        ///return;
     }
     else {  // 需要複製和跳轉
         navigator.clipboard.writeText(nins)
-            .then(() => window.open(url, "_blank", "noopener,noreferrer") )
+            ///.then(() => window.open(url, "_blank", "noopener,noreferrer") )
             .catch(err => document.getElementById("content").innerHTML = "Resend." );
+        ///return;
     }
+
+    // 連棟按鈕
+    ///document.getElementById('T1').click();
+    document.getElementById('DialogTrans').showModal();
+    ///window.open( tts, '_blank', 'noopener,noreferrer' );
+    setTimeout(() => { window.open( tts, '_blank', 'noopener,noreferrer' ); }, 1000);
+    return;
 
     // 開新視窗
     ///window.open(url, "_blank", "noopener,noreferrer");
     ///window.location.replace(url);
 }
-window.addEventListener('DOMContentLoaded', () => {  // 處理跳轉
-    if (true) {
-        const params = new URLSearchParams(window.location.search);
-        document.getElementById('input_msg').value = params.get("data");
-        ///if (params.get("data")) { setTimeout(() => { send(); }, 5800); }  //***
-    }
-});
+
+
 
 let stopFlag = null;
 let okFlag = false;
 
+// 處理輸入
 document.getElementById('input_msg').addEventListener('keydown', function(event) {  // 檢查是否按下 Enter 鍵
     if (event.key === "Enter") { send(); }
 });
@@ -297,16 +376,37 @@ document.getElementById("input_msg").addEventListener("blur", (event) => {
     document.getElementById("content").innerHTML = "Share your translation with anyone."; console.log("已失焦");
 });
 
-document.addEventListener('click', function (e) {
-    if (e.target.tagName === 'BUTTON') {
+
+
+// 處理跳轉資訊載入
+window.addEventListener('DOMContentLoaded', () => {  // 處理跳轉
+    if (true) {
         const params = new URLSearchParams(window.location.search);
-        document.getElementById('input_msg').value = params.get("data");
-        if (params.get("data")) { setTimeout(() => { send(); }, 5800); }  //***
+        if (params.get("data")) { document.getElementById('input_msg').value = params.get("data"); }
+        ///if (params.get("data")) { setTimeout(() => { send(); }, 5800); }  //***
     }
 });
 
-</script>
+// 處理跳轉
+document.addEventListener('click', function (e) {
+    if (e.target.tagName === 'BUTTON') {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("data")) { document.getElementById('input_msg').value = params.get("data"); }
+        if (params.get("data")) { setTimeout(() => { send(); }, 2000); }  //***
+    }
+}, { once: true });
 
+// 處理聲音
+///document.querySelector('.goog-te-combo')
+document.getElementById('google_translate_element').addEventListener('change', (event) => {
+    const [url, tts, nins] = urls();  ///event.target.value
+    ///window.open( tts, '_blank', 'noopener,noreferrer' );
+    setTimeout(() => { window.open( tts, '_blank', 'noopener,noreferrer' ); }, 1000);
+    ///const audio = new Audio(tts);
+    ///audio.play();
+});
+
+</script>
 
 
 <!-- 放置你原有的布局 -->
