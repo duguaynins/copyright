@@ -6,9 +6,6 @@
   border: 0; 
   outline: 0;
   
-  overflow: hidden;  /* visible, auto, scroll ,hidden  */
-  text-align: left;  /* left / center / right / justify */
-  
   flex-shrink: 0;      /* 不縮小子元素高度 */
   user-select: none; /* 全部禁止選取 */
 }
@@ -24,12 +21,16 @@ iframe.skiptranslate, #goog-gt-tt {
 
 body { font-size: clamp(14px, 2.20vw, 18px); }
 h1, h2, h3, h4, h5, h6 { font-size: clamp(14px, 2.20vw, 18px); }
+
 html, body { 
   display: flex;
   flex-direction: column;
   font-family: system-ui, Arial, sans-serif;
   /* font-size: 5vw; */
   /* background-color: #000000; */
+  
+  overflow: hidden;  /* visible, auto, scroll ,hidden  */
+  text-align: center;  /* left / center / right / justify */
 }
 
 input, textarea, button, select {
@@ -189,6 +190,7 @@ dialog > * {
 
 .stuffed { display: flex; }
 .stuff { flex: 1; }
+
 
 
 
