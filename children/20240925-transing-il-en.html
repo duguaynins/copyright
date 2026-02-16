@@ -293,7 +293,7 @@
   ">
         <strong id="anything" style="background-color: black; color: white; font-size: max(1vh,1vw);"><b translate="no">© nins. </b>Use chat channels to easily start communicating with anyone.</strong>
         <div style="background: #FFFFFF; color: black;" translate="no">
-        <div style="height: 2vh; margin: 10px;" onclick="document.getElementById('DialogCheck').showModal();console.log(new Date().toLocaleString(), '🙉');">
+        <div style="margin: 10px;" onclick="document.getElementById('DialogCheck').showModal();console.log(new Date().toLocaleString(), '🙉');">
         nins/transing
         </div></div>
         <div style="margin: 0vw; display: flex; flex-direction: row; border: 1px solid #cdcdcd;" translate="no">
@@ -313,11 +313,11 @@
         <!--div style="margin: 0.2vw; display: flex; flex-direction: row; border: 0px solid #cdcdcd;" translate="no">
             <span id="SemanticDistance" style="font-size:1vw; width:100%; text-align:center; color:black;">（Semantic Distance）</span>
         </div-->
-        
+        <!--div id="content"></div!-->
         <div id="chatbox" style="border:1px solid #ccc; overflow:auto; width:100%; text-align:left; flex:1;">init</div>
         
         <input type="range" id="InputRate" min="0.1" max="2.0" step="0.1" value="1" style="width:100%;" />
-        <input  style="display:block" class="main" id="InputRoom" type="text" name="noMemory" autocomplete="off" placeholder="input connection number..." style="width:100%; text-align: center;"/>
+        <input  style="display:none" class="main" id="InputRoom" type="text" name="noMemory" autocomplete="off" placeholder="input connection number..." style="width:100%; text-align: center;"/>
         <input  style="display:none" class="main" id="InputMsg"  type="text" name="noMemory" autocomplete="off" placeholder="input message text..." style="width:100%; text-align: center;"/>
         <button style="display:none" id="ButtonRoom" onclick="sendSocket()" style="width:100%;" class="button" >📶Send connection</button>
         <button style="display:none" id="ButtonMsg" onclick="sendMessage()" style="width:100%;" class="button" >🚀Send Message</button>
@@ -2207,196 +2207,6 @@ document.addEventListener("pointerup", (event) => {
       
     </script>
     
-    <!--script src="copyright.js"></script-->
-    <!--script>
-    /*
-      ///20240915-0000
-      // 建立版權文字元素
-      const copyright = document.createElement("div");
-      copyright.textContent = "© 2024 NINS.";
-      copyright.textContent = "👻";
-      
-      // 設定樣式
-      Object.assign(copyright.style, {
-        position: "fixed",
-        top: "0px",
-        left: "0px",
-        padding: "5px 10px",
-        backgroundColor: "rgba(0,0,0,0.5)",
-        color: "#fff",
-        /*fontSize: "14px",*/
-        borderRadius: "4px",
-        pointerEvents: "none",  // 不阻擋點擊
-        userSelect: "none",     // 不可選取文字
-        zIndex: "9999"
-      });
-    
-      // 加入頁面
-      document.body.appendChild(copyright);
-    
-      // 自動移動參數
-      let x = 0, y = 0;
-      let dx = 1, dy = 1;
-      ///const speed = 1.2;
-    
-      function animate() {
-        const maxX = window.innerWidth - copyright.offsetWidth;
-        const maxY = window.innerHeight - copyright.offsetHeight;
-    
-        x += dx * speed;
-        y += dy * speed;
-    
-        if (x <= 0 || x >= maxX) dx *= -1;
-        if (y <= 0 || y >= maxY) dy *= -1;
-    
-        copyright.style.left = x + "px";
-        copyright.style.top = y + "px";
-    
-        requestAnimationFrame(animate);
-      }
-    
-      animate();
-    */
-    </script-->
-    <script type="text/javascript">
-      // GOOGLE TRANSLATE
-      // 自動翻譯***
-      ///document.cookie = "googtrans=/en/zh-TW; path=/";
-      ///location.reload();
-    
-      function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-          pageLanguage: 'en',  ///'en', ilang, 改為根據中間語言  ///鼓勵輸入中間語言，翻譯必定可以顯示英文。
-          includedLanguages: '',  ///zh-TW,ja,ko,en,hi,zh-CN
-          autoDisplay: true,
-          ///layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-        }, 'google_translate_element');
-      }
-
-      function waitForCombo(callback) {
-        /*這是一種調用方法？ 並且使用方法的內部變數？ */
-        const timer = setInterval(() => {
-          const combo = document.querySelector('.goog-te-combo');
-          if (combo) {
-            clearInterval(timer);
-            callback(combo);
-          }
-        }, 300);
-      }
-
-      function waitForTranslationById(elementId, callback) {
-        const target = document.getElementById(elementId);
-        if (!target) return;
-
-        const observer = new MutationObserver((mutations, obs) => {
-          for (const mutation of mutations) {
-            // 偵測子節點或文字內容是否改變
-            if (mutation.type === "childList" || mutation.type === "characterData") {
-              obs.disconnect(); // 翻譯完成，停止觀察
-              callback();
-              break;
-            }
-          }
-        });
-
-        observer.observe(target, {
-          childList: true,   // 子節點增減
-          subtree: true,     // 包含所有子孫節點
-          characterData: true // 文字內容改變
-        });
-      }
-    
-      function autoTranslate(lang) {
-        const tryTranslate = () => {
-          const combo = document.querySelector('.goog-te-combo');
-          console.log('combo?', !!combo);
-            
-          if (lang.replace(/_/g, "-").split("-")[0] === "en") {
-            document.getElementById('InputRoom').disabled = false;
-            document.getElementById('InputRoom').style.display = 'block';
-            ///document.getElementById('InputRoom').textAlign = 'center';
-          }
-      
-          waitForTranslationById('notice', () => {
-            document.getElementById('InputRoom').disabled = false;
-            document.getElementById('InputRoom').style.display = 'block';
-            ///document.getElementById('InputRoom').textAlign = 'center';
-          });
-
-          if (!combo) { 
-            console.log("combo:-1"); setTimeout(tryTranslate, 300);return;
-          }
-          ///if (combo) {  /// && combo.options.length > 0
-          ///if (combo && combo.options.length > 0) {
-          if (!(combo && combo.options.length > 0)) {
-            console.log("combo: 0"); setTimeout(tryTranslate, 300);return;
-          } else { 
-            console.log("combo:+1"); 
-            const options = Array.from(combo.options).map(opt => opt.value);console.log('可用語言代碼:', options);
-            
-            console.log("autoTranslate?:", lang);
-            document.querySelector('.goog-te-combo').addEventListener('change', () => {
-              console.log("語言已切換!");
-              console.log("新語言代碼:", combo.value);
-              ///console.log("新語言文字:", combo.options[combo.selectedIndex].text);
-            });
-
-            
-            ///combo.value = lang;
-            combo.value = options.includes(lang) 
-              ?  lang 
-              :  options.find(opt => opt.startsWith(lang))  
-              || options.find(opt => opt.startsWith(lang.slice(0, 2))) 
-              || null;
-            combo.dispatchEvent(new Event('change'));
-            console.log("autoTranslate!:", combo.value);
-            
-            ///document.getElementById('InputRoom').disabled = false;
-            ///document.getElementById('InputRoom').style.display = 'block';
-            ///document.getElementById('InputRoom').textAlign = 'center';
-
-            /*
-            if (options.includes(lang)) {
-              console.log("translate: ", lang);
-              combo.value = lang;
-              combo.dispatchEvent(new Event('change'));
-            } else if (options.includes(lang.split('-')[0])) {
-              console.log("translate: ", lang.split('-')[0]);
-              combo.value = lang.split('-')[0];
-              combo.dispatchEvent(new Event('change'));
-            } else {
-              console.log("translate: ", "null");
-              ///combo.value = "zh-TW";
-              ///combo.dispatchEvent(new Event('change'));
-            }  */
-
-          } ///else { setTimeout(tryTranslate, 300);console.log(); }
-        };
-        tryTranslate();
-      }
-    
-      window.addEventListener('load', () => {
-        console.log("window...load");
-          
-        waitForCombo((combo) => {
-          console.log("autoTranslate...waitForCombo");
-          autoTranslate( slang || (navigator.language || navigator.userLanguage || "en-US") );
-          ///console.log("combo 已生成:", combo);
-          ///combo.value = 'en';
-          ///combo.dispatchEvent(new Event('change'));
-        });
-        /*
-        setTimeout(() => {
-          console.log("autoTranslate...setTimeout");
-          ///const slang = navigator.language || navigator.userLanguage || "en-US";
-          autoTranslate( (navigator.language || navigator.userLanguage || "en-US") );          
-          ///document.getElementById(":1.container").style.display = "";
-        }, 1000); */
-      });
-    </script>
-    
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    
     <script>
     // 初始化：默認掃描連線
     function autoConnect() {
@@ -2414,8 +2224,35 @@ document.addEventListener("pointerup", (event) => {
         document.getElementById("InputRoom").value = "WORLD";  ///***
     });
     </script>
+
+    
+    <script>
+      ///20260216
+      document.getElementById("InputRoom").style.display = "block";
+      document.addEventListener('click', function handler(event) {
+        if (event.target.tagName === 'BUTTON') {
+          console.log('START:', event.target);
+          // 這裡放你的邏輯
+
+          // 建立 style 標籤
+          const style = document.createElement('style');
+          style.textContent = `
+            *, *::before, *::after {
+              text-align: center; /* left / center / right / justify */
+            }
+            #content > * {
+              text-align: center;   /* 直接子層文字置中 */
+            }
+            #chatbox * {
+              text-align: left;   /* 所有子層文字置中 */
+            }
+          `;
+          document.head.appendChild(style);
+          // 這裡放你的邏輯
+        }
+      }, { once: true });
+    </script>
 </body>
 </html>
-
 
 
