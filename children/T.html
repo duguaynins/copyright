@@ -95,7 +95,7 @@
           </div></div>
           
 <!-- 放置你原有的布局 -->
-<button type="button" class="main fat" onclick="document.getElementById('input_qr').click();" disabled>🖼️<p translate="no" style="margin: 0; padding: 0; font-size: 1vh;" class="label">image</p></button>
+<button type="button" class="main fat" onclick="window.open('https://t.nins.cc/', '_blank', 'noopener,noreferrer');">👻<p translate="no" style="margin: 0; padding: 0; font-size: 1vh;" class="label">nins</p></button>
 <input type="file" id="input_qr" style="display: none;" accept="image/*">
 <canvas id="canvas_qr" style="display:none;"></canvas>
 
@@ -156,7 +156,7 @@
         white-space: nowrap;
         display: none;
         ">
-        💡
+        💻
     </a>
     <a class="use main day" id="T2"
         style="
@@ -169,11 +169,24 @@
         white-space: nowrap;
         display: none;
         ">
-        👀
+        📱
     </a>
+    <button class="use main day" id="TTS"
+        onclick="window.open('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=duguaynins', '_blank', 'noopener,noreferrer')"
+        style="
+        flex: 0 0 auto;
+        padding: 8px 12px;
+        border: 1px solid #000;
+        border-radius: 999px;
+        text-decoration: none;
+        cursor: pointer;
+        white-space: nowrap;
+        ">
+        💬
+    </button>
 </div>
 <div class="input-btn-wrapper" style="display: flex; align-items: stretch; width:100%; text-align: center;">
-  <!--button type="button" class="main " translate="no" onclick="document.getElementById('input_msg').value='https://';">❤️📄📚📜💡<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">https://</p></button!-->
+  <!--button type="button" class="main " translate="no" onclick="document.getElementById('input_msg').value='https://';">💡💻👀📱❤️📄📚📜💡<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">https://</p></button!-->
   <button type="button" class="main use fat" translate="no" onclick="send()">🚀<p translate="no" style="margin: 0; padding: 0; font-size: 1vh;" class="label">enter</p></button>
   <input id="input_msg" class="main use fat" type="text" name="url" autocomplete="off" placeholder="Oh! What would you like to communicate?" style="flex: 1;" list="list_msg"/>
   <datalist id="list_msg">
@@ -214,7 +227,7 @@ const strs = [
   "안녕하세요",
   "สวัสดี",
   "Bonjour",
-  "Guten Morgen",
+  ///"Guten Morgen",
 ];
 
 const container = document.getElementById('url-slider');
@@ -239,22 +252,45 @@ strs.forEach(url => {
   container.appendChild(btn);
 });
 
-container.insertAdjacentHTML('beforeend', `
-    <button class="use main day"
-        onclick="window.open('https://safebrowsing.google.com/safebrowsing/report_phish/', '_blank', 'noopener,noreferrer')"
-        style="
-        margin-left: auto;
-        flex: 0 0 auto;
-        padding: 8px 12px;
-        border: 1px solid #000;
-        border-radius: 999px;
-        text-decoration: none;
-        cursor: pointer;
-        white-space: nowrap;
-        ">
-        🎯
-    </button>
-`);
+function btns(){
+    ///const params = new URLSearchParams(window.location.search);
+    ///const [url, tts, nins] = urls();
+    const voice = "en";
+    const encode = "duguaynins";
+    /*
+    container.insertAdjacentHTML('beforeend', `
+        <button class="use main day" id="TTS"
+            onclick="window.open('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${voice}&q=${encode}', '_blank', 'noopener,noreferrer')"
+            style="
+            flex: 0 0 auto;
+            padding: 8px 12px;
+            border: 1px solid #000;
+            border-radius: 999px;
+            text-decoration: none;
+            cursor: pointer;
+            white-space: nowrap;
+            ">
+            💬
+        </button>
+    `);*/
+    container.insertAdjacentHTML('beforeend', `
+        <button class="use main day"
+            onclick="window.open('https://safebrowsing.google.com/safebrowsing/report_phish/', '_blank', 'noopener,noreferrer')"
+            style="
+            margin-left: auto;
+            flex: 0 0 auto;
+            padding: 8px 12px;
+            border: 1px solid #000;
+            border-radius: 999px;
+            text-decoration: none;
+            cursor: pointer;
+            white-space: nowrap;
+            ">
+            🎯
+        </button>
+    `);
+}
+btns();
 </script>
 <script>
 
@@ -286,24 +322,25 @@ function urls(){
     else { voice = tl; }
 
     ///if (params.get("voice")) { voice = params.get("voice"); }  // 只用於跳轉的最終發音
-    if (params.get("data")===document.getElementById('input_msg').value) {
-        voice = params.get("voice") || tl;
-    }
+    if (params.get("data")===document.getElementById('input_msg').value) { voice = params.get("voice") || tl; }
+    ///if (false) { voice = params.get("voice") || tl; }
     
 
     // URL 編碼文字
     const encode = encodeURIComponent(text);
-    const url = `${baseUrl}?sl=${sl}&tl=${tl}&q=${encode}`;
+    ///const url = `${baseUrl}?sl=${sl}&tl=${tl}&q=${encode}`;
+    const url = `https://translate.google.com/?sl=${sl}&tl=${tl}&q=${encode}`;  ///&op=translate
     const tts = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${voice}&q=${encode}`;
     const nins = `https://t.nins.cc/?data=${encode}&voice=${voice}`;
+    const urlm = `https://translate.google.com/m?sl=${sl}&tl=${tl}&q=${encode}`;
     console.log(voice);
 
-    return [url, tts, nins];
+    return [url, tts, nins, urlm];
 }
 function send(){
     // 預設使用桌面版
     const params = new URLSearchParams(window.location.search);
-    const [url, tts, nins] = urls();
+    const [url, tts, nins, urlm] = urls();
 
     // 生成按鈕
     ///await navigator.clipboard.writeText(nins);
@@ -311,10 +348,10 @@ function send(){
     if (true) {
         const btn1 = document.getElementById("T1");
         if (btn1) {
-            ///btn.textContent = "▶️";
+            ///btn.textContent = "▶️";  ///💡
             btn1.style.display = "block";
             btn1.onclick = () => {
-                window.open( tts, '_blank', 'noopener,noreferrer' );
+                window.open( url, '_blank', 'noopener,noreferrer' );
                 ///const audio = new Audio(tts);
                 ///audio.play();
                 ///return;
@@ -322,36 +359,71 @@ function send(){
         }
         const btn2 = document.getElementById("T2");
         if (btn2) {
-            ///btn.textContent = "▶️";
+            ///btn.textContent = "▶️";  ///👀
             btn2.style.display = "block";
             btn2.onclick = () => {
-                window.open( url, '_blank', 'noopener,noreferrer' );
+                window.open( urlm, '_blank', 'noopener,noreferrer' );
                 ///const audio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${voice}&q=${encode}`);
                 ///audio.play();
                 ///return;
                 
             };
         }
+        const btn3 = document.getElementById("TTS");
+        if (btn3) {
+            ///btn.textContent = "▶️";
+            btn3.style.display = "block";
+            btn3.onclick = () => {
+                window.open( tts, '_blank', 'noopener,noreferrer' );
+                ///const audio = new Audio(tts);
+                ///audio.play();
+                ///return;
+            };
+        }
     }
     
     // 跳轉和複製
-    if (params.get("data")) {  // 只需要跳轉
-        ///window.open(url, "_blank", "noopener,noreferrer");
-        ///return;
-    }
-    else {  // 需要複製和跳轉
-        navigator.clipboard.writeText(nins)
-            ///.then(() => window.open(url, "_blank", "noopener,noreferrer") )
-            .catch(err => document.getElementById("content").innerHTML = "Resend." );
-        ///return;
+    ///if (params.get("data")===document.getElementById('input_msg').value) {  }
+    if (false) {  }
+    else {
+        const copy = document.getElementById("input_msg").value + "\n" + nins;
+        navigator.clipboard.writeText(copy)
+            .then(() => { document.getElementById("content").innerHTML = "Copyed!"; } )
+            .catch(err => { document.getElementById("content").innerHTML = "Again?"; } );
+        /*
+        navigator.share({
+            title: 't.nins.cc',
+            text: document.getElementById("input_msg").value,
+            url: nins, })
+            .then(() => { document.getElementById("content").innerHTML = "Share!"; } )
+            .catch(err => { document.getElementById("content").innerHTML = "Reshare?"; } );  */
     }
 
     // 連棟按鈕
-    ///document.getElementById('T1').click();
+    ///document.getElementById('TTS').click();  // 這不可能達成
     document.getElementById('DialogTrans').showModal();
+    document.getElementById('DialogTrans').style.opacity = 1.0;
+
+    if (params.get("data")) {
+        ///window.open( tts, '_blank', 'noopener,noreferrer' );  // 為了推行網址被記憶
+        window.open( url, '_blank', 'noopener,noreferrer' );  // 為了推行網址被記憶
+        window.open( urlm, '_blank', 'noopener,noreferrer' );  // 為了推行網址被記憶
+    }
+    
+    return;  // 暫時阻止跳轉
+
+    // 跳轉測試
+    if (params.get("data")===document.getElementById('input_msg').value) { 
+        window.open( tts, '_blank', 'noopener,noreferrer' );
+    }
+    else {
+        window.open( nins, '_blank', 'noopener,noreferrer' );
+    }
+
     ///window.open( tts, '_blank', 'noopener,noreferrer' );
-    setTimeout(() => { window.open( tts, '_blank', 'noopener,noreferrer' ); }, 1000);
-    return;
+    setTimeout(() => { window.open( tts, '_blank', 'noopener,noreferrer' ); }, 1000);  //****
+
+    return;  // 暫時阻止跳轉
 
     // 開新視窗
     ///window.open(url, "_blank", "noopener,noreferrer");
@@ -383,8 +455,9 @@ window.addEventListener('DOMContentLoaded', () => {  // 處理跳轉
     if (true) {
         const params = new URLSearchParams(window.location.search);
         if (params.get("data")) { document.getElementById('input_msg').value = params.get("data"); }
-        ///if (params.get("data")) { setTimeout(() => { send(); }, 5800); }  //***
+        if (params.get("data")) { setTimeout(() => {  }, 5800); }  //***
     }
+    
 });
 
 // 處理跳轉
@@ -393,15 +466,39 @@ document.addEventListener('click', function (e) {
         const params = new URLSearchParams(window.location.search);
         if (params.get("data")) { document.getElementById('input_msg').value = params.get("data"); }
         if (params.get("data")) { setTimeout(() => { send(); }, 2000); }  //***
+        /*  // 已經不需要了，會直接複製文字
+        setTimeout(() => { 
+        if (params.get("data")) { document.getElementById('content').innerHTML = `<p translate="no">${params.get("data")}</p>`; }
+        }, 2000);  // 防止過長的內容  */
     }
 }, { once: true });
 
 // 處理聲音
 ///document.querySelector('.goog-te-combo')
 document.getElementById('google_translate_element').addEventListener('change', (event) => {
-    const [url, tts, nins] = urls();  ///event.target.value
+    const params = new URLSearchParams(window.location.search);
+    const [url, tts, nins, urlm] = urls();  ///event.target.value
+    
+    ///if (params.get("data")===document.getElementById('input_msg').value) {  }
+    if (false) {  }
+    else {
+        const copy = document.getElementById("input_msg").value + "\n" + nins;
+        navigator.clipboard.writeText(copy)
+            .then(() => { document.getElementById("content").innerHTML = "Copy!"; } )
+            .catch(err => { document.getElementById("content").innerHTML = "Recopy?"; } );
+        /*
+        navigator.share({
+            title: 't.nins.cc',
+            text: document.getElementById("input_msg").value,
+            url: nins, })
+            .then(() => { document.getElementById("content").innerHTML = "Share!"; } )
+            .catch(err => { document.getElementById("content").innerHTML = "Reshare?"; } );  */
+    }
+    
+    return;  // 暫時阻止跳轉
+
     ///window.open( tts, '_blank', 'noopener,noreferrer' );
-    setTimeout(() => { window.open( tts, '_blank', 'noopener,noreferrer' ); }, 1000);
+    setTimeout(() => { window.open( tts, '_blank', 'noopener,noreferrer' ); }, 1000);  //***
     ///const audio = new Audio(tts);
     ///audio.play();
 });
@@ -414,6 +511,9 @@ document.getElementById('google_translate_element').addEventListener('change', (
     
 </body>
 </html>
+
+
+
 
 
 
