@@ -107,6 +107,7 @@
       }
     </style>
     <style>
+      #btn-list > * { flex: 1; }
       button {
           width: 100%;
           border: none;           /* 去掉邊框 */
@@ -297,7 +298,7 @@
         nins/transing
         </div></div>
 
-        <div style="margin: 0vw; display: flex; flex-direction: row; border: 1px solid #cdcdcd;" translate="no">
+        <div id="btn-list" style="margin: 0vw; display: flex; flex-direction: row; border: 1px solid #cdcdcd;" translate="no">
             <!--button onclick="document.getElementById('DialogShare').showModal()">🔗</button-->
             <button onclick="document.getElementById('DialogShare').showModal()">🔗<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">Connect</p></button>
             <button onclick="document.getElementById('DialogTool').showModal()">🧰<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">Tool</p></button>
