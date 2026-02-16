@@ -43,6 +43,8 @@ dialog::backdrop {
   background: rgba(0, 0, 0, 0.6); /* 半透明背景 */
 }
 dialog {
+  text-align: left;  /* left / center / right / justify */
+  
   background-color: white;
   color: black;
   
@@ -190,6 +192,7 @@ dialog > * {
 
 .stuffed { display: flex; }
 .stuff { flex: 1; }
+
 
 
 
