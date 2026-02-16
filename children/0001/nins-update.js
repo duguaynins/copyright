@@ -228,6 +228,10 @@ setTimeout(updateTime, 1); // 幾時之後只執行一次
 ///setInterval(() => updateTime(), 1);
 
 
+///print("Hi"); // ❌ ReferenceError
+///const print = (msg) => console.log(msg);
+print("PRINT!"); // 可以呼叫
+function print(msg){ console.log(msg); }
 
 
 
