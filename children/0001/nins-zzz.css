@@ -5,7 +5,7 @@
   box-sizing: border-box;  /* 推薦加上，避免寬高計算誤差 */
   border: 0; 
   outline: 0;
-  overflow: auto;  /* visible, auto, scroll ,hidden  */
+  overflow: hidden;  /* visible, auto, scroll ,hidden  */
   text-align: center;  /* left / center / right / justify */
   user-select: none; /* 全部禁止選取 */
 }
@@ -186,6 +186,7 @@ dialog > * {
 
 .stuffed { display: flex; }
 .stuff { flex: 1; }
+
 
 
 
