@@ -316,6 +316,7 @@
         <!--div id="content"></div!-->
         <div id="chatbox" style="border:1px solid #ccc; overflow:auto; width:100%; text-align:left; flex:1;">init</div>
         
+        <span style="width:100%; background: #eee; color:red;" translate="no" id="channel" >👻（channels, users）</span>
         <input type="range" id="InputRate" min="0.1" max="2.0" step="0.1" value="1" style="width:100%;" />
         <input  style="display:none" class="main" id="InputRoom" type="text" name="noMemory" autocomplete="off" placeholder="input connection number..." style="width:100%; text-align: center;"/>
         <input  style="display:none" class="main" id="InputMsg"  type="text" name="noMemory" autocomplete="off" placeholder="input message text..." style="width:100%; text-align: center;"/>
@@ -387,7 +388,7 @@
           <span id="height" style="width:100%;" translate="no"></span>
           ）</span><br-->
           
-          <!--span style="width:100%;" id="copyright">© 2024 NINS. 👻（👻，👻）🏠</span><br-->
+          <!--span style="width:100%;" id="channel">© 2024 NINS. 👻（👻，👻）🏠</span><br-->
           <!--label id="ButtonGT" >🔄（translate）<input style="display:none;" type="button" value="🔄" onclick="openTranslate()" /></label><br!-->
 
           <span id="stateConnection">💬（Connection）</span><br>
@@ -475,7 +476,7 @@
           <label id="ButtonDL" >💾（save）<input style="display:none;" type="button" value="💾" onclick="DOWNLOAD()" /></label><br>
           <p id="ButtonMike" >🎙️（mike）<input style="display:none;" type="button" value="🎙️" /></p>
           
-          <span style="width:100%; color:red;" translate="no" id="copyright" >👻（channels, users）</span><br>
+          <span style="width:100%; color:red;" translate="no" id="channels" >👻（channels, users）</span><br>
       </div>
   </dialog>
   
@@ -1615,7 +1616,7 @@ document.addEventListener("pointerup", (event) => {
               ///setTimeout(() => null, 1000);  // 方便閱讀  ///20260122
               setTimeout(() => { document.getElementById('anchor').after(p); }, 2000);  ///20260122
 
-              if (!err) { console.log('Members:', members.length);document.getElementById("copyright").innerHTML = `👻（${room}, ${members.length}）`; }
+              if (!err) { console.log('Members:', members.length);document.getElementById("channel").innerHTML = `👻（${room}, ${members.length}）`; }
             });
             if (member.clientId === uuid_user) {
               setTimeout(() => { 
@@ -1645,7 +1646,7 @@ document.addEventListener("pointerup", (event) => {
               ///setTimeout(() => null, 1000);  // 方便閱讀  ///20260122
               setTimeout(() => { document.getElementById('anchor').after(p); }, 1);  ///20260122
 
-              if (!err) { console.log('Members:', members.length);document.getElementById("copyright").innerHTML = `👻（${room}, ${members.length}）`; }
+              if (!err) { console.log('Members:', members.length);document.getElementById("channel").innerHTML = `👻（${room}, ${members.length}）`; }
             });
             if (member.clientId === uuid_user) {
               setTimeout(() => { 
