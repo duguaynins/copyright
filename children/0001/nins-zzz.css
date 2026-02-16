@@ -7,7 +7,7 @@
   outline: 0;
   
   overflow: hidden;  /* visible, auto, scroll ,hidden  */
-  text-align: center;  /* left / center / right / justify */
+  text-align: left;  /* left / center / right / justify */
   
   flex-shrink: 0;      /* 不縮小子元素高度 */
   user-select: none; /* 全部禁止選取 */
@@ -189,6 +189,7 @@ dialog > * {
 
 .stuffed { display: flex; }
 .stuff { flex: 1; }
+
 
 
 
