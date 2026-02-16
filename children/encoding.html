@@ -1,5 +1,8 @@
 
 
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -85,13 +88,8 @@
       background: #eee;
       color: black;
     }
-    
-    iframe.skiptranslate, #goog-gt-tt {
-        display: none !important;
-    }
   </style>
-
-  <!--style>
+  <style>
       .skiptranslate {
         display: none !important;   /* 避免 display:none 影響內容顯示 */
         position: static !important;   /* 防止位置異常 */
@@ -106,7 +104,7 @@
       iframe {
         display: none !important;
       }
-  </style!-->
+  </style>
 
   <style>
     @keyframes fadeGradient {
@@ -182,22 +180,6 @@
       background-color: transparent;
       background-color: "#CDCDCD";
     }
-    .xmas {
-      background-color: #fff0f0;  /* ffdffd ffdfdf ffe6e6 fff0f0 */
-      color: black;
-    }
-    
-    .xmas:hover {
-      background-color: #cdcdcd;
-      color: black;
-    }
-    .xmas:active {
-      background-color: #222222;
-      color: white;
-    }
-    .xmas:focus {
-      border-color: red;      /* 聚焦時變藍色 */
-    }
   </style>
 </head>
 <body>
@@ -246,11 +228,12 @@
       flex-direction: column;
     ">
           <strong id="anything" style="background-color: black; color: white; font-size: max(1vh,1vw);"><b translate="no">© nins. </b>Enter content and get barcode.</strong>
-          <div style="background: #FFFFFF; color: black;" translate="no">
+          <div style="background: #FF5800; color: white;" translate="no">
           <div style="margin: 10px;" onclick="document.getElementById('DialogShare').showModal()">
           nins/encoding
           </div></div>
-          <button class="main xmas" style="width:100%" type="button" onclick="document.getElementById('DialogPaper').showModal();">🧭</button>
+          <u translate="yes" style="text-decoration:none; color:black; background: #eee;">By sending a message to this service, it means you have agreed to any content and all content!</u>
+          
           
           <div id="content" style="background: #FFFFFF; width: 100%; flex: 1; border: 1px solid #ccc; overflow:auto; position: relative;">
               <!--img id="linkCode" onclick="openLink()" alt='QR Code' style="width:100%;"-->
@@ -275,7 +258,7 @@
                     "></canvas><br>
               </div>
 
-              <div style="background: #FFFFFF; color: black;">
+              <div style="background: #FFFFFF; color: black; display: block;">
                   <h1 translate="no" style="margin: 0;">© 2024 NINS. 👻</h1>
                   <p translate="no" style="margin: 0; color: red;">(by JPGT)</p>
                   <!--p>🔺🔺🔺</p!-->
@@ -288,7 +271,7 @@
 
           <u translate="yes" style="text-decoration:none; color:black; background: #eee;">Click the small image = enlarge! Click the large image = download!<br>🔻🔻🔻</u>
 
-          <div class="main xmas CONTENT">
+          <div class="main CONTENT">
               <div id="code-slider" style="
                   display: flex;
                   /*flex-direction: row;  /* 上下==column */
@@ -312,7 +295,7 @@
                       <input id="code-bgcolor" value="#CDCDCD" type="color" class="color-bg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity:1.0; z-index:1;">
 
                       <!-- 條碼顏色選擇器 (內圍) -->
-                      <input id="code-color" value="#FF0000" type="color" class="color-bar" style="position: absolute; top:30%; left:30%; width:40%; height:40%; z-index:2;">
+                      <input id="code-color" value="#000000" type="color" class="color-bar" style="position: absolute; top:30%; left:30%; width:40%; height:40%; z-index:2;">
         
                   </div>
                   
@@ -338,7 +321,7 @@
             
           <u translate="yes" style="text-decoration:none; color:black; background: #eee;">generate a barcode and preview its background. It only takes effect after entering the content!<br>🔻🔻🔻</u>
 
-          <input class="main xmas" id="InputRoom" type="text" name="noMemory" autocomplete="off" placeholder="input content and get barcode" style="width: 100%; text-align: left; box-sizing: border-box;"/>
+          <input class="main" id="InputRoom" type="text" name="noMemory" autocomplete="off" placeholder="input content and get barcode" style="width: 100%; text-align: left; box-sizing: border-box;"/>
             
           <!--strong></strong-->
           <div style="background: #FF3B00; color: white;" translate="yes">
@@ -347,22 +330,6 @@
           </div></div>
           <strong style="background-color: black; color: white; font-size: max(1vh,1vw);" translate="no">© 2024 NINS (by JPGT).</strong>
     </div>
-
-<dialog id="DialogImage">
-    <div id="download" style="background: #FFFFFF; color: black;
-    display: flex;
-    justify-content: center;  /* 水平置中 */
-    align-items: center;      /* 垂直置中 */ 
-    overflow: hidden;">
-    </div>
-</dialog>
-  
-<dialog id="DialogPaper" translate="no" style="height: 80vh; width: 90vw; overflow: hidden;">
-    <iframe src="https://copyright.nins.cc/children/2025/paper" style="width: 100%; height: 100%; border: none;"></iframe>
-    <button id="openLog" style="width: 100%; display: block;" onclick="document.getElementById('DialogPaper').close();console.log(new Date().toLocaleString(), '🙈');">↩️</button>
-</dialog>
-
-
 
     <script>
       function downloadPNG(canvas) {
@@ -671,37 +638,8 @@
       ///const canvas = document.getElementById("qrcode");
       ///const canvases = document.querySelectorAll("canvas");  // 論巡
 
-      function copyCanvas(a, b) {
-        const canvas = b;  ///document.getElementById(b);  // 目的地
-
-        const img = new Image();
-        img.src = a.toDataURL("image/png");  ///document.getElementById(a).  // 來源地
-        img.style.width = "90vw";
-        img.style.height = "auto";
-        img.style.maxWidth = "70%";
-        img.style.maxHeight = "70%";
-        /*
-        const ctx = canvas.getContext("2d");
-        img.onload = () => {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          ctx.drawImage(img, 0, 0);
-        };  */
-
-        b.innerHTML = "";
-        b.appendChild(img);
-      }
-      /*
-      document.getElementById('download').addEventListener("click", () => {
-        downloadPNG(canvas);
-      });  */
-
       document.querySelectorAll("canvas").forEach(canvas => {  // 論巡
         canvas.addEventListener("click", async () => {
-
-          ///copyCanvas(canvas, document.getElementById("download"));
-          ///document.getElementById("DialogImage").showModal();
-          ///return;
-          
           // 若尚未進入全螢幕 → 請求全螢幕
           if (!document.fullscreenElement) {
             try {
@@ -713,12 +651,8 @@
               if (screen.orientation && screen.orientation.lock) {
                 screen.orientation.lock("landscape").catch(() => {});
               }
-              console.log("full!!!");
-              copyCanvas(canvas, document.getElementById("download"));
-              
             } catch (e) {
               console.log(e);
-              copyCanvas(canvas, document.getElementById("download"));
             }
           } else {
             // 若已在全螢幕 → 退出
