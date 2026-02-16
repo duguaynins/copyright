@@ -93,8 +93,8 @@
         padding: 1rem;
         border: none;
         border-radius: 8px;
-        background-color: black;
-        color: white;
+        background: white;
+        color: black;
         min-width: 90vw;  /* 不要太窄 */
         max-width: 90vw;  /* 不要太寬 */
         width: 90vw;
@@ -352,7 +352,7 @@
       <iframe src="https://copyright.nins.cc/children/preview" style="width: 100%; height: 100%; border: none;"></iframe>
   </dialog>
   
-  <dialog id="DialogShare" style="background-color: #000000; 
+  <dialog id="DialogShare" style="
       display: flex; flex-direction: column; align-items: center;
       text-align: center;
   ">
@@ -373,7 +373,7 @@
       <input type="range" id="InputRate" min="0.1" max="2.0" step="0.1" value="1" style="width:100%;" /><br></span-->
   </dialog>
   
-  <dialog id="DialogTool" style="background-color: #000000;">
+  <dialog id="DialogTool" style="">
   
       <!--button onclick="document.getElementById('DialogTool').close()" class="text-red-600 mt-3">❌</button-->
       <!--br><br-->
@@ -469,7 +469,7 @@
           
           
           
-          <label id="ButtonCM" >📷（camera）<input style="display:none;" type="button" value="📷" onclick="DUGUAYNINS()" /></label><br>
+          <!--label id="ButtonCM" >📷（camera）<input style="display:none;" type="button" value="📷" onclick="DUGUAYNINS()" /></label><br!-->
           <!--label id="ButtonLK" >🔗（link）<input style="display:none;" type="button" value="🔗" onclick="document.getElementById('DialogShare').showModal()"  /></label><br-->
           <!--label for="InputFile">📦（file）<input type="button" id="InputFile" value="📦" style="display: none;" onclick="" /></label-->
           <label id="ButtonDL" >💾（save）<input style="display:none;" type="button" value="💾" onclick="DOWNLOAD()" /></label><br>
@@ -2245,6 +2245,12 @@ document.addEventListener("pointerup", (event) => {
             }
             #chatbox * {
               text-align: left;   /* 所有子層文字置中 */
+            }
+            dialog * {
+              text-align: left;   /* 所有子層文字置中 */
+            }
+            #DialogTrans * {
+              text-align: center;   /* 所有子層文字置中 */
             }
           `;
           document.head.appendChild(style);
