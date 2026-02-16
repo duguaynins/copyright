@@ -291,11 +291,12 @@
     display: flex;
     flex-direction: column;
   ">
-        <strong id="anything" style="background-color: black; color: white; font-size: max(1vh,1vw);"><b translate="no">© nins. </b>Use chat channels to easily start communicating with anyone.</strong>
-        <div style="background: #FFFFFF; color: black;" translate="no">
+        <strong id="anything" style=""><b translate="no">© nins. </b>Use chat channels to easily start communicating with anyone.</strong>
+        <div id="title" style="" translate="no">
         <div style="margin: 10px;" onclick="document.getElementById('DialogCheck').showModal();console.log(new Date().toLocaleString(), '🙉');">
         nins/transing
         </div></div>
+
         <div style="margin: 0vw; display: flex; flex-direction: row; border: 1px solid #cdcdcd;" translate="no">
             <!--button onclick="document.getElementById('DialogShare').showModal()">🔗</button-->
             <button onclick="document.getElementById('DialogShare').showModal()">🔗<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">Connect</p></button>
@@ -324,11 +325,11 @@
         <button style="display:none" id="ButtonMsg" onclick="sendMessage()" style="width:100%;" class="button" >🚀Send Message</button>
         
         <!--strong></strong-->
-        <div style="background: #FF3B00; color: white;" translate="yes">
+        <div id="notice" style="" translate="yes">
         <div style="margin: 10px;" onclick="document.getElementById('DialogTrans').showModal();" id="notice">
         By using any of the services, it means you have agreed to any content and all content!
         </div></div>
-        <strong style="background-color: black; color: white; font-size: max(1vh,1vw);" translate="no">© 2024 NINS (by JPGT).</strong>
+        <strong id="copyright" style="background-color: black; color: white; font-size: max(1vh,1vw);" translate="no">© 2024 NINS (by JPGT).</strong>
         
   </div>
 
@@ -1240,10 +1241,29 @@ document.addEventListener("pointerup", (event) => {
         let smsg = "";let tmsg = "";let imsg = "";
         if (!!document.getElementById("AITransing").checked) {  ///SkipForm, SwitchSlang
           // 追加的更新測試***
+        } else {
+          // 這是原本的翻譯******  // 進行翻譯**
+        }
+
+        ///必定運行
+        if (true) {
+          print(`必定運行，基礎翻譯。。。`);
+          // 這是原本的翻譯******  // 進行翻譯**
+
+          smsg = xmsg;
+          tmsg = await translate({ "text": smsg, "source": slang, "target": tlang }); if (!tmsg) return;
+          imsg = await translate({ "text": smsg, "source": slang, "target": ilang }); if (!imsg) return;
+        }
+        ///但三者相同時
+        if (smsg === tmsg && tmsg === imsg) {
+          print(`三者相同，進階翻譯！！！`);          
+          // 追加的更新測試***
+
           const gens = await generate({ "text": xmsg, "source": null, "target": {tl:tlang, il:ilang} });  // 測試取代首次翻譯  //ALARM???
           const obj = JSON.parse(gens.result);
           console.log(gens);
           console.log(gens.result);
+
           ///const keys = Object.keys(obj);  // 取出所有鍵
           ///const values = Object.values(obj);  // 取出所有數值
 
@@ -1261,11 +1281,6 @@ document.addEventListener("pointerup", (event) => {
           ///const imsg = await translate({ "text": gens, "source": rlang, "target": ilang }); if (!imsg) return;  //OK
           ///smsg = xmsg; if (!smsg) return;  // 還原使用者的語言
 
-        } else {
-          // 這是原本的翻譯******  // 進行翻譯**
-          smsg = xmsg;
-          tmsg = await translate({ "text": smsg, "source": slang, "target": tlang }); if (!tmsg) return;
-          imsg = await translate({ "text": smsg, "source": slang, "target": ilang }); if (!imsg) return;
         }
         
         
@@ -2240,9 +2255,10 @@ document.addEventListener("pointerup", (event) => {
           style.textContent = `
             *, *::before, *::after {
               text-align: center; /* left / center / right / justify */
+              flex-shrink: 0;      /* 不縮小子元素高度 */
             }
-            #content > * {
-              text-align: center;   /* 直接子層文字置中 */
+            #chatbox > * {
+              flex-shrink: 0;      /* 不縮小子元素高度 */
             }
             #chatbox * {
               text-align: left;   /* 所有子層文字置中 */
