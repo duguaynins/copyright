@@ -25,6 +25,7 @@ function redirectIfMatched() {  ///rules
     "uris.nins.cc/",
     "transing.nins.cc/",
     "translate.nins.cc/",
+    "t.nins.cc/",
     "Users",
   ];
 
@@ -232,6 +233,7 @@ setTimeout(updateTime, 1); // 幾時之後只執行一次
 ///const print = (msg) => console.log(msg);
 print("PRINT!"); // 可以呼叫
 function print(msg){ console.log(msg); }
+
 
 
 
