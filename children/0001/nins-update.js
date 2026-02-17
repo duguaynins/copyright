@@ -246,7 +246,7 @@ function user(msg){
         // 這裡放你的邏輯
       }
     }, { once: true });  
-};user();
+}///;user();
 
 function exitFullscreenSafe() {
 
@@ -264,6 +264,7 @@ function exitFullscreenSafe() {
         console.log("exit failed:", err);
       });
 }
+
 
 
 
