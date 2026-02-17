@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>自動網格排列按鈕</title>
+<style>
+#container {
+  display: grid;
+  grid-template-columns: repeat(8, auto); /* 每行 8 個按鈕 */
+  /* grid-auto-flow: row; */ /* 依行排列 */
+  gap: 4px;
+}
+.btn {
+  padding: 8px 12px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  justify-self: stretch; /* 讓元素填滿列寬 */
+}
+</style>
+</head>
+<body>
+<div id="container"></div>
+
+<script>
+// 韓文母音
+const texts_ko = [
+  "ㅏ","ㅑ","ㅓ","ㅕ","ㅗ","ㅛ","ㅜ","ㅠ","ㅡ","ㅣ",
+  "ㅐ","ㅒ","ㅔ","ㅖ","ㅘ","ㅙ","ㅚ","ㅝ","ㅞ","ㅟ","ㅢ",
+  "ㄱ","ㄴ","ㄷ","ㄹ","ㅁ","ㅂ","ㅅ","ㅇ","ㅈ","ㅊ",
+  "ㅋ","ㅌ","ㅍ","ㅎ","ㄲ","ㄸ","ㅃ","ㅆ","ㅉ",
+];
+
+const texts = [
+  "ㄅ","ㄆ","ㄇ","ㄈ","ㄉ","ㄊ","ㄋ","ㄌ",
+  "ㄍ","ㄎ","ㄏ","ㄐ","ㄑ","ㄒ","ㄓ","ㄔ",
+  "ㄕ","ㄖ","ㄗ","ㄘ","ㄙ",
+  "ㄚ","ㄛ","ㄜ","ㄝ","ㄞ","ㄟ","ㄠ","ㄡ",
+  "ㄢ","ㄣ","ㄤ","ㄥ","ㄦ",
+  "ㄧ","ㄨ","ㄩ",
+];
+const texts_th = [
+  "ก","ข","ฃ","ค","ฅ","ฆ","ง","จ","ฉ","ช",
+  "ซ","ฌ","ญ","ฎ","ฏ","ฐ","ฑ","ฒ","ณ","ด",
+  "ต","ถ","ท","ธ","น","บ","ป","ผ","ฝ","พ",
+  "ฟ","ภ","ม","ย","ร","ล","ว","ศ","ษ","ส",
+  "ห","ฬ","อ","ฮ",
+];
+
+const container = document.getElementById("container");
+
+// 假設我們想要每行 8 個按鈕
+const itemsPerRow = 8;
+
+// 暫存當前行的最大高度
+let currentRowMaxHeight = 0;
+let rowElements = [];
+
+texts.forEach((text, index) => {
+  const params = new URLSearchParams(window.location.search);
+  const source = "auto";
+  const traget = params.get("tl") || 'en';
+  const encode = encodeURIComponent(text);
+
+  const tts = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${traget}&q=${encode}`;
+  const url = `https://translate.google.com/?sl=${source}&tl=${traget}&q=${encode}`;
+  const urlm = `https://translate.google.com/m?sl=${source}&tl=${traget}&q=${encode}`;
+
+  const btn = document.createElement("button");
+  btn.onclick = () => { window.open(tts, '_blank', 'noopener,noreferrer') };
+  btn.textContent = text;
+  btn.className = "btn";
+  container.appendChild(btn);
+
+  // 把當前按鈕暫存到本行
+  rowElements.push(btn);
+
+  // 當行滿或是最後一個元素，計算該行最大高度
+  if ((index + 1) % itemsPerRow === 0 || index === texts.length - 1) {
+    currentRowMaxHeight = Math.max(...rowElements.map(b => b.offsetHeight));
+    rowElements.forEach(b => b.style.height = currentRowMaxHeight + "px"); // 設定高度一致
+    rowElements = []; // 清空暫存
+  }
+});
+</script>
+</body>
+</html>
