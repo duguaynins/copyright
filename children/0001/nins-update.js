@@ -235,16 +235,35 @@ print("PRINT!"); // 可以呼叫
 function print(msg){ console.log(msg); }
 
 
+function user(msg){
+  
+    document.addEventListener('click', function handler(event) {
+      if (event.target.tagName === 'BUTTON') {
+        console.log('START:', event.target);
+        // 這裡放你的邏輯
+        ///UserReady();
+        exitFullscreenSafe();
+        // 這裡放你的邏輯
+      }
+    }, { once: true });  
+};user();
 
+function exitFullscreenSafe() {
 
-
-
-
-
-
-
-
-
+    // 沒有 fullscreen 就不做事
+    if (!document.fullscreenElement) return;
+  
+    // exitFullscreen 不存在（極舊瀏覽器）
+    if (!document.exitFullscreen) return;
+  
+    document.exitFullscreen()
+      .then(() => {
+        console.log("exited fullscreen");
+      })
+      .catch(err => {
+        console.log("exit failed:", err);
+      });
+}
 
 
 
