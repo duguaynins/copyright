@@ -26,7 +26,7 @@ function redirectIfMatched() {  ///rules
     "transing.nins.cc/",
     "translate.nins.cc/",
     "t.nins.cc/",
-    "Users",
+    ///"Users",
   ];
 
   // 遍歷所有要比對的關鍵字
@@ -264,6 +264,7 @@ function exitFullscreenSafe() {
         console.log("exit failed:", err);
       });
 }
+
 
 
 
