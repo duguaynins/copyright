@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -9,9 +8,9 @@
   <!--link rel="icon" type="image/x-icon" sizes="48x48" href="https://duguaynins-allninsone.hf.space/favicon.ico"-->
   <!--link rel="icon" type="image/png" sizes="48x48" href="/favicon.png"-->
   <!--link rel="shortcut icon" href="/favicon.ico"-->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <meta name="description" content="© 2024 NINS (by JPGT). By using any of the services, it means you have agreed to any content and all content!">
-  <link rel="canonical" href="https://copyright.nins.cc/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="description" content="© 2024 NINS (by JPGT). By using any of the services, it means you have agreed to any content and all content!">
+    <link rel="canonical" href="https://copyright.nins.cc/">
   <title translate="no">nins/cospeaking</title>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
@@ -200,14 +199,17 @@
       display: flex;
       flex-direction: column;
     ">
+          <strong id="anything" style="background-color: black; color: white; font-size: max(1vh,1vw);"><b translate="no">© nins. </b>I will accompany you, whether you are speaking.</strong>
           <div style="background: #FFFFFF; color: black;" translate="no">
           <div style="height: 2vh; margin: 10px;" onclick="document.getElementById('DialogCheck').showModal();console.log(new Date().toLocaleString(), '🙉');">
           nins/cospeaking
           </div></div>
           <!-- 放置你原有的布局 -->
-          <input type="range" id="rateSlider" min="0.5" max="2.0" step="0.1" value="1.5" style="width: 100vw; box-sizing: border-box; padding: 0; margin: 0;">
-          <select translate="no" id="voiceSelect" style="width: 100vw;"></select>
-
+          <select translate="no" id="voiceSelect" style="width: 100vw; display: none;"></select>
+          <select translate="no" id="voiceSelect1" style="width: 100vw; background-color: #EEE;"></select>
+          <select translate="no" id="voiceSelect2" style="width: 100vw; background-color: #DDD;"></select>
+          <input type="range" id="rateSlider" min="0.5" max="2.0" step="0.1" value="1.2" style="width: 100vw; box-sizing: border-box; padding: 0; margin: 0;">
+          
           <div id="content" style="background: #FFFFFF; width: 100%; flex:1; border: 1px solid #ccc;">
 
 
@@ -242,8 +244,10 @@
 
           <!--input type="file" id="fileInputPdf" accept=".pdf" style="display:none;"-->
           <!--input type="file" id="fileInputTxt" accept=".txt" style="display:none;"-->
-          <input type="file" id="fileInputPdf" accept="application/pdf" style="display:none;">
-          <input type="file" id="fileInputTxt" accept="text/plain" style="display:none;">
+          <!--input type="file" id="fileInputPdf" accept="application/pdf" style="display:none;"-->
+          <!--input type="file" id="fileInputTxt" accept="text/plain" style="display:none;"-->
+          <input type="file" id="fileInputPdf" accept="" style="display:none;">
+          <input type="file" id="fileInputTxt" accept="" style="display:none;">
 
 
           <div class="hotkey" translate="no" style="display: flex; margin: 0vw; display: flex; flex-direction: row; border: 2px solid #cdcdcd; animation: hardBlink 1.0s steps(1, start) infinite;" translate="no">
@@ -256,16 +260,20 @@
               <button id="nextAllBtn">⏭️<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">Next</p></button>
               <button id="speakBtn">▶️<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">Play</p></button>
               <button id="stopBtn">⏸️<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">Stop</p></button>
-              <button id="switchBtn">💬<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">Switch</p></button>
+
+              <button id="fullscreenBtn" disabled="">👀<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">fullscreen</p></button>
+              <button id="switchinputBtn" disabled="">💬<p style="margin: 0; padding: 0; font-size: 1vh;" class="label">switchinput</p></button>
+              
           </div>
           <input class="" id="txt" type="text" name="noMemory" autocomplete="off" placeholder="After uploading two files, start!" style="width: 100%; text-align: center; display: none;"/>
           
           <!-- 放置你原有的布局 -->
-          <!--strong></strong-->
+          <!--strong>⏮️⏭️▶️⏸️💬👀🖵</strong-->
           <div style="background: #FF3B00; color: white;" translate="yes">
           <div style="margin: 10px;" onclick="document.getElementById('DialogTool').showModal()">
           By sending a message to this service, it means you have agreed to any content and all content!
           </div></div>
+          <strong style="background-color: black; color: white; font-size: max(1vh,1vw);" translate="no">© 2024 NINS (by JPGT).</strong>
     </div>
     
     <dialog id="DialogCheck" translate="no">
@@ -305,9 +313,11 @@ console.log = function(...args) {
 });
 
 // 測試
-console.log(new Date().toLocaleString(), 'v1.20251203.1315');
-console.log(new Date().toLocaleString(), 'This is a log test.');
-console.error(new Date().toLocaleString(), 'This is an error test.');
+const version = (new Date().toLocaleString(), 'v1.20251203.1315 (This is an error test.)');
+console.error(version);
+console.warn(version);
+console.info(version);
+console.log(version);
 </script>
 <!-- LOG ================================================== -->
     
@@ -321,6 +331,43 @@ console.error(new Date().toLocaleString(), 'This is an error test.');
     <!-- 放置你原有的布局 -->
 
 <script>
+document.getElementById('fileInputPdf').addEventListener('change', async (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = async function() {
+    const typedarray = new Uint8Array(this.result);
+    const pdf = await pdfjsLib.getDocument(typedarray).promise;
+    let resultText = '';
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      const pageText = content.items.map(item => item.str).join(' ').trim();
+      
+      // 加上頁碼格式
+      ///const pageNumber = String(i).padStart(2, '0');  ///01~99
+      ///const pageNumber = String(i).padStart(3, '0');  ///001~999
+      const pageNumber = String(i).padStart(4, '0');  ///0001~9999
+      resultText += `[${pageNumber}]▶️　${pageText}\n\n`;
+    }
+
+    // 自動下載 TXT
+    const blob = new Blob([resultText], {type: 'text/plain;charset=utf-8'});
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = file.name.replace(/\.pdf$/i, '.txt');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+  };
+  reader.readAsArrayBuffer(file);
+});
+</script>
+
+<script>
 /* --- TOUCH 功能 --- */
 // 全螢幕畫布
 const carousel = document.getElementById('pdfCanvas');
@@ -328,7 +375,7 @@ let startX = 0;
 let isDragging = false;
 
 // 收放輸入框
-document.getElementById('switchBtn').addEventListener('click', () => {
+document.getElementById('switchinputBtn').addEventListener('click', () => {
   if (document.getElementById('txt').style.display === 'none') {
     document.getElementById('txt').style.display = 'block'; // 顯示元素
   } else {
@@ -339,7 +386,13 @@ document.getElementById('switchBtn').addEventListener('click', () => {
 // 控制方法統一
 function contrlRight() {
     if(!pdfDoc) return;
-    if(currentPage < totalPages){ currentPage++; renderPage(currentPage); }
+    if (currentPage === totalPages) {
+      console.log("Already on the last page");
+      return;  // 頁面語音同步
+    }
+    ///if(currentPage < totalPages){ currentPage++; renderPage(currentPage); }
+    console.log("⏭️", currentPage, currentPage+1);
+    goToPage(currentPage + 1);
     
     if(lines.length===0) return;
     currentIndex = (currentIndex +1) % lines.length;
@@ -347,29 +400,51 @@ function contrlRight() {
 }
 function contrlLeft() {
     if(!pdfDoc) return;
-    if(currentPage > 1){ currentPage--; renderPage(currentPage); }
+    if (currentPage === 1) {
+      console.log("Already on the first page");
+      return;  // 頁面語音同步
+    }
+    ///if(currentPage > 1){ currentPage--; renderPage(currentPage); }
+    console.log("⏮️", currentPage, currentPage-1);
+    goToPage(currentPage - 1);
     
     if(lines.length===0) return;
     currentIndex = (currentIndex -1 + lines.length) % lines.length;
     txt.value = lines[currentIndex];
 }
+function contrlStop() { 
+    console.log("⏸️");
+    if('speechSynthesis' in window){
+      if(window.speechSynthesis.speaking) window.speechSynthesis.cancel();
+    } else {
+      ///alert('瀏覽器不支援 Web Speech API');
+    }
+}
 function contrlPlay() {
+    console.log("▶️");
     let text = txt.value.trim();
     if(!text && pdfDoc){
       ///alert('請先選擇文字或輸入要讀的文字。');
       return;
     }
     if('speechSynthesis' in window){
+      const voice1 = voices[parseInt(document.getElementById('voiceSelect1').value)];
+      const voice2 = voices[parseInt(document.getElementById('voiceSelect2').value)];
+
       if(window.speechSynthesis.speaking) window.speechSynthesis.cancel();
+      let lang = 1.0; if (currentPage % 2 === 0) { lang = voice2.lang; } else { lang = voice1.lang; }
+      let pitch = 1.0; if (currentPage % 2 === 0) { pitch = 0.8; } else { pitch = 1.3; }
+      let rate = 1.0; if (currentPage % 2 === 0) { rate = 0.9; } else { rate = 1.2; }
+      let volume = 1.0; if (currentPage % 2 === 0) { volume = 0.7; } else { volume = 1.0; }
       
       const voice = voices[parseInt(voiceSelect.value)];  ///???
       ///currentUtter = new SpeechSynthesisUtterance(text);
       const msg = new window.SpeechSynthesisUtterance();
-      msg.text = text;
-      msg.lang = voice.lang;           // 語言代碼
       msg.rate = document.getElementById('rateSlider').value || 2;
-      ///msg.volume = 1;                // 音量 0~1
-      ///msg.pitch = 1;                 // 音高 0~2
+      msg.text = text.split('▶️')[1];  // text;
+      msg.lang = lang;           // 語言代碼
+      ///msg.volume = volume;              // 音量 0~1
+      ///msg.pitch = pitch;                // 音高 0~2
       ///msg.voice = voice;
 
       ///const voice = voices[voiceSelect.value];  ///???
@@ -379,8 +454,8 @@ function contrlPlay() {
       ///console.log(new Date().toLocaleString(), voice);                   // 不可列舉，無法這樣顯示***
       ///console.log(new Date().toLocaleString(), JSON.stringify(voice));   // 不可列舉，無法這樣顯示***
       console.log(new Date().toLocaleString(),   {
-        name: voice.name,
-        lang: voice.lang,
+        name: name,  ///voice.name,
+        lang: lang,  ///voice.lang,
         ///voiceURI: voice.voiceURI,
         ///localService: voice.localService,
         ///default: voice.default
@@ -397,25 +472,52 @@ function contrlPlay() {
 // 鍵盤控制
 window.addEventListener('keydown', e => {
   ///if (e.code === 'Space') {  }
+  if (e.ctrlKey) { 
+    ///contrlStop(); 
+  }
   if (e.key === 'ArrowRight') {
     contrlRight();
-  };
+  }
   if (e.key === 'ArrowLeft') {
     contrlLeft();
   }
   if (e.key === ' ') { 
-    contrlPlay();
+    ///contrlPlay();
   }
   ///updateCarousel();
+  if (e.key === 'ArrowUp') {
+    contrlPlay();
+  }
+  if (e.key === 'ArrowDown') {
+    contrlStop(); 
+  }
 });
 
+// 按鈕控制
+const _playBtn = document.getElementById('speakBtn');
+const _stopBtn = document.getElementById('stopBtn');
+const _prevBtn = document.getElementById('prevAllBtn');
+const _nextBtn = document.getElementById('nextAllBtn');
+_playBtn.addEventListener('click', ()=>{ contrlPlay(); });
+_stopBtn.addEventListener('click', ()=>{ contrlStop(); });
+_prevBtn.addEventListener('click', ()=>{ contrlLeft(); });
+_nextBtn.addEventListener('click', ()=>{ contrlRight(); });
+
 // 鼠標控制
+function touchLog(e, touchname) {
+    for (let i = 0; i < e.touches.length; i++) {
+        ///const touch = e.changedTouches[i];   // 剛離開的手指
+        const touch = e.touches[i]; // 螢幕上剩下的手指
+        console.log(`${touchname} * ${i}: (${touch.clientX}, ${touch.clientY})`);
+    }
+}
 document.querySelectorAll("canvas").forEach(canvas => {
     let startX = 0;
     let startY = 0;
     let isPointerDown = false;
     let longPressTimer = null;
     let longPressTriggered = false;
+    console.log("⏮️⏭️▶️⏸️");
 
     canvas.addEventListener('pointermove', e => {
       // 如果移動太多就取消長按
@@ -425,68 +527,129 @@ document.querySelectorAll("canvas").forEach(canvas => {
         clearTimeout(longPressTimer);
       }
     });
+    
+    canvas.addEventListener('touchstart', e => console.log('touchstart'));
+    canvas.addEventListener('touchend', e => console.log('touchend'));
+    ///canvas.addEventListener('touchmove', (e) => console.log('touchmove'));
+    canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault(); // 阻止頁面滾動
+        touchLog(e, "touchmove");
+    });
+
+
+
+    ///canvas.addEventListener('pointerdown', e => console.log('pointerdown'));
+    ///canvas.addEventListener('pointerup', e => console.log('pointerup'));
+    ///canvas.addEventListener('pointermove', e => console.log('pointermove'));
+
+    
+    canvas.addEventListener('pointerup', e => {
+      canvas.releasePointerCapture(e.pointerId); // 釋放指標
+      isPointerDown = false;
+      ///longPressTriggered = false;
+      console.log(new Date().toLocaleString(), 'pointerup and releasePointerCapture');
+      console.log(e.clientX, e.clientY);
+
+      clearTimeout(longPressTimer);
+    });
 
     canvas.addEventListener('pointerdown', e => {
       canvas.setPointerCapture(e.pointerId); // 鎖定指標
-      console.log(new Date().toLocaleString(), 'pointerdown and setPointerCapture');
       isPointerDown = true;
-      startX = e.clientX;
-      startY = e.clientY;
       longPressTriggered = false;
+      console.log(new Date().toLocaleString(), 'pointerup and setPointerCapture');
+      console.log(e.clientX, e.clientY);
+
+      clearTimeout(longPressTimer);
 
       longPressTimer = setTimeout(() => {
-        longPressTriggered = true;
-        contrlLongPress();
-      }, 500); // 長按時間
+        console.log("longPressTimer 1");
+        contrlPlay();///contrlLongPress();
+        ///isPointerDown = null;  // 非必要不啟用此行
+        ///longPressTriggered = true;  // 非必要不啟用此行
+      }, 500); 
+
+      startX = e.clientX;
+      startY = e.clientY;
+
     });
 
-    canvas.addEventListener('pointerup', e => {
-      canvas.releasePointerCapture(e.pointerId); // 鎖定指標
-      console.log(new Date().toLocaleString(), 'pointerup and releasePointerCapture');
-      clearTimeout(longPressTimer);
-      if (!isPointerDown) return;
-      isPointerDown = false;
+    canvas.addEventListener('pointermove', e => {
+      if(!isPointerDown) return; // 必須按住
+      ///if(!longPressTriggered) return;
 
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
-
       const absX = Math.abs(dx);
       const absY = Math.abs(dy);
+      ///const threshold = 10; // 避免輕微抖動被判斷為滑動
       ///const threshold = 50; // 滑動需要的最小距離
-      const threshold = canvas.clientWidth * 0.05; // 10% 的畫布寬度
+      const threshold = canvas.clientWidth * 0.05; // 5% 的畫布寬度
 
-      // 若已經觸發長按，不再判定滑動或點擊
-      if (longPressTriggered) return;
+      // 如果按著時間夠長
+      if (longPressTriggered) {
+        // 如果只有少量移動
+        if(Math.abs(dx) > 10 || Math.abs(dy) > 10) {  }
 
-      //點擊
-      if(absX < 10 && absY < 10){
-        contrlTap();
-        return;
+        ///clearTimeout(longPressTimer);  // 已觸發！再呼叫 clearTimeout 也沒有作用了！
+        
+        console.log("longPressTimer 3");
+        contrlPlay();///contrlLongPress();
+        ///isPointerDown = false;
+        ///longPressTriggered = false;
+        return;  // 若已經觸發長按，不再判定滑動或點擊
       }
 
-      //水平滑動
+      ///isPointerDown = false;  // 不可啟用此行？對！
+
+      // 水平滑動
       if(absX > absY && absX > threshold){
         if(dx > 0){
-          contrlLeft();
+          console.log("向右滑動", dx);contrlLeft();
+          isPointerDown = false;
+          longPressTriggered = false;
+          return;
         } else {
-          contrlRight();
+          console.log("向左滑動", dx);contrlRight();
+          isPointerDown = false;
+          longPressTriggered = false;
+          return;
         }
-        return;
       }
 
-      //垂直滑動
-      if(absY > absX && absY > threshold){
+      // 垂直滑動
+      else if(absY > absX && absY > threshold){
         if(dy > 0){
-          contrlPlay();///contrlDown();
+          console.log("向下滑動", dy);///contrlPlay();
+          isPointerDown = false;
+          longPressTriggered = false;
+          return;
         } else {
-          contrlPlay();///contrlUp();
+          console.log("向上滑動", dy);///contrlPlay();
+          isPointerDown = false;
+          longPressTriggered = false;
+          return;
         }
-        return;
       }
     });
 });
 
-document.querySelectorAll("canvas").forEach(canvas => {  // 論巡
+
+document.getElementById('fullscreenBtn').addEventListener('click', () => {
+  const canvas = document.getElementById('pdfCanvas');
+  if (!document.fullscreenElement) { canvas.style.background = "black"; }
+  else { canvas.style.background = "transparent"; }
+
+  if (canvas.requestFullscreen) {
+    canvas.requestFullscreen();
+  } else if (canvas.webkitRequestFullscreen) { /* Safari */
+    canvas.webkitRequestFullscreen();
+  } else if (canvas.msRequestFullscreen) { /* IE/Edge */
+    canvas.msRequestFullscreen();
+  }
+});
+/*
+document.querySelectorAll("canvas").forEach(canvas => {  // 論巡 
   canvas.addEventListener("click", async () => {
     // 若尚未進入全螢幕 → 請求全螢幕
     if (!document.fullscreenElement) {
@@ -508,36 +671,6 @@ document.querySelectorAll("canvas").forEach(canvas => {  // 論巡
       ///downloadPNG(canvas);
     }
   });
-});
-/*
-// 其他控制
-document.querySelectorAll("canvas").forEach(canvas => {  // 論巡
-  // 手機觸控
-  canvas.addEventListener('touchstart', e => {
-    startX = e.touches[0].clientX;
-  });
-  canvas.addEventListener('touchend', e => {
-    let delta = e.changedTouches[0].clientX - startX;
-    if (delta > 50) currentIndex = Math.max(0, currentIndex - 1);
-    if (delta < -50) currentIndex = Math.min(canvases.length-1, currentIndex + 1);
-    updateCarousel();
-  });
-  // 電腦滑鼠拖動
-  canvas.addEventListener('mousedown', e => {
-    isDragging = true;
-    startX = e.clientX;
-  });
-  canvas.addEventListener('mousemove', e => {
-    if (!isDragging) return;
-  });
-  canvas.addEventListener('mouseup', e => {
-    if (!isDragging) return;
-    let delta = e.clientX - startX;
-    if (delta > 50) currentIndex = Math.max(0, currentIndex - 1);
-    if (delta < -50) currentIndex = Math.min(canvases.length-1, currentIndex + 1);
-    updateCarousel();
-    isDragging = false;
-  });
 }); */
 </script>
 
@@ -554,19 +687,29 @@ let currentIndex = 0;
 
 // 讀取 TXT
 fileInputTxt.addEventListener('change', e=>{
-  document.getElementById('fileInputTxtRow').style.display = "none";
 
   const file = e.target.files[0];
-  if(!file) return;
+  ///if(!file) return;
+  if (!e.target.files || e.target.files.length === 0) { console.log("file0");window.open("https://cospeaking.nins.cc/inputs/example.txt", "_blank", "noopener,noreferrer");return; }
+  if (file.type !== 'text/plain') { setTimeout(() => { window.open("https://cospeaking.nins.cc/inputs/example.txt", "_blank", "noopener,noreferrer"); }, 100);return;  }
+  
+  document.getElementById('fileInputTxtRow').style.display = "none";
+  document.getElementById('switchinputBtn').disabled  = false;  // 取消禁用元素
+
   const reader = new FileReader();
   reader.onload = (event)=>{
-    lines = event.target.result.split(/\r?\n/).filter(line=>line.trim()!=='');
+    ///lines = event.target.result.split(/\r?\n/).filter(line=>line.trim()!=='');
+    lines = event.target.result.split(/\r?\n/).filter(line=>line.trim()!=='' && line.includes('▶️'));
     currentIndex = 0;
     txt.value = lines[currentIndex] || '';
+    ///txt.value = lines[currentIndex].replace(/^\[\d{4}\]\s*/, "") || '';  ///0000~9999
+    ///txt.value = text.split('▶️')[1];  // 保留 emoji 之後的內容
+
   };
   reader.readAsText(file);
 });
 
+/*
 prevTxtBtn.addEventListener('click', ()=>{
   if(lines.length===0) return;
   currentIndex = (currentIndex -1 + lines.length) % lines.length;
@@ -577,7 +720,7 @@ nextTxtBtn.addEventListener('click', ()=>{
   if(lines.length===0) return;
   currentIndex = (currentIndex +1) % lines.length;
   txt.value = lines[currentIndex];
-});
+});  */
 
 
 </script>
@@ -605,18 +748,25 @@ const renderPage = async (num)=>{
     viewport
   };
   await page.render(renderCtx).promise;
-  pageInfo.textContent = `頁面 ${num} / ${totalPages}`;
+  pageInfo.setAttribute("translate", "no");
+  pageInfo.textContent = `${num} / ${totalPages}`;
+  pageInfo.style.display = "block";
   ///pdfCanvas.style.border = "1px solid black";
-  pageInfo.style.display = "none";
+  ///pageInfo.style.display = "none";
   pdfCanvas.style.border = "1px solid #cdcdcd";
   pdfCanvas.style.display = "block";
 };
 
 fileInputPdf.addEventListener('change', e=>{
-  document.getElementById('fileInputPdfRow').style.display = "none";
 
   const file = e.target.files[0];
-  if(!file) return;
+  ///if(!file) return;
+  if (!e.target.files || e.target.files.length === 0) { console.log("file0");window.open("https://cospeaking.nins.cc/inputs/example.pdf", "_blank", "noopener,noreferrer");return; }
+  if (file.type !== 'application/pdf') { setTimeout(() => { window.open("https://cospeaking.nins.cc/inputs/example.pdf", "_blank", "noopener,noreferrer"); }, 100);return;  }
+  
+  document.getElementById('fileInputPdfRow').style.display = "none";
+  document.getElementById('fullscreenBtn').disabled  = false;  // 取消禁用元素
+
   const reader = new FileReader();
   reader.onload = async (event)=>{
     const typedarray = new Uint8Array(event.target.result);
@@ -628,6 +778,7 @@ fileInputPdf.addEventListener('change', e=>{
   reader.readAsArrayBuffer(file);
 });
 
+/*
 prevPdfBtn.addEventListener('click', ()=>{
   if(!pdfDoc) return;
   if(currentPage > 1){ currentPage--; renderPage(currentPage); }
@@ -636,8 +787,102 @@ prevPdfBtn.addEventListener('click', ()=>{
 nextPdfBtn.addEventListener('click', ()=>{
   if(!pdfDoc) return;
   if(currentPage < totalPages){ currentPage++; renderPage(currentPage); }
+}); */
+
+/*
+let renderTimer = null; // 防抖計時器
+
+const debouncedRenderPage = (num) => {
+  if (renderTimer) clearTimeout(renderTimer);
+  renderTimer = setTimeout(() => {
+    renderPage(num);
+  }, 500); // 500ms 等待穩定後渲染
+};
+
+// 改造上一頁、下一頁按鈕事件
+prevPdfBtn.addEventListener('click', ()=>{
+  if(!pdfDoc) return;
+  if(currentPage > 1){ 
+    currentPage--; 
+    debouncedRenderPage(currentPage);
+  }
 });
 
+nextPdfBtn.addEventListener('click', ()=>{
+  if(!pdfDoc) return;
+  if(currentPage < totalPages){ 
+    currentPage++; 
+    debouncedRenderPage(currentPage);
+  }
+}); */
+
+let renderTimer = null;   // 防抖計時器
+let currentRenderTask = null; // 追蹤當前渲染任務
+
+const renderPageWithCancel = async (num) => {
+  if (!pdfDoc) return;
+
+  // 如果上一個渲染還在進行，先取消
+  if (currentRenderTask) {
+    ///currentRenderTask.cancel();
+    try {
+      await currentRenderTask.cancel();  // 等待異部完成
+    } catch (err) {
+      if (err?.name !== 'RenderingCancelledException') console.error(err);
+    }
+    currentRenderTask = null;
+  }
+
+  const page = await pdfDoc.getPage(num);
+  const viewport = page.getViewport({ scale: 1.5 });
+  pdfCanvas.height = viewport.height;
+  pdfCanvas.width = viewport.width;
+
+  const renderCtx = {
+    canvasContext: pdfCanvas.getContext('2d'),
+    viewport
+  };
+
+
+  // 開始渲染
+  currentRenderTask = page.render(renderCtx);
+  try {
+    await currentRenderTask.promise;
+  } catch (err) {
+    if (err?.name !== 'RenderingCancelledException') console.error(err);
+  } finally {
+    currentRenderTask = null;
+  }
+};
+
+const debouncedRenderPage = (num) => {
+  if (renderTimer) clearTimeout(renderTimer);
+  renderTimer = setTimeout(() => {
+    renderPageWithCancel(num);
+  }, 520);  // 100~500ms
+};
+
+// 將頁碼更新獨立
+const goToPage = (num) => {
+  if (!pdfDoc) return;
+  if (num < 1) num = 1;
+  if (num > totalPages) num = totalPages;
+  currentPage = num;
+
+  // 頁碼先更新
+  pageInfo.setAttribute("translate", "no");
+  pageInfo.textContent = `${currentPage} / ${totalPages}`;
+  pageInfo.style.display = "block";
+
+  // 再渲染
+  debouncedRenderPage(currentPage);
+};
+
+/*
+// 上一頁
+prevPdfBtn.addEventListener('click', () => goToPage(currentPage - 1));
+// 下一頁
+nextPdfBtn.addEventListener('click', () => goToPage(currentPage + 1)); */
 </script>
 
 
@@ -660,24 +905,46 @@ function languageRegion(tag) {
   return tag; // 只有語言
 }
 
+function addOptionToSelects(voice, selects, index) {
+  selects.forEach(sel => {
+    const option = document.createElement('option');
+    option.value = index;
+    option.textContent = `${voice.name} (${voice.lang})`;
+    sel.appendChild(option);
+  });
+}
+
+const selectElements = [
+  document.getElementById('voiceSelect'),
+  document.getElementById('voiceSelect1'),
+  document.getElementById('voiceSelect2')
+];
+
 function loadVoices() {
   voices = speechSynthesis.getVoices();
   voiceSelect.innerHTML = '';
+  voices.forEach((voice, i) => addOptionToSelects(voice, selectElements, i));
+  /*
   voices.forEach((voice, i) => {
     const option = document.createElement('option');
     option.value = i;
     option.textContent = `${voice.name} (${voice.lang})`;
     voiceSelect.appendChild(option);
-  });
+  }); */
   
   // 設定預設語音
   const language = languageRegion(navigator.language || navigator.userLanguage || "en-US");  // 閱讀母語
-  const defaultVoice = voices.find(v => v.lang === language) || 
-                       voices.find(v => v.lang.startsWith(language.slice(0, 2)));
+  const defaultVoice = voices.find(v => v.lang.startsWith( new URL(window.location.href).searchParams.get("lang")||language )) || 
+                       ///voices.find(v => v.lang === language) || 
+                       voices.find(v => v.lang.startsWith( language.replace(/_/g, "-") )) || // zh-TW
+                       voices.find(v => v.lang.startsWith( language.replace(/-/g, "_") )) || // zh_TW
+                       voices.find(v => v.lang.startsWith( language.slice(0, 2) ));
   
   if (defaultVoice) {
     const index = voices.indexOf(defaultVoice);
     voiceSelect.value = index;
+    document.getElementById('voiceSelect1').value = index;
+    document.getElementById('voiceSelect2').value = index;
   }
 }
 
@@ -690,6 +957,7 @@ const speakBtn = document.getElementById('speakBtn');
 const stopBtn = document.getElementById('stopBtn');
 let currentUtter = null;
 
+/*
 speakBtn.addEventListener('click', ()=>{
   if (true) {
     let text = txt.value.trim();
@@ -735,7 +1003,7 @@ speakBtn.addEventListener('click', ()=>{
 
 stopBtn.addEventListener('click', ()=>{
   if(window.speechSynthesis.speaking) window.speechSynthesis.cancel();
-});
+}); */
 </script>
     <!-- 放置你原有的布局 -->
 
