@@ -20,7 +20,7 @@ function redirectIfMatched() {  ///rules
 
   const currentUrl = window.location.href;
   const keywords = [
-    ///"deurl.nins.cc/",
+    "deurl.nins.cc/",
     "time.nins.cc/",
     "uris.nins.cc/",
     "transing.nins.cc/",
@@ -264,6 +264,7 @@ function exitFullscreenSafe() {
         console.log("exit failed:", err);
       });
 }
+
 
 
 
