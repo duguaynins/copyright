@@ -70,7 +70,10 @@
         .item-time { font-size: 0.75rem; color: var(--secondary); font-weight: 500; }
         .item-desc { font-weight: 600; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .item-amount { font-weight: 700; font-size: 1rem; }
-        
+        /* 2. 核心修正：強制說明文字在空間不足時縮減並顯示省略號 */
+        .item-main {
+            min-width: 0; /* 關鍵！這能防止 Flex/Grid 項目被內容撐開 */
+        }
         .inc-text { color: var(--inc-text); }
         .exp-text { color: var(--exp-text); }
 
