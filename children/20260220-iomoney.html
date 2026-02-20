@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>極簡記帳本 Pro - 搜尋加強版</title>
+    <style>
+        :root {
+            --primary: #2563eb; --success: #059669; --danger: #dc2626;
+            --warning: #d97706; --secondary: #64748b; --bg: #f8fafc;
+            --dark: #1e293b;
+        }
+
+        body { font-family: system-ui, sans-serif; background: var(--bg); color: #1e293b; margin: 0; padding: 10px; }
+        .container { max-width: 900px; margin: 15px auto; background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+
+        .summary-header {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--dark); color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px;
+        }
+        .summary-header b { font-size: 1.8rem; display: block; margin-top: 4px; }
+
+        .form-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px;
+            background: #f1f5f9; padding: 15px; border-radius: 12px; margin-bottom: 15px;
+        }
+        input, select, button { padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; }
+
+        /* 搜尋欄位樣式 */
+        .search-container { margin-bottom: 15px; }
+        .search-input { 
+            width: 100%; box-sizing: border-box; padding: 12px; 
+            border: 2px solid #e2e8f0; border-radius: 10px; 
+            transition: 0.3s; background: #fff;
+        }
+        .search-input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+
+        .btn-group { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+        button { cursor: pointer; border: none; font-weight: 600; flex: 1; transition: 0.2s; color: white; background: var(--primary); }
+        button:hover { filter: brightness(1.1); }
+        .delete { background: var(--danger); }
+        .cancel { background: var(--secondary); }
+        .update { background: var(--warning); }
+        
+        .fold-controls { margin-bottom: 10px; text-align: center; }
+        .fold-controls button { background: none; color: var(--primary); font-size: 13px; text-decoration: underline; flex: none; border:none; }
+
+        .table-container { width: 100%; overflow-x: auto; border-radius: 12px; border: 1px solid #e2e8f0; }
+        table { width: 100%; border-collapse: collapse; min-width: 650px; }
+        th { background: #f8fafc; color: #64748b; font-size: 0.85rem; text-align: left; padding: 12px; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 12px; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+
+        .day-summary-row { background: #f1f5f9; font-weight: bold; cursor: pointer; border-bottom: 1px solid #e2e8f0 !important; }
+        .summary-wrapper { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        
+        .arrow { display: inline-block; width: 15px; transition: 0.2s; color: var(--secondary); }
+        .collapsed .arrow { transform: rotate(-90deg); }
+
+        .badge { padding: 2px 8px; border-radius: 4px; font-size: 12px; margin-left: 5px; border: 1px solid rgba(0,0,0,0.05); }
+        .badge-inc { background: #dcfce7; color: var(--success); }
+        .badge-exp { background: #fee2e2; color: var(--danger); }
+        .badge-bal { background: #e0f2fe; color: #0369a1; }
+
+        .is-hidden { display: none !important; }
+        .income { color: var(--success); font-weight: bold; }
+        .expense { color: var(--danger); font-weight: bold; }
+        .editing { background: #fffbeb; }
+
+        .grand-total-card {
+            margin-top: 20px; background: var(--dark); color: white; padding: 20px; border-radius: 12px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .total-badges { display: flex; gap: 10px; flex-wrap: wrap; }
+        .total-badge { padding: 6px 15px; border-radius: 8px; font-size: 0.95rem; font-weight: 500; }
+        .bg-inc { background: rgba(74, 222, 128, 0.15); color: #4ade80; }
+        .bg-exp { background: rgba(251, 113, 133, 0.15); color: #fb7185; }
+        .bg-bal { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid #3b82f6; }
+
+        @media (max-width: 600px) {
+            .summary-wrapper, .grand-total-card { flex-direction: column; align-items: flex-start; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="summary-header" style="display: none;">
+        <div>總結餘 <b id="total-top">0</b></div>
+    </div>
+
+    <div class="grand-total-card">
+        <div class="total-label" id="footer-label">全帳本總計</div>
+        <div class="total-badges">
+            <div class="total-badge bg-inc">收入 <span id="footer-inc">0</span></div>
+            <div class="total-badge bg-exp">支出 <span id="footer-exp">0</span></div>
+            <div class="total-badge bg-bal">結餘 <span id="footer-bal">0</span></div>
+        </div>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 搜尋說明關鍵字 (例如：午餐)..." oninput="render()">
+    </div>
+
+    <div class="form-grid">
+        <input type="date" id="date">
+        <input type="time" id="time">
+        <select id="type">
+            <option value="income">收入</option>
+            <option value="expense" selected>支出</option>
+        </select>
+        <input id="amount" type="text" placeholder="金額">
+        <input id="desc" placeholder="說明">
+    </div>
+
+    <div class="btn-group">
+        <button onclick="exportTXT()" style="background:var(--success); padding:5px 15px; font-size:12px;">匯出備份</button>
+        <button id="addBtn" onclick="addOrSave()">新增紀錄</button>
+        <button onclick="updateExisting()" class="update" id="updateBtn" style="display:none">更新紀錄</button>
+        <button onclick="cancelEdit()" class="cancel" id="cancelBtn" style="display:none">取消編輯</button>
+        <button onclick="document.getElementById('fileInput').click()" style="background:#6366f1">匯入資料</button>
+        <button onclick="clearAll()" class="delete">重置</button>
+        <input type="file" id="fileInput" accept=".txt" style="display:none">
+    </div>
+
+    <div class="fold-controls">
+        <button onclick="toggleAllGroups(true)">全部展開</button> | 
+        <button onclick="toggleAllGroups(false)">全部收折</button>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th width="15%">日期/時間</th>
+                    <th width="10%">類型</th>
+                    <th width="20%">金額</th> <th width="35%">說明</th>
+                    <th width="20%">操作</th>
+                </tr>
+            </thead>
+            <tbody id="list"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+const KEY="accountBookUTC_v3"; 
+let data=JSON.parse(localStorage.getItem(KEY))||JSON.parse(localStorage.getItem("accountBookUTC_v2"))||JSON.parse(localStorage.getItem("accountBookUTC"))||[];
+let editingId=null;
+let collapsedDates = new Set();
+
+function setToday(){ 
+    const now = new Date();
+    document.getElementById("date").value = now.toISOString().split("T")[0];
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    document.getElementById("time").value = `${hh}:${mm}`;
+}
+
+function save(){ localStorage.setItem(KEY,JSON.stringify(data)); }
+
+document.getElementById("amount").addEventListener("input", function(){
+    this.value = this.value.replace(/[^0-9.]/g,"");
+});
+
+function addOrSave(){ if(editingId===null) appendNew(); }
+
+function appendNew(){
+    const date=document.getElementById("date").value, 
+          time=document.getElementById("time").value,
+          type=document.getElementById("type").value,
+          desc=document.getElementById("desc").value, 
+          amount=parseFloat(document.getElementById("amount").value);
+    if(!desc || isNaN(amount)) return;
+    
+    const now = new Date().toISOString();
+    data.push({ 
+        id: Date.now(), 
+        date, 
+        time: time || "00:00",
+        type, 
+        desc, 
+        amount, 
+        created: now,
+        lastModified: now
+    });
+    finalize();
+}
+
+function updateExisting(){
+    const item = data.find(i => i.id === editingId);
+    if(item){
+        item.date = document.getElementById("date").value;
+        item.time = document.getElementById("time").value;
+        item.type = document.getElementById("type").value;
+        item.desc = document.getElementById("desc").value;
+        item.amount = parseFloat(document.getElementById("amount").value);
+        item.lastModified = new Date().toISOString();
+    }
+    cancelEdit(); finalize();
+}
+
+function edit(id){
+    const item = data.find(i => i.id === id);
+    editingId = id;
+    document.getElementById("date").value = item.date;
+    document.getElementById("time").value = item.time || "00:00";
+    document.getElementById("type").value = item.type;
+    document.getElementById("desc").value = item.desc;
+    document.getElementById("amount").value = item.amount;
+    document.getElementById("addBtn").style.display="none";
+    ["updateBtn","cancelBtn"].forEach(btnId => document.getElementById(btnId).style.display="inline-block");
+    render();
+}
+
+function cancelEdit(){
+    editingId = null; 
+    document.getElementById("desc").value=""; 
+    document.getElementById("amount").value="";
+    document.getElementById("addBtn").style.display="inline-block";
+    ["updateBtn","cancelBtn"].forEach(btnId => document.getElementById(btnId).style.display="none");
+    setToday(); render();
+}
+
+function remove(id){ if(confirm("確定刪除？")) { data=data.filter(i=>i.id!==id); finalize(); } }
+function clearAll(){ if(confirm("確定清空所有資料？")) { data=[]; finalize(); } }
+function finalize(){ save(); render(); }
+
+function toggleGroup(date) {
+    if (collapsedDates.has(date)) collapsedDates.delete(date);
+    else collapsedDates.add(date);
+    render();
+}
+function toggleAllGroups(expand) {
+    if (expand) collapsedDates.clear();
+    else collapsedDates = new Set(data.map(i => i.date));
+    render();
+}
+
+// 修改後的渲染邏輯：加入搜尋過濾與動態統計
+function render(){
+    const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+    
+    // 1. 排序
+    data.sort((a,b) => {
+        if(a.date !== b.date) return new Date(b.date) - new Date(a.date);
+        return (b.time || "00:00").localeCompare(a.time || "00:00");
+    });
+
+    // 2. 根據搜尋字串過濾資料
+    const filteredData = data.filter(item => 
+        item.desc.toLowerCase().includes(searchTerm)
+    );
+    
+    const list = document.getElementById("list");
+    list.innerHTML = "";
+    let totalInc = 0, totalExp = 0;
+
+    // 3. 群組化過濾後的資料
+    const groups = filteredData.reduce((acc, item) => {
+        if(!acc[item.date]) acc[item.date] = [];
+        acc[item.date].push(item);
+        return acc;
+    }, {});
+
+    // 4. 渲染 UI
+    Object.keys(groups).sort().reverse().forEach(date => {
+        let dayInc = 0, dayExp = 0;
+        groups[date].forEach(item => {
+            if(item.type === "income") { dayInc += item.amount; totalInc += item.amount; }
+            else { dayExp += item.amount; totalExp += item.amount; }
+        });
+
+        const isCollapsed = collapsedDates.has(date);
+        const bal = dayInc - dayExp;
+
+        const headerRow = document.createElement('tr');
+        headerRow.className = `day-summary-row ${isCollapsed ? 'collapsed' : ''}`;
+        headerRow.onclick = () => toggleGroup(date); // 點擊整列可收折
+        headerRow.innerHTML = `
+            <td colspan="5">
+                <div class="summary-wrapper">
+                    <span><span class="arrow">▼</span> ${date} 結算</span>
+                    <div>
+                        <span class="badge badge-inc">收: ${dayInc.toLocaleString()}</span>
+                        <span class="badge badge-exp">支: ${dayExp.toLocaleString()}</span>
+                        <span class="badge badge-bal">餘: ${bal.toLocaleString()}</span>
+                    </div>
+                </div>
+            </td>`;
+        list.appendChild(headerRow);
+
+        groups[date].forEach(item => {
+            const row = document.createElement('tr');
+            row.className = `detail-row ${isCollapsed ? 'is-hidden' : ''} ${item.id === editingId ? 'editing' : ''}`;
+            const isInc = item.type === "income";
+            row.innerHTML = `
+                <td style="color:#94a3b8; font-size:12px;">
+                    ${item.date}<br><span style="color:var(--primary)">${item.time || '--:--'}</span>
+                </td>
+                <td class="${item.type}">${isInc?'收入':'支出'}</td>
+                <td class="${isInc?'income':'expense'}">${isInc?'+':'-'}${item.amount.toLocaleString()}</td>
+                <td>${item.desc}</td>
+                <td>
+                    <button class="update" style="padding:4px 8px; font-size:12px;" onclick="event.stopPropagation(); edit(${item.id})">改</button>
+                    <button class="delete" style="padding:4px 8px; font-size:12px;" onclick="event.stopPropagation(); remove(${item.id})">刪</button>
+                </td>`;
+            list.appendChild(row);
+        });
+    });
+
+    // 5. 更新統計數值 (反映搜尋結果)
+    const grandBalance = totalInc - totalExp;
+    document.getElementById("footer-inc").innerText = totalInc.toLocaleString();
+    document.getElementById("footer-exp").innerText = totalExp.toLocaleString();
+    document.getElementById("footer-bal").innerText = grandBalance.toLocaleString();
+    document.getElementById("total-top").innerText = grandBalance.toLocaleString();
+    
+    // 更新標籤提示
+    document.getElementById("footer-label").innerText = searchTerm ? `搜尋「${searchTerm}」的統計` : "全帳本總計";
+}
+
+function exportTXT(){
+    if(data.length===0) return;
+    const headers = ["日期", "時間", "類型", "金額", "說明", "建立時間"];
+    const content = data.map(i => [
+        i.date, i.time || "00:00", i.type, i.amount, i.desc, i.created || "N/A"
+    ].join("\t")).join("\n");
+    
+    const blob = new Blob([headers.join("\t") + "\n" + content], {type:"text/plain"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `記帳本_${new Date().toISOString().split('T')[0]}.txt`;
+    a.click();
+}
+
+document.getElementById("fileInput").addEventListener("change", function(e){
+    const file = e.target.files[0]; if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(){
+        const lines = reader.result.split("\n");
+        lines.slice(1).forEach(line => {
+            const p = line.split("\t");
+            if(p.length >= 4) {
+                let date, time, type, amount, desc;
+                if (p[1] && p[1].includes(":")) { 
+                    [date, time, type, amount, desc] = [p[0], p[1], p[2], parseFloat(p[3]), p[4]];
+                } else { 
+                    [date, time, type, amount, desc] = [p[0], "00:00", p[1], parseFloat(p[3]), p[2]];
+                }
+                if(!isNaN(amount)) {
+                    data.push({ 
+                        id: Date.now() + Math.random(), 
+                        date, time, type, amount, desc,
+                        created: new Date().toISOString()
+                    });
+                }
+            }
+        });
+        finalize();
+    };
+    reader.readAsText(file);
+});
+
+setToday(); render();
+</script>
+</body>
+</html>
