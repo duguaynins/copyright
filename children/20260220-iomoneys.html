@@ -17,6 +17,20 @@
             --card-shadow: 0 4px 20px rgba(0,0,0,0.05);
         }
 
+        /* 當選中收入時套用的顏色 */
+        .select-income { 
+            color: var(--inc-text) !important; 
+            border-color: var(--inc-text) !important;
+            font-weight: 700;
+        }
+
+        /* 當選中支出時套用的顏色 */
+        .select-expense { 
+            color: var(--exp-text) !important; 
+            border-color: var(--exp-text) !important;
+            font-weight: 700;
+        }
+
         body { 
             font-family: system-ui, -apple-system, sans-serif; 
             background: var(--bg); 
@@ -243,9 +257,9 @@
         <div class="form-group">
             <label>類型與金額</label>
             <div style="display:flex; gap:10px;">
-                <select id="m-type" style="flex:1">
-                    <option value="expense">支出</option>
-                    <option value="income">收入</option>
+                <select id="m-type" style="flex:1" onchange="updateSelectColor()" class="select-income">
+                    <option value="income">＋</option>
+                    <option value="expense">－</option>
                 </select>
                 <input type="number" id="m-amount" placeholder="0" style="flex:2">
             </div>
@@ -273,6 +287,7 @@ function toggleAllGroups() { isAllExpanded = !isAllExpanded; render(); }
 function toggleSingleGroup(element) { element.parentElement.classList.toggle('collapsed'); }
 
 function openModal(id = null) {
+
     const modal = document.getElementById("modal");
     const delBtn = document.getElementById("m-delete-btn");
     if(id) {
@@ -289,12 +304,13 @@ function openModal(id = null) {
         const now = new Date();
         document.getElementById("m-date").value = now.toISOString().split("T")[0];
         document.getElementById("m-time").value = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-        document.getElementById("m-type").value = "expense";
+        document.getElementById("m-type").value = "income";
         document.getElementById("m-amount").value = "";
         document.getElementById("m-desc").value = "";
         delBtn.style.display = "none";
     }
     modal.style.display = "flex";
+    updateSelectColor()  //20260220_1436
 }
 
 function closeModal() { document.getElementById("modal").style.display = "none"; }
@@ -377,6 +393,19 @@ document.getElementById("fileInput").onchange = (e) => {
     reader.onload = () => { try { data = JSON.parse(reader.result); finalize(); } catch(e) { alert("檔案格式錯誤"); } };
     reader.readAsText(e.target.files[0]);
 };
+
+function updateSelectColor() {
+    const select = document.getElementById("m-type");
+    if (select.value === "income") {
+        ///select.style.background = "green";
+        select.classList.add("select-income");
+        select.classList.remove("select-expense");
+    } else {
+        ///select.style.background = "red";
+        select.classList.add("select-expense");
+        select.classList.remove("select-income");
+    }
+}
 
 render();
 </script>
