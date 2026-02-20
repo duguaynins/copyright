@@ -360,11 +360,11 @@ function render() {
                 </div>`;
         }).join('');
 
-        const groupDiv = document.createElement('div');
+        const groupDiv = document.createElement('div');  ///🔲🔳
         groupDiv.className = `day-group ${isAllExpanded ? '' : 'collapsed'}`;
         groupDiv.innerHTML = `
             <div class="day-header" onclick="toggleSingleGroup(this)">
-                <div class="day-title">📅 ${date}</div>
+                <div class="day-title">🔳 ${date}</div>
                 <div class="day-summary">
                     <div class="badge badge-inc">+${dInc.toLocaleString()}</div>
                     <div class="badge badge-exp">-${dExp.toLocaleString()}</div>
