@@ -263,15 +263,15 @@
             <label>類型與金額</label>
             <div style="display:flex; gap:10px;">
                 <select id="m-type" style="flex:1" onchange="updateSelectColor()" class="select-income">
-                    <option value="income">＋</option>
-                    <option value="expense">－</option>
+                    <option value="income">收入</option>
+                    <option value="expense">支出</option>
                 </select>
-                <input type="number" id="m-amount" placeholder="0" style="flex:2">
+                <input type="decimal" id="m-amount" placeholder="0" style="flex:2">
             </div>
         </div>
         <div class="form-group">
             <label>備註</label>
-            <textarea id="m-desc" rows="2" placeholder="今天買了什麼？"></textarea>
+            <textarea id="m-desc" rows="2" placeholder="薪資？吃？喝？玩？樂？"></textarea>
         </div>
         <div class="modal-footer">
             <button id="m-delete-btn" onclick="deleteEntry()" style="background:#fee2e2; color:#ef4444; display:none;">刪除</button>
@@ -411,6 +411,27 @@ function updateSelectColor() {
         select.classList.remove("select-income");
     }
 }
+
+document.getElementById("m-amount").addEventListener("input", function () {
+
+    const v = this.value;
+
+    const plus = v.includes("+");
+    const minus = v.includes("-");
+
+    this.value = v.replace(/[+-]/g, "");
+
+    this.style.backgroundColor =
+        plus && !minus ? "#e6ffe6" :
+        minus && !plus ? "#ffe6e6" :
+        plus && minus ? "#fff3cd" :
+        "white";
+
+    if (plus) document.getElementById("m-type").value = "income";
+    if (minus) document.getElementById("m-type").value = "expense";
+    updateSelectColor();
+
+});
 
 render();
 </script>
