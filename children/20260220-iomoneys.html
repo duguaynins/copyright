@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>極簡記帳本 Pro - 預覽優化版</title>
+    <style>
+        :root {
+            --primary: #2563eb; --success: #059669; --danger: #dc2626;
+            --warning: #d97706; --secondary: #64748b; --bg: #f8fafc;
+            --dark: #1e293b;
+        }
+
+        body { font-family: system-ui, sans-serif; background: var(--bg); color: #1e293b; margin: 0; padding: 10px; }
+        .container { max-width: 900px; margin: 15px auto; background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+
+        /* 頂部統計卡片 */
+        .grand-total-card {
+            margin-bottom: 20px; background: var(--dark); color: white; padding: 20px; border-radius: 12px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .total-badges { display: flex; gap: 10px; flex-wrap: wrap; }
+        .total-badge { padding: 6px 15px; border-radius: 8px; font-size: 0.95rem; font-weight: 500; }
+        .bg-inc { background: rgba(74, 222, 128, 0.15); color: #4ade80; }
+        .bg-exp { background: rgba(251, 113, 133, 0.15); color: #fb7185; }
+        .bg-bal { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid #3b82f6; }
+
+        /* 操作列 */
+        .action-bar { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        .search-input { flex: 1; min-width: 200px; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; outline: none; transition: 0.3s; }
+        .search-input:focus { border-color: var(--primary); }
+        .btn-add { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+
+        /* 彈窗樣式 (Modal) */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000;
+            backdrop-filter: blur(2px);
+        }
+        .modal-content {
+            background: white; padding: 25px; border-radius: 16px; width: 90%; max-width: 450px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); animation: slideIn 0.2s ease-out;
+        }
+        @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .modal-header { font-size: 1.2rem; font-weight: bold; margin-bottom: 20px; color: var(--dark); border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 13px; color: #64748b; margin-bottom: 5px; font-weight: 600; }
+        .form-group input, .form-group select, .form-group textarea { 
+            width: 100%; box-sizing: border-box; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 15px;
+        }
+        .form-group textarea { resize: none; height: 100px; font-family: inherit; }
+        
+        .modal-footer { display: flex; gap: 10px; margin-top: 25px; }
+        .modal-footer button { flex: 1; padding: 12px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .btn-save { background: var(--primary); color: white; }
+        .btn-delete { background: var(--danger); color: white; }
+        .btn-cancel { background: #e2e8f0; color: var(--secondary); }
+        button:hover { filter: brightness(0.9); }
+
+        /* 表格樣式 */
+        .table-container { width: 100%; overflow-x: auto; border-radius: 12px; border: 1px solid #e2e8f0; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; table-layout: fixed; } /* 關鍵：固定布局以利省略 */
+        th { background: #f8fafc; color: #64748b; font-size: 0.85rem; text-align: left; padding: 15px; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 15px; border-bottom: 1px solid #f1f5f9; font-size: 14px; cursor: pointer; vertical-align: middle; }
+        .detail-row:hover { background-color: #f8fafc; }
+
+        /* 說明文字預覽優化 */
+        .td-desc {
+            white-space: nowrap;      /* 強制單行 */
+            overflow: hidden;         /* 隱藏溢出 */
+            text-overflow: ellipsis;  /* 顯示 ... */
+        }
+
+        .day-summary-row { background: #f1f5f9; font-weight: bold; }
+        .summary-wrapper { display: flex; justify-content: space-between; align-items: center; }
+        
+        .badge { padding: 3px 8px; border-radius: 5px; font-size: 12px; margin-left: 5px; }
+        .badge-inc { background: #dcfce7; color: var(--success); }
+        .badge-exp { background: #fee2e2; color: var(--danger); }
+
+        .income { color: var(--success); font-weight: bold; }
+        .expense { color: var(--danger); font-weight: bold; }
+        
+        .util-btns { margin-bottom: 10px; display: flex; gap: 8px; justify-content: flex-end; }
+        .btn-util { background: none; border: 1px solid #cbd5e1; padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; color: var(--secondary); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="grand-total-card">
+        <div id="footer-label">全帳本總計</div>
+        <div class="total-badges">
+            <div class="total-badge bg-inc">收 <span id="footer-inc">0</span></div>
+            <div class="total-badge bg-exp">支 <span id="footer-exp">0</span></div>
+            <div class="total-badge bg-bal">餘 <span id="footer-bal">0</span></div>
+        </div>
+    </div>
+
+    <div class="util-btns">
+        <button onclick="exportTXT()" class="btn-util">匯出備份</button>
+        <button onclick="document.getElementById('fileInput').click()" class="btn-util">匯入資料</button>
+        <button onclick="clearAll()" class="btn-util" style="color:var(--danger)">清空</button>
+        <input type="file" id="fileInput" accept=".txt" style="display:none">
+    </div>
+
+    <div class="action-bar">
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 搜尋說明文字..." oninput="render()">
+        <button onclick="openModal()" class="btn-add">＋ 新增紀錄</button>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th width="15%">時間</th>
+                    <th width="15%">類型</th>
+                    <th width="20%">金額</th>
+                    <th width="50%">說明 (預覽)</th>
+                </tr>
+            </thead>
+            <tbody id="list"></tbody>
+        </table>
+    </div>
+</div>
+
+<div id="modal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header" id="modalTitle">紀錄詳情</div>
+        
+        <div class="form-group">
+            <label>日期與時間</label>
+            <div style="display:flex; gap:10px;">
+                <input type="date" id="m-date">
+                <input type="time" id="m-time">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>收支類型</label>
+            <select id="m-type">
+                <option value="expense">支出</option>
+                <option value="income">收入</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>金額</label>
+            <input type="number" id="m-amount" placeholder="輸入金額">
+        </div>
+
+        <div class="form-group">
+            <label>說明 / 備註</label>
+            <textarea id="m-desc" placeholder="請輸入完整操作說明..."></textarea>
+        </div>
+
+        <div class="modal-footer">
+            <button onclick="closeModal()" class="btn-cancel">取消</button>
+            <button id="m-delete-btn" onclick="deleteEntry()" class="btn-delete" style="display:none;">刪除</button>
+            <button onclick="saveEntry()" class="btn-save">儲存紀錄</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const KEY="accountBookUTC_v3"; 
+let data=JSON.parse(localStorage.getItem(KEY))||[];
+let currentEditId = null;
+
+// --- 視窗控制 ---
+function openModal(id = null) {
+    const modal = document.getElementById("modal");
+    const delBtn = document.getElementById("m-delete-btn");
+    
+    if(id) {
+        currentEditId = id;
+        const item = data.find(i => i.id === id);
+        document.getElementById("modalTitle").innerText = "編輯紀錄";
+        document.getElementById("m-date").value = item.date;
+        document.getElementById("m-time").value = item.time || "00:00";
+        document.getElementById("m-type").value = item.type;
+        document.getElementById("m-amount").value = item.amount;
+        document.getElementById("m-desc").value = item.desc;
+        delBtn.style.display = "block";
+    } else {
+        currentEditId = null;
+        document.getElementById("modalTitle").innerText = "新增紀錄";
+        const now = new Date();
+        document.getElementById("m-date").value = now.toISOString().split("T")[0];
+        document.getElementById("m-time").value = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+        document.getElementById("m-type").value = "expense";
+        document.getElementById("m-amount").value = "";
+        document.getElementById("m-desc").value = "";
+        delBtn.style.display = "none";
+    }
+    modal.style.display = "flex";
+}
+
+function closeModal() {
+    document.getElementById("modal").style.display = "none";
+}
+
+window.onclick = (e) => { if(e.target == document.getElementById("modal")) closeModal(); }
+
+// --- 資料操作 ---
+function saveEntry() {
+    const date = document.getElementById("m-date").value;
+    const time = document.getElementById("m-time").value;
+    const type = document.getElementById("m-type").value;
+    const amount = parseFloat(document.getElementById("m-amount").value);
+    const desc = document.getElementById("m-desc").value;
+
+    if(!desc || isNaN(amount)) { alert("請填寫完整資訊"); return; }
+
+    if(currentEditId) {
+        const idx = data.findIndex(i => i.id === currentEditId);
+        data[idx] = { ...data[idx], date, time, type, amount, desc };
+    } else {
+        data.push({ id: Date.now(), date, time, type, amount, desc });
+    }
+
+    finalize();
+    closeModal();
+}
+
+function deleteEntry() {
+    if(confirm("確定要刪除這筆紀錄嗎？")) {
+        data = data.filter(i => i.id !== currentEditId);
+        finalize();
+        closeModal();
+    }
+}
+
+function finalize() {
+    localStorage.setItem(KEY, JSON.stringify(data));
+    render();
+}
+
+function clearAll() {
+    if(confirm("警告：這將清空所有記帳資料！")) { data = []; finalize(); }
+}
+
+// --- 渲染渲染 ---
+function render() {
+    const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+    data.sort((a,b) => b.date.localeCompare(a.date) || (b.time||"").localeCompare(a.time||""));
+
+    const filtered = data.filter(i => i.desc.toLowerCase().includes(searchTerm));
+    const list = document.getElementById("list");
+    list.innerHTML = "";
+
+    let totalInc = 0, totalExp = 0;
+    const groups = filtered.reduce((acc, i) => {
+        acc[i.date] = acc[i.date] || [];
+        acc[i.date].push(i);
+        return acc;
+    }, {});
+
+    Object.keys(groups).sort().reverse().forEach(date => {
+        let dayInc = 0, dayExp = 0;
+        groups[date].forEach(i => {
+            if(i.type === "income") { dayInc += i.amount; totalInc += i.amount; }
+            else { dayExp += i.amount; totalExp += i.amount; }
+        });
+
+        const header = document.createElement('tr');
+        header.className = "day-summary-row";
+        header.innerHTML = `<td colspan="4">
+            <div class="summary-wrapper">
+                <span>📅 ${date}</span>
+                <div>
+                    <span class="badge badge-inc">＋${dayInc.toLocaleString()}</span>
+                    <span class="badge badge-exp">－${dayExp.toLocaleString()}</span>
+                </div>
+            </div>
+        </td>`;
+        list.appendChild(header);
+
+        groups[date].forEach(item => {
+            const row = document.createElement('tr');
+            row.className = "detail-row";
+            row.onclick = () => openModal(item.id);
+            const isInc = item.type === "income";
+            
+            // 處理 HTML 安全性轉義，避免 title 毀壞
+            const safeDesc = item.desc.replace(/"/g, '&quot;');
+            
+            row.innerHTML = `
+                <td style="color:#94a3b8; font-size:12px;">${item.time || '--:--'}</td>
+                <td class="${item.type}">${isInc?'收入':'支出'}</td>
+                <td class="${isInc?'income':'expense'}">${isInc?'+':'-'}${item.amount.toLocaleString()}</td>
+                <td class="td-desc" title="${safeDesc}">${item.desc}</td>
+            `;
+            list.appendChild(row);
+        });
+    });
+
+    document.getElementById("footer-inc").innerText = totalInc.toLocaleString();
+    document.getElementById("footer-exp").innerText = totalExp.toLocaleString();
+    document.getElementById("footer-bal").innerText = (totalInc - totalExp).toLocaleString();
+    document.getElementById("footer-label").innerText = searchTerm ? `搜尋「${searchTerm}」結果` : "全帳本總計";
+}
+
+// 匯入匯出
+function exportTXT() {
+    if(!data.length) return;
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: "text/plain"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `Account_Backup_${new Date().toISOString().split('T')[0]}.txt`;
+    a.click();
+}
+
+document.getElementById("fileInput").onchange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+        try {
+            const imported = JSON.parse(reader.result);
+            if(Array.isArray(imported)) { data = [...data, ...imported]; finalize(); }
+        } catch(err) { alert("格式錯誤，請確保文件正確"); }
+    };
+    reader.readAsText(file);
+};
+
+render();
+</script>
+</body>
+</html>
