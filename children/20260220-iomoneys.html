@@ -10,6 +10,7 @@
         
         :root {
             --primary: #2563eb; 
+            --bal-bg: #dbeafe; --bal-text: #1e40af;
             --inc-bg: #dcfce7; --inc-text: #059669; 
             --exp-bg: #fee2e2; --exp-text: #dc2626; 
             --secondary: #64748b; --bg: #f8fafc; --dark: #1e293b;
@@ -53,6 +54,14 @@
         }
         .badge-inc { background: var(--inc-bg); color: var(--inc-text); }
         .badge-exp { background: var(--exp-bg); color: var(--exp-text); }
+        .badge-bal { 
+    background: var(--bal-bg); 
+    color: var(--bal-text); 
+    padding: 4px 12px; 
+    border-radius: 12px; 
+    display: inline-block; /* 讓底色緊貼文字 */
+}
+
         .stats-grid { display: flex; gap: 10px; border-top: 1px solid #f1f5f9; padding-top: 15px; }
 
         /* 操作列 - 統一高度與電腦版優化 */
@@ -196,19 +205,20 @@
 <body>
 
 <div class="container">
-    <div class="grand-total-card">
-        <div class="balance-label" style="display: none;">目前的預算結餘</div>
-        <div class="balance-amount">$ <span id="footer-bal">0</span></div>
-        <div class="stats-grid">
-            <div class="badge badge-inc">+ <span id="footer-inc">0</span></div>
-            <div class="badge badge-exp">- <span id="footer-exp">0</span></div>
-        </div>
-    </div>
 
     <div class="action-bar">
         <button onclick="toggleAllGroups()" class="btn-icon" id="toggleBtn">↕</button>
         <input type="text" id="searchInput" class="search-input" placeholder="🔍" oninput="render()">
         <button onclick="openModal()" class="btn-add">📄</button>
+    </div>
+    
+    <div class="grand-total-card">
+        <div class="balance-label" style="display: none;">目前的預算結餘</div>
+        <div class="balance-amount badge-bal">$ <span id="footer-bal">0</span></div>
+        <div class="stats-grid">
+            <div class="badge badge-inc">+ <span id="footer-inc">0</span></div>
+            <div class="badge badge-exp">- <span id="footer-exp">0</span></div>
+        </div>
     </div>
 
     <div id="list" class="list-container"></div>
