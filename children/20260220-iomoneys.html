@@ -71,7 +71,10 @@
             box-sizing: border-box;
         }
         .search-input { 
-            flex: 1; 
+            flex: 1;           /* 讓它佔滿剩餘空間 */
+            width: 0;          /* 解決某些瀏覽器預設寬度的問題 */
+            min-width: 0;      /* 解決 Flexbox 的隱形最小寬度問題 */
+            height: 48px;      /* 保持高度統一 */
             padding: 0 18px; 
             border: 2px solid #e2e8f0; 
             border-radius: 16px; 
@@ -194,7 +197,7 @@
 
 <div class="container">
     <div class="grand-total-card">
-        <div class="balance-label">目前的預算結餘</div>
+        <div class="balance-label" style="display: none;">目前的預算結餘</div>
         <div class="balance-amount">$ <span id="footer-bal">0</span></div>
         <div class="stats-grid">
             <div class="badge badge-inc">+ <span id="footer-inc">0</span></div>
@@ -204,8 +207,8 @@
 
     <div class="action-bar">
         <button onclick="toggleAllGroups()" class="btn-icon" id="toggleBtn">↕</button>
-        <input type="text" id="searchInput" class="search-input" placeholder="🔍 搜尋紀錄..." oninput="render()">
-        <button onclick="openModal()" class="btn-add">＋ 新增</button>
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍" oninput="render()">
+        <button onclick="openModal()" class="btn-add">📄</button>
     </div>
 
     <div id="list" class="list-container"></div>
