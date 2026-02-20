@@ -20,6 +20,8 @@
             --exp-bg: #fee2e2; --exp-text: #dc2626; 
             --secondary: #64748b; --bg: pink; --dark: #1e293b;
             --card-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            --yes-bg: #e6ffe6;
+            --no-bg: #ffe6e6;
         }
 
         /* 當選中收入時套用的顏色 */
@@ -330,21 +332,29 @@ function saveEntry() {
 
     ///if(!desc || isNaN(amount)) return alert("請完整填寫");
     if(!desc && isNaN(amount)) {  
-        ///document.getElementById("m-amount").style.background = "red";
-        ///document.getElementById("m-desc").style.background = "red";
+        document.getElementById("m-amount").style.background = "yellow";
+        document.getElementById("m-desc").style.background = "yellow";
+        setTimeout(() => { document.getElementById("m-amount").style.background = "white"; }, 500);
+        setTimeout(() => { document.getElementById("m-desc").style.background = "white"; }, 500);
         document.getElementById("m-amount").value = 1;
         document.getElementById("m-desc").value = "***";
         return;
     }
     if(isNaN(amount)) {  
-        ///document.getElementById("m-amount").style.background = "red";
+        document.getElementById("m-amount").style.background = "yellow";
+        setTimeout(() => { document.getElementById("m-amount").style.background = "white"; }, 500);
         ///document.getElementById("m-amount").value = 0;
         return;
     }
     if(!desc) {  
-        ///document.getElementById("m-desc").style.background = "red";
+        document.getElementById("m-desc").style.background = "yellow";
+        setTimeout(() => { document.getElementById("m-desc").style.background = "white"; }, 500);
         ///document.getElementById("m-desc").value = "???";
         return;
+    }
+    if (true) {
+        document.getElementById("m-amount").style.background = "white";
+        document.getElementById("m-desc").style.background = "white";
     }
 
     if(currentEditId) {
@@ -431,6 +441,26 @@ function updateSelectColor() {
     }
 }
 
+document.getElementById("m-desc").addEventListener("input", function () {
+
+    const v = this.value;
+
+    const plus = v.includes("+");
+    const minus = v.includes("-");
+
+    ///this.value = v.replace(/[+-]/g, "");
+
+    this.style.backgroundColor =
+        plus && !minus ? "#e6ffe6" :
+        minus && !plus ? "#ffe6e6" :
+        plus && minus ? "#fff3cd" :
+        "white";
+
+    if (plus) document.getElementById("m-type").value = "income";
+    if (minus) document.getElementById("m-type").value = "expense";
+    updateSelectColor();
+
+});
 document.getElementById("m-amount").addEventListener("input", function () {
 
     const v = this.value;
