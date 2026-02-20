@@ -245,9 +245,9 @@
     <div id="list" class="list-container"></div>
 
     <div class="util-btns">
-        <button onclick="exportTXT()" class="btn-util">匯出備份</button>
-        <button onclick="document.getElementById('fileInput').click()" class="btn-util">匯入資料</button>
-        <button onclick="clearAll()" class="btn-util" style="color:#ef4444">清空所有</button>
+        <button onclick="exportTXT();" class="btn-util">匯出備份</button>
+        <button onclick="exportTXT();document.getElementById('fileInput').click()" class="btn-util">匯入資料</button>
+        <button onclick="exportTXT();clearAll()" class="btn-util" style="color:#ef4444">清空所有</button>
         <input type="file" id="fileInput" accept=".txt" style="display:none">
     </div>
 </div>
@@ -418,7 +418,9 @@ function exportTXT() {
     const blob = new Blob([JSON.stringify(data, null, 2)], {type: "text/plain"});
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = `Account_Backup_${new Date().toISOString().split('T')[0]}.txt`;
+    ///const name = `Account_Backup_${new Date().toISOString().split('T')[0]}`;
+    const name = `nins_billlog_${new Date().toISOString()}`;
+    a.download = `${name}.txt`;
     a.click();
 }
 
