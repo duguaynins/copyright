@@ -3,161 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>極簡記帳本 Pro - 預覽優化版</title>
+    <title>極簡記帳本 Pro - 統一視覺版</title>
     <style>
         :root {
-            --primary: #2563eb; --success: #059669; --danger: #dc2626;
-            --warning: #d97706; --secondary: #64748b; --bg: #f8fafc;
-            --dark: #1e293b;
+            --primary: #2563eb; 
+            --inc-bg: #dcfce7; --inc-text: #059669; /* 綠色系 */
+            --exp-bg: #fee2e2; --exp-text: #dc2626; /* 紅色系 */
+            --secondary: #64748b; --bg: #f8fafc; --dark: #1e293b;
         }
 
-        body { font-family: system-ui, sans-serif; background: var(--bg); color: #1e293b; margin: 0; padding: 10px; }
-        .container { max-width: 900px; margin: 15px auto; background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--dark); margin: 0; padding: 12px; }
+        .container { max-width: 600px; margin: 0 auto; }
 
-        /* 頂部統計卡片 */
+        /* 總計卡片 */
         .grand-total-card {
-            margin-bottom: 20px; background: var(--dark); color: white; padding: 20px; border-radius: 12px;
-            display: flex; justify-content: space-between; align-items: center;
+            background: #ffffff; padding: 24px; border-radius: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 20px;
+            border: 1px solid #f1f5f9;
         }
-        .total-badges { display: flex; gap: 10px; flex-wrap: wrap; }
-        .total-badge { padding: 6px 15px; border-radius: 8px; font-size: 0.95rem; font-weight: 500; }
-        .bg-inc { background: rgba(74, 222, 128, 0.15); color: #4ade80; }
-        .bg-exp { background: rgba(251, 113, 133, 0.15); color: #fb7185; }
-        .bg-bal { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid #3b82f6; }
+        .balance-label { font-size: 0.85rem; color: var(--secondary); margin-bottom: 4px; font-weight: 500; }
+        .balance-amount { font-size: 2.5rem; font-weight: 800; margin-bottom: 20px; color: var(--dark); }
+        
+        /* 統一結算樣式 (參考圖片) */
+        .badge {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 0.9rem;
+            min-width: 80px; transition: 0.2s;
+        }
+        .badge-inc { background: var(--inc-bg); color: var(--inc-text); }
+        .badge-exp { background: var(--exp-bg); color: var(--exp-text); }
+
+        .stats-grid { display: flex; gap: 10px; border-top: 1px solid #f1f5f9; padding-top: 15px; }
 
         /* 操作列 */
-        .action-bar { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
-        .search-input { flex: 1; min-width: 200px; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; outline: none; transition: 0.3s; }
-        .search-input:focus { border-color: var(--primary); }
-        .btn-add { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        .action-bar { display: flex; gap: 8px; margin-bottom: 20px; position: sticky; top: 10px; z-index: 100; }
+        .search-input { flex: 1; padding: 12px 18px; border: 2px solid #e2e8f0; border-radius: 16px; outline: none; transition: 0.3s; font-size: 1rem; }
+        .search-input:focus { border-color: var(--primary); background: white; }
+        .btn-icon { background: white; border: 2px solid #e2e8f0; padding: 0 14px; border-radius: 16px; cursor: pointer; color: var(--secondary); font-size: 1.2rem; }
+        .btn-add { background: var(--primary); color: white; border: none; padding: 0 24px; border-radius: 16px; font-weight: 700; cursor: pointer; }
 
-        /* 彈窗樣式 (Modal) */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000;
-            backdrop-filter: blur(2px);
+        /* 列表樣式 */
+        .list-container { display: flex; flex-direction: column; gap: 14px; }
+        .day-group { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; }
+        .day-header { 
+            background: #fdfdfd; padding: 14px 18px; display: flex; justify-content: space-between; 
+            align-items: center; cursor: pointer; border-bottom: 1px solid #f8fafc;
         }
-        .modal-content {
-            background: white; padding: 25px; border-radius: 16px; width: 90%; max-width: 450px;
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); animation: slideIn 0.2s ease-out;
-        }
-        @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .day-title { font-weight: 800; color: var(--dark); font-size: 0.95rem; }
+        .day-summary { display: flex; gap: 6px; }
+        .day-summary .badge { padding: 4px 10px; font-size: 0.8rem; min-width: 60px; }
         
-        .modal-header { font-size: 1.2rem; font-weight: bold; margin-bottom: 20px; color: var(--dark); border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 13px; color: #64748b; margin-bottom: 5px; font-weight: 600; }
-        .form-group input, .form-group select, .form-group textarea { 
-            width: 100%; box-sizing: border-box; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 15px;
+        /* 折疊動畫 */
+        .items-wrapper { max-height: 5000px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); opacity: 1; }
+        .collapsed .items-wrapper { max-height: 0; opacity: 0; pointer-events: none; }
+        .collapsed .day-header { border-bottom: none; }
+
+        .item-row { 
+            padding: 16px 18px; display: grid; grid-template-columns: 50px 1fr auto; 
+            align-items: center; gap: 12px; border-bottom: 1px solid #fbfcfe; cursor: pointer;
         }
-        .form-group textarea { resize: none; height: 100px; font-family: inherit; }
+        .item-row:last-child { border-bottom: none; }
+        .item-row:active { background: #f8fafc; }
+        .item-time { font-size: 0.75rem; color: var(--secondary); font-weight: 500; }
+        .item-desc { font-weight: 600; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .item-amount { font-weight: 700; font-size: 1rem; }
         
-        .modal-footer { display: flex; gap: 10px; margin-top: 25px; }
-        .modal-footer button { flex: 1; padding: 12px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .inc-text { color: var(--inc-text); }
+        .exp-text { color: var(--exp-text); }
+
+        /* 彈窗樣式 */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(30, 41, 59, 0.5); display: none; justify-content: center; align-items: flex-end; z-index: 1000; backdrop-filter: blur(4px); }
+        .modal-content { background: white; padding: 24px; border-radius: 24px 24px 0 0; width: 100%; max-width: 500px; animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 0.75rem; color: var(--secondary); font-weight: 700; margin-bottom: 6px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; box-sizing: border-box; padding: 14px; border: 1px solid #e2e8f0; border-radius: 12px; font-size: 1rem; background: #f8fafc; outline: none; }
+        .modal-footer { display: flex; gap: 10px; margin-top: 24px; }
+        .modal-footer button { flex: 1; padding: 16px; border-radius: 14px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; }
         .btn-save { background: var(--primary); color: white; }
-        .btn-delete { background: var(--danger); color: white; }
-        .btn-cancel { background: #e2e8f0; color: var(--secondary); }
-        button:hover { filter: brightness(0.9); }
-
-        /* 表格樣式 */
-        .table-container { width: 100%; overflow-x: auto; border-radius: 12px; border: 1px solid #e2e8f0; }
-        table { width: 100%; border-collapse: collapse; min-width: 600px; table-layout: fixed; } /* 關鍵：固定布局以利省略 */
-        th { background: #f8fafc; color: #64748b; font-size: 0.85rem; text-align: left; padding: 15px; border-bottom: 2px solid #e2e8f0; }
-        td { padding: 15px; border-bottom: 1px solid #f1f5f9; font-size: 14px; cursor: pointer; vertical-align: middle; }
-        .detail-row:hover { background-color: #f8fafc; }
-
-        /* 說明文字預覽優化 */
-        .td-desc {
-            white-space: nowrap;      /* 強制單行 */
-            overflow: hidden;         /* 隱藏溢出 */
-            text-overflow: ellipsis;  /* 顯示 ... */
-        }
-
-        .day-summary-row { background: #f1f5f9; font-weight: bold; }
-        .summary-wrapper { display: flex; justify-content: space-between; align-items: center; }
+        .btn-cancel { background: #f1f5f9; color: var(--secondary); }
         
-        .badge { padding: 3px 8px; border-radius: 5px; font-size: 12px; margin-left: 5px; }
-        .badge-inc { background: #dcfce7; color: var(--success); }
-        .badge-exp { background: #fee2e2; color: var(--danger); }
-
-        .income { color: var(--success); font-weight: bold; }
-        .expense { color: var(--danger); font-weight: bold; }
-        
-        .util-btns { margin-bottom: 10px; display: flex; gap: 8px; justify-content: flex-end; }
-        .btn-util { background: none; border: 1px solid #cbd5e1; padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; color: var(--secondary); }
+        .util-btns { display: flex; justify-content: center; gap: 20px; margin: 40px 0; }
+        .btn-util { background: none; border: none; font-size: 0.8rem; cursor: pointer; color: var(--secondary); text-decoration: underline; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="grand-total-card">
-        <div id="footer-label">全帳本總計</div>
-        <div class="total-badges">
-            <div class="total-badge bg-inc">收 <span id="footer-inc">0</span></div>
-            <div class="total-badge bg-exp">支 <span id="footer-exp">0</span></div>
-            <div class="total-badge bg-bal">餘 <span id="footer-bal">0</span></div>
+        <div class="balance-label" id="footer-label">目前的預算結餘</div>
+        <div class="balance-amount">$ <span id="footer-bal">0</span></div>
+        <div class="stats-grid">
+            <div class="badge badge-inc">+ <span id="footer-inc">0</span></div>
+            <div class="badge badge-exp">- <span id="footer-exp">0</span></div>
         </div>
     </div>
+
+    <div class="action-bar">
+        <button onclick="toggleAllGroups()" class="btn-icon" id="toggleBtn">↕</button>
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 搜尋紀錄..." oninput="render()">
+        <button onclick="openModal()" class="btn-add">＋ 新增</button>
+    </div>
+
+    <div id="list" class="list-container"></div>
 
     <div class="util-btns">
         <button onclick="exportTXT()" class="btn-util">匯出備份</button>
         <button onclick="document.getElementById('fileInput').click()" class="btn-util">匯入資料</button>
-        <button onclick="clearAll()" class="btn-util" style="color:var(--danger)">清空</button>
+        <button onclick="clearAll()" class="btn-util" style="color:var(--danger)">清空所有</button>
         <input type="file" id="fileInput" accept=".txt" style="display:none">
-    </div>
-
-    <div class="action-bar">
-        <input type="text" id="searchInput" class="search-input" placeholder="🔍 搜尋說明文字..." oninput="render()">
-        <button onclick="openModal()" class="btn-add">＋ 新增紀錄</button>
-    </div>
-
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th width="15%">時間</th>
-                    <th width="15%">類型</th>
-                    <th width="20%">金額</th>
-                    <th width="50%">說明 (預覽)</th>
-                </tr>
-            </thead>
-            <tbody id="list"></tbody>
-        </table>
     </div>
 </div>
 
 <div id="modal" class="modal-overlay">
     <div class="modal-content">
-        <div class="modal-header" id="modalTitle">紀錄詳情</div>
-        
         <div class="form-group">
-            <label>日期與時間</label>
+            <label>時間</label>
             <div style="display:flex; gap:10px;">
-                <input type="date" id="m-date">
-                <input type="time" id="m-time">
+                <input type="date" id="m-date" style="flex:2">
+                <input type="time" id="m-time" style="flex:1">
             </div>
         </div>
-
         <div class="form-group">
-            <label>收支類型</label>
-            <select id="m-type">
-                <option value="expense">支出</option>
-                <option value="income">收入</option>
-            </select>
+            <label>類型與金額</label>
+            <div style="display:flex; gap:10px;">
+                <select id="m-type" style="flex:1">
+                    <option value="expense">支出</option>
+                    <option value="income">收入</option>
+                </select>
+                <input type="number" id="m-amount" placeholder="0" style="flex:2">
+            </div>
         </div>
-
         <div class="form-group">
-            <label>金額</label>
-            <input type="number" id="m-amount" placeholder="輸入金額">
+            <label>備註</label>
+            <textarea id="m-desc" rows="2" placeholder="今天買了什麼？"></textarea>
         </div>
-
-        <div class="form-group">
-            <label>說明 / 備註</label>
-            <textarea id="m-desc" placeholder="請輸入完整操作說明..."></textarea>
-        </div>
-
         <div class="modal-footer">
+            <button id="m-delete-btn" onclick="deleteEntry()" style="background:#fee2e2; color:#ef4444; display:none;">刪除</button>
             <button onclick="closeModal()" class="btn-cancel">取消</button>
-            <button id="m-delete-btn" onclick="deleteEntry()" class="btn-delete" style="display:none;">刪除</button>
             <button onclick="saveEntry()" class="btn-save">儲存紀錄</button>
         </div>
     </div>
@@ -167,16 +150,17 @@
 const KEY="accountBookUTC_v3"; 
 let data=JSON.parse(localStorage.getItem(KEY))||[];
 let currentEditId = null;
+let isAllExpanded = true;
 
-// --- 視窗控制 ---
+function toggleAllGroups() { isAllExpanded = !isAllExpanded; render(); }
+function toggleSingleGroup(element) { element.parentElement.classList.toggle('collapsed'); }
+
 function openModal(id = null) {
     const modal = document.getElementById("modal");
     const delBtn = document.getElementById("m-delete-btn");
-    
     if(id) {
         currentEditId = id;
         const item = data.find(i => i.id === id);
-        document.getElementById("modalTitle").innerText = "編輯紀錄";
         document.getElementById("m-date").value = item.date;
         document.getElementById("m-time").value = item.time || "00:00";
         document.getElementById("m-type").value = item.type;
@@ -185,7 +169,6 @@ function openModal(id = null) {
         delBtn.style.display = "block";
     } else {
         currentEditId = null;
-        document.getElementById("modalTitle").innerText = "新增紀錄";
         const now = new Date();
         document.getElementById("m-date").value = now.toISOString().split("T")[0];
         document.getElementById("m-time").value = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
@@ -197,114 +180,74 @@ function openModal(id = null) {
     modal.style.display = "flex";
 }
 
-function closeModal() {
-    document.getElementById("modal").style.display = "none";
-}
-
+function closeModal() { document.getElementById("modal").style.display = "none"; }
 window.onclick = (e) => { if(e.target == document.getElementById("modal")) closeModal(); }
 
-// --- 資料操作 ---
 function saveEntry() {
     const date = document.getElementById("m-date").value;
     const time = document.getElementById("m-time").value;
     const type = document.getElementById("m-type").value;
     const amount = parseFloat(document.getElementById("m-amount").value);
     const desc = document.getElementById("m-desc").value;
-
-    if(!desc || isNaN(amount)) { alert("請填寫完整資訊"); return; }
-
+    if(!desc || isNaN(amount)) return alert("請完整填寫");
     if(currentEditId) {
         const idx = data.findIndex(i => i.id === currentEditId);
         data[idx] = { ...data[idx], date, time, type, amount, desc };
     } else {
         data.push({ id: Date.now(), date, time, type, amount, desc });
     }
-
-    finalize();
-    closeModal();
+    finalize(); closeModal();
 }
 
-function deleteEntry() {
-    if(confirm("確定要刪除這筆紀錄嗎？")) {
-        data = data.filter(i => i.id !== currentEditId);
-        finalize();
-        closeModal();
-    }
-}
+function deleteEntry() { if(confirm("確定刪除這筆紀錄？")) { data = data.filter(i => i.id !== currentEditId); finalize(); closeModal(); } }
+function finalize() { localStorage.setItem(KEY, JSON.stringify(data)); render(); }
+function clearAll() { if(confirm("確定要清空所有資料嗎？")) { data = []; finalize(); } }
 
-function finalize() {
-    localStorage.setItem(KEY, JSON.stringify(data));
-    render();
-}
-
-function clearAll() {
-    if(confirm("警告：這將清空所有記帳資料！")) { data = []; finalize(); }
-}
-
-// --- 渲染渲染 ---
 function render() {
     const searchTerm = document.getElementById("searchInput").value.toLowerCase();
     data.sort((a,b) => b.date.localeCompare(a.date) || (b.time||"").localeCompare(a.time||""));
-
     const filtered = data.filter(i => i.desc.toLowerCase().includes(searchTerm));
     const list = document.getElementById("list");
     list.innerHTML = "";
 
-    let totalInc = 0, totalExp = 0;
-    const groups = filtered.reduce((acc, i) => {
-        acc[i.date] = acc[i.date] || [];
-        acc[i.date].push(i);
-        return acc;
-    }, {});
+    let tInc = 0, tExp = 0;
+    const groups = filtered.reduce((acc, i) => { acc[i.date] = acc[i.date] || []; acc[i.date].push(i); return acc; }, {});
 
     Object.keys(groups).sort().reverse().forEach(date => {
-        let dayInc = 0, dayExp = 0;
-        groups[date].forEach(i => {
-            if(i.type === "income") { dayInc += i.amount; totalInc += i.amount; }
-            else { dayExp += i.amount; totalExp += i.amount; }
-        });
+        let dInc = 0, dExp = 0;
+        const itemsHtml = groups[date].map(item => {
+            const isInc = item.type === "income";
+            isInc ? dInc += item.amount : dExp += item.amount;
+            isInc ? tInc += item.amount : tExp += item.amount;
+            return `
+                <div class="item-row" onclick="event.stopPropagation(); openModal(${item.id})">
+                    <div class="item-time">${item.time || '00:00'}</div>
+                    <div class="item-main"><div class="item-desc">${item.desc}</div></div>
+                    <div class="item-amount ${isInc?'inc-text':'exp-text'}">${isInc?'+':'-'}${item.amount.toLocaleString()}</div>
+                </div>`;
+        }).join('');
 
-        const header = document.createElement('tr');
-        header.className = "day-summary-row";
-        header.innerHTML = `<td colspan="4">
-            <div class="summary-wrapper">
-                <span>📅 ${date}</span>
-                <div>
-                    <span class="badge badge-inc">＋${dayInc.toLocaleString()}</span>
-                    <span class="badge badge-exp">－${dayExp.toLocaleString()}</span>
+        const groupDiv = document.createElement('div');
+        groupDiv.className = `day-group ${isAllExpanded ? '' : 'collapsed'}`;
+        groupDiv.innerHTML = `
+            <div class="day-header" onclick="toggleSingleGroup(this)">
+                <div class="day-title">📅 ${date}</div>
+                <div class="day-summary">
+                    <div class="badge badge-inc">+${dInc.toLocaleString()}</div>
+                    <div class="badge badge-exp">-${dExp.toLocaleString()}</div>
                 </div>
             </div>
-        </td>`;
-        list.appendChild(header);
-
-        groups[date].forEach(item => {
-            const row = document.createElement('tr');
-            row.className = "detail-row";
-            row.onclick = () => openModal(item.id);
-            const isInc = item.type === "income";
-            
-            // 處理 HTML 安全性轉義，避免 title 毀壞
-            const safeDesc = item.desc.replace(/"/g, '&quot;');
-            
-            row.innerHTML = `
-                <td style="color:#94a3b8; font-size:12px;">${item.time || '--:--'}</td>
-                <td class="${item.type}">${isInc?'收入':'支出'}</td>
-                <td class="${isInc?'income':'expense'}">${isInc?'+':'-'}${item.amount.toLocaleString()}</td>
-                <td class="td-desc" title="${safeDesc}">${item.desc}</td>
-            `;
-            list.appendChild(row);
-        });
+            <div class="items-wrapper">${itemsHtml}</div>`;
+        list.appendChild(groupDiv);
     });
 
-    document.getElementById("footer-inc").innerText = totalInc.toLocaleString();
-    document.getElementById("footer-exp").innerText = totalExp.toLocaleString();
-    document.getElementById("footer-bal").innerText = (totalInc - totalExp).toLocaleString();
-    document.getElementById("footer-label").innerText = searchTerm ? `搜尋「${searchTerm}」結果` : "全帳本總計";
+    document.getElementById("footer-inc").innerText = tInc.toLocaleString();
+    document.getElementById("footer-exp").innerText = tExp.toLocaleString();
+    document.getElementById("footer-bal").innerText = (tInc - tExp).toLocaleString();
+    document.getElementById("toggleBtn").innerText = isAllExpanded ? "⊖" : "⊕";
 }
 
-// 匯入匯出
 function exportTXT() {
-    if(!data.length) return;
     const blob = new Blob([JSON.stringify(data, null, 2)], {type: "text/plain"});
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
@@ -313,15 +256,9 @@ function exportTXT() {
 }
 
 document.getElementById("fileInput").onchange = (e) => {
-    const file = e.target.files[0];
     const reader = new FileReader();
-    reader.onload = () => {
-        try {
-            const imported = JSON.parse(reader.result);
-            if(Array.isArray(imported)) { data = [...data, ...imported]; finalize(); }
-        } catch(err) { alert("格式錯誤，請確保文件正確"); }
-    };
-    reader.readAsText(file);
+    reader.onload = () => { try { data = JSON.parse(reader.result); finalize(); } catch(e) { alert("檔案格式錯誤"); } };
+    reader.readAsText(e.target.files[0]);
 };
 
 render();
