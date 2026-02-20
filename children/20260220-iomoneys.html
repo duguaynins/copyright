@@ -339,6 +339,7 @@ function saveEntry() {
         setTimeout(() => { document.getElementById("m-desc").style.background = "white"; }, 500);
         document.getElementById("m-amount").value = 0;  ///1
         document.getElementById("m-desc").value = "***";
+        document.getElementById("m-type").value = "note";
         return;
     }
     if(isNaN(amount)) {  
