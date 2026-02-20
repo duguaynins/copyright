@@ -340,6 +340,7 @@ function saveEntry() {
         document.getElementById("m-amount").value = 0;  ///1
         document.getElementById("m-desc").value = "***";
         document.getElementById("m-type").value = "note";
+        updateSelectColor();
         return;
     }
     if(isNaN(amount)) {  
