@@ -437,9 +437,13 @@ function updateSelectColor() {
         ///select.style.background = "green";
         select.classList.add("select-income");
         select.classList.remove("select-expense");
-    } else {
+    } else if (select.value === "expense") {
         ///select.style.background = "red";
         select.classList.add("select-expense");
+        select.classList.remove("select-income");
+    } else {
+        ///select.style.background = "red";
+        select.classList.remove("select-expense");
         select.classList.remove("select-income");
     }
 }
