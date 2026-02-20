@@ -1,33 +1,51 @@
 <!DOCTYPE html>
-<html lang="auto">
+<html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-<meta name="description" content="© 2024 NINS (by JPGT). By using any of the services, it means you have agreed to any content and all content!">
-<link rel="canonical" href="https://copyright.nins.cc/">
+<meta name="description" content="© 2024 NINS (by JPGT).">
 <title translate="no">nins/io-money</title>
 
     <style>
+        
         :root {
             --primary: #2563eb; 
-            --inc-bg: #dcfce7; --inc-text: #059669; /* 綠色系 */
-            --exp-bg: #fee2e2; --exp-text: #dc2626; /* 紅色系 */
+            --inc-bg: #dcfce7; --inc-text: #059669; 
+            --exp-bg: #fee2e2; --exp-text: #dc2626; 
             --secondary: #64748b; --bg: #f8fafc; --dark: #1e293b;
+            --card-shadow: 0 4px 20px rgba(0,0,0,0.05);
         }
 
-        body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--dark); margin: 0; padding: 12px; }
-        .container { max-width: 600px; margin: 0 auto; }
+        body { 
+            font-family: system-ui, -apple-system, sans-serif; 
+            background: var(--bg); 
+            color: var(--dark); 
+            margin: 0; 
+            padding: 16px; 
+        }
+
+        .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+        }
 
         /* 總計卡片 */
         .grand-total-card {
-            background: #ffffff; padding: 24px; border-radius: 24px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 20px;
+            background: #ffffff; 
+            padding: 24px; 
+            border-radius: 24px;
+            box-shadow: var(--card-shadow); 
+            margin-bottom: 20px;
             border: 1px solid #f1f5f9;
         }
         .balance-label { font-size: 0.85rem; color: var(--secondary); margin-bottom: 4px; font-weight: 500; }
-        .balance-amount { font-size: 2.5rem; font-weight: 800; margin-bottom: 20px; color: var(--dark); }
+        .balance-amount { 
+            font-size: clamp(1.8rem, 5vw, 2.5rem); 
+            font-weight: 800; 
+            margin-bottom: 20px; 
+            color: var(--dark); 
+        }
         
-        /* 統一結算樣式 (參考圖片) */
         .badge {
             display: inline-flex; align-items: center; justify-content: center;
             padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 0.9rem;
@@ -35,19 +53,65 @@
         }
         .badge-inc { background: var(--inc-bg); color: var(--inc-text); }
         .badge-exp { background: var(--exp-bg); color: var(--exp-text); }
-
         .stats-grid { display: flex; gap: 10px; border-top: 1px solid #f1f5f9; padding-top: 15px; }
 
-        /* 操作列 */
-        .action-bar { display: flex; gap: 8px; margin-bottom: 20px; position: sticky; top: 10px; z-index: 100; }
-        .search-input { flex: 1; padding: 12px 18px; border: 2px solid #e2e8f0; border-radius: 16px; outline: none; transition: 0.3s; font-size: 1rem; }
+        /* 操作列 - 統一高度與電腦版優化 */
+        .action-bar { 
+            display: flex; 
+            gap: 8px; 
+            margin-bottom: 20px; 
+            position: sticky; 
+            top: 10px; 
+            z-index: 100;
+            background: var(--bg);
+            padding: 4px 0;
+        }
+        .search-input, .btn-icon, .btn-add {
+            height: 48px;
+            box-sizing: border-box;
+        }
+        .search-input { 
+            flex: 1; 
+            padding: 0 18px; 
+            border: 2px solid #e2e8f0; 
+            border-radius: 16px; 
+            outline: none; 
+            transition: 0.3s; 
+            font-size: 1rem; 
+        }
         .search-input:focus { border-color: var(--primary); background: white; }
-        .btn-icon { background: white; border: 2px solid #e2e8f0; padding: 0 14px; border-radius: 16px; cursor: pointer; color: var(--secondary); font-size: 1.2rem; }
-        .btn-add { background: var(--primary); color: white; border: none; padding: 0 24px; border-radius: 16px; font-weight: 700; cursor: pointer; }
+        .btn-icon { 
+            background: white; 
+            border: 2px solid #e2e8f0; 
+            width: 48px;
+            border-radius: 16px; 
+            cursor: pointer; 
+            color: var(--secondary); 
+            font-size: 1.2rem; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-add { 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 0 20px; 
+            border-radius: 16px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            white-space: nowrap;
+        }
 
         /* 列表樣式 */
         .list-container { display: flex; flex-direction: column; gap: 14px; }
-        .day-group { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; }
+        .day-group { 
+            background: white; 
+            border-radius: 20px; 
+            overflow: hidden; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03); 
+            border: 1px solid #f1f5f9; 
+        }
         .day-header { 
             background: #fdfdfd; padding: 14px 18px; display: flex; justify-content: space-between; 
             align-items: center; cursor: pointer; border-bottom: 1px solid #f8fafc;
@@ -56,40 +120,73 @@
         .day-summary { display: flex; gap: 6px; }
         .day-summary .badge { padding: 4px 10px; font-size: 0.8rem; min-width: 60px; }
         
-        /* 折疊動畫 */
-        .items-wrapper { max-height: 5000px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); opacity: 1; }
+        .items-wrapper { max-height: 5000px; transition: all 0.4s ease; opacity: 1; }
         .collapsed .items-wrapper { max-height: 0; opacity: 0; pointer-events: none; }
         .collapsed .day-header { border-bottom: none; }
 
         .item-row { 
-            padding: 16px 18px; display: grid; grid-template-columns: 50px 1fr auto; 
-            align-items: center; gap: 12px; border-bottom: 1px solid #fbfcfe; cursor: pointer;
+            padding: 16px 18px; 
+            display: grid; 
+            grid-template-columns: 60px 1fr auto; 
+            align-items: center; 
+            gap: 12px; 
+            border-bottom: 1px solid #fbfcfe; 
+            cursor: pointer;
+            transition: background 0.2s;
         }
         .item-row:last-child { border-bottom: none; }
-        .item-row:active { background: #f8fafc; }
+        .item-row:hover { background: #f8fafc; }
+        
         .item-time { font-size: 0.75rem; color: var(--secondary); font-weight: 500; }
+        .item-main { min-width: 0; }
         .item-desc { font-weight: 600; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .item-amount { font-weight: 700; font-size: 1rem; }
-        /* 2. 核心修正：強制說明文字在空間不足時縮減並顯示省略號 */
-        .item-main {
-            min-width: 0; /* 關鍵！這能防止 Flex/Grid 項目被內容撐開 */
-        }
         .inc-text { color: var(--inc-text); }
         .exp-text { color: var(--exp-text); }
 
-        /* 彈窗樣式 */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(30, 41, 59, 0.5); display: none; justify-content: center; align-items: flex-end; z-index: 1000; backdrop-filter: blur(4px); }
-        .modal-content { background: white; padding: 24px; border-radius: 24px 24px 0 0; width: 100%; max-width: 500px; animation: slideUp 0.3s ease-out; }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        /* 彈窗樣式 - 電腦版置中 */
+        .modal-overlay { 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(30, 41, 59, 0.5); 
+            display: none; 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 1000; 
+            backdrop-filter: blur(4px); 
+        }
+        .modal-content { 
+            background: white; 
+            padding: 24px; 
+            border-radius: 24px; 
+            width: 90%; 
+            max-width: 450px; 
+            animation: modalFade 0.3s ease-out; 
+        }
+
+        @keyframes modalFade { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        /* 手機版彈窗優化 */
+        @media (max-width: 480px) {
+            .modal-overlay { align-items: flex-end; }
+            .modal-content { border-radius: 24px 24px 0 0; width: 100%; }
+        }
+
         .form-group { margin-bottom: 16px; }
         .form-group label { display: block; font-size: 0.75rem; color: var(--secondary); font-weight: 700; margin-bottom: 6px; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; box-sizing: border-box; padding: 14px; border: 1px solid #e2e8f0; border-radius: 12px; font-size: 1rem; background: #f8fafc; outline: none; }
+        .form-group input, .form-group select, .form-group textarea { 
+            width: 100%; box-sizing: border-box; padding: 14px; border: 1px solid #e2e8f0; 
+            border-radius: 12px; font-size: 1rem; background: #f8fafc; outline: none; 
+        }
         .modal-footer { display: flex; gap: 10px; margin-top: 24px; }
-        .modal-footer button { flex: 1; padding: 16px; border-radius: 14px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .modal-footer button { flex: 1; padding: 16px; border-radius: 14px; border: none; font-weight: 700; cursor: pointer; }
         .btn-save { background: var(--primary); color: white; }
         .btn-cancel { background: #f1f5f9; color: var(--secondary); }
         
-        .util-btns { display: flex; justify-content: center; gap: 20px; margin: 40px 0; }
+        .util-btns { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin: 40px 0; }
         .btn-util { background: none; border: none; font-size: 0.8rem; cursor: pointer; color: var(--secondary); text-decoration: underline; }
     </style>
 </head>
@@ -97,7 +194,7 @@
 
 <div class="container">
     <div class="grand-total-card">
-        <div class="balance-label" id="footer-label">目前的預算結餘</div>
+        <div class="balance-label">目前的預算結餘</div>
         <div class="balance-amount">$ <span id="footer-bal">0</span></div>
         <div class="stats-grid">
             <div class="badge badge-inc">+ <span id="footer-inc">0</span></div>
@@ -116,7 +213,7 @@
     <div class="util-btns">
         <button onclick="exportTXT()" class="btn-util">匯出備份</button>
         <button onclick="document.getElementById('fileInput').click()" class="btn-util">匯入資料</button>
-        <button onclick="clearAll()" class="btn-util" style="color:var(--danger)">清空所有</button>
+        <button onclick="clearAll()" class="btn-util" style="color:#ef4444">清空所有</button>
         <input type="file" id="fileInput" accept=".txt" style="display:none">
     </div>
 </div>
@@ -153,6 +250,7 @@
 </div>
 
 <script>
+/* 核心 JavaScript 邏輯保留自原始檔案 */
 const KEY="accountBookUTC_v3"; 
 let data=JSON.parse(localStorage.getItem(KEY))||[];
 let currentEditId = null;
