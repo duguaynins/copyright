@@ -388,7 +388,7 @@ function render() {
         const itemsHtml = groups[date].map(item => {
             const isInc = item.type === "income";
             const isNote = item.type === "note";
-            if (isNote) {
+            if (!isNote) {
             isInc ? dInc += item.amount : dExp += item.amount;
             isInc ? tInc += item.amount : tExp += item.amount;  }
             
