@@ -17,7 +17,7 @@ document.body.insertAdjacentHTML('beforeend', `
 `);
 
 document.getElementById('merryXmas').innerHTML = "☃️🦌🎄✨⭐<br>[ © nins ] x [ Merry Xmas Snow ]";
-document.getElementById('ninsForms').innerHTML = `[<a target="_blank" rel="noopener noreferrer" href="https://docs.google.com/forms/d/e/1FAIpQLSct8PaArwmkAv10Eh5CEybu_88IoSj9V_QOLy07KiL6efu10g/viewform">Give Feedback</a>]`;
+document.getElementById('ninsForms').innerHTML = `[<a target="_blank" rel="noopener noreferrer" href="https://docs.google.com/forms/d/e/1FAIpQLSct8PaArwmkAv10Eh5CEybu_88IoSj9V_QOLy07KiL6efu10g/viewform">Co-founders</a>]`;
 
 /*
 document.body.insertAdjacentHTML('beforeend', `
