@@ -44,13 +44,13 @@ function redirectIfMatched() {  ///rules
       " disabled>
       <p>Unauthorized access</p>
       <a href="https://www.youtube.com/@duguaynins" target="_blank" rel="noopener noreferrer" style="color: green;">
-        Co-founders
+        Follow and Contact
       </a>
       </button>
       `);
     }
     else {
-      console.log("pass:", str);
+      console.log("pass:", str);  ///Co-founders
     }
   }
   /*
@@ -264,6 +264,7 @@ function exitFullscreenSafe() {
         console.log("exit failed:", err);
       });
 }
+
 
 
 
