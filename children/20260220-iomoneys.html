@@ -391,7 +391,7 @@ function render() {
             isInc ? tInc += item.amount : tExp += item.amount;
             
             let amountClass = "";
-            if (item.desc === "note") { amountClass = ""; }
+            if (item.type === "note") { amountClass = ""; }
             else { amountClass = isInc ? 'inc-text' : 'exp-text'; }
 
             return `
