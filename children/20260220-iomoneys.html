@@ -389,11 +389,16 @@ function render() {
             const isInc = item.type === "income";
             isInc ? dInc += item.amount : dExp += item.amount;
             isInc ? tInc += item.amount : tExp += item.amount;
+            
+            let amountClass = "";
+            if (item.desc === "note") { amountClass = ""; }
+            else { amountClass = isInc ? 'inc-text' : 'exp-text'; }
+
             return `
                 <div class="item-row" onclick="event.stopPropagation(); openModal(${item.id})">
                     <div class="item-time">${item.time || '00:00'}</div>
                     <div class="item-main"><div class="item-desc">${item.desc}</div></div>
-                    <div class="item-amount ${isInc?'inc-text':'exp-text'}">${isInc?'+':'-'}${item.amount.toLocaleString()}</div>
+                    <div class="item-amount ${amountClass}">${isInc?'+':'-'}${item.amount.toLocaleString()}</div>
                 </div>`;
         }).join('');
 
