@@ -149,6 +149,8 @@
             background: #fdfdfd; padding: 14px 18px; display: flex; justify-content: space-between; 
             align-items: center; cursor: pointer; border-bottom: 1px solid #f8fafc;
         }
+
+        .day-note { font-weight: 800; color: var(--dark); }
         .day-title { font-weight: 800; color: var(--dark); font-size: 0.95rem; }
         .day-summary { display: flex; gap: 6px; }
         .day-summary .badge { padding: 4px 10px; font-size: 0.8rem; min-width: 60px; }
@@ -393,7 +395,7 @@ function render() {
             isInc ? tInc += item.amount : tExp += item.amount;  }
             
             let amountClass = "";
-            if (item.type === "note") { amountClass = ""; }
+            if (item.type === "note") { amountClass = 'day-note'; }
             else { amountClass = isInc ? 'inc-text' : 'exp-text'; }
 
             return `
