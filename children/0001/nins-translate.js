@@ -101,6 +101,8 @@ function autoTranslate(lang) {
 }
 
 window.addEventListener('load', () => {
+
+    console.log(new Date());
     console.log("window...load");
         
     waitForCombo((combo) => {
@@ -120,6 +122,7 @@ window.addEventListener('load', () => {
     }, 1000); */
 
 });
+
 
 
 
