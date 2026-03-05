@@ -13,6 +13,15 @@
   user-select: text; /* 這個元素可以選文字 */
 }
 
+a {
+  color: blue;           /* 或使用十六進位色碼 #0000FF */
+  /* text-decoration: none; */
+}
+
+a:visited {
+  color: blue;           /* 保持已訪問連結顏色一致 */
+}
+
 iframe.skiptranslate, #goog-gt-tt {
     pointer-events: none !important;
     display: none !important;
@@ -192,6 +201,7 @@ dialog > * {
 
 .stuffed { display: flex; }
 .stuff { flex: 1; }
+
 
 
 
