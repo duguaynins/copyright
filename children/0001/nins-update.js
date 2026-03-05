@@ -10,9 +10,9 @@ function redirectIfMatched() {  ///rules
 
   console.log(new Date());
   if (isPWA()) {
-    console.log('PWA~~~');
+    setTimeout(() => { console.log('isPWA~~~'); }, 1000);
   } else {
-    console.log('noPWA.');
+    setTimeout(() => { console.log('noPWA.'); }, 1000);
   }
     
   const rules = {
@@ -279,6 +279,7 @@ function exitFullscreenSafe() {
         console.log("exit failed:", err);
       });
 }
+
 
 
 
