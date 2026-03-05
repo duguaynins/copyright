@@ -7,6 +7,8 @@ function isPWA() {
 }
 
 function redirectIfMatched() {  ///rules
+
+  console.log(new Date());
   if (isPWA()) {
     console.log('PWA~~~');
   } else {
@@ -277,6 +279,7 @@ function exitFullscreenSafe() {
         console.log("exit failed:", err);
       });
 }
+
 
 
 
