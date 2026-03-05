@@ -1,5 +1,18 @@
+function isPWA() {
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+  const isFullscreen = window.matchMedia('(display-mode: fullscreen)').matches;
+  const isMinimalUI = window.matchMedia('(display-mode: minimal-ui)').matches;
+  const isTestIOS = window.navigator.standalone === true; // iOS 專用
+  return isStandalone || isFullscreen || isMinimalUI || isTestIOS;
+}
 
 function redirectIfMatched() {  ///rules
+  if (isPWA()) {
+    console.log('PWA~~~');
+  } else {
+    console.log('noPWA.');
+  }
+    
   const rules = {
     "key": "value",
   };
@@ -264,6 +277,7 @@ function exitFullscreenSafe() {
         console.log("exit failed:", err);
       });
 }
+
 
 
 
