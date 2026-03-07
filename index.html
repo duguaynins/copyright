@@ -506,7 +506,7 @@
         const existingKey = existingSubscription.getKey('p256dh');
         const vapidKeyArray = urlBase64ToUint8Array(key);
         
-        if (keysAreEqual(existingKey, vapidKeyArray)) { return; 
+        if (keysAreEqual(existingKey, vapidKeyArray)) { return; }
         ///if ( existingSubscription.getKey('p256dh')===urlBase64ToUint8Array(key) ) { return; }
         else { await existingSubscription.unsubscribe();console.log("resubscribe"); }
       }
@@ -539,6 +539,7 @@
   
 </body>
 </html>
+
 
 
 
