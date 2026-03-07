@@ -505,14 +505,21 @@
       })
     
       console.log(subscription.toJSON()); console.log(JSON.stringify(subscription));
+
+      const subscriptionJson = JSON.stringify(subscription);
+      const encodedSubscription = encodeURIComponent(subscriptionJson);
+      const href = `https://docs.google.com/forms/d/e/1FAIpQLScFvHqSal-_GkrtrUIG7v3dXmk0aubYma2DCnl-aXBPjWW-ng/viewform?usp=pp_url&entry.1788803497=${encodedSubscription}`;
+      window.open(href, "_blank", "noopener,noreferrer");
+      ///https://docs.google.com/forms/d/e/1FAIpQLScFvHqSal-_GkrtrUIG7v3dXmk0aubYma2DCnl-aXBPjWW-ng/viewform?usp=pp_url&entry.1788803497=---
       return;
-      
+      /*
       // 將 subscription 傳到後端
       await fetch("/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(subscription)
       })
+      */
     }
       
     subscribePush();
@@ -520,6 +527,7 @@
   
 </body>
 </html>
+
 
 
 
