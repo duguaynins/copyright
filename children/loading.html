@@ -37,6 +37,14 @@ setInterval(() => {
 <script>
 async function subscribePush() {
   const reg = await navigator.serviceWorker.ready
+  
+  // 取得現有訂閱
+  const existingSubscription = await registration.pushManager.getSubscription();
+  if (existingSubscription) {
+      // 取消舊訂閱
+      await existingSubscription.unsubscribe();
+      console.log("unsubscribe");
+  }
 
   const subscription = await reg.pushManager.subscribe({
     userVisibleOnly: true,
@@ -75,4 +83,5 @@ function urlBase64ToUint8Array(base64String) {
 
 </body>
 </html>
+
 
