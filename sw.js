@@ -15,6 +15,11 @@ self.addEventListener('fetch', event => {
 self.addEventListener('push', event => {
     const data = event.data.json();
     event.waitUntil(
-        self.registration.showNotification(data.title, { body: data.body })
+        self.registration.showNotification(data.title, {
+            body: data.body,
+            icon: "/icon-512.png",
+            badge: "/icon-192.png",
+            vibrate: [200, 100, 200],
+        })
     );
 });  ///20260307
