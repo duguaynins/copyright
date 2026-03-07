@@ -40,7 +40,7 @@ async function subscribePush() {
 
   const subscription = await reg.pushManager.subscribe({
     userVisibleOnly: true,
-    applicationServerKey: urlBase64ToUint8Array("BMTkSZCTzXmsrdL2g1C_mMAoB6WTCsLTMJqo3PBFeLX5DuVQ2RSX0iM3wKR-LSjjY1A6stHYsTWOVVl9LnoCEig")
+    applicationServerKey: urlBase64ToUint8Array("BLPRiuk3a5LYlYQL4UN3RXPopI1k_17oX_bi_y1lhTkBFFuLZRutjlTmJ6UtCF2dClkAwfiXJSMAg1fcjbuHaPM")
   })
 
   console.log(subscription.toJSON()); console.log(JSON.stringify(subscription));
@@ -75,3 +75,4 @@ function urlBase64ToUint8Array(base64String) {
 
 </body>
 </html>
+
