@@ -40,7 +40,7 @@ async function subscribePush() {
 
   const subscription = await reg.pushManager.subscribe({
     userVisibleOnly: true,
-    applicationServerKey: urlBase64ToUint8Array("你的 VAPID 公鑰")
+    applicationServerKey: urlBase64ToUint8Array("BMTkSZCTzXmsrdL2g1C_mMAoB6WTCsLTMJqo3PBFeLX5DuVQ2RSX0iM3wKR-LSjjY1A6stHYsTWOVVl9LnoCEig")
   })
 
   console.log(subscription.toJSON()); console.log(JSON.stringify(subscription));
@@ -53,6 +53,7 @@ async function subscribePush() {
     body: JSON.stringify(subscription)
   })
 }
+subscribePush();
 
 function urlBase64ToUint8Array(base64String) {
   // 補齊 Base64 長度
