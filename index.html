@@ -501,14 +501,15 @@
       const key = "BLPRiuk3a5LYlYQL4UN3RXPopI1k_17oX_bi_y1lhTkBFFuLZRutjlTmJ6UtCF2dClkAwfiXJSMAg1fcjbuHaPM";
       
       const existingSubscription = await reg.pushManager.getSubscription();
-      if (!existingSubscription) { console.log("subscribe"); }  ///沒有訂閱
+      if (!existingSubscription) { console.log("Subscribe"); }  ///沒有訂閱
       else {
         const existingKey = existingSubscription.getKey('p256dh');
+        const existingKeyArray = new Uint8Array(existingKey);
         const vapidKeyArray = urlBase64ToUint8Array(key);
         
-        if (keysAreEqual(existingKey, vapidKeyArray)) {  }  ///return;
+        if (keysAreEqual(existingKeyArray, vapidKeyArray)) { console.log("KeepSubscribe"); }  ///return;
         ///if ( existingSubscription.getKey('p256dh')===urlBase64ToUint8Array(key) ) { return; }
-        else { await existingSubscription.unsubscribe();console.log("resubscribe"); }
+        else { await existingSubscription.unsubscribe();console.log("ReSubscribe"); }
       }
     
       const subscription = await reg.pushManager.subscribe({
@@ -539,6 +540,7 @@
   
 </body>
 </html>
+
 
 
 
