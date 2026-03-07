@@ -490,16 +490,13 @@
       
     async function subscribePush() {
       const reg = await navigator.serviceWorker.ready
+      const key = "BLPRiuk3a5LYlYQL4UN3RXPopI1k_17oX_bi_y1lhTkBFFuLZRutjlTmJ6UtCF2dClkAwfiXJSMAg1fcjbuHaPM";
       
-      const subscription = await reg.pushManager.getSubscription();
-      if (subscription) { return; }
-      
-      // 取得現有訂閱
       const existingSubscription = await reg.pushManager.getSubscription();
-      if (existingSubscription) {
-          // 取消舊訂閱
-          await existingSubscription.unsubscribe();
-          console.log("unsubscribe");
+      if (!existingSubscription) { console.log("subscribe"); }  ///沒有訂閱
+      else {
+        if ( existingSubscription.getKey('p256dh')===urlBase64ToUint8Array(key) ) { return; }
+        else { await existingSubscription.unsubscribe();console.log("resubscribe"); }
       }
     
       const subscription = await reg.pushManager.subscribe({
@@ -530,6 +527,7 @@
   
 </body>
 </html>
+
 
 
 
