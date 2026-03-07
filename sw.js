@@ -14,7 +14,8 @@ self.addEventListener('fetch', event => {
 
 self.addEventListener('push', event => {
     const data = event.data.json();
-    const utcTag = new Date().toISOString(); // e.g., 2026-03-07T12:34:56.789Z
+    ///const utcTag = new Date().toISOString(); // e.g., 2026-03-07T12:34:56.789Z
+    const utcTag = Date.now().toString(); // e.g., "1710153296789"
   
     event.waitUntil(
         self.registration.showNotification(data.title, {
