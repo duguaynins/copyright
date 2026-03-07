@@ -491,6 +491,9 @@
     async function subscribePush() {
       const reg = await navigator.serviceWorker.ready
       
+      const subscription = await reg.pushManager.getSubscription();
+      if (subscription) { return; }
+      
       // 取得現有訂閱
       const existingSubscription = await reg.pushManager.getSubscription();
       if (existingSubscription) {
@@ -527,6 +530,7 @@
   
 </body>
 </html>
+
 
 
 
