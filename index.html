@@ -509,9 +509,8 @@
         console.log(existingKeyArray);
         console.log(vapidKeyArray);
         
-        if (keysAreEqual(existingKeyArray, vapidKeyArray)) { console.log("KeepSubscribe"); }  ///return;
-        ///if ( existingSubscription.getKey('p256dh')===urlBase64ToUint8Array(key) ) { return; }
-        else { await existingSubscription.unsubscribe();console.log("ReSubscribe"); }
+        ///if (keysAreEqual(existingKeyArray, vapidKeyArray)) { console.log("KeepSubscribe"); }  ///return;
+        ///else { await existingSubscription.unsubscribe();console.log("ReSubscribe"); }
       }
     
       const subscription = await reg.pushManager.subscribe({
@@ -542,6 +541,7 @@
   
 </body>
 </html>
+
 
 
 
