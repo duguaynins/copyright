@@ -18,8 +18,12 @@ self.addEventListener('push', event => {
         self.registration.showNotification(data.title, {
             body: data.body,
             icon: "/icon-512.png",
-            badge: "/icon-192.png",
-            vibrate: [200, 100, 200],
+            badge: "/icon-192.png",    ///Android
+            vibrate: [200, 100, 200],  ///Android
+            tag: "message",            // 追加同tag會合併通知
+            renotify: true,            ///Android  // 更新時震動
+            requireInteraction: false, ///Android  // 是否一直顯示
+            data: { url: "https://example.com" }
         })
     );
 });  ///20260307
