@@ -11,3 +11,10 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   // 最小可用 SW
 });
+
+self.addEventListener('push', event => {
+    const data = event.data.json();
+    event.waitUntil(
+        self.registration.showNotification(data.title, { body: data.body })
+    );
+});  ///20260307
