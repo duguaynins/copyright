@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="auto">
+<head>
+<meta charset="UTF-8">
+<title>nins/loading</title>
+<style>
+/* 全螢幕置中 */
+body, html {
+  height: 100%;
+  margin: 0;
+  display: flex;           /* Flexbox 置中 */
+  justify-content: center; /* 水平置中 */
+  align-items: center;     /* 垂直置中 */
+  background-color: #f0f0f0;
+  font-family: monospace;
+  font-size: 3rem;
+}
+
+#spinner {
+  color: #333;
+}
+</style>
+</head>
+<body>
+
+<span id="spinner">/</span>
+
+<script>
+const spinner = ['/', '-', '\\', '|'];  ///, '\\', '-', '/'
+let i = 0;
+setInterval(() => {
+    document.getElementById('spinner').textContent = spinner[i % spinner.length];
+    i++;
+}, 200);
+</script>
+
+</body>
+</html>
