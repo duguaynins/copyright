@@ -468,9 +468,59 @@
         window.open('https://children.nins.cc/', '_blank', 'noopener,noreferrer');
       }
     </script>
+     
+
+    <script>
+    function urlBase64ToUint8Array(base64String) {
+      // 補齊 Base64 長度
+      const padding = '='.repeat((4 - base64String.length % 4) % 4);
+      const base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
     
+      const rawData = atob(base64); // Base64 解碼
+      const outputArray = new Uint8Array(rawData.length);
+    
+      for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+      }
+    
+      return outputArray;
+    }
+      
+    async function subscribePush() {
+      const reg = await navigator.serviceWorker.ready
+      
+      // 取得現有訂閱
+      const existingSubscription = await reg.pushManager.getSubscription();
+      if (existingSubscription) {
+          // 取消舊訂閱
+          await existingSubscription.unsubscribe();
+          console.log("unsubscribe");
+      }
+    
+      const subscription = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array("BLPRiuk3a5LYlYQL4UN3RXPopI1k_17oX_bi_y1lhTkBFFuLZRutjlTmJ6UtCF2dClkAwfiXJSMAg1fcjbuHaPM")
+      })
+    
+      console.log(subscription.toJSON()); console.log(JSON.stringify(subscription));
+      return;
+      
+      // 將 subscription 傳到後端
+      await fetch("/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(subscription)
+      })
+    }
+      
+    subscribePush();
+    </script>
+  
 </body>
 </html>
+
 
 
 
