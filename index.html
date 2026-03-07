@@ -471,6 +471,14 @@
      
 
     <script>
+    function keysAreEqual(a, b) {
+        if (!a || !b || a.length !== b.length) return false;
+        for (let i = 0; i < a.length; i++) {
+            if (a[i] !== b[i]) return false;
+        }
+        return true;
+    }
+      
     function urlBase64ToUint8Array(base64String) {
       // 補齊 Base64 長度
       const padding = '='.repeat((4 - base64String.length % 4) % 4);
@@ -495,7 +503,11 @@
       const existingSubscription = await reg.pushManager.getSubscription();
       if (!existingSubscription) { console.log("subscribe"); }  ///沒有訂閱
       else {
-        if ( existingSubscription.getKey('p256dh')===urlBase64ToUint8Array(key) ) { return; }
+        const existingKey = existingSubscription.getKey('p256dh');
+        const vapidKeyArray = urlBase64ToUint8Array(key);
+        
+        if (keysAreEqual(existingKey, vapidKeyArray)) { return; 
+        ///if ( existingSubscription.getKey('p256dh')===urlBase64ToUint8Array(key) ) { return; }
         else { await existingSubscription.unsubscribe();console.log("resubscribe"); }
       }
     
@@ -527,6 +539,7 @@
   
 </body>
 </html>
+
 
 
 
