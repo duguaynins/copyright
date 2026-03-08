@@ -8,8 +8,15 @@ self.addEventListener('activate', event => {
   event.waitUntil(clients.claim()); // 接管所有頁面
 });
 
+/*
 self.addEventListener('fetch', event => {
   // 最小可用 SW
+}); */
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    fetch(event.request) // 直接走網路
+      .catch(() => caches.match(event.request)) // 網路失敗時才用快取
+  );
 });
 
 self.addEventListener('push', event => {
