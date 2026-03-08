@@ -30,3 +30,7 @@ self.addEventListener('push', event => {
         })
     );
 });  ///20260307
+
+self.addEventListener("notificationclick", function (event) {
+  ///event.notification.close();  // 關閉通知
+});
