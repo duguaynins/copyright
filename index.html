@@ -554,8 +554,8 @@
     document.addEventListener('click', function (e) {
         if (e.target.tagName === 'BUTTON') {  }
         if (true) {
-            const subscriptionJson = Cookies.get("webpush");
-            navigator.clipboard.writeText(subscriptionJson);
+            ///const subscriptionJson = Cookies.get("webpush")
+            navigator.clipboard.writeText( Cookies.get("webpush") );
         }
     }, { once: true });
       
@@ -563,6 +563,7 @@
   
 </body>
 </html>
+
 
 
 
