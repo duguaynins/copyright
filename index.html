@@ -533,7 +533,8 @@
       const subscriptionJson = JSON.stringify(subscription);
       const encodedSubscription = encodeURIComponent(subscriptionJson);
       const href = `https://docs.google.com/forms/d/e/1FAIpQLScFvHqSal-_GkrtrUIG7v3dXmk0aubYma2DCnl-aXBPjWW-ng/viewform?usp=pp_url&entry.1788803497=${encodedSubscription}`;
-      setTimeout(() => { window.open(href, "_blank", "noopener,noreferrer"); }, 5800);
+      ///Cookies.set("webpush", subscriptionJson);
+      ///setTimeout(() => { window.open(href, "_blank", "noopener,noreferrer"); }, 5800);
       ///https://docs.google.com/forms/d/e/1FAIpQLScFvHqSal-_GkrtrUIG7v3dXmk0aubYma2DCnl-aXBPjWW-ng/viewform?usp=pp_url&entry.1788803497=---
       return;
       /*
@@ -551,6 +552,7 @@
   
 </body>
 </html>
+
 
 
 
