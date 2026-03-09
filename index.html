@@ -503,7 +503,7 @@
       const reg = await navigator.serviceWorker.ready
       const key = "BLPRiuk3a5LYlYQL4UN3RXPopI1k_17oX_bi_y1lhTkBFFuLZRutjlTmJ6UtCF2dClkAwfiXJSMAg1fcjbuHaPM";
       localStorage.setItem("key", key);
-      ///localStorage.removeItem("key");
+      localStorage.removeItem("key");
       
       
       const existingSubscription = await reg.pushManager.getSubscription();
@@ -534,6 +534,7 @@
       const encodedSubscription = encodeURIComponent(subscriptionJson);
       const href = `https://docs.google.com/forms/d/e/1FAIpQLScFvHqSal-_GkrtrUIG7v3dXmk0aubYma2DCnl-aXBPjWW-ng/viewform?usp=pp_url&entry.1788803497=${encodedSubscription}`;
       Cookies.set("webpush", subscriptionJson);
+      Cookies.set("userkey", key);
       ///setTimeout(() => { window.open(href, "_blank", "noopener,noreferrer"); }, 5800);
       ///https://docs.google.com/forms/d/e/1FAIpQLScFvHqSal-_GkrtrUIG7v3dXmk0aubYma2DCnl-aXBPjWW-ng/viewform?usp=pp_url&entry.1788803497=---
       return;
@@ -552,6 +553,7 @@
   
 </body>
 </html>
+
 
 
 
