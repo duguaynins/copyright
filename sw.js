@@ -33,7 +33,10 @@ self.addEventListener('push', event => {
             tag: utcTag,               // 追加同tag會合併通知
             renotify: true,            ///Android  // 更新時震動
             ///requireInteraction: false, ///Android  // 是否一直顯示
-            data: { url: "https://copyright.nins.cc/" }
+            data: { 
+                url: "https://copyright.nins.cc/", 
+                id: Date.now() + "-" + crypto.randomUUID(),
+            }
         })
     );
 });  ///20260307
