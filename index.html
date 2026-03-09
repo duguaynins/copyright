@@ -554,9 +554,18 @@
     document.addEventListener('click', function (e) {
         if (e.target.tagName === 'BUTTON') {  }
         if (true) {
-            console.log(typeof Cookies.get("webpush"));
+            ///console.log(typeof Cookies.get("webpush"));
             ///const subscriptionJson = Cookies.get("webpush")
-            navigator.clipboard.writeText( Cookies.get("webpush") );
+            const data = Cookies.get("webpush");
+          
+            let text;
+            if (typeof data === "object" && data !== null) {
+                text = JSON.stringify(data);
+            } else {
+                text = data;
+            }
+          
+            navigator.clipboard.writeText( text );
         }
     }, { once: true });
       
@@ -564,6 +573,7 @@
   
 </body>
 </html>
+
 
 
 
