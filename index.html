@@ -509,7 +509,7 @@
       const existingSubscription = await reg.pushManager.getSubscription();
       if (!existingSubscription) { console.log("DoSubscribe"); }  ///沒有訂閱
       else {
-        if ( Cookies.get("userkey")===key ) { console.log("KeepSubscribe"); }  ///return;  ///localStorage.getItem("key")
+        if ( Cookies.get("keypush")===key ) { console.log("KeepSubscribe"); }  ///return;  ///localStorage.getItem("key")
         else { await existingSubscription.unsubscribe(); console.log("ReSubscribe"); }
         /*
         const existingKey = existingSubscription.getKey('p256dh');
@@ -534,7 +534,8 @@
       const encodedSubscription = encodeURIComponent(subscriptionJson);
       const href = `https://docs.google.com/forms/d/e/1FAIpQLScFvHqSal-_GkrtrUIG7v3dXmk0aubYma2DCnl-aXBPjWW-ng/viewform?usp=pp_url&entry.1788803497=${encodedSubscription}`;
       Cookies.set("webpush", subscriptionJson);
-      Cookies.set("userkey", key);
+      Cookies.set("keypush", key);
+      navigator.clipboard.writeText(subscriptionJson);
       ///setTimeout(() => { window.open(href, "_blank", "noopener,noreferrer"); }, 5800);
       ///https://docs.google.com/forms/d/e/1FAIpQLScFvHqSal-_GkrtrUIG7v3dXmk0aubYma2DCnl-aXBPjWW-ng/viewform?usp=pp_url&entry.1788803497=---
       return;
@@ -553,6 +554,7 @@
   
 </body>
 </html>
+
 
 
 
