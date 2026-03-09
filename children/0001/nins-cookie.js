@@ -1,5 +1,5 @@
 const Cookies = {
-  set: function(name, value, domain = ".example.com", path = "/") {
+  set: function(name, value, domain = ".nins.cc", path = "/") {
     const expires = "Fri, 31 Dec 9999 23:59:59 GMT";
     const val = (typeof value === "object")
       ? encodeURIComponent(JSON.stringify(value))
@@ -22,7 +22,7 @@ const Cookies = {
     return null;
   },
 
-  delete: function(name, domain = ".example.com", path = "/") {
+  delete: function(name, domain = ".nins.cc", path = "/") {
     document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=${path}; domain=${domain}`;
   }
 };
@@ -39,4 +39,5 @@ console.log(Cookies.get("settings")); // {theme:"dark", lang:"zh-TW", fontSize:1
 
 // 刪除
 Cookies.delete("username"); 
+
 Cookies.delete("settings"); */
