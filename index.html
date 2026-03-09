@@ -552,7 +552,8 @@
     subscribePush();
 
     document.addEventListener('click', function (e) {
-        if (e.target.tagName === 'BUTTON') {
+        if (e.target.tagName === 'BUTTON') {  }
+        if (true) {
             const subscriptionJson = Cookies.get("webpush");
             navigator.clipboard.writeText(subscriptionJson);
         }
@@ -562,6 +563,7 @@
   
 </body>
 </html>
+
 
 
 
