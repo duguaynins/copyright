@@ -1,4 +1,4 @@
-async function HuggingFaceAPI(inputs=null) {
+async function HuggingFace(inputs=null) {
   // 20251205
   try {
     console.log(inputs);
@@ -10,6 +10,9 @@ async function HuggingFaceAPI(inputs=null) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     });
+
+    ///return await response;  ///上方已經等待
+    return response;
 
     const data = await response.json();
     console.log(data);
@@ -24,4 +27,5 @@ async function HuggingFaceAPI(inputs=null) {
     ///return {result: {confidences: null, label: '<b translate="no">'+escapeHtml(err.stack)+'</b>' }};  ///err.name+err.message
     return {result: {confidences: null, label: `<a translate="no" href="mailto:duguaynins@gmail.com?subject=${encodeURIComponent( new Date().toISOString() )}&body=${encodeURIComponent( err.stack )}">mailto:duguaynins@gmail.com</a>` }};  ///escapeHtml(err.stack)
   }
+
 }
