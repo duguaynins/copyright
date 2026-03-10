@@ -1,4 +1,4 @@
-async function HuggingFace(inputs=null) {
+async function HuggingFaces(inputs=null) {
   // 20251205
   try {
     console.log(inputs);
@@ -39,4 +39,5 @@ async function HuggingFace(inputs=null) {
   */
 
 }
+
 
