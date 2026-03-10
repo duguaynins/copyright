@@ -28,4 +28,15 @@ async function HuggingFace(inputs=null) {
     return {result: {confidences: null, label: `<a translate="no" href="mailto:duguaynins@gmail.com?subject=${encodeURIComponent( new Date().toISOString() )}&body=${encodeURIComponent( err.stack )}">mailto:duguaynins@gmail.com</a>` }};  ///escapeHtml(err.stack)
   }
 
+  /*  ///使用方法
+      const inputs = { "inputs": { "a": smsg, "b": rmsg } };
+      const outputs = await HuggingFaceAPI({
+        group: "duguaynins",
+        space: "RedirectAPI",
+        path: "MultipleEmbeddings/predict",  ///embeddings/meta
+        payload: inputs,
+      }); 
+  */
+
 }
+
