@@ -34,7 +34,7 @@ self.addEventListener('push', event => {
             renotify: true,               ///Android  // 更新時震動
             ///requireInteraction: false, ///Android  // 是否一直顯示
             data: { 
-                url: data.url,    ///"https://copyright.nins.cc/"
+                url: "https://copyright.nins.cc/",    ///"https://copyright.nins.cc/"  ///data.url
                 id: Date.now() + "-" + crypto.randomUUID(),
             }
         })
