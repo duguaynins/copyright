@@ -40,7 +40,7 @@ function redirectIfMatched() {  ///rules
     "uris.nins.cc/",
     "transing.nins.cc/",
     "translate.nins.cc/",
-    "t.nins.cc/",
+    ///"t.nins.cc/",
     ///"Users",
   ];
 
@@ -279,6 +279,7 @@ function exitFullscreenSafe() {
         console.log("exit failed:", err);
       });
 }
+
 
 
 
