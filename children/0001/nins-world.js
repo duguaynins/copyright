@@ -7,7 +7,7 @@ document.body.insertAdjacentHTML('beforeend', `
   background: white;
 " disabled></button>
 
-<button class="zIndex" style="z-index: 99998;" 
+<button class="zIndex" style="z-index: 99998; background-color: white;" 
   onclick="this.classList.add('ninsfadeoutNodelay'); 
            if (document.getElementById('checkBGM').checked) { document.getElementById('NinsXmas').play(); /*document.getElementById('NinsXmas').pause();*/ } ">
     <p translate="no" id="merryXmas">!!!</p>
