@@ -35,7 +35,7 @@ function redirectIfMatched() {  ///rules
 
   const currentUrl = window.location.href;
   const keywords = [
-    "deurl.nins.cc/",
+    ///"deurl.nins.cc/",  ///utm_source
     "time.nins.cc/",
     "uris.nins.cc/",
     "transing.nins.cc/",
@@ -279,6 +279,7 @@ function exitFullscreenSafe() {
         console.log("exit failed:", err);
       });
 }
+
 
 
 
