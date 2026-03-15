@@ -19,6 +19,12 @@ self.addEventListener('push', event => {
 
     try {
         data = event.data.json();
+    } catch(e) {
+        data = { title: "通知", body: "你有新消息", url: "/" };
+        console.warn("catch", e);
+    }
+
+    if (true) {
         ///const utcTag = new Date().toISOString(); // e.g., 2026-03-07T12:34:56.789Z
         const utcTag = Date.now().toString(); // e.g., "1710153296789"
       
@@ -36,10 +42,8 @@ self.addEventListener('push', event => {
                     ///id: Date.now() + "-" + crypto.randomUUID(),
                     id: Date.now() + "-" + Math.random().toString(36).substring(2),
                 }
-            })
+            }).catch(err => console.warn("catch:showNotification", err))
         );
-    } catch(e) {
-        console.warn("catch", e);
     }
 });  ///20260307
 
