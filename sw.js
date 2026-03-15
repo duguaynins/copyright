@@ -29,7 +29,8 @@ self.addEventListener('push', event => {
             ///requireInteraction: false, ///Android  // 是否一直顯示
             data: { 
                 url: data.url,    ///"https://copyright.nins.cc/"  ///data.url
-                id: Date.now() + "-" + crypto.randomUUID(),
+                ///id: Date.now() + "-" + crypto.randomUUID(),
+                id: Date.now() + "-" + Math.random().toString(36).substring(2),
             }
         })
     );
