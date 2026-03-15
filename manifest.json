@@ -2,7 +2,7 @@
   "name": "nins/copyright",
   "short_name": "nins/©",
   "start_url": "/index.html",
-  "display": "browser",
+  "display": "fullscreen",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
   "icons": [
