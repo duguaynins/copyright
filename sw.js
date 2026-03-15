@@ -45,7 +45,7 @@ self.addEventListener('push', event => {
 
 self.addEventListener("notificationclick", function (event) {
     ///event.notification.close();  // 關閉通知
-   let url = "";
+    let url = "";
     try {
         url = event.notification.data?.url || "/";
     
