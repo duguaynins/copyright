@@ -14,26 +14,33 @@ self.addEventListener('fetch', event => {
 }); 
 
 self.addEventListener('push', event => {
-    const data = event.data.json();
-    ///const utcTag = new Date().toISOString(); // e.g., 2026-03-07T12:34:56.789Z
-    const utcTag = Date.now().toString(); // e.g., "1710153296789"
-  
-    event.waitUntil(
-        self.registration.showNotification(data.title, {
-            body: data.body,
-            icon: "/icon-512.png",
-            badge: "/icon-96.png",        ///Android
-            ///vibrate: [200, 100, 200],  ///Android
-            tag: utcTag,                  // 追加同tag會合併通知
-            renotify: true,               ///Android  // 更新時震動
-            ///requireInteraction: false, ///Android  // 是否一直顯示
-            data: { 
-                url: data.url,    ///"https://copyright.nins.cc/"  ///data.url
-                ///id: Date.now() + "-" + crypto.randomUUID(),
-                id: Date.now() + "-" + Math.random().toString(36).substring(2),
-            }
-        })
-    );
+
+    let data = {};
+
+    try {
+        data = event.data.json();
+        ///const utcTag = new Date().toISOString(); // e.g., 2026-03-07T12:34:56.789Z
+        const utcTag = Date.now().toString(); // e.g., "1710153296789"
+      
+        event.waitUntil(
+            self.registration.showNotification(data.title, {
+                body: data.body,
+                icon: "/icon-512.png",
+                badge: "/icon-96.png",        ///Android
+                ///vibrate: [200, 100, 200],  ///Android
+                tag: utcTag,                  // 追加同tag會合併通知
+                renotify: true,               ///Android  // 更新時震動
+                ///requireInteraction: false, ///Android  // 是否一直顯示
+                data: { 
+                    url: data.url,    ///"https://copyright.nins.cc/"  ///data.url
+                    ///id: Date.now() + "-" + crypto.randomUUID(),
+                    id: Date.now() + "-" + Math.random().toString(36).substring(2),
+                }
+            })
+        );
+    } catch(e) {
+        console.warn("catch", e);
+    }
 });  ///20260307
 
 self.addEventListener("notificationclick", function (event) {
