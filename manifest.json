@@ -3,7 +3,6 @@
   "short_name": "nins/©",
   "start_url": "/index.html",
   "display": "browser",
-  "display_vt": "browser, standalone, fullscreen",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
   "icons": [
