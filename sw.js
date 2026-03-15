@@ -52,12 +52,15 @@ self.addEventListener("notificationclick", function (event) {
     let url = "";
     try {
         url = event.notification.data?.url || "/";
-    
-        event.waitUntil(
-            clients.openWindow(url)
-        );
     } catch(e) {
+        url = "/";
         console.warn("catch", e);
+    }
+
+    if (true) {
+        event.waitUntil(
+            clients.openWindow(url).catch(err => console.warn("catch:openWindow", err))
+        );
     }
 }); 
 
