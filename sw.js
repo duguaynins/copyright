@@ -13,7 +13,7 @@ self.addEventListener('fetch', event => {
   // 最小可用 SW
 }); 
 
-
+/*
 self.addEventListener('push', event => {
 
     let data = {};
@@ -63,7 +63,7 @@ self.addEventListener("notificationclick", function (event) {
             clients.openWindow(url).catch(err => console.warn("catch:openWindow", err))
         );
     }
-});
+});  */
 
 const display = "minimal-ui, browser, standalone, fullscreen"; 
 
