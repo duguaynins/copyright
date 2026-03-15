@@ -65,7 +65,7 @@ self.addEventListener("notificationclick", function (event) {
     }
 });
 
-///"display_vt": "minimal-ui, browser, standalone, fullscreen", 
+const display = "minimal-ui, browser, standalone, fullscreen"; 
 
 ///const CACHE_NAME = 'v1.0.20260315.1333';
 ///import { precacheAndRoute } from 'workbox-precaching';
