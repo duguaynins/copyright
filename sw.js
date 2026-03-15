@@ -1,6 +1,3 @@
-///const CACHE_NAME = 'v1.0.20260315.1333';
-///import { precacheAndRoute } from 'workbox-precaching';
-///precacheAndRoute(self.__WB_MANIFEST);
 
 self.addEventListener('install', event => {
   console.log('Service Worker 安裝完成');
@@ -12,10 +9,25 @@ self.addEventListener('activate', event => {
   event.waitUntil(clients.claim()); // 接管所有頁面
 });
 
-/*
 self.addEventListener('fetch', event => {
   // 最小可用 SW
-}); */
+}); 
+
+///const CACHE_NAME = 'v1.0.20260315.1333';
+///import { precacheAndRoute } from 'workbox-precaching';
+///precacheAndRoute(self.__WB_MANIFEST);
+
+/*
+self.addEventListener('install', event => {
+  console.log('Service Worker 安裝完成');
+  self.skipWaiting(); // 立即進入 activate
+});
+
+self.addEventListener('activate', event => {
+  console.log('Service Worker 啟動');
+  event.waitUntil(clients.claim()); // 接管所有頁面
+});
+
 self.addEventListener('fetch', event => {
   event.respondWith(
     fetch(event.request) // 直接走網路
@@ -54,3 +66,4 @@ self.addEventListener("notificationclick", function (event) {
         clients.openWindow(url)
     );
 });
+*/
