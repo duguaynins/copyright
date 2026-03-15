@@ -1,3 +1,7 @@
+///const CACHE_NAME = 'v1.0.20260315.1333';
+///import { precacheAndRoute } from 'workbox-precaching';
+///precacheAndRoute(self.__WB_MANIFEST);
+
 self.addEventListener('install', event => {
   console.log('Service Worker 安裝完成');
   self.skipWaiting(); // 立即進入 activate
