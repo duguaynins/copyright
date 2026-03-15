@@ -45,12 +45,16 @@ self.addEventListener('push', event => {
 
 self.addEventListener("notificationclick", function (event) {
     ///event.notification.close();  // 關閉通知
-
-    const url = event.notification.data?.url || "/";
-
-    event.waitUntil(
-        clients.openWindow(url)
-    );
+   let url = "";
+    try {
+        url = event.notification.data?.url || "/";
+    
+        event.waitUntil(
+            clients.openWindow(url)
+        );
+    } catch(e) {
+        console.warn("catch", e);
+    }
 }); 
 
 ///const CACHE_NAME = 'v1.0.20260315.1333';
