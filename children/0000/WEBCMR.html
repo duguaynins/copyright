@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>拍照與錄影（時間浮水印）</title>
+<style>
+  body { text-align:center; font-family:sans-serif; }
+  video, canvas { width: 100%; max-width: 400px; border-radius: 10px; }
+  button { margin: 10px; padding: 10px 20px; font-size: 16px; }
+</style>
+</head>
+<body>
+
+<h2>📷 拍照 / 🎥 錄影（含時間浮水印）</h2>
+
+<video id="video" autoplay playsinline></video>
+<canvas id="canvas" style="display:none;"></canvas>
+
+<div>
+  <button onclick="takePhoto()">拍照</button>
+  <button onclick="startRecording()">開始錄影</button>
+  <button onclick="stopRecording()">停止錄影</button>
+</div>
+
+<script>
+let video = document.getElementById('video');
+let canvas = document.getElementById('canvas');
+let ctx = canvas.getContext('2d');
+let mediaRecorder;
+let chunks = [];
+let stream;
+
+// 開啟相機
+async function initCamera() {
+  stream = await navigator.mediaDevices.getUserMedia({
+    video: { facingMode: "environment", width: { ideal: 1920 }, height: { ideal: 1080 } },
+    audio: true
+  });
+  video.srcObject = stream;
+}
+initCamera();
+
+// 取得時間字串
+function getTimeString() {
+  let now = new Date();
+  return now.toLocaleString();
+}
+
+// 拍照（加浮水印）
+function takePhoto() {
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+
+  ctx.drawImage(video, 0, 0);
+
+  // 畫時間
+  ctx.fillStyle = "white";
+  ctx.font = "24px Arial";
+  ctx.fillText(getTimeString(), 20, canvas.height - 20);
+
+  let img = canvas.toDataURL("image/png");
+
+  let a = document.createElement("a");
+  a.href = img;
+  a.download = "photo.png";
+  a.click();
+}
+
+// 錄影（用 canvas 加浮水印）
+function startRecording() {
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+
+  function drawFrame() {
+    ctx.drawImage(video, 0, 0);
+
+    ctx.fillStyle = "white";
+    ctx.font = "24px Arial";
+    ctx.fillText(getTimeString(), 20, canvas.height - 20);
+
+    requestAnimationFrame(drawFrame);
+  }
+  drawFrame();
+
+  let canvasStream = canvas.captureStream(30);
+
+  mediaRecorder = new MediaRecorder(canvasStream);
+  chunks = [];
+
+  mediaRecorder.ondataavailable = e => chunks.push(e.data);
+
+  mediaRecorder.onstop = () => {
+    let blob = new Blob(chunks, { type: "video/webm" });
+    let url = URL.createObjectURL(blob);
+
+    let a = document.createElement("a");
+    a.href = url;
+    a.download = "video.webm";
+    a.click();
+  };
+
+  mediaRecorder.start();
+}
+
+// 停止錄影
+function stopRecording() {
+  mediaRecorder.stop();
+}
+</script>
+
+</body>
+</html>
