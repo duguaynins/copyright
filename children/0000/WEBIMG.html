@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>圖片 25 格顯示</title>
+<style>
+  body {
+    background: #111;
+    color: white;
+    text-align: center;
+  }
+  canvas {
+    border: 1px solid #555;
+    margin-top: 20px;
+  }
+</style>
+</head>
+
+<body>
+
+<h2>圖片切 25 格逐步顯示</h2>
+<input type="file" id="fileInput" accept="image/*">
+<br>
+<canvas id="canvas"></canvas>
+
+<script>
+const input = document.getElementById("fileInput");
+
+input.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const img = new Image();
+  img.src = URL.createObjectURL(file);
+
+  img.onload = () => {
+    drawByBlocks(img);
+  };
+});
+
+function drawByBlocks(img) {
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+
+  canvas.width = img.width;
+  canvas.height = img.height;
+
+  const rows = 5;
+  const cols = 5;
+
+  const blockW = img.width / cols;
+  const blockH = img.height / rows;
+
+  let index = 0;
+
+  function drawNext() {
+    if (index >= rows * cols) return;
+
+    const col = index % cols;
+    const row = Math.floor(index / cols);
+
+    const sx = col * blockW;
+    const sy = row * blockH;
+
+    ctx.drawImage(
+      img,
+      sx, sy, blockW, blockH, // source
+      sx, sy, blockW, blockH  // destination
+    );
+
+    index++;
+
+    setTimeout(drawNext, 150); // 控制速度
+  }
+
+  drawNext();
+}
+</script>
+
+</body>
+</html>
