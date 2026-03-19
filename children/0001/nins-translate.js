@@ -89,6 +89,7 @@ function autoTranslate(lang) {
                 const enOption = document.createElement('option');
                 enOption.value = 'en';
                 enOption.text = 'English';
+                enOption.setAttribute('translate', 'no');  // <- 防止被翻譯
                 combo.insertBefore(enOption, combo.firstChild); // 插入到第一個位置
                 options.unshift('en'); // 更新 options 陣列，把 en 放在開頭
             }
