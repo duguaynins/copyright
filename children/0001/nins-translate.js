@@ -84,6 +84,15 @@ function autoTranslate(lang) {
             
             ///const params = new URLSearchParams(window.location.search);
             const options = Array.from(combo.options).map(opt => opt.value);console.log('可用語言代碼:', options);
+
+            if (!options.includes('en')) {
+                const enOption = document.createElement('option');
+                enOption.value = 'en';
+                enOption.text = 'English';
+                combo.insertBefore(enOption, combo.firstChild); // 插入到第一個位置
+                options.unshift('en'); // 更新 options 陣列，把 en 放在開頭
+            }
+                        
             console.log("autoTranslate?:", lang);
             ///combo.value = lang;
             combo.value = options.includes(lang) 
