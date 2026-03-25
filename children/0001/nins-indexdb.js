@@ -1,4 +1,64 @@
+async function getAllWithCursor(dbName, storeName) {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(dbName);
+    const results = [];
 
+    request.onsuccess = (event) => {
+      const db = event.target.result;
+      const transaction = db.transaction([storeName], "readonly");
+      const store = transaction.objectStore(storeName);
+      const cursorRequest = store.openCursor();
+
+      cursorRequest.onsuccess = (e) => {
+        const cursor = e.target.result;
+        if (cursor) {
+          // 將當前指向的資料存入陣列
+          results.push(cursor.value);
+          // 移動到下一筆資料，這會再次觸發 onsuccess
+          cursor.continue();
+        } else {
+          // 游標遍歷結束
+          resolve(results);
+        }
+      };
+    };
+  });
+}
+///const allUsers = await getAllWithCursor("MyDatabase", "Users");
+
+///const db = new Dexie("MyDatabase");
+///const allData = await db.users.toArray();
+
+async function getAllData(dbName, storeName) {
+  return new Promise((resolve, reject) => {
+    // 1. 打開資料庫
+    const request = indexedDB.open(dbName);
+
+    request.onsuccess = (event) => {
+      const db = event.target.result;
+      
+      // 2. 建立唯讀事務並取得 Object Store
+      const transaction = db.transaction([storeName], "readonly");
+      const store = transaction.objectStore(storeName);
+      
+      // 3. 呼叫 getAll
+      const getAllRequest = store.getAll();
+
+      getAllRequest.onsuccess = () => {
+        resolve(getAllRequest.result); // 這裡會返回包含所有資料的陣列
+      };
+
+      getAllRequest.onerror = () => {
+        reject("讀取資料失敗");
+      };
+    };
+
+    request.onerror = () => reject("無法打開資料庫");
+  });
+}
+
+// 使用方式：
+// getAllData("MyDatabase", "Users").then(data => console.log(data));
 
 
 /*
