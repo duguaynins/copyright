@@ -1,3 +1,6 @@
+
+
+
 /*
 (async () => {
     try {
@@ -225,4 +228,40 @@ openDatabase(DatabaseName, ObjectStoreName).then(db => {
         });
     });
 });
+*/
+
+/** 
+(async () => {
+    let db = await openDatabase(DatabaseName, ObjectStoreName);
+
+    await updateData(db, ObjectStoreName, {
+        id: 1710000000007,
+        name: "Alice0",
+        age: 25,
+        email: "alice@example.com"
+    });
+    await updateData(db, ObjectStoreName, {
+        id: 1710000000008,
+        name: "Alice1",
+        age: 25,
+        email: "alice@example.com"
+    });
+    await updateData(db, ObjectStoreName, {
+        id: 1710000000009,
+        name: "AliceX",
+        age: 25,
+        email: "alice@example.com"
+    });
+
+    console.log("新增完成");
+
+    let rows = await getDataByTimeRange(
+        db,
+        ObjectStoreName,
+        1710000000000,
+        1710009999999
+    );
+
+    console.log(rows);
+})();
 */
