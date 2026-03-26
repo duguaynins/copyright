@@ -28,6 +28,7 @@ async function loadAllAssets() {
   
   await loadJS('https://copyright.nins.cc/children/0001/nins-huggingface.js');
   await loadJS('https://copyright.nins.cc/children/0001/nins-cookie.js');
+  await loadJS('https://copyright.nins.cc/children/0001/nins-indexdb.js');
   
   await loadJS('https://copyright.nins.cc/children/0001/nins-world.js');  ///二選一
   ///await loadJS('https://copyright.nins.cc/children/0001/nins-ads.js');  ///二選一
