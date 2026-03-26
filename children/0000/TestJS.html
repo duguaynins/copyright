@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>Web DOS v3.0</title>
+
+<style>
+    body {
+        margin: 0;
+        background: black;
+        overflow: hidden;
+    }
+
+    #terminal {
+        color: #00ff00;
+        font-family: 'Courier New', monospace;
+        padding: 20px;
+        height: 100vh;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        font-size: 16px;
+    }
+
+    #output-container {
+        flex: 1;
+        overflow-y: auto;
+        margin-bottom: 10px;
+        scrollbar-width: none; /* Firefox */
+    }
+
+    #output-container::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+
+    .line {
+        display: flex;
+        align-items: center;
+    }
+
+    .prompt {
+        margin-right: 8px;
+        white-space: nowrap;
+    }
+
+    input {
+        background: transparent;
+        border: none;
+        color: #00ff00;
+        font-family: inherit;
+        font-size: 16px;
+        outline: none;
+        flex: 1;
+    }
+
+    .menu {
+        margin-bottom: 15px;
+        border-bottom: 1px solid #004400;
+        padding-bottom: 10px;
+    }
+
+    button {
+        background: black;
+        border: 1px solid #00ff00;
+        color: #00ff00;
+        font-family: inherit;
+        margin-right: 10px;
+        padding: 2px 10px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #003300;
+    }
+
+    .table {
+        display: grid;
+        grid-template-columns: 200px 100px;
+        margin: 5px 0;
+    }
+
+    .blink {
+        animation: blink-animation 1s steps(2, start) infinite;
+    }
+
+    @keyframes blink-animation {
+        to { visibility: hidden; }
+    }
+
+    .error { color: #ff0000; }
+    .info { color: #ffff00; }
+</style>
+</head>
+
+<body>
+
+<div id="terminal">
+    <div class="menu">
+        <div style="margin-bottom: 5px;">WEB DOS (C) Copyright Microsoft Corp.</div>
+        <button onclick="navigateHistory(-1)">↑</button>
+        <button onclick="navigateHistory(1)">↓</button>
+        <button id="btn-save" style="display:none; border-color: yellow; color: yellow;" onclick="forceSave()">F6 / ^Z (存檔)</button>
+        <button onclick="quickCmd('help')">HELP</button>
+        <button onclick="quickCmd('dir')">DIR</button>
+    </div>
+
+    <div id="output-container">
+        <div id="output">
+            <div>Microsoft(R) MS-DOS(R) [版本 6.22]</div>
+            <div>(C)Copyright Microsoft Corp 1981-1994.</div>
+            <br>
+            <div>輸入 <b>HELP</b> 獲取指令清單。</div>
+        </div>
+    </div>
+
+    <div class="line">
+        <span id="prompt-tag" class="prompt">C:\&gt;</span>
+        <input id="cmd-input" autofocus spellcheck="false" autocomplete="off">
+    </div>
+</div>
+
+<script>
+    const input = document.getElementById("cmd-input");
+    const output = document.getElementById("output");
+    const container = document.getElementById("output-container");
+    const promptTag = document.getElementById("prompt-tag");
+    const btnSave = document.getElementById("btn-save");
+
+    // 虛擬檔案系統
+    let vfs = {
+        "AUTOEXEC.BAT": "ECHO OFF\nCLS\nPROMPT $P$G",
+        "README.TXT": "歡迎來到 Web DOS 開發環境。\n使用 COPY CON 建立檔案。"
+    };
+
+    // 指令歷史
+    let history = [];
+    let historyIndex = -1;
+
+    // 寫入模式狀態 (模仿 COPY CON)
+    let isWriting = false;
+    let currentWritingFile = "";
+    let fileBuffer = [];
+
+    input.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+            const val = input.value;
+            if (isWriting) {
+                handleWriting(val);
+            } else {
+                if (val.trim() !== "") {
+                    type(promptTag.innerText + " " + val);
+                    history.push(val);
+                    historyIndex = history.length;
+                    runCommand(val);
+                } else {
+                    type(promptTag.innerText);
+                }
+            }
+            input.value = "";
+            scrollBottom();
+        } else if (e.key === "ArrowUp") {
+            e.preventDefault();
+            navigateHistory(-1);
+        } else if (e.key === "ArrowDown") {
+            e.preventDefault();
+            navigateHistory(1);
+        }
+    });
+
+    function type(text, isHTML = true) {
+        const div = document.createElement("div");
+        if (isHTML) div.innerHTML = text;
+        else div.textContent = text;
+        output.appendChild(div);
+        scrollBottom();
+    }
+
+    function scrollBottom() {
+        container.scrollTop = container.scrollHeight;
+    }
+
+    function runCommand(raw) {
+        const parts = raw.trim().split(/\s+/);
+        const cmd = parts[0].toLowerCase();
+
+        switch (cmd) {
+            case "help":
+                type("HELP      提供指令說明。");
+                type("DIR       列出目錄中的檔案。");
+                type("TYPE      顯示文字檔內容。");
+                type("COPY CON  建立新檔案並進入輸入模式。");
+                type("RUN       執行 JS 檔案。");
+                type("CLS       清除螢幕。");
+                type("VER       顯示 DOS 版本。");
+                break;
+
+            case "cls":
+                output.innerHTML = "";
+                break;
+
+            case "ver":
+                type("MS-DOS 版本 6.22");
+                break;
+
+            case "dir":
+                type(" 磁碟機 C 中的磁碟區沒有標籤。");
+                type(" 磁碟區序號為 1A2B-3C4D");
+                type("<br> C:\\ 的目錄<br>");
+                for (let name in vfs) {
+                    const size = vfs[name].length + " bytes";
+                    type(`<div class="table"><span>${name.padEnd(12)}</span><span>${size}</span></div>`);
+                }
+                type(`<br>        ${Object.keys(vfs).length} 個檔案`);
+                break;
+
+            case "type":
+                const fileToType = parts[1];
+                if (fileToType && vfs[fileToType]) {
+                    type(vfs[fileToType].replace(/\n/g, "<br>"));
+                } else {
+                    type("File not found", false);
+                }
+                break;
+
+            case "copy":
+                if (parts[1] && parts[1].toLowerCase() === "con" && parts[2]) {
+                    startCopyCon(parts[2]);
+                } else {
+                    type("語法錯誤。用法: COPY CON [檔名]");
+                }
+                break;
+
+            case "run":
+                const fileToRun = parts[1];
+                if (fileToRun && vfs[fileToRun]) {
+                    try {
+                        type("<span class='info'>Executing " + fileToRun + "...</span>");
+                        const result = window.eval(vfs[fileToRun]);
+                        if (result !== undefined) type("Result: " + result);
+                    } catch (e) {
+                        type("<span class='error'>Runtime Error: " + e.message + "</span>");
+                    }
+                } else {
+                    type("找不到檔案。");
+                }
+                break;
+
+            default:
+                if (raw.trim() !== "") {
+                    // 嘗試當作即時 JS 執行
+                    try {
+                        const res = window.eval(raw);
+                        if (res !== undefined) type(res);
+                    } catch(e) {
+                        type("Bad command or file name");
+                    }
+                }
+        }
+    }
+
+    // --- COPY CON 核心功能 ---
+    function startCopyCon(filename) {
+        isWriting = true;
+        currentWritingFile = filename;
+        fileBuffer = [];
+        promptTag.innerText = ""; // 隱藏提示
+        btnSave.style.display = "inline-block";
+        type(`<span class='info'>正在寫入 ${filename}... (結束請輸入 ^Z 並按 Enter 或點擊存檔按鈕)</span>`);
+    }
+
+    function handleWriting(line) {
+        if (line.trim() === "^Z" || line.trim().toLowerCase() === "ctrl+z") {
+            forceSave();
+        } else {
+            fileBuffer.push(line);
+            type(line, false);
+        }
+    }
+
+    function forceSave() {
+        if (!isWriting) return;
+        vfs[currentWritingFile] = fileBuffer.join("\n");
+        type("        1 file(s) copied.");
+        isWriting = false;
+        currentWritingFile = "";
+        fileBuffer = [];
+        promptTag.innerText = "C:\\>";
+        btnSave.style.display = "none";
+        input.focus();
+    }
+
+    // --- 歷史紀錄功能 ---
+    function navigateHistory(dir) {
+        if (isWriting) return;
+        historyIndex = Math.max(0, Math.min(history.length, historyIndex + dir));
+        input.value = history[historyIndex] || "";
+        input.focus();
+    }
+
+    function quickCmd(c) {
+        if(isWriting) return;
+        input.value = c;
+        const e = new KeyboardEvent('keydown', {'key': 'Enter'});
+        input.dispatchEvent(e);
+    }
+
+    // 攔截 console.log
+    const oldLog = console.log;
+    console.log = function(...args) {
+        oldLog.apply(console, args);
+        type(args.join(" "), false);
+    };
+
+    document.addEventListener("click", () => input.focus());
+</script>
+
+</body>
+</html>
