@@ -314,6 +314,11 @@ openDatabase(DatabaseName, ObjectStoreName).then(db => {
     });
 
     console.log("新增完成");
+})();
+
+
+(async () => {
+    let db = await openDatabase(DatabaseName, ObjectStoreName);
 
     let rows = await getDataByTimeRange(
         db,
