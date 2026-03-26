@@ -1,60 +1,84 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Web DOS v3.0</title>
+<title>nins/DOSJS</title>
 
 <style>
     body {
         margin: 0;
         background: black;
         overflow: hidden;
+        cursor: text;
     }
 
     #terminal {
         color: #00ff00;
-        font-family: 'Courier New', monospace;
+        font-family: 'Courier New', Courier, monospace;
         padding: 20px;
         height: 100vh;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        font-size: 16px;
+        font-size: 18px;
+        line-height: 1.2;
     }
 
     #output-container {
         flex: 1;
         overflow-y: auto;
-        margin-bottom: 10px;
-        scrollbar-width: none; /* Firefox */
+        scrollbar-width: none;
     }
-
-    #output-container::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+    #output-container::-webkit-scrollbar { display: none; }
 
     .line {
         display: flex;
         align-items: center;
+        min-height: 1.2em;
     }
 
     .prompt {
-        margin-right: 8px;
+        margin-right: 10px;
         white-space: nowrap;
     }
 
-    input {
-        background: transparent;
-        border: none;
-        color: #00ff00;
-        font-family: inherit;
-        font-size: 16px;
-        outline: none;
-        flex: 1;
+    /* 隱藏原生輸入，使用虛擬光標 */
+    #hidden-input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+        left: -9999px;
+    }
+
+    #display-text {
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
+
+    #cursor {
+        display: inline-block;
+        width: 10px;
+        height: 1.1em;
+        background: #00ff00;
+        vertical-align: middle;
+        margin-left: 2px;
+    }
+
+    .blink {
+        animation: blink-animation 0.8s steps(2, start) infinite;
+    }
+
+    @keyframes blink-animation {
+        to { visibility: hidden; }
     }
 
     .menu {
-        margin-bottom: 15px;
-        border-bottom: 1px solid #004400;
+        margin-bottom: 20px;
         padding-bottom: 10px;
+        border-bottom: 1px solid #004400;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
     }
 
     button {
@@ -62,100 +86,98 @@
         border: 1px solid #00ff00;
         color: #00ff00;
         font-family: inherit;
-        margin-right: 10px;
-        padding: 2px 10px;
+        padding: 4px 12px;
         cursor: pointer;
+        font-size: 14px;
+        text-transform: uppercase;
     }
 
-    button:hover {
-        background: #003300;
-    }
+    button:hover { background: #003300; }
+    
+    /* 編輯模式按鈕樣式 */
+    .edit-btn { border-color: #ffff00; color: #ffff00; }
+    .edit-btn:hover { background: #333300; }
 
-    .table {
-        display: grid;
-        grid-template-columns: 200px 100px;
-        margin: 5px 0;
-    }
-
-    .blink {
-        animation: blink-animation 1s steps(2, start) infinite;
-    }
-
-    @keyframes blink-animation {
-        to { visibility: hidden; }
-    }
-
-    .error { color: #ff0000; }
     .info { color: #ffff00; }
+    .success { color: #88ff88; }
+    .error { color: #ff5555; }
+    .table { display: grid; grid-template-columns: 220px 120px; margin: 2px 0; }
 </style>
 </head>
 
-<body>
+<body onclick="focusInput()">
 
 <div id="terminal">
+    <!-- 按鈕控制區 -->
     <div class="menu">
-        <div style="margin-bottom: 5px;">WEB DOS (C) Copyright Microsoft Corp.</div>
+        <button onclick="quickCmd('DIR')">DIR</button>
+        <button onclick="startEdit('APP.JS')">EDIT APP.JS</button>
+        <button id="btn-save" class="edit-btn" style="display:none;" onclick="handleSave()">:SAVE</button>
+        <button id="btn-exit" class="edit-btn" style="display:none;" onclick="handleExit()">:EXIT</button>
+        <button onclick="quickCmd('RUN APP.JS')">RUN APP.JS</button>
+        <button onclick="quickCmd('CLS')">CLS</button>
+        <div style="flex:1"></div>
         <button onclick="navigateHistory(-1)">↑</button>
         <button onclick="navigateHistory(1)">↓</button>
-        <button id="btn-save" style="display:none; border-color: yellow; color: yellow;" onclick="forceSave()">F6 / ^Z (存檔)</button>
-        <button onclick="quickCmd('help')">HELP</button>
-        <button onclick="quickCmd('dir')">DIR</button>
     </div>
 
     <div id="output-container">
         <div id="output">
-            <div>Microsoft(R) MS-DOS(R) [版本 6.22]</div>
-            <div>(C)Copyright Microsoft Corp 1981-1994.</div>
-            <br>
-            <div>輸入 <b>HELP</b> 獲取指令清單。</div>
+            <div>Ready. Type <b style="color:white">HELP</b> for commands.</div>
         </div>
     </div>
 
     <div class="line">
         <span id="prompt-tag" class="prompt">C:\&gt;</span>
-        <input id="cmd-input" autofocus spellcheck="false" autocomplete="off">
+        <span id="display-text"></span><span id="cursor" class="blink"></span>
     </div>
+    
+    <input type="text" id="hidden-input" autofocus spellcheck="false" autocomplete="off">
 </div>
 
 <script>
-    const input = document.getElementById("cmd-input");
+    const hiddenInput = document.getElementById("hidden-input");
+    const displayText = document.getElementById("display-text");
     const output = document.getElementById("output");
     const container = document.getElementById("output-container");
     const promptTag = document.getElementById("prompt-tag");
     const btnSave = document.getElementById("btn-save");
+    const btnExit = document.getElementById("btn-exit");
 
-    // 虛擬檔案系統
     let vfs = {
-        "AUTOEXEC.BAT": "ECHO OFF\nCLS\nPROMPT $P$G",
-        "README.TXT": "歡迎來到 Web DOS 開發環境。\n使用 COPY CON 建立檔案。"
+        "APP.JS": "console.log('Hello World!');"
     };
-
-    // 指令歷史
     let history = [];
     let historyIndex = -1;
+    
+    // 編輯模式狀態
+    let isEditing = false;
+    let editFileName = "";
+    let editBuffer = [];
 
-    // 寫入模式狀態 (模仿 COPY CON)
-    let isWriting = false;
-    let currentWritingFile = "";
-    let fileBuffer = [];
+    // 輸入同步
+    hiddenInput.addEventListener("input", () => {
+        displayText.textContent = hiddenInput.value;
+        scrollBottom();
+    });
 
-    input.addEventListener("keydown", function(e) {
+    hiddenInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
-            const val = input.value;
-            if (isWriting) {
-                handleWriting(val);
+            const val = hiddenInput.value;
+            if (isEditing) {
+                processEditLine(val);
             } else {
                 if (val.trim() !== "") {
-                    type(promptTag.innerText + " " + val);
+                    print(promptTag.innerText + " " + val);
                     history.push(val);
                     historyIndex = history.length;
-                    runCommand(val);
+                    processCommand(val);
                 } else {
-                    type(promptTag.innerText);
+                    print(promptTag.innerText);
                 }
             }
-            input.value = "";
-            scrollBottom();
+            hiddenInput.value = "";
+            displayText.textContent = "";
         } else if (e.key === "ArrowUp") {
             e.preventDefault();
             navigateHistory(-1);
@@ -165,7 +187,9 @@
         }
     });
 
-    function type(text, isHTML = true) {
+    function focusInput() { hiddenInput.focus(); }
+
+    function print(text, isHTML = true) {
         const div = document.createElement("div");
         if (isHTML) div.innerHTML = text;
         else div.textContent = text;
@@ -177,139 +201,121 @@
         container.scrollTop = container.scrollHeight;
     }
 
-    function runCommand(raw) {
+    // 指令處理
+    function processCommand(raw) {
         const parts = raw.trim().split(/\s+/);
-        const cmd = parts[0].toLowerCase();
+        const cmd = parts[0].toUpperCase();
 
         switch (cmd) {
-            case "help":
-                type("HELP      提供指令說明。");
-                type("DIR       列出目錄中的檔案。");
-                type("TYPE      顯示文字檔內容。");
-                type("COPY CON  建立新檔案並進入輸入模式。");
-                type("RUN       執行 JS 檔案。");
-                type("CLS       清除螢幕。");
-                type("VER       顯示 DOS 版本。");
+            case "HELP":
+                print("DIR          - List files");
+                print("EDIT [FILE]  - Start editor");
+                print("RUN [FILE]   - Execute JS file");
+                print("CLS          - Clear screen");
                 break;
-
-            case "cls":
+            case "CLS":
                 output.innerHTML = "";
                 break;
-
-            case "ver":
-                type("MS-DOS 版本 6.22");
-                break;
-
-            case "dir":
-                type(" 磁碟機 C 中的磁碟區沒有標籤。");
-                type(" 磁碟區序號為 1A2B-3C4D");
-                type("<br> C:\\ 的目錄<br>");
+            case "DIR":
+                print(" Directory of C:\\<br>");
                 for (let name in vfs) {
-                    const size = vfs[name].length + " bytes";
-                    type(`<div class="table"><span>${name.padEnd(12)}</span><span>${size}</span></div>`);
-                }
-                type(`<br>        ${Object.keys(vfs).length} 個檔案`);
-                break;
-
-            case "type":
-                const fileToType = parts[1];
-                if (fileToType && vfs[fileToType]) {
-                    type(vfs[fileToType].replace(/\n/g, "<br>"));
-                } else {
-                    type("File not found", false);
+                    print(`<div class="table"><span>${name.padEnd(15)}</span><span>${vfs[name].length} bytes</span></div>`);
                 }
                 break;
-
-            case "copy":
-                if (parts[1] && parts[1].toLowerCase() === "con" && parts[2]) {
-                    startCopyCon(parts[2]);
-                } else {
-                    type("語法錯誤。用法: COPY CON [檔名]");
-                }
+            case "EDIT":
+                if (parts[1]) startEdit(parts[1].toUpperCase());
+                else print("Usage: EDIT [FILENAME]");
                 break;
-
-            case "run":
-                const fileToRun = parts[1];
-                if (fileToRun && vfs[fileToRun]) {
+            case "RUN":
+                const target = parts[1] ? parts[1].toUpperCase() : null;
+                if (target && vfs[target]) {
                     try {
-                        type("<span class='info'>Executing " + fileToRun + "...</span>");
-                        const result = window.eval(vfs[fileToRun]);
-                        if (result !== undefined) type("Result: " + result);
-                    } catch (e) {
-                        type("<span class='error'>Runtime Error: " + e.message + "</span>");
+                        print("<span class='info'>Running " + target + "...</span>");
+                        const res = window.eval(vfs[target]);
+                        if (res !== undefined) print("<span class='success'>Return: " + res + "</span>");
+                    } catch (err) {
+                        print("<span class='error'>Error: " + err.message + "</span>");
                     }
-                } else {
-                    type("找不到檔案。");
-                }
+                } else print("File not found.");
                 break;
-
             default:
                 if (raw.trim() !== "") {
-                    // 嘗試當作即時 JS 執行
                     try {
                         const res = window.eval(raw);
-                        if (res !== undefined) type(res);
-                    } catch(e) {
-                        type("Bad command or file name");
-                    }
+                        if (res !== undefined) print(res);
+                    } catch(e) { print("Bad command or file name"); }
                 }
         }
     }
 
-    // --- COPY CON 核心功能 ---
-    function startCopyCon(filename) {
-        isWriting = true;
-        currentWritingFile = filename;
-        fileBuffer = [];
-        promptTag.innerText = ""; // 隱藏提示
+    // --- 編輯模式邏輯 ---
+    function startEdit(filename) {
+        isEditing = true;
+        editFileName = filename;
+        editBuffer = [];
+        promptTag.innerText = "EDIT>";
         btnSave.style.display = "inline-block";
-        type(`<span class='info'>正在寫入 ${filename}... (結束請輸入 ^Z 並按 Enter 或點擊存檔按鈕)</span>`);
+        btnExit.style.display = "inline-block";
+        print(`<span class='info'>Editor: Writing to ${filename}.</span>`);
+        print(`<span class='info'>Type code line by line. Type :SAVE to finish.</span>`);
     }
 
-    function handleWriting(line) {
-        if (line.trim() === "^Z" || line.trim().toLowerCase() === "ctrl+z") {
-            forceSave();
+    function processEditLine(line) {
+        const cmd = line.trim().toUpperCase();
+        if (cmd === ":SAVE") {
+            handleSave();
+        } else if (cmd === ":EXIT") {
+            handleExit();
         } else {
-            fileBuffer.push(line);
-            type(line, false);
+            editBuffer.push(line);
+            print("  " + line, false);
         }
     }
 
-    function forceSave() {
-        if (!isWriting) return;
-        vfs[currentWritingFile] = fileBuffer.join("\n");
-        type("        1 file(s) copied.");
-        isWriting = false;
-        currentWritingFile = "";
-        fileBuffer = [];
-        promptTag.innerText = "C:\\>";
-        btnSave.style.display = "none";
-        input.focus();
+    function handleSave() {
+        if (!isEditing) return;
+        vfs[editFileName] = editBuffer.join("\n");
+        print("<span class='success'>File saved successfully.</span>");
+        exitEditor();
     }
 
-    // --- 歷史紀錄功能 ---
+    function handleExit() {
+        if (!isEditing) return;
+        print("<span class='error'>Editor closed without saving.</span>");
+        exitEditor();
+    }
+
+    function exitEditor() {
+        isEditing = false;
+        editFileName = "";
+        editBuffer = [];
+        promptTag.innerText = "C:\\>";
+        btnSave.style.display = "none";
+        btnExit.style.display = "none";
+        focusInput();
+    }
+
+    // --- 輔助功能 ---
     function navigateHistory(dir) {
-        if (isWriting) return;
+        if (isEditing) return;
         historyIndex = Math.max(0, Math.min(history.length, historyIndex + dir));
-        input.value = history[historyIndex] || "";
-        input.focus();
+        hiddenInput.value = history[historyIndex] || "";
+        displayText.textContent = hiddenInput.value;
+        focusInput();
     }
 
     function quickCmd(c) {
-        if(isWriting) return;
-        input.value = c;
+        if (isEditing) return;
+        hiddenInput.value = c;
         const e = new KeyboardEvent('keydown', {'key': 'Enter'});
-        input.dispatchEvent(e);
+        hiddenInput.dispatchEvent(e);
     }
 
-    // 攔截 console.log
-    const oldLog = console.log;
     console.log = function(...args) {
-        oldLog.apply(console, args);
-        type(args.join(" "), false);
+        print(args.join(" "), false);
     };
 
-    document.addEventListener("click", () => input.focus());
+    window.onload = focusInput;
 </script>
 
 </body>
