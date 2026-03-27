@@ -7,18 +7,8 @@ function isPWA() {
 }
 
 function redirectIfMatched() {  ///rules
-
+  /*
   console.log(new Date());
-  if (isPWA()) {
-    setTimeout(() => { console.log('isPWA~~~'); }, 5800);return;
-  } else {
-    setTimeout(() => { console.log('noPWA.'); }, 5800);
-  }
-    
-  const rules = {
-    "key": "value",
-  };
-
   console.log("完整 URL (href)***:", window.location.href);
   console.log("協議 (protocol):", window.location.protocol);
   console.log("主機 (host):", window.location.host);
@@ -29,6 +19,16 @@ function redirectIfMatched() {  ///rules
   console.log("fragment/hash (#):", window.location.hash);
   console.log("origin (協議+域名+port):", window.location.origin);
   console.log("base URL (origin + pathname)***:", window.location.origin + window.location.pathname);
+  */
+  if (isPWA()) {
+    ///setTimeout(() => { console.log('isPWA~~~'); }, 5800);return;
+  } else {
+    ///setTimeout(() => { console.log('noPWA.'); }, 5800);
+  }
+    
+  const rules = {
+    "key": "value",
+  };
 
   const params = new URLSearchParams(window.location.search);
   if (params.has('beta')) { return; }
