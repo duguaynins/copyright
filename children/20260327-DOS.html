@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,22 +32,9 @@
     }
     #output-container::-webkit-scrollbar { display: none; }
 
-    .line {
-        display: flex;
-        align-items: center;
-        min-height: 1.2em;
-    }
-
     .prompt {
         margin-right: 10px;
         white-space: nowrap;
-    }
-
-    #hidden-input {
-        position: absolute;
-        opacity: 0;
-        pointer-events: none;
-        left: -9999px;
     }
 
     #display-text {
@@ -100,6 +88,26 @@
     .success { color: #88ff88; }
     .error { color: #ff5555; }
     .table { display: grid; grid-template-columns: 220px 120px; margin: 2px 0; }
+
+    /* 修改 CSS 部分 */
+    #hidden-input {
+        position: absolute;
+        /* 讓它位於當前輸入行的位置，而不是遠在天邊 */
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        opacity: 0;
+        font-size: 16px; /* 防止 iOS 自動放大頁面 (16px 是門檻) */
+        pointer-events: auto; /* 確保能被點擊 */
+        z-index: 10;
+    }
+
+    .line {
+        position: relative; /* 讓 hidden-input 參考此位置 */
+        display: flex;
+        align-items: center;
+        min-height: 1.2em;
+    }
 </style>
 </head>
 
