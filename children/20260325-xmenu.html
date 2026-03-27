@@ -216,6 +216,29 @@
         }
       });
     });
+
+    fetch('xmenu.csv')
+    .then(response => response.text())
+    .then(csvText => {
+      Papa.parse(csvText, {
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+          foods = results.data.map(row => ({
+            name: row.name,
+            price: Number(row.price),
+            category: row.category,
+            description: row.description
+          }));
+          categories.length = 0;
+          categories.push('全部', ...new Set(foods.map(f => f.category)));
+
+          renderCategoryTags();
+          renderTable();
+        }
+      });
+    })
+    .catch(err => console.error('CSV 讀取失敗', err));
   </script>
   
   <script>
