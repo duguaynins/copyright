@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>食物表格篩選</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", system-ui, sans-serif;
+      background: #f6f7fb;
+      color: #1f2937;
+      padding: 32px 16px;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+    .sub {
+      margin: 0 0 24px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .tag-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .tag-btn {
+      border: none;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      color: #111827;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.2s ease;
+    }
+    .tag-btn:hover { transform: translateY(-1px); }
+    .tag-btn.active {
+      background: #111827;
+      color: white;
+    }
+    .search-box {
+      min-width: 240px;
+      flex: 1;
+      max-width: 320px;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 12px;
+      font-size: 14px;
+      outline: none;
+    }
+    .search-box input:focus {
+      border-color: #111827;
+      box-shadow: 0 0 0 3px rgba(17,24,39,0.08);
+    }
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+      background: #fff;
+    }
+    thead {
+      background: #f9fafb;
+    }
+    th, td {
+      text-align: left;
+      padding: 16px;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 14px;
+    }
+    th {
+      color: #374151;
+      font-weight: 700;
+    }
+    tbody tr:hover {
+      background: #fafafa;
+    }
+    .price {
+      font-weight: 700;
+      color: #0f766e;
+    }
+    .category-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #4338ca;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .empty {
+      text-align: center;
+      padding: 28px;
+      color: #6b7280;
+      font-size: 15px;
+    }
+    .count {
+      margin: 12px 0 0;
+      font-size: 13px;
+      color: #6b7280;
+    }
+    @media (max-width: 768px) {
+      .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .search-box {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>食物清單管理</h1>
+      <p class="sub">可依照類別標籤與名稱搜尋，快速篩選想看的食物。</p>
+
+      <div class="toolbar">
+        <input type="file" id="csvInput" accept=".csv" />
+        <div class="tag-group" id="categoryTags"></div>
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="搜尋食物名稱..." />
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>名稱</th>
+              <th>價格</th>
+              <th>類別</th>
+              <th>描述</th>
+            </tr>
+          </thead>
+          <tbody id="foodTableBody"></tbody>
+        </table>
+      </div>
+
+      <p class="count" id="resultCount"></p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script>
+    /*
+    
+    // 你的食物資料（可改成 API / 後端資料）
+    const foods = [
+      { name: '牛肉漢堡', price: 120, category: '主餐', description: '厚切牛肉搭配起司與生菜' },
+      { name: '雞腿便當', price: 95, category: '主餐', description: '酥炸雞腿配三樣配菜' },
+      { name: '凱薩沙拉', price: 85, category: '沙拉', description: '新鮮生菜搭配凱薩醬' },
+      { name: '薯條', price: 50, category: '點心', description: '外酥內軟的經典炸物' },
+      { name: '洋蔥圈', price: 60, category: '點心', description: '香脆洋蔥圈附特調醬' },
+      { name: '紅茶', price: 30, category: '飲料', description: '微糖古早味紅茶' },
+      { name: '拿鐵咖啡', price: 75, category: '飲料', description: '濃縮咖啡加香醇牛奶' },
+      { name: '巧克力蛋糕', price: 90, category: '甜點', description: '濃郁巧克力口感' },
+      { name: '提拉米蘇', price: 100, category: '甜點', description: '帶有咖啡香的經典甜點' }
+    ];  */
+    let foods = []; // 先空陣列
+
+    const csvInput = document.getElementById('csvInput');
+
+    csvInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+          // CSV 欄位：name,price,category,description
+          foods = results.data.map(row => ({
+            name: row.name,
+            price: Number(row.price),
+            category: row.category,
+            description: row.description
+          }));
+
+          // 更新類別標籤
+          categories.length = 0;
+          categories.push('全部', ...new Set(foods.map(f => f.category)));
+
+          renderCategoryTags();
+          renderTable();
+        }
+      });
+    });
+  </script>
+  
+  <script>
+
+    let selectedCategory = '全部';
+    let keyword = '';
+
+    const categoryTags = document.getElementById('categoryTags');
+    const foodTableBody = document.getElementById('foodTableBody');
+    const searchInput = document.getElementById('searchInput');
+    const resultCount = document.getElementById('resultCount');
+
+    const categories = ['全部', ...new Set(foods.map(food => food.category))];
+
+    function renderCategoryTags() {
+      categoryTags.innerHTML = '';
+      categories.forEach(category => {
+        const btn = document.createElement('button');
+        btn.className = `tag-btn ${selectedCategory === category ? 'active' : ''}`;
+        btn.textContent = category;
+        btn.addEventListener('click', () => {
+          selectedCategory = category;
+          renderCategoryTags();
+          renderTable();
+        });
+        categoryTags.appendChild(btn);
+      });
+    }
+
+    function renderTable() {
+      const filteredFoods = foods.filter(food => {
+        const matchCategory = selectedCategory === '全部' || food.category === selectedCategory;
+        const matchKeyword = food.name.includes(keyword);
+        return matchCategory && matchKeyword;
+      });
+
+      if (filteredFoods.length === 0) {
+        foodTableBody.innerHTML = `
+          <tr>
+            <td colspan="4" class="empty">找不到符合條件的食物</td>
+          </tr>
+        `;
+      } else {
+        foodTableBody.innerHTML = filteredFoods.map(food => `
+          <tr>
+            <td>${food.name}</td>
+            <td class="price">$${food.price}</td>
+            <td><span class="category-badge">${food.category}</span></td>
+            <td>${food.description}</td>
+          </tr>
+        `).join('');
+      }
+
+      resultCount.textContent = `目前顯示 ${filteredFoods.length} 筆資料`;
+    }
+
+    searchInput.addEventListener('input', (e) => {
+      keyword = e.target.value.trim();
+      renderTable();
+    });
+
+    renderCategoryTags();
+    renderTable();
+  </script>
+</body>
+</html>
