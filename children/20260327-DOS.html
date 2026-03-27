@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>nins/DOS</title>
+
+<style>
+    body {
+        margin: 0;
+        background: black;
+        overflow: hidden;
+        cursor: text;
+    }
+
+    #terminal {
+        color: #00ff00;
+        font-family: 'Courier New', Courier, monospace;
+        padding: 20px;
+        height: 100vh;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        font-size: 18px;
+        line-height: 1.2;
+    }
+
+    #output-container {
+        flex: 1;
+        overflow-y: auto;
+        scrollbar-width: none;
+    }
+    #output-container::-webkit-scrollbar { display: none; }
+
+    .line {
+        display: flex;
+        align-items: center;
+        min-height: 1.2em;
+    }
+
+    .prompt {
+        margin-right: 10px;
+        white-space: nowrap;
+    }
+
+    #hidden-input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+        left: -9999px;
+    }
+
+    #display-text {
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
+
+    #cursor {
+        display: inline-block;
+        width: 10px;
+        height: 1.1em;
+        background: #00ff00;
+        vertical-align: middle;
+        margin-left: 2px;
+    }
+
+    .blink {
+        animation: blink-animation 0.8s steps(2, start) infinite;
+    }
+
+    @keyframes blink-animation {
+        to { visibility: hidden; }
+    }
+
+    .menu {
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #004400;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    button {
+        background: black;
+        border: 1px solid #00ff00;
+        color: #00ff00;
+        font-family: inherit;
+        padding: 4px 12px;
+        cursor: pointer;
+        font-size: 14px;
+        text-transform: uppercase;
+    }
+
+    button:hover { background: #003300; }
+    
+    .edit-mode-btn { border-color: #ffff00; color: #ffff00; }
+    .edit-mode-btn:hover { background: #333300; }
+
+    .info { color: #ffff00; }
+    .success { color: #88ff88; }
+    .error { color: #ff5555; }
+    .table { display: grid; grid-template-columns: 220px 120px; margin: 2px 0; }
+</style>
+</head>
+
+<body onclick="focusInput()">
+
+<div id="terminal">
+    <div class="menu">
+        <!-- 常規按鈕 -->
+        <button id="btn-dir" onclick="buttonTrigger('DIR')">DIR</button>
+        <button id="btn-edit" onclick="buttonTrigger('EDIT APP.JS')">EDIT APP.JS</button>
+        <button id="btn-run" onclick="buttonTrigger('RUN APP.JS')">RUN APP.JS</button>
+        <button id="btn-cls" onclick="buttonTrigger('CLS')">CLS</button>
+        
+        <!-- 編輯模式專用按鈕 -->
+        <button id="btn-save" class="edit-mode-btn" style="display:none;" onclick="buttonTrigger(':SAVE')">:SAVE</button>
+        <button id="btn-exit" class="edit-mode-btn" style="display:none;" onclick="buttonTrigger(':EXIT')">:EXIT</button>
+        
+        <div style="flex:1"></div>
+        <button onclick="navigateHistory(-1)">↑</button>
+        <button onclick="navigateHistory(1)">↓</button>
+    </div>
+
+    <div id="output-container">
+        <div id="output">
+            <div>Web DOS IDE [Ready]</div>
+            <div>Use buttons or type commands.</div>
+        </div>
+    </div>
+
+    <div class="line">
+        <span id="prompt-tag" class="prompt">C:\&gt;</span>
+        <span id="display-text"></span><span id="cursor" class="blink"></span>
+    </div>
+    
+    <input type="text" id="hidden-input" autofocus spellcheck="false" autocomplete="off">
+</div>
+
+<script>
+    const hiddenInput = document.getElementById("hidden-input");
+    const displayText = document.getElementById("display-text");
+    const output = document.getElementById("output");
+    const container = document.getElementById("output-container");
+    const promptTag = document.getElementById("prompt-tag");
+    
+    // 按鈕元素
+    const btnSave = document.getElementById("btn-save");
+    const btnExit = document.getElementById("btn-exit");
+    const btnDir = document.getElementById("btn-dir");
+    const btnEdit = document.getElementById("btn-edit");
+    const btnRun = document.getElementById("btn-run");
+    const btnCls = document.getElementById("btn-cls");
+
+    let vfs = { "APP.JS": "console.log('App Loaded.');" };
+    let history = [];
+    let historyIndex = -1;
+    let isEditing = false;
+    let editFileName = "";
+    let editBuffer = [];
+
+    function focusInput() { hiddenInput.focus(); }
+
+    // 模擬按鈕觸發指令
+    function buttonTrigger(cmd) {
+        // 將指令填入輸入框並執行
+        hiddenInput.value = cmd;
+        displayText.textContent = cmd;
+        
+        // 延遲一下模擬真實感
+        setTimeout(() => {
+            handleEnter(cmd);
+            hiddenInput.value = "";
+            displayText.textContent = "";
+        }, 100);
+    }
+
+    window.onload = () => {
+        focusInput();
+        // 確保游標在最一開始就顯示
+        displayText.textContent = ""; 
+    };
+
+    hiddenInput.addEventListener("input", () => {
+        displayText.textContent = hiddenInput.value;
+        scrollBottom();
+    });
+
+    hiddenInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            const val = hiddenInput.value;
+            handleEnter(val);
+            hiddenInput.value = "";
+            displayText.textContent = "";
+        } else if (e.key === "ArrowUp") {
+            e.preventDefault();
+            navigateHistory(-1);
+        } else if (e.key === "ArrowDown") {
+            e.preventDefault();
+            navigateHistory(1);
+        }
+    });
+
+    function handleEnter(val) {
+        if (isEditing) {
+            processEditLine(val);
+        } else {
+            print(promptTag.innerText + " " + val);
+            if (val.trim() !== "") {
+                history.push(val);
+                historyIndex = history.length;
+                processCommand(val);
+            }
+        }
+        scrollBottom();
+    }
+
+    function print(text, isHTML = true) {
+        const div = document.createElement("div");
+        if (isHTML) div.innerHTML = text;
+        else div.textContent = text;
+        output.appendChild(div);
+    }
+
+    function scrollBottom() {
+        container.scrollTop = container.scrollHeight;
+    }
+
+    function processCommand(raw) {
+        const parts = raw.trim().split(/\s+/);
+        const cmd = parts[0].toUpperCase();
+
+        switch (cmd) {
+            case "HELP":
+                print("DIR          - List files");
+                print("EDIT [FILE]  - Open editor");
+                print("RUN [FILE]   - Execute JS file");
+                print("CLS          - Clear screen");
+                break;
+            case "CLS":
+                output.innerHTML = "";
+                break;
+            case "DIR":
+                print(" Directory of C:\\<br>");
+                for (let name in vfs) {
+                    print(`<div class="table"><span>${name.padEnd(15)}</span><span>${vfs[name].length} bytes</span></div>`);
+                }
+                break;
+            case "EDIT":
+                if (parts[1]) startEdit(parts[1].toUpperCase());
+                else print("Usage: EDIT [FILENAME]");
+                break;
+            case "RUN":
+                const target = (parts[1] || "").toUpperCase();
+                if (target && vfs[target]) {
+                    try {
+                        print("<span class='info'>Running " + target + "...</span>");
+                        const res = window.eval(vfs[target]);
+                        if (res !== undefined) print("<span class='success'>Return: " + res + "</span>");
+                    } catch (err) {
+                        print("<span class='error'>Error: " + err.message + "</span>");
+                    }
+                } else print("File not found.");
+                break;
+            default:
+                if (raw.trim() !== "") {
+                    try {
+                        const res = window.eval(raw);
+                        if (res !== undefined) print(res);
+                    } catch(e) { print("Bad command or file name"); }
+                }
+        }
+    }
+
+    // --- 編輯器邏輯 ---
+    function startEdit(filename) {
+        isEditing = true;
+        editFileName = filename;
+        editBuffer = [];
+        promptTag.innerText = "EDIT>";
+        
+        // 切換按鈕狀態
+        btnSave.style.display = "inline-block";
+        btnExit.style.display = "inline-block";
+        btnDir.style.display = "none";
+        btnEdit.style.display = "none";
+        btnRun.style.display = "none";
+        btnCls.style.display = "none";
+        
+        print(`<span class='info'>Editor started for ${filename}.</span>`);
+        focusInput();
+    }
+
+    function processEditLine(line) {
+        const cmd = line.trim().toUpperCase();
+        // 在編輯模式下也要顯示輸入的每一行
+        print("  " + line, false);
+
+        if (cmd === ":SAVE") {
+            vfs[editFileName] = editBuffer.join("\n");
+            print("<span class='success'>File saved.</span>");
+            exitEditor();
+        } else if (cmd === ":EXIT") {
+            print("<span class='error'>Exit without saving.</span>");
+            exitEditor();
+        } else {
+            editBuffer.push(line);
+        }
+    }
+
+    function exitEditor() {
+        isEditing = false;
+        editFileName = "";
+        editBuffer = [];
+        promptTag.innerText = "C:\\>";
+        
+        // 恢復按鈕狀態
+        btnSave.style.display = "none";
+        btnExit.style.display = "none";
+        btnDir.style.display = "inline-block";
+        btnEdit.style.display = "inline-block";
+        btnRun.style.display = "inline-block";
+        btnCls.style.display = "inline-block";
+        
+        focusInput();
+    }
+
+    function navigateHistory(dir) {
+        if (isEditing) return;
+        historyIndex = Math.max(0, Math.min(history.length, historyIndex + dir));
+        hiddenInput.value = history[historyIndex] || "";
+        displayText.textContent = hiddenInput.value;
+        focusInput();
+    }
+
+    console.log = function(...args) {
+        print(args.join(" "), false);
+    };
+</script>
+
+</body>
+</html>
