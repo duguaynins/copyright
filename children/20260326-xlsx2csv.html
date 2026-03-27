@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sheet to CSV Converter</title>
+    <style>
+        :root {
+            --accent: #60a5fa; /* Modern Blue */
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: var(--card);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h2 { margin-top: 0; font-weight: 600; font-size: 1.5rem; }
+        
+        p { color: #94a3b8; font-size: 0.9rem; margin-bottom: 1.5rem; }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            background: #0f172a;
+            border: 2px solid #334155;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        button {
+            width: 100%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.1s, filter 0.2s;
+        }
+
+        button:hover { filter: brightness(1.1); }
+        button:active { transform: scale(0.98); }
+
+        .toast {
+            visibility: hidden;
+            background: #10b981; /* Green */
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: 500;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .toast.show { visibility: visible; animation: pop 0.4s ease-out; }
+
+        @keyframes pop {
+            0% { bottom: 0; opacity: 0; }
+            100% { bottom: 40px; opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>CSV Link Converter</h2>
+    <p>Paste your Google Sheet URL below to convert</p>
+    
+    <input type="text" id="urlInput" placeholder="https://docs.google.com/spreadsheets/d/..." spellcheck="false">
+    
+    <!--button onclick="convertAndCopy()">Convert & Copy</button!-->
+    <button id="copyButton" onclick="convertAndCopy()">Convert & Copy</button>
+</div>
+
+<!--div id="toast" class="toast">Link Copied!</div!-->
+
+<script>
+///https://docs.google.com/spreadsheets/d/1iZ4hSidaJ0ci75z01f4Uec1F35CNgRwIxhSCEsPhJZo/edit?gid=0#gid=0
+  
+function convertAndCopy() {
+    const inputField = document.getElementById('urlInput');
+    const button = document.getElementById('copyButton');
+    const originalText = button.textContent;
+
+    const url = inputField.value.trim();
+    if (!url) return;
+
+    try {
+        const idMatch = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
+        const gidMatch = url.match(/gid=(\d+)/);
+
+        if (idMatch) {
+            const sheetId = idMatch[1];
+            const gid = gidMatch ? gidMatch[1] : "0";
+            const newUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}`;
+
+            inputField.value = newUrl;
+
+            navigator.clipboard.writeText(newUrl).then(() => {
+                setTimeout(() => {
+                    button.textContent = "Copied!";
+                    button.style.background = "green";
+                    inputField.select(); // 視覺提示
+                }, 2);
+
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = "gray";
+                }, 2000);
+            });
+        } else {
+            alert("Please enter a valid Google Sheet URL.");
+        }
+    } catch (e) {
+        alert("An error occurred during conversion.");
+    }
+}
+
+function showToast() {
+    const toast = document.getElementById("toast");
+    toast.className = "toast show";
+    setTimeout(() => { toast.className = "toast"; }, 2500);
+}
+</script>
+
+</body>
+</html>
