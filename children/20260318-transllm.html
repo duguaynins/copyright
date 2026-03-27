@@ -1185,6 +1185,13 @@ document.addEventListener("pointerup", (event) => {
 
 
     
+    let replyingTo = "";
+
+    function selectReplyid(msgid) {
+      replyingTo = msgid;
+      console.log(msgid);
+    }
+    
     // 接收****
     // 立即註冊訂閱監聽
     async function sendMessage() {
@@ -1213,11 +1220,14 @@ document.addEventListener("pointerup", (event) => {
         let db = await openDatabase("nins", "users");
         await updateData(db, "users", {
             id: Date.now(),  ///1710000000007
+            parentId: replyingTo,
             email: "alice@example.com",
             to: "",
             time: utc+offset,
             data: xmsg 
         });
+        
+        replyingTo = "";
         
         // 刪除輸入框內容***
         input.value = '';
@@ -1225,8 +1235,8 @@ document.addEventListener("pointerup", (event) => {
         // 翻譯
         
         // 產生短隨機 ID
-        ///const randomID = "id_" + Math.random().toString(36).substring(2, 8);  
-        const randomID = new Date().toISOString();
+        const randomID = "id_" + Math.random().toString(36).substring(2, 8);  
+        ///const randomID = new Date().toISOString();
         const nowUTC = new Date().toISOString();
         const hourUTC = new Date(nowUTC).getUTCHours();  // 取得 UTC 小時（0-23）
         
@@ -1301,12 +1311,10 @@ document.addEventListener("pointerup", (event) => {
     
     
     
-    
-    
     function isValid(str) {  ///20260116
       // null / undefined / 空字串 / 包含空白都不合法
-      return str !== null && str !== undefined && !/\s/.test(str) && str !== "";
       console.log("space???");
+      return str !== null && str !== undefined && !/\s/.test(str) && str !== "";
     }
     
     // 連線後的禁用****
@@ -1346,7 +1354,10 @@ document.addEventListener("pointerup", (event) => {
         );
 
         for (const row of rows) {
-            const randomID = new Date().toISOString();
+            console.log(row);
+
+            const randomID = "id_" + Math.random().toString(36).substring(2, 8);  
+            ///const randomID = new Date().toISOString();
             const msgTime = ("🕛️" + row.time);
             const xmsg = row.data;
             const lang = navigator.language || navigator.userLanguage;
@@ -1357,13 +1368,14 @@ document.addEventListener("pointerup", (event) => {
             
             // 顯示結構
             const div = document.createElement("div");
+            div.id = randomID;
             div.innerHTML = `
               <span id="${randomID}_T" style="color:black;" translate="no">${msgTime}</span><br>
               <span style="color:black;">（
               <label id="${randomID}_oa" translate="no" style="color:black;"> <a translate="no" style="text-decoration: none;" target="_blank" rel="noopener noreferrer" href="${openai}">🧠AI:O</a> </label>
               <label id="${randomID}_gg" translate="no" style="color:black;"> <a translate="no" style="text-decoration: none;" target="_blank" rel="noopener noreferrer" href="${google}">♊AI:G</a> </label>
               <label id="${randomID}_pp" translate="no" style="color:black;"> <a translate="no" style="text-decoration: none;" target="_blank" rel="noopener noreferrer" href="${perple}">🕸️AI:P</a> </label>
-              ）</span>
+              <label id="${randomID}_tg" translate="no" onclick="selectReplyid('${randomID}')">⬅️</label> ）</span>
               
               <p id="${randomID}_2" translate="no" style="display:block; color:gray;">（ 👁️<span translate="no">${xmsg}</span> ）</p>
             `;
