@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>WebRTC 即時同步聊天室</title>
+    <style>
+        :root { --bg: #f0f2f5; --primary: #0084ff; --gray: #e4e6eb; }
+        body { font-family: sans-serif; background: var(--bg); display: flex; flex-direction: column; height: 100vh; margin: 0; }
+        
+        /* 信令控制區 */
+        .controls { background: white; padding: 10px; border-bottom: 1px solid #ddd; display: flex; gap: 10px; align-items: center; }
+        button { padding: 6px 12px; cursor: pointer; border-radius: 4px; border: 1px solid #ccc; background: white; }
+        
+        /* 聊天室主體 */
+        #chat-window { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+        
+        /* 訊息氣泡 */
+        .msg { max-width: 70%; padding: 10px 15px; border-radius: 18px; word-break: break-all; font-size: 14px; line-height: 1.4; }
+        .msg.me { align-self: flex-end; background: var(--primary); color: white; }
+        .msg.other { align-self: flex-start; background: var(--gray); color: black; }
+        
+        /* 即時輸入預覽 */
+        #remote-typing { 
+            align-self: flex-start; 
+            font-size: 12px; 
+            color: #888; 
+            margin-left: 10px; 
+            font-style: italic;
+            min-height: 1.2em;
+        }
+
+        /* 檔案卡片 */
+        .file-card { min-width: 200px; }
+        .progress-container { width: 100%; height: 6px; background: rgba(0,0,0,0.1); border-radius: 3px; margin-top: 5px; }
+        .progress-bar { width: 0%; height: 100%; background: #4caf50; transition: width 0.2s; }
+        .download-btn { color: inherit; text-decoration: underline; cursor: pointer; display: block; margin-top: 5px; }
+
+        /* 輸入區 */
+        .input-area { background: white; padding: 15px; display: flex; flex-direction: column; border-top: 1px solid #ddd; }
+        .input-row { display: flex; gap: 10px; align-items: center; }
+        input[type="text"] { flex: 1; padding: 10px; border-radius: 20px; border: 1px solid #ddd; outline: none; }
+    </style>
+</head>
+<body>
+
+    <div class="controls">
+        <button id="createOffer">建立連線 (Offer)</button>
+        <button id="handleSignaling">輸入信令 (SDP)</button>
+        <small id="conn-status" style="color: red;">● 未連線</small>
+    </div>
+
+    <div id="chat-window">
+        </div>
+    
+    <div id="remote-typing"></div>
+
+    <div class="input-area">
+        <div class="input-row">
+            <input type="file" id="fileInput" style="display: none;">
+            <button onclick="document.getElementById('fileInput').click()">📎</button>
+            <input type="text" id="textInput" placeholder="在此輸入，對方會即時看到...">
+            <button id="sendBtn">傳送</button>
+        </div>
+    </div>
+
+    
+    <script src="https://cdn.ably.io/lib/ably.min-1.js"></script>
+    <script>
+            
+        function randomAlphaString(length) {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            let result = "";
+            for (let i = 0; i < length; i++) {
+                result += chars[Math.floor(Math.random() * chars.length)];
+            }
+            return result;
+        }
+
+        const userid = randomAlphaString(128);
+        const roomid = randomAlphaString(128);
+        
+        
+        // --- 設定區 ---
+        const apikey = 'ijFBLQ.BEpg4g:yqcH3sGhgGO77S5mV4pAKFiaSYXo4DoqXSZfvXp2c6A'; // 請替換成你的 API Key
+        const uuid_user = 'user-' + Math.random().toString(36).substr(2, 9); // 模擬一個唯一 ID
+
+        // 1. 初始化 Ably
+        const ably = new Ably.Realtime({
+            key: apikey,
+            clientId: userid
+        });
+
+        // 2. 取得一個頻道 (Channel)
+        const channel = ably.channels.get( roomid );
+
+        const logElement = document.getElementById('log');
+        const statusElement = document.getElementById('status');
+
+        // 監測連線狀態
+        ably.connection.on('connected', () => {
+            statusElement.innerText = '狀態: 已連線 (ID: ' + uuid_user + ')';
+            statusElement.style.color = 'green';
+        });
+
+        // 3. 訂閱訊息 (Subscribe)
+        channel.presence.enter({});  ///webRTC
+        channel.subscribe('test-event', (message) => {
+            const newMessage = document.createElement('p');
+            newMessage.textContent = `[${message.clientId}]: ${message.data}`;
+            logElement.appendChild(newMessage);
+            logElement.scrollTop = logElement.scrollHeight; // 自動捲動到底部
+        });
+
+        // 4. 發送訊息函數 (Publish)
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const text = input.value;
+            
+            if (text.trim() !== "") {
+                channel.publish('test-event', text);
+                input.value = ''; // 清空輸入框
+            }
+        }
+
+        // 監聽 Presence 變動（有人進、有人出、有人更新）
+        channel.presence.subscribe((member) => {
+            // 💡 每次狀態變動，我們就去「抓取」完整的成員清單
+            channel.presence.get((err, members) => {
+                if (err) {
+                    console.error("[SYSTEM] error:", err);
+                    return;
+                }
+
+                const totalUsers = members.length; // 這裡就是總人數！
+                console.log(`[SYSTEM] member.action: ${member.action} (member.clientId: ${member.clientId})`);
+                console.log(`[SYSTEM] members.length: ${totalUsers}`);
+
+                // 判斷是否湊齊兩人
+                if (totalUsers === 2) {
+                    console.log("🎉 [SYSTEM] 2p");
+                    
+                    // 你可以在這裡觸發你的 pushUsers() 或其他邏輯
+                    ///document.body.style.backgroundColor = "#e6fffa"; // 舉例：變更背景色提示成功
+                } else if (totalUsers < 2) {
+                    console.log("⏳ [SYSTEM] 1p");
+                } else {
+                    console.log("⚠️ [SYSTEM] " + totalUsers + "p");
+                }
+            });
+        });
+    </script>
+
+    <script>
+        const chatWindow = document.getElementById("chat-window");
+        const textInput = document.getElementById("textInput");
+        const fileInput = document.getElementById("fileInput");
+        const remoteTyping = document.getElementById("remote-typing");
+        const connStatus = document.getElementById("conn-status");
+
+        let pc = new RTCPeerConnection({ iceServers: [{ urls: "stun:stun.l.google.com:19302" }] });
+        let dataChannel;
+        let incomingFiles = {};
+
+        function appendMsg(content, isMe, type = 'text', fileId = null) {
+            const div = document.createElement("div");
+            div.className = `msg ${isMe ? 'me' : 'other'}`;
+            if (type === 'text') {
+                div.innerText = content;
+            } else {
+                div.innerHTML = `<div class="file-card" id="file-${fileId}"><span>📄 ${content}</span>
+                    <div class="progress-container"><div class="progress-bar"></div></div>
+                    <a class="download-btn" style="display:none">下載檔案</a></div>`;
+            }
+            chatWindow.appendChild(div);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+            return div;
+        }
+
+        function setupDataChannel(channel) {
+            dataChannel = channel;
+            dataChannel.binaryType = 'arraybuffer';
+
+            dataChannel.onopen = () => {
+                connStatus.innerText = "● 已連線";
+                connStatus.style.color = "green";
+            };
+
+            dataChannel.onmessage = (event) => {
+                if (typeof event.data === 'string') {
+                    const msg = JSON.parse(event.data);
+                    
+                    // 關鍵功能：處理即時打字預覽
+                    if (msg.type === 'typing') {
+                        remoteTyping.innerText = msg.data ? `對方正在輸入：${msg.data}` : "";
+                    } 
+                    else if (msg.type === 'chat') {
+                        remoteTyping.innerText = ""; // 送出後清空預覽
+                        appendMsg(msg.data, false);
+                    } 
+                    else if (msg.type === 'file-start') {
+                        const { id, name, size } = msg;
+                        incomingFiles[id] = { name, size, buffer: [], received: 0 };
+                        appendMsg(name, false, 'file', id);
+                    }
+                    return;
+                }
+
+                // 檔案傳輸邏輯
+                const lastId = Object.keys(incomingFiles).pop();
+                const fileTask = incomingFiles[lastId];
+                if (fileTask) {
+                    fileTask.buffer.push(event.data);
+                    fileTask.received += event.data.byteLength;
+                    const percent = (fileTask.received / fileTask.size) * 100;
+                    const el = document.getElementById(`file-${lastId}`);
+                    if (el) el.querySelector(".progress-bar").style.width = percent + "%";
+
+                    if (fileTask.received >= fileTask.size) {
+                        const blob = new Blob(fileTask.buffer);
+                        const link = el.querySelector(".download-btn");
+                        link.href = URL.createObjectURL(blob);
+                        link.download = fileTask.name;
+                        link.style.display = "block";
+                        link.innerText = "🎁 點此下載";
+                        delete incomingFiles[lastId];
+                    }
+                }
+            };
+        }
+
+        // WebRTC 信令流程 (Offer/Answer)
+        pc.ondatachannel = (e) => setupDataChannel(e.channel);
+        pc.onicecandidate = (e) => { if(e.candidate) console.log("ICE Candidate updated"); };
+        document.getElementById("createOffer").onclick = async () => {
+            setupDataChannel(pc.createDataChannel("chat-room"));
+            const offer = await pc.createOffer();
+            await pc.setLocalDescription(offer);
+            setTimeout(() => prompt("請複製 Offer SDP:", JSON.stringify(pc.localDescription)), 500);
+        };
+        document.getElementById("handleSignaling").onclick = async () => {
+            const input = prompt("請貼上對方的 SDP:");
+            if (!input) return;
+            const sdp = JSON.parse(input);
+            await pc.setRemoteDescription(sdp);
+            if (sdp.type === "offer") {
+                const answer = await pc.createAnswer();
+                await pc.setLocalDescription(answer);
+                prompt("請複製 Answer SDP:", JSON.stringify(answer));
+            }
+        };
+
+        // --- 核心邏輯：監聽輸入事件 ---
+        textInput.addEventListener("input", () => {
+            if (dataChannel && dataChannel.readyState === "open") {
+                dataChannel.send(JSON.stringify({
+                    type: 'typing',
+                    data: textInput.value
+                }));
+            }
+        });
+
+        function sendText() {
+            const val = textInput.value;
+            if (!val || !dataChannel) return;
+            dataChannel.send(JSON.stringify({ type: 'chat', data: val }));
+            dataChannel.send(JSON.stringify({ type: 'typing', data: "" })); // 送出後清空對方的預覽
+            appendMsg(val, true);
+            textInput.value = "";
+        }
+
+        document.getElementById("sendBtn").onclick = sendText;
+        textInput.onkeypress = (e) => { if(e.key === 'Enter') sendText(); };
+
+        // 檔案發送 (保留進度)
+        fileInput.onchange = () => {
+            const file = fileInput.files[0];
+            if (!file || !dataChannel) return;
+            const fileId = Date.now();
+            appendMsg(file.name, true, 'file', fileId);
+            dataChannel.send(JSON.stringify({ type: 'file-start', id: fileId, name: file.name, size: file.size }));
+            
+            const chunkSize = 16384;
+            let offset = 0;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                dataChannel.send(e.target.result);
+                offset += e.target.result.byteLength;
+                const el = document.getElementById(`file-${fileId}`);
+                if (el) el.querySelector(".progress-bar").style.width = (offset / file.size) * 100 + "%";
+                if (offset < file.size) readNext();
+            };
+            const readNext = () => reader.readAsArrayBuffer(file.slice(offset, offset + chunkSize));
+            readNext();
+            fileInput.value = "";
+        };
+    </script>
+</body>
+</html>
