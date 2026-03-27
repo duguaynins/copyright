@@ -104,7 +104,9 @@
 
         // 3. 訂閱訊息 (Subscribe)
         channel.presence.enter({});  ///webRTC
-        channel.subscribe('test-event', (message) => {
+        
+        channel.subscribe('test-event', (message) => {  });
+        channel.subscribe((message) => {
             const newMessage = document.createElement('p');
             newMessage.textContent = `[${message.clientId}]: ${message.data}`;
             logElement.appendChild(newMessage);
