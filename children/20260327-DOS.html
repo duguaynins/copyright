@@ -99,18 +99,19 @@
     /* 修改 CSS 部分 */
     #hidden-input {
         position: absolute;
-        /* 讓它位於當前輸入行的位置，而不是遠在天邊 */
         left: 0;
-        bottom: 0;
+        top: 0;
         width: 100%;
-        opacity: 0;
-        font-size: 16px; /* 防止 iOS 自動放大頁面 (16px 是門檻) */
-        pointer-events: auto; /* 確保能被點擊 */
+        height: 100%; /* 撐滿當前這一行 */
+        opacity: 0;    /* 隱形 */
+        font-size: 16px; /* 必加：防止 iOS 頁面自動縮放跳動 */
+        border: none;
+        outline: none;
         z-index: 10;
     }
 
     .line {
-        position: relative; /* 讓 hidden-input 參考此位置 */
+        position: relative; /* 必加：讓 input 相對於這一行定位 */
         display: flex;
         align-items: center;
         min-height: 1.2em;
@@ -142,11 +143,11 @@
             <div>Web DOS IDE [Ready]</div>
             <div>Use buttons or type commands.</div>
         </div>
-    </div>
-
-    <div class="line">
-        <span id="prompt-tag" class="prompt">C:\&gt;</span>
-        <span id="display-text"></span><span id="cursor" class="blink"></span>
+        <div class="line">
+            <span id="prompt-tag" class="prompt">C:\&gt;</span>
+            <span id="display-text"></span><span id="cursor" class="blink"></span>
+            <input type="text" id="hidden-input" autofocus spellcheck="false" autocomplete="off">
+        </div>
     </div>
     
     <input type="text" id="hidden-input" autofocus spellcheck="false" autocomplete="off">
