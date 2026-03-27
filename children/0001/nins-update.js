@@ -21,7 +21,8 @@ function redirectIfMatched() {  ///rules
   console.log("base URL (origin + pathname)***:", window.location.origin + window.location.pathname);
   */
   if (isPWA()) {
-    ///setTimeout(() => { console.log('isPWA~~~'); }, 5800);return;
+    ///setTimeout(() => { console.log('isPWA~~~'); }, 5800);
+    return;
   } else {
     ///setTimeout(() => { console.log('noPWA.'); }, 5800);
   }
