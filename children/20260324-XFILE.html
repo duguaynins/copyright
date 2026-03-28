@@ -11,7 +11,7 @@
     <link rel="canonical" href="https://copyright.nins.cc/">
     <title>nins/xLIFE</title>
     <style>
-        :root { --bg: #f0f2f5; --primary: #0084ff; --gray: #e4e6eb; }
+        :root { --bg: #f0f2f5; --primary: #0084ff; --gray: #e4e6eb; --yellow: #f5e025; }
         body { font-family: sans-serif; background: var(--bg); display: flex; flex-direction: column; height: 100vh; margin: 0; }
         
         /* 信令控制區 */
@@ -24,7 +24,7 @@
         /* 訊息氣泡 */
         .msg { max-width: 70%; padding: 10px 15px; border-radius: 18px; word-break: break-all; font-size: 14px; line-height: 1.4; }
         .msg.me { align-self: flex-end; background: var(--primary); color: white; }
-        .msg.other { align-self: flex-start; background: var(--gray); color: black; }
+        .msg.other { align-self: flex-start; background: var(--yellow); color: black; }
         
         /* 即時輸入預覽 */
         #remote-typing { 
@@ -96,7 +96,13 @@
 
 
     <div id="chat-window"></div>
-    
+    <div id="qrcode" style="
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    max-width: 100%; /* 給予一個最小高度，避免擠在一起 */
+    max-height: 100%; /* 給予一個最小高度，避免擠在一起 */
+    padding: 20px;"></div>
 
 
 </div>
@@ -104,8 +110,8 @@
     <div id="remote-typing" translate="no" style="background: #eee; color: #888; width:100%;">LIVE></div>
     <div class="input-btn-wrapper" style="display: flex; align-items: stretch; width:100%; text-align: center; padding: 0px; box-sizing: border-box;" translate="no">
         <input type="file" id="fileInput" style="display: none;">
-        <button type="button" class="main use fat" translate="no" onclick="document.getElementById('fileInput').click()">📁<p translate="no" style="margin: 0; padding: 0; font-size: 1vh;" class="label">file</p></button><!--📎↩️!-->
-        <input id="textInput" class="main use fat" type="text" name="url" autocomplete="off" placeholder="INPUT>" style="flex: 1;" list="list_msg"/>
+        <button type="button" class="main use fat" translate="no" id="fileBtn" onclick="document.getElementById('fileInput').click()">📁<p translate="no" style="margin: 0; padding: 0; font-size: 1vh;" class="label">file</p></button><!--📎↩️!-->
+        <input  type="text"   class="main use fat" translate="no" id="textInput" name="url" autocomplete="off" placeholder="INPUT>" style="flex: 1; text-align: center;" list="list_msg"/>
         <button type="button" class="main use fat" translate="no" id="sendBtn">🚀<p translate="no" style="margin: 0; padding: 0; font-size: 1vh;" class="label">enter</p></button>
     </div>
 
@@ -119,11 +125,24 @@
   </div>
         
 
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdn.ably.io/lib/ably.min-1.js"></script>
     <script>
-            
-        function randomAlphaString(length) {
+        document.getElementById("fileBtn").disabled = true;
+        document.getElementById("textInput").disabled = true;
+        document.getElementById("sendBtn").disabled = true;
+
+
+        function generateRandomIntNumber(length) {
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                // 生成 0-9 的隨機數字
+                result += Math.floor(Math.random() * 10);
+            }
+            return result;
+        }
+
+        function generateRandomAlphaString(length) {
             const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
             let result = "";
             for (let i = 0; i < length; i++) {
@@ -131,11 +150,21 @@
             }
             return result;
         }
-        
+
         // --- 設定區 ---
+        const params = new URLSearchParams(window.location.search);
         const apikey = 'ijFBLQ.BEpg4g:yqcH3sGhgGO77S5mV4pAKFiaSYXo4DoqXSZfvXp2c6A'; // 請替換成你的 API Key
-        const userid = randomAlphaString(128);
-        const roomid = "test";///randomAlphaString(128);
+        const userid = params.get("userid") || generateRandomAlphaString(128);
+        const roomid = params.get("roomid") || generateRandomIntNumber(9);
+
+        const qrcode = new QRCode(document.getElementById("qrcode"), {  ///有鏡頭的這邊後開並掃描
+            text: `https://x.nins.cc/?roomid=${roomid}`, // 這裡放入你的網址或文字
+            width: 256,
+            height: 256,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
 
         // 1. 初始化 Ably
         const ably = new Ably.Realtime({
@@ -244,13 +273,72 @@
             return div;
         }
 
+        function markDisconnected(reason = "") {
+                connStatus.innerText = "● End";
+                connStatus.style.color = "gray";
+                document.getElementById("content").style.background = "#777777";
+                document.getElementById("fileBtn").disabled = true;
+                document.getElementById("textInput").disabled = true;
+                document.getElementById("sendBtn").disabled = true;
+        }
+
+        function markConnected(reason = "") {
+                connStatus.innerText = "● Start";
+                connStatus.style.color = "green";
+                document.getElementById("content").style.background = "#cdcdcd";
+                document.getElementById("fileBtn").disabled = false;
+                document.getElementById("textInput").disabled = false;
+                document.getElementById("sendBtn").disabled = false;
+        }
+
+        function setupPeerConnection(pc) {
+            pc.onconnectionstatechange = () => {
+                console.log("PC connectionState:", pc.connectionState);
+                if (pc.connectionState === "connected") { document.getElementById("qrcode").style.display = "none"; }
+                if (
+                    pc.connectionState === "disconnected" ||
+                    pc.connectionState === "failed" ||
+                    pc.connectionState === "closed"
+                ) {
+                    markDisconnected("connectionState " + pc.connectionState);
+                }
+            };
+
+            pc.oniceconnectionstatechange = () => {
+                console.log("PC iceConnectionState:", pc.iceConnectionState);
+                if (pc.iceConnectionState === "connected") { document.getElementById("qrcode").style.display = "none"; }
+                if (
+                    pc.iceConnectionState === "disconnected" ||
+                    pc.iceConnectionState === "failed" ||
+                    pc.iceConnectionState === "closed"
+                ) {
+                    markDisconnected("iceConnectionState " + pc.iceConnectionState);
+                }
+            };
+        }
+        
+        setupPeerConnection(pc);
+
         function setupDataChannel(channel) {
             dataChannel = channel;
             dataChannel.binaryType = 'arraybuffer';
 
+            ///dataChannel.readyState = () => {  };
+            dataChannel.onclose = () => {  
+                connStatus.innerText = "● Disconnected";
+                connStatus.style.color = "red";
+                markDisconnected();
+            };
+            dataChannel.onerror = () => {  
+                connStatus.innerText = "● Error";
+                connStatus.style.color = "red";
+                markDisconnected();
+            };
+
             dataChannel.onopen = () => {
                 connStatus.innerText = "● Connected";
                 connStatus.style.color = "green";
+                markConnected();
             };
 
             dataChannel.onmessage = (event) => {
@@ -259,7 +347,7 @@
                     
                     // 關鍵功能：處理即時打字預覽
                     if (msg.type === 'typing') {
-                        remoteTyping.innerText = msg.data ? `LIVE> ${msg.data}` : "";
+                        remoteTyping.innerText = msg.data ? `LIVE> ${msg.data}` : "LIVE>";
                     } 
                     else if (msg.type === 'chat') {
                         remoteTyping.innerText = "LIVE>"; // 送出後清空預覽
@@ -296,10 +384,12 @@
             };
         }
 
+        
         /*
         document.addEventListener('click', async function (e) {
             await setupOfferSDP();
         }, { once: true });  */
+
 
         // WebRTC 信令流程 (Offer/Answer)
         async function setupOfferSDP(inputs=null) {
