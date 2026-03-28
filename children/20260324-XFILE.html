@@ -142,7 +142,7 @@
                 console.log(`[SYSTEM] members.length: ${totalUsers}`);
                 console.log(`[SYSTEM] member.action: ${member.action} (member.clientId: ${member.clientId})`);
                 console.log(`[SYSTEM] member.data: ${JSON.stringify(member.data)}`);
-                if (member.action==="leave") { return; }
+                if (member.action==="leave") { ably.close();return; }  ///讓第二個接續一起退出***
 
                 // 判斷是否湊齊兩人
                 if (frist===null) {
