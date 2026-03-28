@@ -1288,14 +1288,14 @@ document.addEventListener("pointerup", (event) => {
         // 顯示結構
         const div = document.createElement("div");
         div.innerHTML = `
-          <span id="${randomID}_T" style="color:black;" translate="no">${msgTime}</span><br>
-          <span style="color:black;">（
-          <label id="${randomID}_oa" translate="no" style="color:black;"> <a translate="no" style="text-decoration: none;" target="_blank" rel="noopener noreferrer" href="${openai}">🧠AI:O</a> </label>
-          <label id="${randomID}_gg" translate="no" style="color:black;"> <a translate="no" style="text-decoration: none;" target="_blank" rel="noopener noreferrer" href="${google}">♊AI:G</a> </label>
-          <label id="${randomID}_pp" translate="no" style="color:black;"> <a translate="no" style="text-decoration: none;" target="_blank" rel="noopener noreferrer" href="${google}">🕸️AI:P</a> </label>
-          ）</span>
+              <span id="${randomID}_T" style="color:black;" translate="no">${msgTime}</span><br>
+              <span style="color:black;">（
+              <label id="${randomID}_oa" translate="no" style="color:black;"> <a translate="no" style="text-decoration: none;" target="_blank" rel="noopener noreferrer" href="${openai}">🧠AI:O</a> </label>
+              <label id="${randomID}_gg" translate="no" style="color:black;"> <a translate="no" style="text-decoration: none;" target="_blank" rel="noopener noreferrer" href="${google}">♊AI:G</a> </label>
+              <label id="${randomID}_pp" translate="no" style="color:black;"> <a translate="no" style="text-decoration: none;" target="_blank" rel="noopener noreferrer" href="${perple}">🕸️AI:P</a> </label>
+              <label id="${randomID}_tg" translate="no" onclick="selectReplyid('${randomID}')">⬅️</label> ）</span>
           
-          <p id="${randomID}_2" translate="no" style="display:block; color:gray;">（ 👁️<span translate="no">${xmsg}</span> ）</p>
+              <p id="${randomID}_2" translate="no" style="display:block; color:gray;">（ 👁️<span translate="no">${xmsg}</span> ）</p>
         `;
         
         // 添加紀錄魚標點之後
