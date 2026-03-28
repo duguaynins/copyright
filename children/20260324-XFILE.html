@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <title>WebRTC 即時同步聊天室</title>
+    <title>XFILE</title>
     <style>
         :root { --bg: #f0f2f5; --primary: #0084ff; --gray: #e4e6eb; }
         body { font-family: sans-serif; background: var(--bg); display: flex; flex-direction: column; height: 100vh; margin: 0; }
@@ -44,9 +44,9 @@
 <body>
 
     <div class="controls">
-        <button id="createOffer">建立連線 (Offer)</button>
-        <button id="handleSignaling">輸入信令 (SDP)</button>
-        <small id="conn-status" style="color: red;">● 未連線</small>
+        <button id="createOffer">Offer</button>
+        <button id="handleSignaling">Answer</button>
+        <small id="conn-status" style="color: red;">● Not connected</small>
     </div>
 
     <div id="chat-window">
@@ -58,8 +58,8 @@
         <div class="input-row">
             <input type="file" id="fileInput" style="display: none;">
             <button onclick="document.getElementById('fileInput').click()">📎</button>
-            <input type="text" id="textInput" placeholder="在此輸入，對方會即時看到...">
-            <button id="sendBtn">傳送</button>
+            <input type="text" id="textInput" placeholder="LIVE...">
+            <button id="sendBtn">ENTER</button>
         </div>
     </div>
 
@@ -162,6 +162,7 @@
         let pc = new RTCPeerConnection({ iceServers: [{ urls: "stun:stun.l.google.com:19302" }] });
         let dataChannel;
         let incomingFiles = {};
+        let localDescription = {};
 
         function appendMsg(content, isMe, type = 'text', fileId = null) {
             const div = document.createElement("div");
@@ -171,7 +172,7 @@
             } else {
                 div.innerHTML = `<div class="file-card" id="file-${fileId}"><span>📄 ${content}</span>
                     <div class="progress-container"><div class="progress-bar"></div></div>
-                    <a class="download-btn" style="display:none">下載檔案</a></div>`;
+                    <a class="download-btn" style="display:none">DOWNLOAD</a></div>`;
             }
             chatWindow.appendChild(div);
             chatWindow.scrollTop = chatWindow.scrollHeight;
@@ -183,7 +184,7 @@
             dataChannel.binaryType = 'arraybuffer';
 
             dataChannel.onopen = () => {
-                connStatus.innerText = "● 已連線";
+                connStatus.innerText = "● Connected";
                 connStatus.style.color = "green";
             };
 
@@ -193,7 +194,7 @@
                     
                     // 關鍵功能：處理即時打字預覽
                     if (msg.type === 'typing') {
-                        remoteTyping.innerText = msg.data ? `對方正在輸入：${msg.data}` : "";
+                        remoteTyping.innerText = msg.data ? `＊：${msg.data}` : "";
                     } 
                     else if (msg.type === 'chat') {
                         remoteTyping.innerText = ""; // 送出後清空預覽
@@ -231,15 +232,19 @@
         }
 
         // WebRTC 信令流程 (Offer/Answer)
-        pc.ondatachannel = (e) => setupDataChannel(e.channel);
-        pc.onicecandidate = (e) => { if(e.candidate) console.log("ICE Candidate updated"); };
-        document.getElementById("createOffer").onclick = async () => {
+        async function setupOfferSDP() {
             setupDataChannel(pc.createDataChannel("chat-room"));
-            const offer = await pc.createOffer();
-            await pc.setLocalDescription(offer);
-            setTimeout(() => prompt("請複製 Offer SDP:", JSON.stringify(pc.localDescription)), 500);
-        };
-        document.getElementById("handleSignaling").onclick = async () => {
+            if (true) {
+                const offer = await pc.createOffer();
+                await pc.setLocalDescription(offer);
+                setTimeout(() => {
+                    prompt("Offer SDP:", JSON.stringify(pc.localDescription) );  ///發起人
+                    localDescription = pc.localDescription;
+                    channel.presence.update({ SDP: localDescription });
+                }, 500);  ///alert
+            }
+        }
+        async function setupAnswerSDP() {
             const input = prompt("請貼上對方的 SDP:");
             if (!input) return;
             const sdp = JSON.parse(input);
@@ -247,8 +252,24 @@
             if (sdp.type === "offer") {
                 const answer = await pc.createAnswer();
                 await pc.setLocalDescription(answer);
-                prompt("請複製 Answer SDP:", JSON.stringify(answer));
+                setTimeout(() => {
+                    prompt("Answer SDP:", JSON.stringify(pc.localDescription) );  ///被動人
+                    localDescription = pc.localDescription;
+                    channel.presence.update({ SDP: localDescription });
+                }, 500);  ///alert
             }
+        }
+
+        ///可以等待ABLY完成連線後再進行
+        ///雙方先取得完整的SDP再交換
+        pc.ondatachannel = (e) => setupDataChannel(e.channel);
+        pc.onicecandidate = (e) => { if(e.candidate) console.log("ICE Candidate updated"); };
+
+        document.getElementById("createOffer").onclick = async () => {
+            await setupOfferSDP();
+        };
+        document.getElementById("handleSignaling").onclick = async () => {
+            await setupAnswerSDP();
         };
 
         // --- 核心邏輯：監聽輸入事件 ---
