@@ -82,14 +82,11 @@
             }
             return result;
         }
-
-        const userid = randomAlphaString(128);
-        const roomid = "test";///randomAlphaString(128);
-        
         
         // --- 設定區 ---
         const apikey = 'ijFBLQ.BEpg4g:yqcH3sGhgGO77S5mV4pAKFiaSYXo4DoqXSZfvXp2c6A'; // 請替換成你的 API Key
-        const uuid_user = 'user-' + Math.random().toString(36).substr(2, 9); // 模擬一個唯一 ID
+        const userid = randomAlphaString(128);
+        const roomid = "test";///randomAlphaString(128);
 
         // 1. 初始化 Ably
         const ably = new Ably.Realtime({
@@ -100,25 +97,25 @@
         // 2. 取得一個頻道 (Channel)
         const channel = ably.channels.get( roomid );
 
-        const logElement = document.getElementById('log');
-        const statusElement = document.getElementById('status');
+        ///const logElement = document.getElementById('log');
+        const statusElement = document.getElementById('conn-status');
 
         // 監測連線狀態
         ably.connection.on('connected', () => {
-            statusElement.innerText = '狀態: 已連線 (ID: ' + uuid_user + ')';
-            statusElement.style.color = 'green';
+            statusElement.innerText = '● Waiting';
+            statusElement.style.color = 'orange';
         });
 
         // 3. 訂閱訊息 (Subscribe)
         channel.presence.enter({});  ///webRTC
-        
+        /*
         channel.subscribe('test-event', (message) => {  });
         channel.subscribe((message) => {
             const newMessage = document.createElement('p');
             newMessage.textContent = `[${message.clientId}]: ${message.data}`;
             logElement.appendChild(newMessage);
             logElement.scrollTop = logElement.scrollHeight; // 自動捲動到底部
-        });
+        });  */
 
         // 4. 發送訊息函數 (Publish)
         function sendMessage() {
@@ -132,6 +129,7 @@
         }
 
         // 監聽 Presence 變動（有人進、有人出、有人更新）
+        let frist = null;
         channel.presence.subscribe((member) => {
             // 💡 每次狀態變動，我們就去「抓取」完整的成員清單
             channel.presence.get((err, members) => {
@@ -141,20 +139,29 @@
                 }
 
                 const totalUsers = members.length; // 這裡就是總人數！
-                console.log(`[SYSTEM] member.action: ${member.action} (member.clientId: ${member.clientId})`);
                 console.log(`[SYSTEM] members.length: ${totalUsers}`);
+                console.log(`[SYSTEM] member.action: ${member.action} (member.clientId: ${member.clientId})`);
+                console.log(`[SYSTEM] member.data: ${JSON.stringify(member.data)}`);
 
                 // 判斷是否湊齊兩人
-                if (totalUsers === 2) {
-                    console.log("🎉 [SYSTEM] 2p");
-                    
-                    // 你可以在這裡觸發你的 pushUsers() 或其他邏輯
-                    ///document.body.style.backgroundColor = "#e6fffa"; // 舉例：變更背景色提示成功
-                } else if (totalUsers < 2) {
-                    console.log("⏳ [SYSTEM] 1p");
-                } else {
-                    console.log("⚠️ [SYSTEM] " + totalUsers + "p");
+                if (frist===null) {
+                    if (member.action==="enter") { frist = true; }
+                    if (member.action==="present") { frist = false; }
+                    if (frist===true) {
+                        setupOfferSDP();
+                    }
+                    console.log(frist);
                 }
+                
+                if (true) {
+                    if (frist && member.data?.SDP?.type==="answer") { 
+                        console.log("frist");
+                        setupAnswerSDP(member.data.SDP);
+                    } else if (!frist && member.data?.SDP?.type==="offer") { 
+                        console.log("!frist");
+                        setupAnswerSDP(member.data.SDP);
+                    } else {  }
+                }    
             });
         });
     </script>
@@ -202,7 +209,7 @@
                     
                     // 關鍵功能：處理即時打字預覽
                     if (msg.type === 'typing') {
-                        remoteTyping.innerText = msg.data ? `＊：${msg.data}` : "";
+                        remoteTyping.innerText = msg.data ? `LIVE> ${msg.data}` : "";
                     } 
                     else if (msg.type === 'chat') {
                         remoteTyping.innerText = ""; // 送出後清空預覽
@@ -239,9 +246,10 @@
             };
         }
 
+        /*
         document.addEventListener('click', async function (e) {
             await setupOfferSDP();
-        }, { once: true });
+        }, { once: true });  */
 
         // WebRTC 信令流程 (Offer/Answer)
         async function setupOfferSDP(inputs=null) {
@@ -252,6 +260,7 @@
                 setTimeout(() => {
                     prompt("Offer SDP:", JSON.stringify(pc.localDescription) );  ///發起人
                     localDescription = pc.localDescription;
+                    ///channel.presence.enter({ SDP: localDescription });
                     channel.presence.update({ SDP: localDescription });
                 }, 500);  ///alert
             }
@@ -259,7 +268,9 @@
         async function setupAnswerSDP(inputs=null) {
             ///const inputs = prompt("請貼上對方的 SDP:");
             ///if (!inputs) return;
-            const sdp = JSON.parse(inputs);
+            ///const sdp = JSON.parse(inputs);
+
+            const sdp = inputs;
             await pc.setRemoteDescription(sdp);
             if (sdp.type === "offer") {
                 const answer = await pc.createAnswer();
@@ -267,7 +278,9 @@
                 setTimeout(() => {
                     prompt("Answer SDP:", JSON.stringify(pc.localDescription) );  ///被動人
                     localDescription = pc.localDescription;
+                    ///channel.presence.enter({ SDP: localDescription });
                     channel.presence.update({ SDP: localDescription });
+                    channel.detach(); // 或 close / leave
                 }, 500);  ///alert
             }
         }
