@@ -142,6 +142,7 @@
                 console.log(`[SYSTEM] members.length: ${totalUsers}`);
                 console.log(`[SYSTEM] member.action: ${member.action} (member.clientId: ${member.clientId})`);
                 console.log(`[SYSTEM] member.data: ${JSON.stringify(member.data)}`);
+                if (member.action==="leave") { return; }
 
                 // 判斷是否湊齊兩人
                 if (frist===null) {
@@ -257,11 +258,11 @@
             if (true) {
                 const offer = await pc.createOffer();
                 await pc.setLocalDescription(offer);
-                setTimeout(() => {
-                    prompt("Offer SDP:", JSON.stringify(pc.localDescription) );  ///發起人
+                setTimeout(async () => {
+                    ///prompt("Offer SDP:", JSON.stringify(pc.localDescription) );  ///發起人
                     localDescription = pc.localDescription;
                     ///channel.presence.enter({ SDP: localDescription });
-                    channel.presence.update({ SDP: localDescription });
+                    await channel.presence.update({ SDP: localDescription });
                 }, 500);  ///alert
             }
         }
@@ -275,12 +276,14 @@
             if (sdp.type === "offer") {
                 const answer = await pc.createAnswer();
                 await pc.setLocalDescription(answer);
-                setTimeout(() => {
-                    prompt("Answer SDP:", JSON.stringify(pc.localDescription) );  ///被動人
+                setTimeout(async () => {
+                    ///prompt("Answer SDP:", JSON.stringify(pc.localDescription) );  ///被動人
                     localDescription = pc.localDescription;
                     ///channel.presence.enter({ SDP: localDescription });
-                    channel.presence.update({ SDP: localDescription });
-                    channel.detach(); // 或 close / leave
+                    await channel.presence.update({ SDP: localDescription });
+
+                    ///channel.detach(); // 或 close / leave
+                    ably.close();
                 }, 500);  ///alert
             }
         }
