@@ -165,10 +165,12 @@
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
+      if (!form.checkValidity()) { return; }
 
       const name = document.getElementById("name").value.trim();
       const email = document.getElementById("email").value.trim();
       const age = document.getElementById("age").value.trim();
+
       output.textContent +=
 `[DATA START]
 
@@ -177,8 +179,11 @@ EMAIL : ${email}
 AGE   : ${age}
 
 [DATA END]\n`;
-    });
       ///output.textContent += `\n[DATA RECEIVED]`;
+
+      form.querySelector('button[type="submit"]').disabled = true;
+      form.querySelector('button[type="reset"]').disabled = true;
+    });
 
     form.addEventListener("reset", function () {
       setTimeout(() => {
