@@ -116,7 +116,7 @@
       margin-top: 25px;
       border-top: 1px dashed #00ff66;
       padding-top: 15px;
-      white-space: pre-line;
+      white-space: pre-wrap;  /* 將 pre-line 改為 pre-wrap 不要 pre */
       min-height: 80px;
     }
 
@@ -176,11 +176,9 @@
       clearInterval(waiting);
       output.textContent =
 `[DATA START]
-
-NAME  : ${name}
-EMAIL : ${email}
-AGE   : ${age}
-
+ NAME  : ${name}
+ EMAIL : ${email}
+ AGE   : ${age}
 [DATA END]\n`;
       ///output.textContent += `\n[DATA RECEIVED]`;
 
