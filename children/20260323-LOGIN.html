@@ -131,6 +131,8 @@
   <div class="dos-window">
     <div class="title">LOGIN</div>
 
+    <!--div class="hint">SYSTEM READY<span class="cursor"></span></div!-->
+
     <form id="dosForm">
       <div class="line">
         <label for="name">NAME></label>
@@ -154,7 +156,7 @@
       </div>
     </form>
 
-    <div class="hint">SYSTEM READY<span class="cursor"></span></div>
+    <!--div class="hint">SYSTEM READY<span class="cursor"></span></div!-->
 
     <div class="output" id="output">[WAITING FOR INPUT...]</div>
   </div>
@@ -171,7 +173,8 @@
       const email = document.getElementById("email").value.trim();
       const age = document.getElementById("age").value.trim();
 
-      output.textContent +=
+      clearInterval(waiting);
+      output.textContent =
 `[DATA START]
 
 NAME  : ${name}
@@ -181,8 +184,8 @@ AGE   : ${age}
 [DATA END]\n`;
       ///output.textContent += `\n[DATA RECEIVED]`;
 
-      form.querySelector('button[type="submit"]').disabled = true;
-      form.querySelector('button[type="reset"]').disabled = true;
+      ///form.querySelector('button[type="submit"]').disabled = true;
+      ///form.querySelector('button[type="reset"]').disabled = true;
     });
 
     form.addEventListener("reset", function () {
@@ -190,6 +193,20 @@ AGE   : ${age}
         output.textContent = "[WAITING FOR INPUT...]";
       }, 0);
     });
+
+    const spinner = ["/", "-", "\\", "|"];
+    let i = 0;
+    let waiting = null;
+
+    if (true) {
+      setTimeout(() => {
+        waiting = setInterval(() => {
+          output.textContent = spinner[i];
+          i = (i + 1) % spinner.length;
+        }, 200);
+      }, 500);
+    }
+
   </script>
 </body>
 </html>
