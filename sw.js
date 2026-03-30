@@ -32,8 +32,9 @@ self.addEventListener('push', event => {
     }
 
     if (true) {
-        ///const utcTag = new Date().toISOString(); // e.g., 2026-03-07T12:34:56.789Z
         const utcTag = Date.now().toString(); // e.g., "1710153296789"
+        const utc = new Date().toISOString(); // e.g., 2026-03-07T12:34:56.789Z
+        const offset = -new Date().getTimezoneOffset();
         /*
         event.waitUntil(
             self.registration.showNotification(data.title, {
@@ -67,6 +68,8 @@ self.addEventListener('push', event => {
             importScripts('https://copyright.nins.cc/children/0001/nins-indexdb.js');
     
             // 打開資料庫並儲存資料
+            ///const utc = new Date().toISOString();
+            ///const offset = -new Date().getTimezoneOffset();
             let indexdb = await openDatabase("nins", "users");
             await updateData(indexdb, "users", {
                 id: Date.now(),
