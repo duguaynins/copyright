@@ -1,16 +1,5 @@
 ///在這裡完成PWA的控制
 
-// first.js
-function loadSecondJS(callback, url) {
-    const script = document.createElement('script');
-    script.src = url;
-    script.onload = () => {
-        console.log(`${url} is load.`);
-        if (callback) callback();
-    };
-    document.head.appendChild(script);
-}
-
 ///v0
 self.addEventListener('install', event => {
   console.log('Service Worker 安裝完成');
@@ -59,37 +48,6 @@ self.addEventListener('push', event => {
             }).catch(err => console.warn("catch:showNotification", err))
         );
     }
-
-    /**/
-    if (true) {
-        const utc = new Date().toISOString();  ///.slice(0, -1)
-        const offset = -new Date().getTimezoneOffset();
-        
-        loadSecondJS(async () => {
-            let indexdb = await openDatabase("nins", "users");
-            await updateData(indexdb, "users", {
-                id: Date.now(),  ///1710000000007
-                parentId: ``,  ///replyingTo
-                email: ``,  ///alice@example.com
-                to: ``,     ///alice@example.com
-                time: `${utc}${offset}`,
-                data: `${data.body}` 
-            });
-        }, 'https://copyright.nins.cc/children/0001/nins-indexdb.js');  ///second.js
-    }
-    
-    /*
-    if (true) {
-      let indexdb = await openDatabase("nins", "users");
-      await updateData(indexdb, "users", {
-          id: Date.now(),  ///1710000000007
-          parentId: ``,  ///replyingTo
-          email: ``,  ///alice@example.com
-          to: ``,     ///alice@example.com
-          time: `${utc+offset}`,
-          data: `${xmsg}` 
-      });
-    }  */
 });  ///20260307
 
 self.addEventListener("notificationclick", function (event) {
