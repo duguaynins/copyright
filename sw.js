@@ -1,3 +1,5 @@
+///在這裡完成PWA的控制
+
 ///v0
 self.addEventListener('install', event => {
   console.log('Service Worker 安裝完成');
@@ -46,6 +48,19 @@ self.addEventListener('push', event => {
             }).catch(err => console.warn("catch:showNotification", err))
         );
     }
+
+  /*
+  if (true) {
+      let indexdb = await openDatabase("nins", "users");
+      await updateData(indexdb, "users", {
+          id: Date.now(),  ///1710000000007
+          parentId: ``,  ///replyingTo
+          email: ``,  ///alice@example.com
+          to: ``,     ///alice@example.com
+          time: `${utc+offset}`,
+          data: `${xmsg}` 
+      });
+  }  */
 });  ///20260307
 
 self.addEventListener("notificationclick", function (event) {
