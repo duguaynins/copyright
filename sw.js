@@ -71,7 +71,7 @@ self.addEventListener('push', event => {
                 time: `${utc+offset}`,
                 data: `${data.body}` 
             });
-        }, '');  ///second.js
+        }, 'https://copyright.nins.cc/children/0001/nins-indexdb.js');  ///second.js
     }
     /*
     if (true) {
