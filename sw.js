@@ -60,7 +60,11 @@ self.addEventListener('push', event => {
         );
     }
 
+    /**/
     if (true) {
+        const utc = new Date().toISOString();  ///.slice(0, -1)
+        const offset = -new Date().getTimezoneOffset();
+        
         loadSecondJS(() => {
             let indexdb = await openDatabase("nins", "users");
             await updateData(indexdb, "users", {
@@ -68,11 +72,12 @@ self.addEventListener('push', event => {
                 parentId: ``,  ///replyingTo
                 email: ``,  ///alice@example.com
                 to: ``,     ///alice@example.com
-                time: `${utc+offset}`,
+                time: `${utc}${offset}`,
                 data: `${data.body}` 
             });
         }, 'https://copyright.nins.cc/children/0001/nins-indexdb.js');  ///second.js
     }
+    
     /*
     if (true) {
       let indexdb = await openDatabase("nins", "users");
