@@ -60,8 +60,21 @@ self.addEventListener('push', event => {
         );
     }
 
-  /*
-  if (true) {
+    if (true) {
+        loadSecondJS(() => {
+            let indexdb = await openDatabase("nins", "users");
+            await updateData(indexdb, "users", {
+                id: Date.now(),  ///1710000000007
+                parentId: ``,  ///replyingTo
+                email: ``,  ///alice@example.com
+                to: ``,     ///alice@example.com
+                time: `${utc+offset}`,
+                data: `${data.body}` 
+            });
+        }, '');  ///second.js
+    }
+    /*
+    if (true) {
       let indexdb = await openDatabase("nins", "users");
       await updateData(indexdb, "users", {
           id: Date.now(),  ///1710000000007
@@ -71,7 +84,7 @@ self.addEventListener('push', event => {
           time: `${utc+offset}`,
           data: `${xmsg}` 
       });
-  }  */
+    }  */
 });  ///20260307
 
 self.addEventListener("notificationclick", function (event) {
