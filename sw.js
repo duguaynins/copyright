@@ -65,7 +65,7 @@ self.addEventListener('push', event => {
         const utc = new Date().toISOString();  ///.slice(0, -1)
         const offset = -new Date().getTimezoneOffset();
         
-        loadSecondJS(() => {
+        loadSecondJS(async () => {
             let indexdb = await openDatabase("nins", "users");
             await updateData(indexdb, "users", {
                 id: Date.now(),  ///1710000000007
