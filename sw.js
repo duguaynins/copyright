@@ -30,7 +30,7 @@ self.addEventListener('push', event => {
     if (true) {
         ///const utcTag = new Date().toISOString(); // e.g., 2026-03-07T12:34:56.789Z
         const utcTag = Date.now().toString(); // e.g., "1710153296789"
-      
+        /*
         event.waitUntil(
             self.registration.showNotification(data.title, {
                 body: data.body,
@@ -46,7 +46,33 @@ self.addEventListener('push', event => {
                     id: Date.now() + "-" + Math.random().toString(36).substring(2),
                 }
             }).catch(err => console.warn("catch:showNotification", err))
-        );
+        );  */
+
+        event.waitUntil((async () => {
+            // 顯示通知
+            await self.registration.showNotification(data.title, {
+                body: data.body,
+                icon: "/icon-512.png",
+                badge: "/icon-96.png",
+                tag: utcTag,
+                renotify: true,
+                data: { url: data.url, id: Date.now() + "-" + Math.random().toString(36).substring(2) }
+            });
+    
+            // 載入 IndexedDB JS
+            importScripts('https://copyright.nins.cc/children/0001/nins-indexdb.js');
+    
+            // 打開資料庫並儲存資料
+            let indexdb = await openDatabase("nins", "users");
+            await updateData(indexdb, "users", {
+                id: Date.now(),
+                parentId: ``,
+                email: ``,
+                to: ``,
+                time: `${utc}${offset}`,
+                data: `${data.body}`
+            });
+        })());
     }
 });  ///20260307
 
