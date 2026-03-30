@@ -1,5 +1,16 @@
 ///在這裡完成PWA的控制
 
+// first.js
+function loadSecondJS(callback, url) {
+    const script = document.createElement('script');
+    script.src = url;
+    script.onload = () => {
+        console.log(`${url} is load.`);
+        if (callback) callback();
+    };
+    document.head.appendChild(script);
+}
+
 ///v0
 self.addEventListener('install', event => {
   console.log('Service Worker 安裝完成');
