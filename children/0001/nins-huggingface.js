@@ -14,9 +14,10 @@ async function HuggingFaces(inputs=null) {
     ///return await response;  ///上方已經等待
     return response;
 
+    /*
     const data = await response.json();
     console.log(data);
-    return data;
+    return data;  ///已經直接給response  */
   
   } catch (err) {
     console.error(err);
