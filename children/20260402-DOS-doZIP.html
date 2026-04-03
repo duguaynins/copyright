@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>doZIP - DOS Style</title>
+<style>
+    body { margin: 0; background: black; overflow: hidden; cursor: text; }
+    #terminal { color: #00ff00; font-family: 'Courier New', monospace; padding: 20px; height: 100vh; box-sizing: border-box; display: flex; flex-direction: column; font-size: 18px; line-height: 1.2; }
+    #output-container { flex: 1; overflow-y: auto; scrollbar-width: none; }
+    #output-container::-webkit-scrollbar { display: none; }
+    button { background: black; border: 1px solid #00ff00; color: #00ff00; font-family: inherit; padding: 4px 12px; cursor: pointer; font-size: 14px; text-transform: uppercase; }
+    button:hover { background: #003300; }
+    .info { color: #ffff00; }
+    .success { color: #88ff88; }
+    .error { color: #ff5555; }
+    #hidden-input { display: none; }
+</style>
+</head>
+<body>
+<div id="terminal">
+    <div class="menu">
+        <button id="selectFilesBtn">Select Files</button>
+        <button id="downloadZipBtn">Download ZIP</button>
+        <input type="file" id="hidden-input" multiple />
+    </div>
+    <div id="output-container">
+        <div id="display-text">DOS Style ZIP Creator\n</div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script>
+const hiddenInput = document.getElementById("hidden-input");
+const selectFilesBtn = document.getElementById("selectFilesBtn");
+const downloadZipBtn = document.getElementById("downloadZipBtn");
+const displayText = document.getElementById("display-text");
+let selectedFiles = [];
+
+function log_v0(msg,type="info"){
+    const span=document.createElement("span");
+    span.textContent=msg+"\n";
+    span.className=type;
+    displayText.appendChild(span);
+    displayText.parentElement.scrollTop=displayText.parentElement.scrollHeight;
+}
+function log(msg, type="info"){
+    const line = document.createElement("div");
+    line.textContent = msg;
+    line.className = type;
+    displayText.appendChild(line);
+    displayText.parentElement.scrollTop = displayText.parentElement.scrollHeight;
+}
+
+selectFilesBtn.addEventListener("click",()=>hiddenInput.click());
+hiddenInput.addEventListener("change",()=>{selectedFiles=Array.from(hiddenInput.files); if(selectedFiles.length) log("Selected files: "+selectedFiles.map(f=>f.name).join(", "), "info");});
+
+downloadZipBtn.addEventListener("click",async()=>{
+    if(!selectedFiles.length){log("Please select files first.","error"); return;}
+    log("Creating ZIP...","info");
+
+    try{
+        const zip=new JSZip();
+        for(const file of selectedFiles){
+            const buffer=await file.arrayBuffer();
+            zip.file(file.name,buffer,{date:file.lastModified?new Date(file.lastModified):new Date()});
+            log("Added: "+file.name,"info");
+        }
+        const blob=await zip.generateAsync({type:"blob",compression:"DEFLATE"});
+        const timestamp=Date.now();
+        const a=document.createElement("a");
+        a.href=URL.createObjectURL(blob);
+        a.download=`nins_${timestamp}.zip`;
+        a.click();
+        log("ZIP download completed: nins_"+timestamp+".zip","success");
+    }catch(err){
+        console.error(err);
+        log("Failed to create ZIP.","error");
+    }
+});
+</script>
+</body>
+</html>
