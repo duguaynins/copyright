@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>deZIP - DOS Style</title>
+<style>
+    body { margin: 0; background: black; overflow: hidden; cursor: text; }
+    #terminal { color: #00ff00; font-family: 'Courier New', monospace; padding: 20px; height: 100vh; box-sizing: border-box; display: flex; flex-direction: column; font-size: 18px; line-height: 1.2; }
+    #output-container { flex: 1; overflow-y: auto; scrollbar-width: none; }
+    #output-container::-webkit-scrollbar { display: none; }
+    button { background: black; border: 1px solid #00ff00; color: #00ff00; font-family: inherit; padding: 4px 12px; cursor: pointer; font-size: 14px; text-transform: uppercase; }
+    button:hover { background: #003300; }
+    .info { color: #ffff00; }
+    .success { color: #88ff88; }
+    .error { color: #ff5555; }
+    #hidden-input { display: none; }
+</style>
+</head>
+<body>
+<div id="terminal">
+    <div class="menu">
+        <button id="selectZipBtn">Select ZIP File</button>
+        <button id="extractZipBtn">Extract ZIP</button>
+        <input type="file" id="hidden-input" accept=".zip" />
+    </div>
+    <div id="output-container">
+        <div id="display-text">DOS Style ZIP Extractor\n</div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script>
+const hiddenInput = document.getElementById("hidden-input");
+const selectZipBtn = document.getElementById("selectZipBtn");
+const extractZipBtn = document.getElementById("extractZipBtn");
+const displayText = document.getElementById("display-text");
+let selectedFile = null;
+
+function log_v0(msg, type="info") {
+    const span = document.createElement("span");
+    span.textContent = msg + "\n";
+    span.className = type;
+    displayText.appendChild(span);
+    displayText.parentElement.scrollTop = displayText.parentElement.scrollHeight;
+}
+function log(msg, type="info"){
+    const line = document.createElement("div");
+    line.textContent = msg;
+    line.className = type;
+    displayText.appendChild(line);
+    displayText.parentElement.scrollTop = displayText.parentElement.scrollHeight;
+}
+
+selectZipBtn.addEventListener("click", () => {
+    hiddenInput.click();
+});
+
+hiddenInput.addEventListener("change", () => {
+    selectedFile = hiddenInput.files[0] || null;
+    if (selectedFile) log("Selected ZIP: " + selectedFile.name, "info");
+});
+
+extractZipBtn.addEventListener("click", async () => {
+    if (!selectedFile) { log("Please select a ZIP file first.", "error"); return; }
+    log("Extracting ZIP...", "info");
+
+    try {
+        const buffer = await selectedFile.arrayBuffer();
+        const zip = await JSZip.loadAsync(buffer);
+
+        for (const name of Object.keys(zip.files)) {
+            const zipFile = zip.files[name];
+            if (!zipFile.dir) {
+                const blob = await zipFile.async("blob");
+                const a = document.createElement("a");
+                a.href = URL.createObjectURL(blob);
+                a.download = name.replace(/\//g, "_"); // DOS-friendly
+                a.textContent = name;
+                displayText.appendChild(document.createTextNode("Extracted: "));
+                displayText.appendChild(a);
+                displayText.appendChild(document.createTextNode("\n"));
+            } else {
+                log("Skipped directory: " + name, "info");
+            }
+        }
+
+        log("ZIP extraction completed.", "success");
+    } catch (err) {
+        console.error(err);
+        log("Failed to extract ZIP.", "error");
+    }
+});
+</script>
+</body>
+</html>
