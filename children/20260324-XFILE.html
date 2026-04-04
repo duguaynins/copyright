@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,8 +12,41 @@
     <meta name="description" content="© 2024 NINS (by JPGT). By using any of the services, it means you have agreed to any content and all content!">
     <link rel="canonical" href="https://copyright.nins.cc/">
     <title>nins/xLIFE</title>
+
+
+    <script>
+        
+    function generateRandomIntNumber(length) {
+        let result = '';
+        for (let i = 0; i < length; i++) {
+            // 生成 0-9 的隨機數字
+            result += Math.floor(Math.random() * 10);
+        }
+        return result;
+    }
+
+    function generateRandomAlphaString(length) {
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        let result = "";
+        for (let i = 0; i < length; i++) {
+            result += chars[Math.floor(Math.random() * chars.length)];
+        }
+        return result;
+    }
+    
+    const url = new URL(window.location.href);
+    /*
+    if (!url.searchParams.has("x")) {
+        url.searchParams.set("x", Date.now()); // 加入参数
+        window.location.href = url.toString(); // 重新载入
+    }  */
+    if (!url.searchParams.has("roomid")) {
+        url.searchParams.set("roomid", generateRandomIntNumber(9)); // 加入参数
+        window.location.href = url.toString(); // 重新载入
+    }  
+    </script>
     <style>
-        :root { --bg: #f0f2f5; --primary: #0084ff; --gray: #e4e6eb; --yellow: #f5e025; }
+        :root { --bg: #f0f2f5; --primary: #0084ff; --gray: #e4e6eb; --yellow: #f5e025; --green: #3beb3e; --blue: #d5ebf7; }
         body { font-family: sans-serif; background: var(--bg); display: flex; flex-direction: column; height: 100vh; margin: 0; }
         
         /* 信令控制區 */
@@ -19,12 +54,13 @@
         button { padding: 3px 3px; cursor: pointer; }
         
         /* 聊天室主體 */
-        #chat-window { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+        #chat-window { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; 
+    text-align: left; /* 確保文字靠左 */ gap: 10px; }
         
         /* 訊息氣泡 */
         .msg { max-width: 70%; padding: 10px 15px; border-radius: 18px; word-break: break-all; font-size: 14px; line-height: 1.4; }
-        .msg.me { align-self: flex-end; background: var(--primary); color: white; }
-        .msg.other { align-self: flex-start; background: var(--yellow); color: black; }
+        .msg.me { align-self: flex-end; background: var(--yellow); color: white; }
+        .msg.other { align-self: flex-start; background: var(--gray); color: black; }
         
         /* 即時輸入預覽 */
         #remote-typing { 
@@ -132,28 +168,9 @@
         document.getElementById("textInput").disabled = true;
         document.getElementById("sendBtn").disabled = true;
 
-
-        function generateRandomIntNumber(length) {
-            let result = '';
-            for (let i = 0; i < length; i++) {
-                // 生成 0-9 的隨機數字
-                result += Math.floor(Math.random() * 10);
-            }
-            return result;
-        }
-
-        function generateRandomAlphaString(length) {
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-            let result = "";
-            for (let i = 0; i < length; i++) {
-                result += chars[Math.floor(Math.random() * chars.length)];
-            }
-            return result;
-        }
-
         // --- 設定區 ---
         const params = new URLSearchParams(window.location.search);
-        const apikey = 'ijFBLQ.BEpg4g:yqcH3sGhgGO77S5mV4pAKFiaSYXo4DoqXSZfvXp2c6A'; // 請替換成你的 API Key
+        ///const apikey = 'ijFBLQ.BEpg4g:yqcH3sGhgGO77S5mV4pAKFiaSYXo4DoqXSZfvXp2c6A'; // 請替換成你的 API Key
         const userid = params.get("userid") || generateRandomAlphaString(128);
         const roomid = params.get("roomid") || generateRandomIntNumber(9);
 
@@ -166,11 +183,13 @@
             correctLevel : QRCode.CorrectLevel.H
         });
 
-        // 1. 初始化 Ably
+        // 1. 初始化 Ably  ///:realtime/ably
+        const ably = new Ably.Realtime({ authUrl: 'https://duguaynins-ably.hf.space/auth', authMethod: 'POST', authHeaders: { 'clientId': userid, 'Beta': `TOEKN ${0}`, 'Authorization': `Bearer ${0}` } });
+        /* 
         const ably = new Ably.Realtime({
             key: apikey,
             clientId: userid
-        });
+        });  */
 
         // 2. 取得一個頻道 (Channel)
         const channel = ably.channels.get( roomid );
@@ -259,14 +278,45 @@
         let localDescription = {};
 
         function appendMsg(content, isMe, type = 'text', fileId = null) {
+            
+            const [utc, offset] = updateTime();
+            const ninsTimes = utc + offset;
+            
+            const randomID = "id_" + Math.random().toString(36).substring(2, 8);
+            const msgTime = ("🕛️" + ninsTimes);
+            
+            const openai = `https://chatgpt.com/?prompt=` + encodeURIComponent( content );
+            const google = `https://www.google.com/search?udm=50&aep=1&aic=0&hl=auto&q=` + encodeURIComponent( content );
+            const perple = `https://www.perplexity.ai/?q=` + encodeURIComponent( content );   ///xmsg or prompt
+            
             const div = document.createElement("div");
             div.className = `msg ${isMe ? 'me' : 'other'}`;
             if (type === 'text') {
-                div.innerText = content;
+                ///div.innerText = content;  ///📄📑
+                div.innerHTML = `
+                <div class="text-card" id="text-${randomID}">
+                    <!--span id="${randomID}_T" style="" translate="no">${msgTime}</span><br!-->
+                    
+                    <span style="">
+                        <label id="AI_oa" translate="no" style="color:black;"> <a translate="no" style="text-decoration: none;" target="_blank" rel="noopener noreferrer" href="${openai}">🧠AI:O</a> </label>
+                        <label id="AI_gg" translate="no" style="color:black;"> <a translate="no" style="text-decoration: none;" target="_blank" rel="noopener noreferrer" href="${google}">♊AI:G</a> </label>
+                        <label id="AI_pp" translate="no" style="color:black;"> <a translate="no" style="text-decoration: none;" target="_blank" rel="noopener noreferrer" href="${perple}">🕸️AI:P</a> </label>
+                        <!--label id="OL_tg" translate="no" onclick="selectReplyid('text-${randomID}')">⬅️</label!-->
+                    </span>
+                    <span>📑${content}</span>
+
+                </div>`;
             } else {
-                div.innerHTML = `<div class="file-card" id="file-${fileId}"><span>📄 ${content}</span>
-                    <div class="progress-container"><div class="progress-bar"></div></div>
-                    <a class="download-btn" style="display:none">DOWNLOAD</a></div>`;
+                div.innerHTML = `
+                <div class="file-card" id="file-${fileId}">
+                    <!--span id="${randomID}_T" style="" translate="no">${msgTime}</span><br!-->
+                    
+                    <a class="download-btn">📑${content}</a>
+                    <div class="progress-container">
+                        <div class="progress-bar"></div>
+                    </div>
+
+                </div>`;
             }
             chatWindow.appendChild(div);
             chatWindow.scrollTop = chatWindow.scrollHeight;
@@ -285,7 +335,7 @@
         function markConnected(reason = "") {
                 connStatus.innerText = "● Start";
                 connStatus.style.color = "green";
-                document.getElementById("content").style.background = "#cdcdcd";
+                document.getElementById("content").style.background = "#eeeeee";
                 document.getElementById("fileBtn").disabled = false;
                 document.getElementById("textInput").disabled = false;
                 document.getElementById("sendBtn").disabled = false;
@@ -377,7 +427,8 @@
                         link.href = URL.createObjectURL(blob);
                         link.download = fileTask.name;
                         link.style.display = "block";
-                        link.innerText = "💾";  ///💾🎁
+                        link.style.color = "blue";
+                        ///link.innerText = "💾";  ///💾🎁
                         delete incomingFiles[lastId];
                     }
                 }
@@ -422,7 +473,9 @@
                     await channel.presence.update({ SDP: localDescription });
 
                     ///channel.detach(); // 或 close / leave
-                    ably.close();
+                    setTimeout(() => {
+                        ably.close();
+                    }, 2000); // Waits 2 seconds
                 }, 500);  ///alert
             }
         }
@@ -448,7 +501,7 @@
                 }));
             }
         });
-
+        
         function sendText() {
             const val = textInput.value;
             if (!val || !dataChannel) return;
