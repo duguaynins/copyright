@@ -42,6 +42,7 @@ function redirectIfMatched() {  ///rules
     "transing.nins.cc/",
     "translate.nins.cc/",
     ///"t.nins.cc/",
+    "nins.cc/",  //20260410_2352
     ///"Users",
   ];
 
