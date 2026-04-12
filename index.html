@@ -1,239 +1,67 @@
 
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
+<link rel="icon" type="image/x-icon" sizes="48x48" href="data:image/x-icon;base64,AAABAAEAMDAAAAAAIABiDwAAFgAAAIlQTkcNChoKAAAADUlIRFIAAAAwAAAAMAgGAAAAVwL5hwAADylJREFUeJzNWnl4FUW2/1XfBMhyE0xCNjYDIiCgjgLBESEKiDxxBiUuLAoqMoiKioozo46M4DCCz3VwePhwQRAXniKoYTECDshAyEISNkEZSCBkgSz39t26u37zR3ff3NzcBPPNvO+983319VZ16ndOnTrnVFULdJBIKgAUIYQe8q4vgGusMhBATwBdAcRaVTwAGgBUADgMYA+APUKIH0N4RAGQQgjZUUw/F7gg6Qh5ziT5MMl8ki52nFxW24dJZobwdZAU/27wSsh9L5JLSdaFATJI6tZVWsUm+zm0TijVWTx7RerzXwXvsK5RJJ8KA65bRTICSSkpZcRPtlB2+1BBnqJpTsG+/x3gB5PcHdKR1hZowzCo6zoNo6WSdV2nruttCSQtnjbtIjn4XxIiRAu3kmywwLULvDU4SUYArOt6q3cRBGkgeWsolkgUcbKQjBJC6CRnA/gv67UBwEESQrRsJqWEopgme+TwUWz+5lvsKyrGqYpKGIYBp9OJIZcNxJjRI3FDzih0iYkBCQCteYX2Zd3/Rgix0sbUEc3PtjRrkDSklGyor4+oeZIsKyvjlJkPMD6tN2O69WS/K7J50613cvL0+zgiZzyTe/encKbyF7+8nms+/LhV++AQNI+YwebJPvtCI2GDt21+kg1e0zRJku+uXsvho8exsaEh2JHd+YqVq5iQkcX0voP4zMIXWVBYzPrGJuqGCcbj9fHEP05y5Tvv84prcoi4FM6YNZcN9Q2WEO1OdFuISaEY2wM/gGQjSUPTNIMk1374Ebt278vkrIEcPmosmxobaVia+vOyV4jYZN45czZ/OnEy2Ks3oNHt9dHl8VL1B6hZ9evrG7jgmYWEM5Xjf5XL8+fOU8pmhdhChQ6yVRpJDogoBK0gRdNV7rUa6jbTM2eq+MBDjzGpZz9u+iqPum4q5dP1nxFxKZz/2+dIkpokG90qXR4v3V4fVZ/fKj66vT42ulV6A+YcfWvlKorENN51zyzqmkYpJUvLDnLk9eNZV1sXbk72rN9rYWwZ7EK0/6RVMejSbDOprKzkxk1fBdVytuosu/cbwl/feTcNQ9Lj97PBpbJJ9ZhaD4I3i8vjZZPqYYNLZaNbJUm+sGQZEZvM9z/4kCSpqipLDpTS5/NF8lQ2pidbjAJJxRqBDJquy46kEcnn95Mkn124iM6MLB7+4Rh1KdngcgeN1SDpChkBl9dHLYSjT9Pp9vqpqh6OuP4mDskeRY/qaeWGwx8t1g0WVkFSCfU6y8K1bzOsrq7mK6/9hV/nbSFJer1e9h0yjPc8MJck2ej2UJIsLCnlu2s+YtGBMuqkOQe8PupS8thPJ7js1Tf56ptv8VTl6aApvbdmHUVCapD33r37+PTvn2ee9RwmlI1tWQuvRDLVkqxFDiOlpK7rvG3KPURcCqOTMrl8xds8VH6QXVJ6cM1H60kpqRsG12/YxNSsgXRm9GF6n0HM2/oNDUPSr2k8evxHXjZ0JOPTsxjTrRdHjr2Z1bV1NKTkTycrmNTrUj6zcDH37y9katYAwpnGhIws5n+7g2SLwGfjayCZCgB2wjQZQCLMACIAMzgJIXD48BFs+XYnZs2YjimTJ2Heb5/DI08/iwSnE6mpKYAQ0A0D76xeC82QyMhIh8fvx9pPPoNQBDpFRWHLtnycqjyNtLRUZGZmoPTQYXz/931QhMBFXRMx8NJ++PSLrzAhdxp69+6F/35jGSQEvty8LdxZCgtjooU5KEAuACIkMtMMlTh+4iRUt4oJ48fitaUvYuzo67B7XyECWgBJiYkwCDgUBQkJTvgDAei6Dp/Ph8yMtCCzBKcThmGAJPyBABwOB7qlpMCQRGxMDNJSknCqshKXD74Ma1etwO25t8EZH4fTZ6tN1KJFYiosrLk20Cw25/PNfssats83fkXEd+N7az8iSTa5VeZt+5ZrPl7P2nPnqfoD1A2D3+8t4BUjRjP9kkGcOHkqK0+foS+g0eMPsPbcOU7MncqEjD5M6tmPf1i0hJqu0+Xx0q9pLCkt599276Hq9ZEkCwqL2bX7JZx672ySraK1jdFFMgskp1svWtSyGx08eIhxab059/EFJMkGlxqs4w1oVH1+uq2Oa+rOsbD4AFWvjwFD0u01/X9AN9jQ5OKmvK38fm8BSdLjD1ht/UEnX9/kJkmufOc9Ii6Fz/3xxfA5EIRnXaeD5HJb6eG1pJSUhsFbcqcyqdelLDpQRrLZu9jByuMPsLq2jk2qKZwtlO1G3V4fPf4ASVKTkicrKtmkeoJCNKlm3CDJkxUVHDZqHBO792VBQWGkEQjFulwBMCjEtsIjNISi4PnfPQlKiRm/eRhf5m2BR1Wha1owAwWJM5UVqK6qgjeggbJllimEgDQMePwB1NXWofLUSahuFxRFAUF07twJbrcb2/K3494581BQVIK5992DoUOvapHphs0DABgEksdthYeLGSr9uo8/ZUJGH0YnZXLA1b/kyDETeOjIUWqWqZxvaGSjWw1qta3i9vpYV19Pl8dLl8dLQ5JLX32TWYOuZueUnuyU3IPznniaPp+vjTVGC6zHoyyX1CbZmrzrjlxk9e6F99d9gu/27ENx+WFUVp7BwP6XwislYmJjQTLovdrjFxcXDymlqV0B7C0shsfrxcOzZmDCuDEYc0MOCICWK2+HEqPQvPUR2YSEgKqq6Ny5M7KzhyM7ezhWvbsac5/8HRyO5qRQyp+/GxJeV0qJywf2x8tLFgEADCnhUBQIRWnLhGyKaXflL4SA3+dD7tSZeOyp30NVPTAMA1HR0RfU9M8hRVGg6TpcTU1QPV7omgbAjCtz583Hrl3fQ7GECIdmXxWYm06AGRzMG8sUNE3D7dPuxd6SMrz9wTosX/E2HA4HNKujSCJIKTskHC1BXKoKRVFQW1uLyVNn4pNNeZgy60F8semrSELYHXgUAI2txBMCEAIOhwNPPPoQusbHIeeXI3D31DsBAJ07d4Km6TjfUN/C7g0pERfTBdHR0RGFa1cQEoZhIDY2Ft0z0uDx+pCZloa01G7tKaQRJHeEBYcWcYAkd373N5YfPBh8v39/Ebuk9ODds8xs1OPX6LKC2foNG1lQVELdMFqtCyJ5qICmcezE2zgiZzyNkID10GNPcv/+orbigP1iR7uBLLyxYRhm0XXmTp3JTsk9uPKd1fR4vPT5/fwybysTM/vwk883UhoGG91qMBp7/OaixhMmgM/n5+jxt3DUuJuDCwA9rM8I1CKQ7bEtJ9IY2fZnewNFUUAhsHTxQgzs1xdz5j+Ncb+ajImTp+D+hx+HTqK0rBzCqgsAcV064+VX3sDmLdvQpVOnYGKnKAp8fj9qz9cHPRotk9R1PVgnAtlY9ygAdgNww8xMIxqbEgJGCwTgUBRkZfXGFx+9j7tvvxWnKs+g8EAZEuLjkeCMx4p3P8D6zzciplM0ohWB9Rs24sWXX4db9cB26yQRHeXAyVMVOH2mClkXXwwIASEEohwOREVFtRUDaGF1W9gBmrvEkm2akTm0f1z8Eq8cMZpbt+W3GNrTp0+zqKiYqtvN3bt3c0TOjeyU3IM5E37NUTdOZHRSd1429Fr+eOIf9Gt6cH1MknPmPUE4U7nu4/UkyYL9hZw68wF+k7+dZKsVmW0+kmR+s0jkg9ZHLbx2kImUnHTHdAJdeMe0mZTWHmhoppi3eSvvm/MIX33tTT4yfwEvH34dBw8byakzH+Cho8eok2yydixIcsu2fCb37s8rrsnhuXPnSJJLXnqZADjNSqX11nPAxvhgqAARl5TNI2Ay2V9YxPvnPMKa6prgBq5hGPT7fJw77wl2SelJxCRx0ZKllIbO48d/ZEFBAX/68TgbGxtZXVPDqqozdKsqt+/YyaHXjWXURZlcvWYdSTIQCLC+vp5Ll73Koz8cizQCrZaU7S7qL0S2aS3/60qKxHQOyR7FzzZsoj/QzOLYsWN87/3VfHT+Ar7wp5f4+vK/cvZDjzKz3+WM6prJZ/7wQsQN4Dao1aLe3JowJ0Y6zOMfpzXLW8wgTdOwY8dOc1noD0BKiQkTxkNKiZHjJqKy6iz+54NVuPaabHh8fnyTvx3fbN+BopJSlB89hiaXG4oQIIAoh4LBA/rj0TmzcM/0KaY7+ftelBwow7S77kBsXGwLxxEyeQnABfMY6ywAESWEkCQdQogqkosBLAOgA4gC7NQA8Hg8WPynZXAmJuBU5WkkJyRg2LCr0dTYhENHf8C022/Dtddk46cTJ7Hg2YXYuHkbHIqCbinJGHHVlciddAsEANXjweDLBiJ72NWIi48Pbh48t+jPyP96AzpFR+P++2bAMIxw72NYmBZbWB1CCMM2o4hbi+HjV1JcwtLSMhYVl/Db7Tvoamrirl176EhM5+NPP0vDMDhn3nzCmcpJd97N7dt3supMVZsmEnoQkrd5Kx+c9wRrqmtItrJ9G8sehm0tRgGAEII0U2ed5AwAewHEA5B5eZuV8tJyDB8+FBVVZ1FcVIyemZkgJX5x5RVISuqKBKcT3+8rxJFDh3DwyA/oc3EvvPPW67go6aJm9VnBSwiBmpoaKEIgLT09+P2m8eNw0/hxweeQGCAtc24CcK+F0SGEINC8rQIhhGF9OAJghv3tTNVZfp23BfsLClFyoAzxCYkoLT+ImuoaCEVB//79cNXlg1BSdhDrN2xCZmo3BAIafD6v2bs0I6vD4TCLomD6fXMw/PoJqD9/3rYASCmDQobZvY1zhhDiSAvTiUS0vJKu67NJ0u/3G9XV1UZdbS1Va9Hu9fro9XiDMWD7jp3s2r0vU/sO4tDrxjD9kiHMHn0j//O1v9Dn8wUP+2yzWLFyFV96+TX6/f72DgI7fsARLgStU5q25gTJ4DnBl19v5sgx/0FnRhaTel3KxO6XUElM5/OLlpj1IidlbVFoXx0DH0GIW3Vdt08dNJIyXGs2OC0QYP72ndy8NZ9vLl/B5N4DePW1N9DrMdMGu014BA+hDh/yXUiI0GPWXSEdtTqtjBDyOWrczewx4EpWVFS0EPQCwMkOHLNeaE1sT+xyADkAFgA4B9N72RutBgA6FCWYBhuGAV3T0NjkQkyXzki6KMnm10I/Ie2FxfOc1UeOEKKcF5qwP5fYgV8NDJOkYRhy2StvcOd3u0hS6rr+f/OrQQjD/5c/e3T4rxB24HcbXddjhbk58L/2u80/AZWuhHmwXL/2AAAAAElFTkSuQmCC">
+<!--link rel="icon" type="image/x-icon" sizes="48x48" href="https://duguaynins-allninsone.hf.space/favicon.ico"-->
+<!--link rel="icon" type="image/png" sizes="48x48" href="/favicon.png"-->
+<!--link rel="shortcut icon" href="/favicon.ico"-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<meta name="description" content="© 2024 NINS (by JPGT). By using any of the services, it means you have agreed to any content and all content!">
+<link rel="canonical" href="https://copyright.nins.cc/">
+<title translate="no">nins/copyright</title>
   
-  <!-- PWA manifest -->
-  <link rel="manifest" href="/manifest.json">
-  
-  <link rel="icon" type="image/x-icon" sizes="48x48" href="data:image/x-icon;base64,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">
-  
-  <!--link rel="icon" type="image/x-icon" sizes="48x48" href="data:image/x-icon;base64,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"-->
-  <!--link rel="icon" type="image/png" sizes="48x48" href="/favicon.png"-->
-  <!--link rel="shortcut icon" href="/favicon.ico"-->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <!--meta name="robots" content="noindex"-->
-  <meta name="description" content="© 2024 NINS (by JPGT). 👻👻👻 (nins.cc)">
-  <!--meta name="description" content="(duguaynins@gmail.com) © 2024 NINS (by JPGT). 👻👻👻 (world.nins.cc)"-->
-  <!--meta name="description" content="© 2024 NINS (by JPGT). 👻👻👻 (nins.cc) (duguaynins@gmail.com)"-->
-  <!--meta name="description" content="© 2024 NINS (by JPGT). 👻👻👻 (nins.cc)"-->
-  
-  <!--meta name="robots" content="noindex,nofollow"-->
-  <meta name="robots" content="index,nofollow">
-  <link rel="canonical" href="https://copyright.nins.cc/">
-  
-  <title translate="no">nins/copyright</title>
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "nins/©",
-      "alternateName": ["nins"],
-      "url": "https://copyright.nins.cc/"
-    }
-  </script>  
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
-        .then(() => console.log('SW 註冊成功'))
-        .catch(err => console.error('SW 註冊失敗', err));
-    }
-  </script>
 
-  <style>
-    body {
-      overflow: hidden;
-    }
-  </style>
-  <style>
-    /* 2025/07/22 */
-    body {
-      font-family: Arial, sans-serif !important;
-    }
-    * {
-        font-family: inherit !important;
-    }
-  </style>
-  
-  <style>
-    input, textarea, button, select {
-      /*font-size: inherit; /* 主動繼承 body 字體大小 */
-      font-size: 18px;
-    }
-    html, body { font-size: 14px; }
-    html, body {
-      margin: 0;
-      /*font-family: Arial, sans-serif;*/
-      background-color: #ffffff;
-      background-color: #000000;
-      background-color: #cdcdcd;
-      color: #333;
-      user-select: none;
-    }
 
-    header {
-      text-align: center;
-      padding: 2rem 1rem;
-      border-bottom: 1px solid #ddd;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-    }
-
-    .intro {
-      text-align: center;
-      padding: 1rem 2rem;
-      max-width: 700px;
-      margin: auto;
-    }
-
-    .app-grid {
-      display: grid;
-      grid-template-columns: 1fr; /* 強制一欄 */
-      /*grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));*/
-      gap: 0; /* Changed from 2rem to 0 to remove space between cards */
-      /*padding: 2rem;*/
-      max-width: 100%; /* 確保網格可以佔滿整個寬度 */
-      margin: 0;  /*auto;*/
-    }
-
-    .app-card {
-      /*border: 1px solid **black**;*/
-      /*border-radius: 12px;*/
-      padding: 1.5rem;
-      text-align: center;
-      transition: box-shadow 0.3s;
-      background-color: white;
-      color: black;
-    }
-
-    .app-card:hover {
-      background-color: #cdcdcd;
-      color: black;
-    }
-
-    .app-card:active {
-      background-color: #222222;
-      color: white;
-    }
-    
-    .app-card h2 {
-      margin-top: 0;
-    }
-
-    .app-card p {
-      color: #666666;
-    }
-
-    .app-card a {
-      display: inline-block;
-      margin-top: 1rem;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      text-decoration: none;
-      background-color: #FF3B00;
-      color: white;
-    }
-
-    .app-card a:hover {
-      background-color: #0056b3;
-    }
-  </style>
-  
-  <style>
-  
-    @keyframes blink {
-      0% { border-color: black; }
-      50% { border-color: transparent; }
-      100% { border-color: black; }
-    }
-    .cursor {
-      display: inline-block;
-      width: 1ch;
-      border-right: 2px solid black;
-      /*animation: blink 0.7s infinite;*/
-      animation: blink 1.0s steps(1) infinite;
-    }
-    .NINS {
-      display: flex;
-      /*display: block;*/
-      text-align: center;
-      justify-content: center; /* 水平置中 */
-      align-items: center;     /* 垂直置中 */
-      height: 100vh;           /* 視窗高度可改成你需要的高度 */
-      width: 100vw;
-      
-      opacity: 1;  /* 透明度 0 ~ 1（0 為完全透明，1 為不透明） */
-      transition: opacity 1s ease;
-      /*pointer-events: none;  不影響滑鼠事件，視需要加上 */
-      pointer-events: auto;
-      
-      white-space: pre-wrap;
-      
-      
-      flex-direction: column;
-    }
-    
-    #BOTTOM {
-        height: 100vh;  /* 視窗高度可改成你需要的高度 */
-        width: 100vw;
-        background-color: #000000;
-        background-color: #cdcdcd;
-        color: #333;
-    }
-    .container {
-      position: relative;  /* 父容器設定為 relative，以便子元素的 absolute 定位能相對於它 */
-      width: 100%;
-      height: 100%;
-      background: #eee;
-      color: black;
-    }
-  </style>
-  <style>
-      .skiptranslate {
-        display: none !important;   /* 避免 display:none 影響內容顯示 */
-        position: static !important;   /* 防止位置異常 */
-        width: 0px !important;
-        height: 0px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        border: none !important;
-        background: none !important;
-        /*font-size: inherit !important;*/
+<style>
+    /* 定義淡入動畫 */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px); /* 稍微從下方浮上來，效果更生動 */
       }
-      iframe {
-        display: none !important;
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
-  </style>
-  <style>
+    }
+
     .feature-grid {
       display: flex;
       flex-wrap: wrap;
       gap: 1rem;
       padding: 1rem;
       box-sizing: border-box;
-      background-color: #cdcdcd;
-      background-color: white;
+      
+      background-color: #ffffff;
       flex-direction: column;   /* 垂直排列關鍵 */
     }
 
     .feature-item {
+      position: relative;
       flex: 1 1 calc(25% - 1rem);
       min-width: 200px;
       /*background-color: #f5f5f5;*/
-      border-radius: 12px;
+      /*border-radius: 12px;*/
       padding: 1rem;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
       text-align: center;
       transition: transform 0.2s;
       background-color: white;
       color: black;
+      opacity: 0; /* 預設隱藏，等待動畫觸發 */
+      animation: fadeIn 0.6s ease-out forwards; /* 執行 0.6 秒動畫並停留在最後狀態 */
     }
 
     .feature-item:hover {
+      /* transform: translateY(-4px); 覆蓋時偏移 */
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
       background-color: #cdcdcd;
       color: black;
     }
@@ -245,13 +73,11 @@
 
 
     .feature-item h2 {
-      font-size: 1.25rem;
       margin-bottom: 0.5rem;
       /*color: #333;*/
     }
 
     .feature-item p {
-      font-size: 0.95rem;
       color: #777;
       margin-bottom: 1rem;
     }
@@ -265,332 +91,248 @@
       cursor: not-allowed;
     }
     
-  </style>
-
-
-  <style>
-.use {  background: white; color: #000000; }
-.use:hover {  background: #cdcdcd; color: black; /*覆蓋時*/ }
-.use:active { background: #000000; color: white; /*點下時*/ }
-.use:focus {
-  background:rgb(255, 225, 230);
-  outline: none;              /* 移除預設藍色邊框 */
-  /* border: 2px solid green; */
-  /* box-shadow: 0 0 5px red; */
-}
-  </style>
+    .unable {
+      /* 各種類中，越晚寫的表示越重要 */
+      pointer-events: none;
+      background-color: #000000;
+      color: #ffffff;
+    }
+</style>
 
 </head>
 <body>
   
-  <script src="https://copyright.nins.cc/children/0001/nins-update.js"></script>
-  <script src="https://copyright.nins.cc/children/0001/nins-reload.js"></script>
-  <script src="https://copyright.nins.cc/children/0001/nins-cookie.js"></script>
-  
-  <div id="google_translate_element" style="display:none;"></div>
-  
-  
-  
-    <button disabled="" id="disabled" style="
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-      padding: 0;
-      margin: 0;
-      opacity: 0;  /*不透明度*/
-      background: transparent;  /*不透明度？*/
-      cursor: default;
-      z-index: 10000;  /* 確保在最高層 */
-    "></button>
-  
-    <div class="NINS use" id="NINS"  onclick="copyright();" style="
+<!-- NINS ================================================== -->
+<script src="https://copyright.nins.cc/children/0001/nins-update.js"></script>
+<script src="https://copyright.nins.cc/children/0001/nins-world.js"></script>
+<!--script src="https://copyright.nins.cc/children/0001/nins-world.js"></script!-->
+<!--script src="https://copyright.nins.cc/children/0001/nins-ads.js"></script!-->
+<script src="https://copyright.nins.cc/children/0001/nins-abc.js"></script>
+    
+    <!--button disabled="" id="disabled" style="
       position: fixed;
       bottom: 0;
       top: 0; /* 距離頂部 0 */
       left: 0; /* 距離左側 0 */
       right: 0; /* 距離右側 0 */
-      z-index: 9999;  /* 確保在次高層 */
+      width: 100%;
+      height: 100%;
+      border: none;
+      padding: 0;
+      margin: 0;
+      /*opacity: 0;  /*不透明度*/
+      /*background: transparent;  /*不透明度？*/
+      cursor: default;
+      z-index: 99999;  /* 確保在最高層 */
+      /*background: linear-gradient(white, transparent);*/
+      background: white;
+      animation: fadeOut 3s forwards;
+      pointer-events: none;  /* 動畫期間不阻擋互動（可選）*/
+    "></button!-->
+    
+    
+    <div style="
+      position: fixed;
+      bottom: 0;
+      top: 0; /* 距離頂部 0 */
+      left: 0; /* 距離左側 0 */
+      right: 0; /* 距離右側 0 */
+      background: #777777;
+      background: #FF3B00;
+      background: white;
+      color: white;
+      text-align: center;
+      /*padding: 10px;*/
+      box-sizing: border-box;
+      word-break: break-word;
+      z-index: 9998;
+      
+      display: flex;
+      flex-direction: column;
     ">
-        <!--span style="width:100%;" id="notice" translate="">By sending a message to this service, it means you have agreed to any content and all content!</span-->
-        <!--span id="copyright" translate="no">shivers, worlds!. 👻👻👻. © 2024 NINS. </span-->
-        <!--span id="copyright" translate="no">shivers, worlds!. ✨ © 2024 NINS. 👻 </span-->
-        <span style="width:100%; color:white;" id="mailto" translate="no"></span>
-        <span style="width:100%; " id="copyright" translate="no" class="">© 2024 NINS. 👻👻👻</span>
-        <span style="width:100%; color:white;" id="domain" translate="no">(nins.cc)</span>
-        <span style="width:100%; color:white;" id="end" translate="no"></span>
+          <strong id="anything" style="background-color: black; color: white; font-size: max(1vh,1vw);"><b translate="no">© nins. </b>Choose the abilities you need.</strong>
+          <div id="title" style="" translate="no">
+          <div style="margin: 10px;" onclick="document.getElementById('DialogCheck').showModal()">
+          nins/copyright
+          </div></div>
+          
+            <div style="background: #FFFFFF; overflow:auto; width:100%; flex:1; border: 1px solid #ccc;">
+              <div id="feature-container" class="feature-grid">
+              </div>
+            </div>
+            
+          <!--strong></strong-->
+          <div style="background: #FF3B00; color: white;" translate="yes">
+          <div style="margin: 10px;" onclick="document.getElementById('DialogTrans').showModal()">
+          By using any of the services, it means you have agreed to any content and all content!
+          </div></div>
+          <strong style="background-color: black; color: white; font-size: max(1vh,1vw);" translate="no">© 2024 NINS (by JPGT).</strong>
     </div>
-  
-  <!--div style="
-    position: fixed;
-    bottom: 0;
-    top: 0; /* 距離頂部 0 */
-    left: 0; /* 距離左側 0 */
-    right: 0; /* 距離右側 0 */
-    width: 100%;
-    background: #777777;
-    background: #FF3B00;
-    background: white;
-    color: white;
-    text-align: center;
-    /*padding: 10px;*/
-    box-sizing: border-box;
-    word-break: break-word;
-    z-index: 9998;
-    
-    display: flex;
-    flex-direction: column;
-  ">
+
 
   
-        <span style="width:100%; color:white;" id="mailto" translate="no">(duguaynins@gmail.com)</span>
-        <span style="width:100%; color:black;" id="copyright" translate="no">© 2024 NINS. 👻👻👻</span>
-        <span style="width:100%; color:white;" id="domain" translate="no">(world.nins.cc)</span>
-        <span style="width:100%; color:white;" id="end" translate="no">。</span>
-  </div-->
-
-
-    <script>  // main.js
-      document.getElementById('mailto').innerHTML = "(duguaynins@gmail.com)"; 
-      document.getElementById('domain').innerHTML = "(nins.cc)";
-      document.getElementById('end').innerHTML = "。";
-
-
-      // 字體大小
-      ///const size = 16;
-      ///document.body.style.fontSize = `${size}px`;
-      // 按鈕方法
-      function openDecoding(event, el) {
-        ///event.preventDefault(); // 阻止原本的跳轉  // 將先執行 onclick，再依據 href 跳轉
-        ///const href = "https://duguaynins-allninsone.hf.space/decoding";
-        const href = "/decoding/";
-        window.open(href, "_blank", "noopener,noreferrer");
-      }
-      // 按鈕方法
-      function openTransing(event, el) {
-        ///event.preventDefault(); // 阻止原本的跳轉  // 將先執行 onclick，再依據 href 跳轉
-        ///const href = "https://duguaynins-allninsone.hf.space/transing";
-        const href = "/transing/";
-        window.open(href, "_blank", "noopener,noreferrer");
-      }
-    </script>
+<!-- HTML ================================================== -->
+    
+<!-- 放置你原有的布局：JS -->
+ 
+<script>  // main.js
+  function openApp(repo, path="", dir="/children/", file="") {
+    const href = "https://" + repo + ".nins.cc" + path;console.log(href);  ///https?
+    window.open(href, "_blank", "noopener,noreferrer");
+  }
   
-    <script>  // nins.js
-    const overlay = document.getElementById('NINS');
+  function openForm(repo=null, path=null) {
+    ///const href = "/apps/transing.html";
+    const href = "https://docs.google.com/forms/d/e/1FAIpQLSct8PaArwmkAv10Eh5CEybu_88IoSj9V_QOLy07KiL6efu10g/viewform?";console.log(href);
+    window.open(href, "_blank", "noopener,noreferrer");
+  }
+  
+  function openFollow(repo=null, path=null) {
+    ///const href = "/apps/transing.html";
+    const subscription = Cookies.get("webpush");
+    const subscriptionJson = JSON.stringify(subscription);
+    const encodedSubscription = encodeURIComponent(subscriptionJson);
+    const href = `https://docs.google.com/forms/d/e/1FAIpQLScFvHqSal-_GkrtrUIG7v3dXmk0aubYma2DCnl-aXBPjWW-ng/viewform?usp=pp_url&entry.1788803497=${encodedSubscription}`;
+    window.open(href, "_blank", "noopener,noreferrer");
+  }
+</script>
 
-    overlay.style.pointerEvents = 'none';
+<script>
+  ///20260412
 
-    // 幾秒後開放點擊（例如 3 秒）****
-    setTimeout(() => {
-      overlay.style.pointerEvents = 'auto'; // 確保可以點擊
-      ///overlay.classList.add('clickable');
-      ///document.getElementById("google_translate_element").style.display = "none";
-      document.getElementById("disabled").style.display = "none";
-      document.getElementById("copyright").textContent = "　© 2024 NINS (by JPGT). 👻👻👻 ";
-      document.getElementById("copyright").innerHTML += '<span class="cursor">　</span>'
-    }, 3000);
-    
-    
-    // 動畫點擊****
-    /*  ///!!!
-    overlay.addEventListener('click', () => {
-      overlay.classList.add('fade-out');
-      overlay.style.pointerEvents = 'none';
-
-      // 等 transition 結束後，再加上 hidden 隱藏元素
-      overlay.addEventListener('transitionend', () => {
-        overlay.classList.add('hidden');
-      }, { once: true }); // 確保只觸發一次
-    });*/
-    
-    
-    // 打字效果顯示****
-    function type(element, text, index = 0) {   ///let index = 0;
-      if (index < text.length+1) {
-        ///element.textContent += element.textContent[index++];  //???
-        element.innerText = text.substring(0, index);
-        element.innerHTML += '<span class="cursor">　</span>'
-        ///setTimeout(type, 60);  //???
-        setTimeout(() => type(element, text, index + 1), 60);  // 用箭頭函數帶參數
-        ///index++;
-      } else {
-        ///element.innerHTML += '<span class="cursor">　</span>'
-      }
+  // 1. 定義 JSON 資料
+  const features = [
+    {
+      type: "notice",
+      title: "⚠️ Notice ⚠️",
+      desc: "By using any of the services, it means you have agreed to any content and all content!",
+      subDesc: "👻👻👻 © 2024 NINS (by JPGT). 👻👻👻",
+      style: "background:#444444; color:white;"
+    },
+    {
+      title: "🔊 nins/cospeaking 🔊",
+      desc: "Romanized spelling for all languages.",
+      tags: ["🔥", "BETA"],
+      action: () => openApp('cospeaking')
+    },
+    {
+      title: "🔐 nins/encoding 🔐",
+      desc: "Enter content and get barcode.",
+      tags: ["🔥", "BETA"],
+      action: () => openApp('encoding')
+    },
+    {
+      title: "🔓 nins/decoding 🔓",
+      desc: "Use the camera to decode a 2D code.",
+      tags: ["🔥", "BETA"],
+      action: () => openApp('decoding')
+    },
+    {
+      title: "🧭 nins/uris 🧭",
+      desc: "Quickly create your own contact URL in HTTPS. Give a \"Vivre Card/Soul Paper\" to everything that matters!",
+      subDesc: "Feel free to apply! no sensitive info needed.",
+      tags: ["🎄", "⭐"],
+      action: () => openApp('uris')
+    },
+    {
+      title: "🧿 nins/deurl 🧿",
+      desc: "Check a link’s destination here first, and don’t walk straight through the door into trouble.",
+      subDesc: "Feel free to apply! no sensitive info needed.",
+      tags: ["👻", "⭐"],
+      action: () => openApp('deurl')
+    },
+    {
+      title: "🔣 nins/transing 🔣",
+      desc: "Use chat channels to easily start communicating with anyone.",
+      subDesc: "Feel free to apply! no sensitive info needed.",
+      tags: ["👻", "⭐"],
+      action: () => openApp('transing')
+    },
+    {
+      title: "🖥️ nins/sys 🖥️",
+      desc: "DOS system. All the everyday little tools are in this old system.",
+      tags: ["👻", "⭐"],
+      action: () => openApp('x')
+    },
+    {
+      title: "📜 nins/feedback 📜",
+      desc: "Interested in our latest app releases? We will send you a push notification. We’d love any brief feedback!",
+      action: () => openFollow()
+    },
+    {
+      type: "admin",
+      title: "⚠️ Admins ⚠️",
+      desc: "public co-founder.",
+      subDesc: "👻👻👻 © 2024 NINS (by JPGT). 👻👻👻",
+      style: "background:#444444; color:white;",
+      action: () => window.open('https://sites.google.com/view/duguaynins/', '_blank')
     }
-    ///setTimeout(() => type(document.getElementById("copyright"), "　shivers, worlds!."), 0);
-    ///setTimeout(() => type(document.getElementById("copyright"), "　👻👻👻."), 1500);
-    ///setTimeout(() => type(document.getElementById("copyright"), "　© 2024 NINS."), 3000);
-    
-    ///setTimeout(() => type(document.getElementById("copyright"), "　shivers, worlds!. ✨ "), 0);
-    ///setTimeout(() => type(document.getElementById("copyright"), "　© 2024 NINS. 👻 "), 0);  // 2025/07/07
-    setTimeout(() => type(document.getElementById("copyright"), "　© 2024 NINS (by JPGT). 👻 "), 0);  // 20250720
-    </script>
+  ];
 
-    <script type="text/javascript">  // google.js
-      // GOOGLE TRANSLATE
-      // 自動翻譯***
-      ///document.cookie = "googtrans=/en/zh-TW; path=/";
-      ///location.reload();
-    
-      function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-          pageLanguage: 'en',  ///'en', 改為根據中間語言(ilang) 或 頁面語言(locale)  ///鼓勵輸入中間語言，翻譯必定可以顯示英文。
-          includedLanguages: '',  ///zh-TW,ja,ko,en,hi,zh-CN
-          autoDisplay: false,
-          ///layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-        }, 'google_translate_element');
-      }
+  // 1. 建立延遲工具函式 (毫秒)
+  const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+  // 2. 修改後的渲染函式 (改為 async)
+  async function renderFeatures() {
+    const container = document.getElementById('feature-container');
+    const delay = 220; // ⬅️ 這裡設定每個項目之間要間隔幾毫秒 (例如 1000ms = 1秒)
+
+    for (const item of features) {
+      const div = document.createElement('div');
+      div.className = 'feature-item';
+      if (item.style) div.style.cssText = item.style;
       
-    
-      function autoTranslate(lang) {
-        const tryTranslate = () => {
-          const combo = document.querySelector('.goog-te-combo');
-          if (combo) {
-            combo.value = lang;
-            combo.dispatchEvent(new Event('change'));
-          } else {
-            setTimeout(tryTranslate, 300); // 遞迴檢查
-          }
-        };
-        tryTranslate();
+      // 處理點擊事件
+      if (item.action) {
+        div.onclick = item.action;
       }
-    
-      window.addEventListener('load', () => {
-        setTimeout(() => {
-          const tlang = navigator.language || navigator.userLanguage || "en-US";
-          autoTranslate(tlang);
-          
-          ///document.getElementById(":1.container").style.display = "";
-        }, 1500);
+
+      // 處理標籤 (如 🔥 BETA)
+      let tagsHtml = '';
+      if (item.tags) {
+        tagsHtml = `
+          <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">${item.tags[0]}</div>
+          <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">${item.tags[1]}</div>
+        `;
+      }
+
+      // 組合內部 HTML
+      div.innerHTML = `
+        ${tagsHtml}
+        <h2 translate="no">${item.title}</h2>
+        <p style="${item.type ? 'margin-bottom: 0; color: #999;' : ''}">${item.desc}</p>
+        ${item.subDesc ? `<p style="margin-top: 0; color: orange;" translate="${item.type === 'admin' ? 'no' : 'yes'}">${item.subDesc}</p>` : ''}
+      `;
+
+      // 3. 加入到容器中
+      container.appendChild(div);
+
+      // 4. 自動滾動到這個新元素
+      div.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'end'  ///center, end
       });
-    </script>
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    <script>
-      function copyright() {
-        window.open('https://children.nins.cc/', '_blank', 'noopener,noreferrer');
-      }
-    </script>
-     
 
-    <script>
-    function keysAreEqual(a, b) {
-        if (!a || !b || a.length !== b.length) return false;
-        for (let i = 0; i < a.length; i++) {
-            if (a[i] !== b[i]) return false;
-        }
-        return true;
+      // 5. ⬅️ 關鍵：等待一段時間後再跑下一次迴圈
+      await sleep(delay);
     }
-      
-    function urlBase64ToUint8Array(base64String) {
-      // 補齊 Base64 長度
-      const padding = '='.repeat((4 - base64String.length % 4) % 4);
-      const base64 = (base64String + padding)
-        .replace(/\-/g, '+')
-        .replace(/_/g, '/');
-    
-      const rawData = atob(base64); // Base64 解碼
-      const outputArray = new Uint8Array(rawData.length);
-    
-      for (let i = 0; i < rawData.length; ++i) {
-        outputArray[i] = rawData.charCodeAt(i);
-      }
-    
-      return outputArray;
-    }
-      
-    async function subscribePush() {
-      const reg = await navigator.serviceWorker.ready
-      const key = "BLPRiuk3a5LYlYQL4UN3RXPopI1k_17oX_bi_y1lhTkBFFuLZRutjlTmJ6UtCF2dClkAwfiXJSMAg1fcjbuHaPM";
-      localStorage.setItem("key", key);
-      localStorage.removeItem("key");
-      
-      
-      const existingSubscription = await reg.pushManager.getSubscription();
-      if (!existingSubscription) { console.log("DoSubscribe"); }  ///沒有訂閱
-      else {
-        if ( Cookies.get("keypair")===key ) { console.log("KeepSubscribe"); }  ///return;  ///localStorage.getItem("key")
-        else { await existingSubscription.unsubscribe(); console.log("ReSubscribe"); }
-        /*
-        const existingKey = existingSubscription.getKey('p256dh');
-        const existingKeyArray = new Uint8Array(existingKey);
-        const vapidKeyArray = urlBase64ToUint8Array(key);
-        console.log(existingKeyArray);
-        console.log(vapidKeyArray);
-        
-        ///if (keysAreEqual(existingKeyArray, vapidKeyArray)) { console.log("KeepSubscribe"); }  ///return;
-        ///else { await existingSubscription.unsubscribe(); console.log("ReSubscribe"); }
-        */
-      }
-    
-      const subscription = await reg.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array("BLPRiuk3a5LYlYQL4UN3RXPopI1k_17oX_bi_y1lhTkBFFuLZRutjlTmJ6UtCF2dClkAwfiXJSMAg1fcjbuHaPM")
-      })
-    
-      console.log(subscription.toJSON()); console.log(JSON.stringify(subscription));
+  }
 
-      const subscriptionJson = JSON.stringify(subscription);
-      const encodedSubscription = encodeURIComponent(subscriptionJson);
-      const href = `https://docs.google.com/forms/d/e/1FAIpQLScFvHqSal-_GkrtrUIG7v3dXmk0aubYma2DCnl-aXBPjWW-ng/viewform?usp=pp_url&entry.1788803497=${encodedSubscription}`;
-      Cookies.set("webpush", subscriptionJson);
-      Cookies.set("keypair", key);
-      ///navigator.clipboard.writeText(subscriptionJson);
-      ///setTimeout(() => { window.open(href, "_blank", "noopener,noreferrer"); }, 5800);
-      ///https://docs.google.com/forms/d/e/1FAIpQLScFvHqSal-_GkrtrUIG7v3dXmk0aubYma2DCnl-aXBPjWW-ng/viewform?usp=pp_url&entry.1788803497=---
-      return;
-      /*
-      // 將 subscription 傳到後端
-      await fetch("/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(subscription)
-      })
-      */
-    }
-      
-    subscribePush();
+  // 3. 執行渲染 (初始等待 3 秒後開始一個個顯示)
+  /*
+  setTimeout(() => {
+    renderFeatures();
+  }, 3000);  */
+  document.addEventListener('click', () => {
+    renderFeatures();
+  }, { once: true });
+</script>
 
-    document.addEventListener('click', function (e) {
-        if (e.target.tagName === 'BUTTON') {  }
-        if (true) {
-            ///console.log(typeof Cookies.get("webpush"));
-            ///const subscriptionJson = Cookies.get("webpush")
-            const data = Cookies.get("webpush");
-          
-            let text;
-            if (typeof data === "object" && data !== null) {
-                text = JSON.stringify(data);
-            } else {
-                text = data;
-            }
-          
-            ///navigator.clipboard.writeText( text );  ///移動到點擊表單時
-        }
-    }, { once: true });
-      
-    </script>
+<!-- 放置你原有的布局：JS -->
+
   
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
