@@ -3,6 +3,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -19,7 +20,18 @@
 
 
 <style>
-    
+    /* 定義淡入動畫 */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px); /* 稍微從下方浮上來，效果更生動 */
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .feature-grid {
       display: flex;
       flex-wrap: wrap;
@@ -43,10 +55,12 @@
       transition: transform 0.2s;
       background-color: white;
       color: black;
+      opacity: 0; /* 預設隱藏，等待動畫觸發 */
+      animation: fadeIn 0.6s ease-out forwards; /* 執行 0.6 秒動畫並停留在最後狀態 */
     }
 
     .feature-item:hover {
-      transform: translateY(-4px);
+      /* transform: translateY(-4px); 覆蓋時偏移 */
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       background-color: #cdcdcd;
       color: black;
@@ -90,7 +104,7 @@
   
 <!-- NINS ================================================== -->
 <script src="https://copyright.nins.cc/children/0001/nins-update.js"></script>
-<script src="https://copyright.nins.cc/children/0001/nins-world.js"></script>
+<!--script src="https://copyright.nins.cc/children/0001/nins-world.js"></script!-->
 <!--script src="https://copyright.nins.cc/children/0001/nins-ads.js"></script!-->
 <script src="https://copyright.nins.cc/children/0001/nins-abc.js"></script>
     
@@ -142,158 +156,7 @@
           </div></div>
           
             <div style="background: #FFFFFF; overflow:auto; width:100%; flex:1; border: 1px solid #ccc;">
-              <div class="feature-grid">
-              
-                  <div class="feature-item" disabled="" style="background:#444444; color:white;">
-                    <!--div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div-->
-                    <!--div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div-->
-                    <h2 translate="no">⚠️ Notice ⚠️</h2>
-                    <!--p>By using any of the services, it means you have agreed to any content and all content!</p-->
-                    <p  style="margin-bottom: 0; color: #999;">By using any of the services, it means you have agreed to any content and all content!</p>
-                    <p  style="margin-top: 0; color: orange;" translate="no">👻👻👻 © 2024 NINS (by JPGT). 👻👻👻</p>
-                  </div>
-
-                  <!--dialog></dialog-->
-                  <!--details>
-                    <summary style="color: black;">Issued!</summary>
-                    <p>🌍</p>
-                  </details-->
-                  
-                  <div class="feature-item day" onclick="openForm(repo='google.forms', path='/')" style="">
-                    <h2 translate="no">📜 nins/forms 📜</h2>
-                    <p>We’d love any brief feedback! We are helping to make sure all kindness is shared.</p>
-                    <!--p>Display the absolute most useful time.</p!-->
-                  </div>
-                  
-                  <div class="feature-item main" onclick="openApp(repo='deurl', path='/')" style="">
-                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">👻</div>
-                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⭐</div>
-                    <h2 translate="no">🧿 nins/deurl 🧿</h2>
-                    <p>Check a link’s destination here first, and don’t walk straight through the door into trouble.</p>
-                  </div>
-                  
-                  <div class="feature-item" onclick="openApp(repo='time', path='/')" style="">
-                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
-                    <h2 translate="no">🌏 nins/time 🌎</h2>
-                    <p>Show your local time wherever you are, so people can quickly understand when you’re active!</p>
-                    <!--p>Display the absolute most useful time.</p!-->
-                  </div>
-
-                  <!--div class="feature-item" onclick="openApp(repo='copyright', path='/children/httpping')" style="">
-                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
-                    <h2 translate="no">📶 nins/httpping 📶</h2>
-                    <p>Test your connection.</p>
-                  </div!-->
-
-                  <!--div class="feature-item day" onclick="openApp(repo='copyright', path='/children/2025/xmas-photo')" style="">
-                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🎄</div>
-                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⭐</div>
-                    <h2 translate="no">❤️ nins/heart ❤️</h2>
-                    <p>Merry Xmas! On your phone, select and display any images you like to bring a festive Christmas atmosphere, only on this screen!</p>
-                  </div>
-                  <div class="feature-item day" onclick="openApp(repo='copyright', file='/children/2025/xmas-uris', dir='')" style="">
-                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🎄</div>
-                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⭐</div>
-                    <h2 translate="no">🧭 nins/uris 🧭</h2>
-                    <p>Merry Xmas! Quickly create your own contact URL in HTTPS. Give a "Vivre Card/Soul Paper" to everything that matters!”</p>
-                  </div>
-                  <div class="feature-item day" onclick="openApp(repo='copyright', path='/children/2025/xmas-xy')" style="">
-                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🎄</div>
-                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⭐</div>
-                    <h2 translate="no">📈 nins/xy 📈</h2>
-                    <p>Merry Xmas! Build math using blocks, and then observe their relationships!</p>
-                  </div!-->
-
-                  <!--div class="feature-item" onclick="openApp(repo='copyright', path='/children/preview')" style="">
-                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
-                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
-                    <h2 translate="no">👀 nins/Preview 👀</h2>
-                    <p>Select and display any downloaded HTML file.</p>
-                  </div-->
-                
-                  <div class="feature-item main unable" onclick="openApp(repo='transing', path='/')" style="">
-                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">👻</div>
-                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⭐</div>
-                    <h2 translate="no">🔣 nins/translate 🔣</h2>
-                    <p  style="margin-bottom: 0;">Use chat channels to easily start communicating with anyone.</p>
-                    <p  style="margin-top: 0; color: orange;">Feel free to apply! no sensitive info needed.</p>
-                  </div>
-                  <div class="feature-item main unable" onclick="openApp(repo='uris', file='/', dir='')" style="">
-                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🎄</div>
-                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⭐</div>
-                    <h2 translate="no">🧭 nins/uris 🧭</h2>
-                    <p  style="margin-bottom: 0;">Quickly create your own contact URL in HTTPS. Give a "Vivre Card/Soul Paper" to everything that matters!</p>
-                    <p  style="margin-top: 0; color: orange;">Feel free to apply! no sensitive info needed.</p>
-                  </div>
-                  <!--div class="feature-item main" onclick="openApp(repo='uris', file='', dir='')" style="">
-                    <h2 translate="no">🌐 nins/URIs 🌐</h2>
-                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
-                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⭐</div>
-                    <p>Quickly create your own contact URL in HTTPS.</p>
-                  </div-->
-
-                  <!--div class="feature-item" onclick="openApp(repo='copyright', file='encoding')" style="">
-                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
-                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
-                    <h2 translate="no">🔐 nins/encoding 🔐</h2>
-                    <p>Enter content and get barcode.</p>
-                  </div>
-                  <div class="feature-item" onclick="openApp(repo='copyright', file='decoding')" style="">
-                    <h2 translate="no">🔓 nins/decoding 🔓</h2>
-                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">🔥</div>
-                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
-                    <p>Use the camera to decode the graphics code.</p>
-                  </div-->
-
-                  
-                  <!--div class="feature-item disabled" style="background:#000000; color:white;">
-                    <h2 translate="no">⚠️ Issued ⚠️</h2>
-
-                    <p  style="margin-bottom: 0; color: red;">This designated background color indicates ...</p>
-                    <p  style="margin-top: 0; color: red;">(Searchable, link pending, will be based on user feedback.)</p>
-                  </div-->
-
-                  <!--div class="feature-item disabled" onclick="openApp(repo='mailto', file='', dir='')" style="display:block;">
-                    <h2 translate="no">📧 nins/mailto 📧</h2>
-                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⏳</div>
-                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
-                    <p  style="margin-bottom: 0;">Quickly create your own contact URL in HTTPS.</p>
-                    <p  style="margin-top: 0;">(For mail use, but simpler!)</p>
-                  </div>
-                  <div class="feature-item disabled" onclick="openApp(repo='telto', file='', dir='')" style="display:block;">
-                    <h2 translate="no">📞 nins/telto 📞</h2>
-                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⏳</div>
-                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
-                    <p  style="margin-bottom: 0;">Quickly create your own contact URL in HTTPS.</p>
-                    <p  style="margin-top: 0;">(For tel/mobile use, but simpler!)</p>
-                  </div>
-                  <div class="feature-item disabled" onclick="openApp(repo='smsto', file='', dir='')" style="display:block;">
-                    <h2 translate="no">💬 nins/smsto 💬</h2>
-                    <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">⏳</div>
-                    <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">BETA</div>
-                    <p  style="margin-bottom: 0;">Quickly create your own contact URL in HTTPS.</p>
-                    <p  style="margin-top: 0;">(For sms use, but simpler!)</p>
-                  </div-->
-                  
-                  <div class="feature-item day" onclick="openForm(repo='google.forms', path='/')" style="">
-                    <h2 translate="no">📜 nins/forms 📜</h2>
-                    <p></p>
-                    <p  style="margin-bottom: 0;">We’d love any brief feedback! We are helping to make sure all kindness is shared.</p>
-                    <p  style="margin-top: 0; color: orange;" translate="no"></p>
-                    <!--p>Display the absolute most useful time.</p!-->
-                  </div>
-
-                  <div class="feature-item" onclick="location.href='mailto:duguaynins@gmail.com'" style="width:auto; background:#444444; color:white;">
-                  <!--div class="feature-item" onclick="window.open('https://sites.google.com/view/nins/', '_blank', 'noopener,noreferrer');" style="width:auto; background:#cdcdcd;"-->
-                    <h2 translate="no">⚠️ Admins ⚠️</h2>
-                    <!--p>duguaynins@gmail.com</p-->
-                    <p  style="margin-bottom: 0; color: #999;" translate="no">duguaynins@gmail.com</p>
-                    <p  style="margin-top: 0; color: orange;" translate="no">👻👻👻 © 2024 NINS (by JPGT). 👻👻👻</p>
-                    <!--p>IMPORTANT!</p-->
-                    <!--button disabled="">Coming Soon</button-->
-                    <!--button>Go</button-->
-                  </div>
-                
+              <div id="feature-container" class="feature-grid">
               </div>
             </div>
             
@@ -316,12 +179,157 @@
     const href = "https://" + repo + ".nins.cc" + path;console.log(href);  ///https?
     window.open(href, "_blank", "noopener,noreferrer");
   }
-  // 按鈕方法
-  function openForm(repo, path) {
+  
+  function openForm(repo=null, path=null) {
     ///const href = "/apps/transing.html";
     const href = "https://docs.google.com/forms/d/e/1FAIpQLSct8PaArwmkAv10Eh5CEybu_88IoSj9V_QOLy07KiL6efu10g/viewform?";console.log(href);
     window.open(href, "_blank", "noopener,noreferrer");
   }
+  
+  function openFollow(repo=null, path=null) {
+    ///const href = "/apps/transing.html";
+    const subscription = Cookies.get("webpush");
+    const subscriptionJson = JSON.stringify(subscription);
+    const encodedSubscription = encodeURIComponent(subscriptionJson);
+    const href = `https://docs.google.com/forms/d/e/1FAIpQLScFvHqSal-_GkrtrUIG7v3dXmk0aubYma2DCnl-aXBPjWW-ng/viewform?usp=pp_url&entry.1788803497=${encodedSubscription}`;
+    window.open(href, "_blank", "noopener,noreferrer");
+  }
+</script>
+
+<script>
+  ///20260412
+
+  // 1. 定義 JSON 資料
+  const features = [
+    {
+      type: "notice",
+      title: "⚠️ Notice ⚠️",
+      desc: "By using any of the services, it means you have agreed to any content and all content!",
+      subDesc: "👻👻👻 © 2024 NINS (by JPGT). 👻👻👻",
+      style: "background:#444444; color:white;"
+    },
+    {
+      title: "📜 nins/forms 📜",
+      desc: "We’d love any brief feedback! We are helping to make sure all kindness is shared.",
+      action: () => openForm()
+    },
+    {
+      title: "🔊 nins/cospeaking 🔊",
+      desc: "Romanized spelling for all languages.",
+      tags: ["🔥", "BETA"],
+      action: () => openApp('cospeaking')
+    },
+    {
+      title: "🔐 nins/encoding 🔐",
+      desc: "Enter content and get barcode.",
+      tags: ["🔥", "BETA"],
+      action: () => openApp('encoding')
+    },
+    {
+      title: "🔓 nins/decoding 🔓",
+      desc: "Use the camera to decode a 2D code.",
+      tags: ["🔥", "BETA"],
+      action: () => openApp('decoding')
+    },
+    {
+      title: "🧭 nins/uris 🧭",
+      desc: "Quickly create your own contact URL in HTTPS. Give a \"Vivre Card/Soul Paper\" to everything that matters!",
+      subDesc: "Feel free to apply! no sensitive info needed.",
+      tags: ["🎄", "⭐"],
+      action: () => openApp('uris')
+    },
+    {
+      title: "🧿 nins/deurl 🧿",
+      desc: "Check a link’s destination here first, and don’t walk straight through the door into trouble.",
+      subDesc: "Feel free to apply! no sensitive info needed.",
+      tags: ["👻", "⭐"],
+      action: () => openApp('deurl')
+    },
+    {
+      title: "🔣 nins/transing 🔣",
+      desc: "Use chat channels to easily start communicating with anyone.",
+      subDesc: "Feel free to apply! no sensitive info needed.",
+      tags: ["👻", "⭐"],
+      action: () => openApp('transing')
+    },
+    {
+      title: "🔣 nins/sys 🔣",
+      desc: "DOS system. All the everyday little tools are in this old system.",
+      tags: ["👻", "⭐"],
+      action: () => openApp('x')
+    },
+    {
+      title: "📜 nins/follow 📜",
+      desc: "Interested in our latest app releases? We will send you a push notification.",
+      action: () => openFollow()
+    },
+    {
+      type: "admin",
+      title: "⚠️ Admins ⚠️",
+      desc: "public co-founder.",
+      subDesc: "👻👻👻 © 2024 NINS (by JPGT). 👻👻👻",
+      style: "background:#444444; color:white;",
+      action: () => window.open('https://sites.google.com/view/duguaynins/', '_blank')
+    }
+  ];
+
+  // 1. 建立延遲工具函式 (毫秒)
+  const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+  // 2. 修改後的渲染函式 (改為 async)
+  async function renderFeatures() {
+    const container = document.getElementById('feature-container');
+    const delay = 220; // ⬅️ 這裡設定每個項目之間要間隔幾毫秒 (例如 1000ms = 1秒)
+
+    for (const item of features) {
+      const div = document.createElement('div');
+      div.className = 'feature-item';
+      if (item.style) div.style.cssText = item.style;
+      
+      // 處理點擊事件
+      if (item.action) {
+        div.onclick = item.action;
+      }
+
+      // 處理標籤 (如 🔥 BETA)
+      let tagsHtml = '';
+      if (item.tags) {
+        tagsHtml = `
+          <div style="position: absolute; top: 0; left: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">${item.tags[0]}</div>
+          <div style="position: absolute; top: 0; right: 0; background: orange; color: black; padding: 2px 6px; font-size: 0.8em; font-weight: bold;">${item.tags[1]}</div>
+        `;
+      }
+
+      // 組合內部 HTML
+      div.innerHTML = `
+        ${tagsHtml}
+        <h2 translate="no">${item.title}</h2>
+        <p style="${item.type ? 'margin-bottom: 0; color: #999;' : ''}">${item.desc}</p>
+        ${item.subDesc ? `<p style="margin-top: 0; color: orange;" translate="${item.type === 'admin' ? 'no' : 'yes'}">${item.subDesc}</p>` : ''}
+      `;
+
+      // 3. 加入到容器中
+      container.appendChild(div);
+
+      // 4. 自動滾動到這個新元素
+      div.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'end'  ///center, end
+      });
+
+      // 5. ⬅️ 關鍵：等待一段時間後再跑下一次迴圈
+      await sleep(delay);
+    }
+  }
+
+  // 3. 執行渲染 (初始等待 3 秒後開始一個個顯示)
+  /*
+  setTimeout(() => {
+    renderFeatures();
+  }, 3000);  */
+  document.addEventListener('click', () => {
+    renderFeatures();
+  }, { once: true });
 </script>
 
 <!-- 放置你原有的布局：JS -->
@@ -329,9 +337,6 @@
   
 </body>
 </html>
-
-
-
 
 
 
