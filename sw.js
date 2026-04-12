@@ -63,7 +63,8 @@ self.addEventListener('push', event => {
                 renotify: true,
                 data: { url: data.url, id: Date.now() + "-" + Math.random().toString(36).substring(2) }
             });
-    
+
+            /*
             // 載入 IndexedDB JS
             importScripts('https://copyright.nins.cc/children/0001/nins-indexdb.js');
     
@@ -78,7 +79,8 @@ self.addEventListener('push', event => {
                 to: ``,
                 time: `${utc}${offset}`,
                 data: `${data.body}`
-            });
+            });  */
+          
         })());
     }
 });  ///20260307
