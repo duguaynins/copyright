@@ -394,8 +394,55 @@ document.addEventListener('click', () => {
 function sendMsg() {}
 
 
-async function subscribePush() {
-  // 用戶透過此方法完成訂閱推播
+async function pushDataset(params) { 
+  console.log('頻道確認:', params);
+  const { email } = params;
+  ///const { smsg, rmsg } = params;
+  ///if (smsg === rmsg) { return "{goog:1.0||meta:1.0}"; }
+
+  const inputs = { "inputs": { "a": email } };
+  const outputs = await HuggingFaceAPI({
+    group: "duguaynins",
+    space: "RedirectAPI",
+    path: `channels/ably?email=${email}`,  ///embeddings/meta
+    payload: inputs,
+  }); 
+
+  console.log("INPUT:", inputs);
+  console.log("OUTPUT:", outputs);
+  return outputs.result;///.label
+}
+
+async function pushAdmin(members=null, title="nins/copyright", body="Welcome", admin=null, mail=null) {
+  // 以下為新增測試
+  ///if (!admin || typeof admin!=="object") { admin = Cookies.get("webpush"); }
+  ///if (!admin || typeof admin!=="object") { return; }
+
+  ///console.log(admin);
+  ///20260407
+  const payload = `{
+  "data": {
+      "title": "${title}",
+      "body": "${body}",
+      "mail": "${mail}"
+  },
+  "subscription": ${JSON.stringify([ admin ])}
+  }`;
+  
+  ///console.log(payload);
+  const inputs = { "inputs": payload };
+  const outputs = await HuggingFaces({
+      group: "duguaynins",
+      space: "Server",
+      path: "webpush/ninscc",  ///embeddings/meta
+      payload: inputs,
+  }); 
+  console.log(outputs);
+}
+
+async function subscribePush() {  // 用戶透過此方法完成訂閱推播
+  
+  ///檢查通知權
   const permission = await Notification.requestPermission();
   if (permission === "granted") {
     console.log("✅ 可以訂閱");
@@ -404,23 +451,25 @@ async function subscribePush() {
     return;
   }
 
-  const reg = await navigator.serviceWorker.ready
+  ///訂閱與公開金鑰核對
+  const reg = await navigator.serviceWorker.ready;
   const key = "BLPRiuk3a5LYlYQL4UN3RXPopI1k_17oX_bi_y1lhTkBFFuLZRutjlTmJ6UtCF2dClkAwfiXJSMAg1fcjbuHaPM";
   ///localStorage.setItem("key", key);
   ///localStorage.removeItem("key");
+  console.log(key);
   
+  ///判斷訂閱與否
   const existingSubscription = await reg.pushManager.getSubscription();
-  if (!existingSubscription) { console.log("DoSubscribe"); }  ///沒有訂閱
-  else {
+  if (!existingSubscription) { console.log("DoSubscribe"); } else {
     if ( Cookies.get("keypair")===key ) { console.log("KeepSubscribe"); }
     else { await existingSubscription.unsubscribe(); console.log("ReSubscribe"); }
   }
 
+  ///重新訂閱
   const subscription = await reg.pushManager.subscribe({
     userVisibleOnly: true,
     applicationServerKey: urlBase64ToUint8Array(key)
   })
-
   console.log(subscription.toJSON()); console.log(JSON.stringify(subscription));
 
   const subscriptionJson = JSON.stringify(subscription);
@@ -428,7 +477,11 @@ async function subscribePush() {
   Cookies.set("webpush", subscriptionJson);
   Cookies.set("keypair", key);
 
-  // 將 subscription 傳到後端
+  ///生成私人唯一號碼
+  console.log(randomNumberString(12));
+  ///登記私人唯一號碼  // 將 subscription 傳到後端
+  ///每次根據號碼發送歡迎消息
+  
   return;
 }
   
