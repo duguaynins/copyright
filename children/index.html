@@ -376,10 +376,18 @@ function sendMsg() {}
 
 async function subscribePush() {
   // 用戶透過此方法完成訂閱推播
+  const permission = await Notification.requestPermission();
+  if (permission === "granted") {
+    console.log("✅ 可以訂閱");
+  } else {
+    console.log("❌ 被拒絕:", permission);
+    return;
+  }
+
   const reg = await navigator.serviceWorker.ready
   const key = "BLPRiuk3a5LYlYQL4UN3RXPopI1k_17oX_bi_y1lhTkBFFuLZRutjlTmJ6UtCF2dClkAwfiXJSMAg1fcjbuHaPM";
-  localStorage.setItem("key", key);
-  localStorage.removeItem("key");
+  ///localStorage.setItem("key", key);
+  ///localStorage.removeItem("key");
   
   const existingSubscription = await reg.pushManager.getSubscription();
   if (!existingSubscription) { console.log("DoSubscribe"); }  ///沒有訂閱
@@ -397,7 +405,6 @@ async function subscribePush() {
 
   const subscriptionJson = JSON.stringify(subscription);
   const encodedSubscription = encodeURIComponent(subscriptionJson);
-  const href = `https://docs.google.com/forms/d/e/1FAIpQLScFvHqSal-_GkrtrUIG7v3dXmk0aubYma2DCnl-aXBPjWW-ng/viewform?usp=pp_url&entry.1788803497=${encodedSubscription}`;
   Cookies.set("webpush", subscriptionJson);
   Cookies.set("keypair", key);
 
