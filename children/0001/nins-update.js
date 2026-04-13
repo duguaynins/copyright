@@ -1,3 +1,5 @@
+function prints(data) { console.log(data); }
+
 function isPWA() {
   const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
   const isFullscreen = window.matchMedia('(display-mode: fullscreen)').matches;
