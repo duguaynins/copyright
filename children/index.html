@@ -4,6 +4,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -15,7 +16,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 <meta name="description" content="© 2024 NINS (by JPGT). By using any of the services, it means you have agreed to any content and all content!">
 <link rel="canonical" href="https://copyright.nins.cc/">
-<title translate="no">nins/children</title>
+<title translate="no">nins/copyright</title>
   
 
 
@@ -108,7 +109,14 @@
 <!--script src="https://copyright.nins.cc/children/0001/nins-world.js"></script!-->
 <!--script src="https://copyright.nins.cc/children/0001/nins-ads.js"></script!-->
 <script src="https://copyright.nins.cc/children/0001/nins-abc.js"></script>
-    
+<script src="https://copyright.nins.cc/children/0001/nins-huggingface.js"></script>
+
+<dialog id="myDialog">
+  <p id="msg" translate="no">SHOW...</p>
+  <textarea id="userInput" rows="4" placeholder="INPUT..." style="width:100%; resize:none;"></textarea>
+  <button onclick="sendMsg()">SEND</button>
+  <button onclick="document.getElementById('myDialog').close()">CLOSE</button>
+</dialog>
     <!--button disabled="" id="disabled" style="
       position: fixed;
       bottom: 0;
@@ -153,7 +161,7 @@
           <strong id="anything" style="background-color: black; color: white; font-size: max(1vh,1vw);"><b translate="no">© nins. </b>Choose the abilities you need.</strong>
           <div id="title" style="" translate="no">
           <div style="margin: 10px;" onclick="document.getElementById('DialogCheck').showModal()">
-          nins/children
+          nins/copyright
           </div></div>
           
             <div style="background: #FFFFFF; overflow:auto; width:100%; flex:1; border: 1px solid #ccc;">
@@ -327,6 +335,79 @@
     renderFeatures();
   }, { once: true });
 </script>
+
+
+
+<script>
+///如果有網址帶入消息，就在這裡處理
+///新的用戶自動獲得聯繫鑰匙
+///推播功能
+
+function randomAlphaString(length) {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    result += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return result;
+}
+
+function randomNumberString(length) {  ///***
+  let str = "";
+  for (let i = 0; i < length; i++) {
+    str += Math.floor(Math.random() * 10); // 0~9
+  }
+  return str;
+}
+
+const params = new URLSearchParams(window.location.search);
+const msg = params.get("msg");
+
+document.addEventListener('click', () => {
+  ///在任何點擊後就檢查有無消息
+  if (msg) {
+    document.getElementById("msg").innerText = msg;
+    document.getElementById("myDialog").showModal();
+  }
+}, { once: true });
+
+function sendMsg() {}
+
+
+async function subscribePush() {
+  // 用戶透過此方法完成訂閱推播
+  const reg = await navigator.serviceWorker.ready
+  const key = "BLPRiuk3a5LYlYQL4UN3RXPopI1k_17oX_bi_y1lhTkBFFuLZRutjlTmJ6UtCF2dClkAwfiXJSMAg1fcjbuHaPM";
+  localStorage.setItem("key", key);
+  localStorage.removeItem("key");
+  
+  const existingSubscription = await reg.pushManager.getSubscription();
+  if (!existingSubscription) { console.log("DoSubscribe"); }  ///沒有訂閱
+  else {
+    if ( Cookies.get("keypair")===key ) { console.log("KeepSubscribe"); }
+    else { await existingSubscription.unsubscribe(); console.log("ReSubscribe"); }
+  }
+
+  const subscription = await reg.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: urlBase64ToUint8Array(key)
+  })
+
+  console.log(subscription.toJSON()); console.log(JSON.stringify(subscription));
+
+  const subscriptionJson = JSON.stringify(subscription);
+  const encodedSubscription = encodeURIComponent(subscriptionJson);
+  const href = `https://docs.google.com/forms/d/e/1FAIpQLScFvHqSal-_GkrtrUIG7v3dXmk0aubYma2DCnl-aXBPjWW-ng/viewform?usp=pp_url&entry.1788803497=${encodedSubscription}`;
+  Cookies.set("webpush", subscriptionJson);
+  Cookies.set("keypair", key);
+
+  // 將 subscription 傳到後端
+  return;
+}
+  
+subscribePush();
+</script>
+
 
 <!-- 放置你原有的布局：JS -->
 
