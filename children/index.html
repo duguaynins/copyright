@@ -112,7 +112,8 @@
 <script src="https://copyright.nins.cc/children/0001/nins-huggingface.js"></script>
 
 <dialog id="myDialog">
-  <p id="msg" translate="no">SHOW...</p>
+  <pre id="msg" translate="no">SHOW...</pre>
+  <hr>
   <textarea id="userInput" rows="4" placeholder="INPUT..." style="width:100%; resize:none;"></textarea>
   <button onclick="sendMsg()">SEND</button>
   <button onclick="document.getElementById('myDialog').close()">CLOSE</button>
@@ -339,6 +340,7 @@
 
 
 <script>
+///20260413
 ///如果有網址帶入消息，就在這裡處理
 ///新的用戶自動獲得聯繫鑰匙
 ///推播功能
@@ -364,7 +366,8 @@ const params = new URLSearchParams(window.location.search);
 const msg = params.get("msg");
 
 document.addEventListener('click', () => {
-  ///在任何點擊後就檢查有無消息
+  ///在任何點擊後就檢查有無消息，以及有無訂閱推播
+  subscribePush();
   if (msg) {
     document.getElementById("msg").innerText = msg;
     document.getElementById("myDialog").showModal();
@@ -412,7 +415,7 @@ async function subscribePush() {
   return;
 }
   
-subscribePush();
+///subscribePush();
 </script>
 
 
