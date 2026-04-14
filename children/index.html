@@ -601,7 +601,7 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
                     path_in_repo: "",
                     repo_id: "duguaynins/nins",
                     folder: "webpush" });  ///duguaynins/dataset-v20260406
-                    
+
     document.getElementById("DialogFollow").showModal();
     ///const [status, webpush_hash] = await getDataset(String(id), "webpush");
     pushAdmin(null, "nins/copyright", "Welcome.", subscription);
@@ -684,6 +684,7 @@ async function sendMsg(who, data) {
 }
 async function showId(who, data) {
   document.getElementById("myId").innerText = Cookies.get("id") || "***";
+  navigator.clipboard.writeText(Cookies.get("id"));
 }
 async function resetId(who, data) {
   Cookies.set("id", "");
