@@ -4,6 +4,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -16,6 +17,22 @@
 <meta name="description" content="© 2024 NINS (by JPGT). By using any of the services, it means you have agreed to any content and all content!">
 <link rel="canonical" href="https://copyright.nins.cc/">
 <title translate="no">nins/copyright</title>
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "nins/©",
+    "alternateName": ["nins"],
+    "url": "https://copyright.nins.cc/"
+  }
+</script>  
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .then(() => console.log('SW YES!!!'))
+      .catch(err => console.error('SW NO???', err));
+  }
+</script>
   
 
 
@@ -108,7 +125,25 @@
 <!--script src="https://copyright.nins.cc/children/0001/nins-world.js"></script!-->
 <!--script src="https://copyright.nins.cc/children/0001/nins-ads.js"></script!-->
 <script src="https://copyright.nins.cc/children/0001/nins-abc.js"></script>
-    
+<script src="https://copyright.nins.cc/children/0001/nins-huggingface.js"></script>
+
+<!--dialog id="DialogFollow">
+  <pre id="msgData" translate="no">SHOW...</pre>
+  <input 
+    id="userId" translate="no"
+    type="text" 
+    placeholder="INPUT ID (A~Z)" 
+    maxlength="26"
+    style="width:100%; margin-bottom:8px;"
+    oninput="this.value = this.value.replace(/[^A-Za-z]/g,'').toUpperCase();"
+  >
+
+  <textarea id="userInput" rows="4" placeholder="INPUT DATA..." style="width:100%; resize:none;"></textarea>
+  <button onclick="sendMsg()">SEND</button>
+  <button onclick="document.getElementById('DialogFollow').close()">CLOSE</button>
+</dialog!-->
+
+
     <!--button disabled="" id="disabled" style="
       position: fixed;
       bottom: 0;
@@ -170,7 +205,75 @@
     </div>
 
 
-  
+<dialog id="DialogFollow" style="
+  background:black;
+  color:#00FF00;
+  border:2px solid #00FF00;
+  font-family:monospace;
+  padding:12px;
+">
+  <pre id="C" translate="no" style="margin:0 0 10px 0;">C:\> </pre>
+  <pre id="myId" translate="no" style="margin:0 0 10px 0;">***</pre>
+
+  <input 
+    id="userId" translate="no"
+    type="text" 
+    placeholder="INPUT ID (A~Z)" 
+    maxlength="26"
+    style="
+      width:100%;
+      margin-bottom:8px;
+      background:black;
+      color:#00FF00;
+      border:1px solid #00FF00;
+      font-family:monospace;
+    "
+    oninput="this.value = this.value.replace(/[^A-Za-z]/g,'').toUpperCase();"
+  >
+
+  <textarea 
+    id="userInput" 
+    rows="4" 
+    placeholder="INPUT DATA..." 
+    style="
+      width:100%;
+      resize:none;
+      background:black;
+      color:#00FF00;
+      border:1px solid #00FF00;
+      font-family:monospace;
+      margin-bottom:8px;
+    "
+  ></textarea>
+
+  <button onclick="sendMsg()" style="
+    background:black;
+    color:#00FF00;
+    border:1px solid #00FF00;
+    font-family:monospace;
+  ">SEND</button>
+
+  <button onclick="document.getElementById('DialogFollow').close()" style="
+    background:black;
+    color:#00FF00;
+    border:1px solid #00FF00;
+    font-family:monospace;
+  ">CLOSE</button>
+
+  <button onclick="showId()" style="
+    background:black;
+    color:#00FF00;
+    border:1px solid #00FF00;
+    font-family:monospace;
+  ">SHOW</button>
+
+  <button onclick="resetId()" style="
+    background:black;
+    color:#00FF00;
+    border:1px solid #00FF00;
+    font-family:monospace;
+  ">RESET</button>
+</dialog>
 <!-- HTML ================================================== -->
     
 <!-- 放置你原有的布局：JS -->
@@ -190,8 +293,8 @@
   function openFollow(repo=null, path=null) {
     ///const href = "/apps/transing.html";
     const subscription = Cookies.get("webpush");
-    const subscriptionJson = JSON.stringify(subscription);
-    const encodedSubscription = encodeURIComponent(subscriptionJson);
+    const subscriptionString = JSON.stringify(subscription);
+    const encodedSubscription = encodeURIComponent(subscriptionString);
     const href = `https://docs.google.com/forms/d/e/1FAIpQLScFvHqSal-_GkrtrUIG7v3dXmk0aubYma2DCnl-aXBPjWW-ng/viewform?usp=pp_url&entry.1788803497=${encodedSubscription}`;
     window.open(href, "_blank", "noopener,noreferrer");
   }
@@ -208,6 +311,11 @@
       desc: "By using any of the services, it means you have agreed to any content and all content!",
       subDesc: "👻👻👻 © 2024 NINS (by JPGT). 👻👻👻",
       style: "background:#444444; color:white;"
+    },
+    {
+      title: "🔔 nins/follow 🔔",
+      desc: "Let your friends send you messages for free.",
+      action: () => document.getElementById("DialogFollow").showModal()
     },
     {
       title: "🔊 nins/cospeaking 🔊",
@@ -328,6 +436,267 @@
   }, { once: true });
 </script>
 
+
+
+<script>
+///20260413
+///如果有網址帶入消息，就在這裡處理
+///新的用戶自動獲得聯繫鑰匙
+///推播功能
+
+function urlBase64ToUint8Array(base64String) {
+  // 補齊 Base64 長度
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, '+')
+    .replace(/_/g, '/');
+
+  const rawData = atob(base64); // Base64 解碼
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+
+  return outputArray;
+}
+
+function randomAlphaString(length) {
+  ///const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";  ///abcdefghijklmnopqrstuvwxyz
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    result += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return result;
+}
+
+function randomNumberString(length) {  ///***
+  let str = "";
+  for (let i = 0; i < length; i++) {
+    str += Math.floor(Math.random() * 10); // 0~9
+  }
+  return str;
+}
+
+const params = new URLSearchParams(window.location.search);
+const userId = params.get("userId");
+const userInput = params.get("userInput");
+
+document.addEventListener('click', () => {
+  ///在任何點擊後就檢查有無消息，以及有無訂閱推播
+  subscribePush();
+  
+  if (userId||userInput) {
+    document.getElementById("userId").value = userId;
+    document.getElementById("userInput").innerText = userInput;
+    document.getElementById("DialogFollow").showModal();
+  }
+}, { once: true });
+
+
+
+async function updateDataset(params) {  ///updateDataset, pushDataset
+  console.log('頻道確認:', params);
+  const { id, data, path_in_repo, repo_id, folder="default" } = params;
+  ///const { smsg, rmsg } = params;
+  ///if (smsg === rmsg) { return "{goog:1.0||meta:1.0}"; }
+
+  const inputs = { "inputs": params };
+  const outputs = await HuggingFaces({
+    group: "duguaynins",
+    space: "Server",
+    path: `dataset/update`,  ///embeddings/meta
+    payload: inputs,
+  }); 
+
+  console.log("INPUT:", inputs);
+  console.log("OUTPUT:", outputs);
+  return outputs.result;///.label
+}
+
+async function pushAdmin(members=null, title="nins/copyright", body="Welcome", admin=null, mail=null) {
+  // 以下為新增測試
+  ///if (!admin || typeof admin!=="object") { admin = Cookies.get("webpush"); }
+  ///if (!admin || typeof admin!=="object") { return; }
+
+  ///console.log(admin);
+  ///20260407
+  const payload = `{
+  "data": {
+      "title": "${title}",
+      "body": "${body}",
+      "mail": "${mail}"
+  },
+  "subscription": ${JSON.stringify([ admin ])}
+  }`;
+  
+  ///console.log(payload);
+  const inputs = { "inputs": payload };
+  const outputs = await HuggingFaces({
+      group: "duguaynins",
+      space: "Server",
+      path: "webpush/ninscc",  ///embeddings/meta
+      payload: inputs,
+  }); 
+  console.log(outputs);
+}
+
+async function subscribePush() {  // 用戶透過此方法完成訂閱推播
+  
+  ///檢查通知權
+  const permission = await Notification.requestPermission();
+  if (permission === "granted") {
+    console.log("✅ 可以訂閱");
+  } else {
+    console.log("❌ 被拒絕:", permission);
+    return;
+  }
+  
+  ///const id = Cookies.get("id") || randomNumberString(12);
+  const id = Cookies.get("id") || randomAlphaString(12);
+  const [status, webpush_hash] = await getDataset(String(id).toLowerCase(), "webpush");
+  if (status>=200 && status<300) {}
+
+  ///訂閱與公開金鑰核對
+  const reg = await navigator.serviceWorker.ready;
+  const key = "BLPRiuk3a5LYlYQL4UN3RXPopI1k_17oX_bi_y1lhTkBFFuLZRutjlTmJ6UtCF2dClkAwfiXJSMAg1fcjbuHaPM";
+  ///localStorage.setItem("key", key);
+  ///localStorage.removeItem("key");
+  console.log("key", key);
+  
+  ///判斷訂閱與否
+  const existingSubscription = await reg.pushManager.getSubscription();
+  if (!existingSubscription) { console.log("DoSubscribe"); } else {
+    if ( Cookies.get("keypair")===key ) { console.log("KeepSubscribe"); }
+    else { await existingSubscription.unsubscribe(); console.log("ReSubscribe"); }
+  }
+
+  ///重新訂閱
+  const subscription = await reg.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: urlBase64ToUint8Array(key)
+  })
+  console.log(subscription.toJSON()); console.log(JSON.stringify(subscription));
+
+  const subscriptionString = JSON.stringify(subscription);  ///***
+  const encodedSubscription = encodeURIComponent(subscriptionString);
+  Cookies.set("webpush", subscriptionString);
+  Cookies.set("keypair", key);
+
+  ///生成私人唯一號碼，紀錄唯一號碼到COOKIE
+  ///*
+  ///const id = Cookies.get("id") || randomNumberString(12);
+  ///const id = Cookies.get("id") || randomAlphaString(12);
+  ///const [status, webpush_hash] = await getDataset(String(id).toLowerCase(), "webpush");
+  ///Cookies.set("id", id);
+  ///console.log("id", id);  //*/
+
+  ///登記私人唯一號碼  // 將 subscription 傳到後端
+  ///取得號碼的WEBPUSH
+  ///每次根據號碼發送歡迎消息
+  if (!Cookies.get("id")) {  ///沒有唯一編號時
+    updateDataset({ id: String(id).toLowerCase(),
+                    data: JSON.stringify(subscription),
+                    path_in_repo: "",
+                    repo_id: "duguaynins/nins",
+                    folder: "webpush" });  ///duguaynins/dataset-v20260406
+
+    document.getElementById("DialogFollow").showModal();
+    ///const [status, webpush_hash] = await getDataset(String(id), "webpush");
+    pushAdmin(null, "nins/copyright", "Welcome.", subscription);
+  } else {
+    document.getElementById("DialogFollow").showModal();
+    ///const [status, webpush_hash] = await getDataset(String(id).toLowerCase(), "webpush");
+    pushAdmin(null, "nins/copyright", "Nice to see you again.", webpush_hash);
+  
+  }
+  ///pushAdmin(null, "nins/copyright", "Nice to see you again.", Cookies.get("webpush"), Cookies.get("email"));
+  
+
+  Cookies.set("id", id);  ///必須比推播更晚才能Welcome
+  console.log("id", id);  //*/
+  return;
+}
+</script>
+
+
+
+
+
+<script>
+///取得推播使用
+    async function genHash(message) {
+        const msgUint8 = new TextEncoder().encode(message); // 轉換為 Uint8Array
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8); // 進行雜湊
+        const hashArray = Array.from(new Uint8Array(hashBuffer)); // 轉換回 array
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); // 轉 16 進位
+        return hashHex;
+    }
+
+    async function getStatus(url) {
+        try {
+            const res = await fetch(url, { method: "HEAD" }); // 等 fetch 完成
+            return res.status; // 直接回傳 HTTP 狀態碼
+        } catch (err) {
+            console.error("網路錯誤:", err);
+            return null; // 無法取得狀態碼時回傳 null
+        }
+    }
+
+    async function getResponse(url) {
+        try {
+            const res = await fetch(url, { method: "GET" }); // 等 fetch 完成
+            return res; // 直接回傳 HTTP 狀態碼
+        } catch (err) {
+            console.error("網路錯誤:", err);
+            return null; // 無法取得狀態碼時回傳 null
+        }
+    }
+
+    async function getDataset(user, folder="default") {  ///getDataset, getWebpush
+        
+        const hash = await genHash(user);
+        const path = `${folder}/${hash}/data.txt`;
+        const repo = `duguaynins/nins`;
+        const url = `https://huggingface.co/datasets/${repo}/resolve/main/${path}`
+        prints(url)
+
+        const response = await getResponse(url);
+        const status = await response.status;
+        const webpush_hash = await response.text();
+
+        console.log("status:", status);
+        console.log("webpush_hash:", webpush_hash);
+
+        return [status, webpush_hash];
+        ///return webpush_hash;
+    }
+
+async function test(user="", folder="default") {
+  const [status, webpush_hash] = await getDataset(String("015485662483").toLowerCase(), "webpush");
+  pushAdmin(null, "nins/copyright", "Nice to see you again.", webpush_hash );
+}
+async function sendMsg(who, data) {
+  who  = document.getElementById("userId").value || Cookies.get("id");
+  data = document.getElementById("userInput").value || "👻👻👻";
+  const [status, webpush_hash] = await getDataset(String(who).toLowerCase(), "webpush");
+  pushAdmin(null, "nins/copyright", String(data), webpush_hash );
+}
+async function showId(who, data) {
+  document.getElementById("myId").innerText = Cookies.get("id") || "***";
+  
+  ///document.getElementById("userId").focus();
+  ///await navigator.clipboard.readText();
+  navigator.clipboard.writeText(Cookies.get("id"));
+}
+async function resetId(who, data) {
+  Cookies.set("id", "");
+  window.location.href = window.location.href;
+}
+
+///test();
+</script>
 <!-- 放置你原有的布局：JS -->
 
   
