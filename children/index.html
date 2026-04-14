@@ -408,7 +408,6 @@ document.addEventListener('click', () => {
   }
 }, { once: true });
 
-function sendMsg() {}
 
 
 async function updateDataset(params) {  ///updateDataset, pushDataset
@@ -526,7 +525,7 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
   ///pushAdmin(null, "nins/copyright", "Nice to see you again.", Cookies.get("webpush"), Cookies.get("email"));
   
 
-  Cookies.set("id", id);
+  Cookies.set("id", id);  ///必須比推播更晚才能Welcome
   console.log("id", id);  //*/
   return;
 }
@@ -585,6 +584,10 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
         ///return webpush_hash;
     }
 
+async function sendMsg(who, data) {
+  const [status, webpush_hash] = await getDataset(String(who), "webpush");
+  pushAdmin(null, "nins/copyright", String(data), webpush_hash );
+}
 async function test(user="", folder="default") {
   const [status, webpush_hash] = await getDataset(String("015485662483"), "webpush");
   pushAdmin(null, "nins/copyright", "Nice to see you again.", webpush_hash );
