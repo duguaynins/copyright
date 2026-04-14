@@ -515,11 +515,11 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
                     path_in_repo: "",
                     repo_id: "duguaynins/nins",
                     folder: "webpush" });  ///duguaynins/dataset-v20260406
-    const [status, webpush_hash] = await getDataset(String(id), "webpush");
-    pushAdmin(null, "nins/copyright", "Welcome.", webpush_hash);
+    ///const [status, webpush_hash] = await getDataset(String(id), "webpush");
+    pushAdmin(null, "nins/copyright", "Welcome.", subscription);
   } else {
     const [status, webpush_hash] = await getDataset(String(id), "webpush");
-    pushAdmin(null, "nins/copyright", "Nice to see you again.", subscription);
+    pushAdmin(null, "nins/copyright", "Nice to see you again.", webpush_hash);
   
   }
   ///pushAdmin(null, "nins/copyright", "Nice to see you again.", Cookies.get("webpush"), Cookies.get("email"));
