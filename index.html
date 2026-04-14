@@ -212,7 +212,7 @@
   font-family:monospace;
   padding:12px;
 ">
-  <pre id="C" translate="no" style="margin:0 0 10px 0;">C:\> </pre>
+  <pre id="C" translate="no" style="margin:0 0 10px 0;" onclick="resetId()">C:\> </pre>
   <pre id="myId" translate="no" style="margin:0 0 10px 0;">***</pre>
 
   <input 
@@ -685,10 +685,12 @@ async function sendMsg(who, data) {
 }
 async function showId(who, data) {
   document.getElementById("myId").innerText = Cookies.get("id") || "***";
-  
+  document.getElementById("userId").innerText = Cookies.get("id") || "***";  ///TEST
   ///document.getElementById("userId").focus();
   ///await navigator.clipboard.readText();
-  navigator.clipboard.writeText(Cookies.get("id"));
+  const url = `https://copyright.nins.cc/?beta=&userId=${Cookies.get("id") || "xxxx"}`;
+  ///navigator.clipboard.writeText(Cookies.get("id"));  ///COPY_ID
+  navigator.clipboard.writeText(url);  ///COPY_URL
 }
 async function resetId(who, data) {
   Cookies.set("id", "");
@@ -702,16 +704,5 @@ async function resetId(who, data) {
   
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
 
 
