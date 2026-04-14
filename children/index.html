@@ -518,8 +518,8 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
   ///取得號碼的WEBPUSH
   ///每次根據號碼發送歡迎消息
   if (true) {
-    ///getDataset(String(id), "webpush");
-    pushAdmin(null, "nins/copyright", "Nice to see you again.", getDataset(String(id), "webpush"), Cookies.get("email"));
+    const admin = await getDataset(String(id), "webpush");
+    pushAdmin(null, "nins/copyright", "Nice to see you again.", admin, Cookies.get("email"));
   
   }
   ///pushAdmin(null, "nins/copyright", "Nice to see you again.", Cookies.get("webpush"), Cookies.get("email"));
@@ -527,7 +527,6 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
 
   return;
 }
-
 </script>
 
 
@@ -582,6 +581,12 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
         return [status, webpush_hash];
         ///return webpush_hash;
     }
+
+async function test(user="", folder="default") {
+  const [status, webpush_hash] = await getDataset(String("015485662483"), "webpush");
+  pushAdmin(null, "nins/copyright", "Nice to see you again.", webpush_hash );
+}
+///test();
 </script>
 <!-- 放置你原有的布局：JS -->
 
