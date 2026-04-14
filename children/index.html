@@ -449,7 +449,8 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 function randomAlphaString(length) {
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  ///const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";  ///abcdefghijklmnopqrstuvwxyz
   let result = "";
   for (let i = 0; i < length; i++) {
     result += chars[Math.floor(Math.random() * chars.length)];
