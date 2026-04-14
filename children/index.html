@@ -473,7 +473,7 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
   const key = "BLPRiuk3a5LYlYQL4UN3RXPopI1k_17oX_bi_y1lhTkBFFuLZRutjlTmJ6UtCF2dClkAwfiXJSMAg1fcjbuHaPM";
   ///localStorage.setItem("key", key);
   ///localStorage.removeItem("key");
-  console.log(key);
+  console.log("key", key);
   
   ///判斷訂閱與否
   const existingSubscription = await reg.pushManager.getSubscription();
@@ -498,20 +498,72 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
   const id = Cookies.get("id") || randomNumberString(12);
   Cookies.set("id", id);
   console.log("id", id);
+
   ///登記私人唯一號碼  // 將 subscription 傳到後端
-  pushDataset({ id: id,
+  pushDataset({ id: String(id),
                 data: JSON.stringify(subscription),
                 path_in_repo: "",
                 repo_id: "duguaynins/nins" });  ///duguaynins/dataset-v20260406
 
+  ///取得號碼的WEBPUSH
   ///每次根據號碼發送歡迎消息
   pushAdmin(null, "nins/copyright", "Nice to see you again.", Cookies.get("webpush"), Cookies.get("email"));
 
   return;
 }
+
 </script>
 
 
+
+
+
+<script>
+///取得推播使用
+    async function getHash(message) {
+        const msgUint8 = new TextEncoder().encode(message); // 轉換為 Uint8Array
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8); // 進行雜湊
+        const hashArray = Array.from(new Uint8Array(hashBuffer)); // 轉換回 array
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); // 轉 16 進位
+        return hashHex;
+    }
+
+    async function getStatus(url) {
+        try {
+            const res = await fetch(url, { method: "HEAD" }); // 等 fetch 完成
+            return res.status; // 直接回傳 HTTP 狀態碼
+        } catch (err) {
+            console.error("網路錯誤:", err);
+            return null; // 無法取得狀態碼時回傳 null
+        }
+    }
+
+    async function getResponse(url) {
+        try {
+            const res = await fetch(url, { method: "GET" }); // 等 fetch 完成
+            return res; // 直接回傳 HTTP 狀態碼
+        } catch (err) {
+            console.error("網路錯誤:", err);
+            return null; // 無法取得狀態碼時回傳 null
+        }
+    }
+
+    async function getWebpush(email) {
+        
+        const hash = await getHash(email);
+        const path = `webpush/${hash}/data.txt`;
+        const url = `https://huggingface.co/datasets/duguaynins/dataset-v20260406/resolve/main/${path}`
+        const response = await getResponse(url);
+        const status = await response.status;
+        const webpush_hash = await response.text();
+
+        console.log("status:", status);
+        console.log("webpush_hash:", webpush_hash);
+
+        return [status, webpush_hash];
+        ///return webpush_hash;
+    }
+</script>
 <!-- 放置你原有的布局：JS -->
 
   
