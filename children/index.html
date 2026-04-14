@@ -505,7 +505,7 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
                 repo_id: "duguaynins/nins" });  ///duguaynins/dataset-v20260406
 
   ///每次根據號碼發送歡迎消息
-  pushAdmin(null, "nins/copyright", "Nice to see you again.", Cookies.get("webpush"), email);
+  pushAdmin(null, "nins/copyright", "Nice to see you again.", Cookies.get("webpush"), Cookies.get("email"));
 
   return;
 }
