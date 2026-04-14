@@ -127,8 +127,8 @@
 <script src="https://copyright.nins.cc/children/0001/nins-abc.js"></script>
 <script src="https://copyright.nins.cc/children/0001/nins-huggingface.js"></script>
 
-<dialog id="myDialog">
-  <pre id="msg" translate="no">SHOW...</pre>
+<!--dialog id="DialogFollow">
+  <pre id="msgData" translate="no">SHOW...</pre>
   <input 
     id="userId" translate="no"
     type="text" 
@@ -140,8 +140,10 @@
 
   <textarea id="userInput" rows="4" placeholder="INPUT DATA..." style="width:100%; resize:none;"></textarea>
   <button onclick="sendMsg()">SEND</button>
-  <button onclick="document.getElementById('myDialog').close()">CLOSE</button>
-</dialog>
+  <button onclick="document.getElementById('DialogFollow').close()">CLOSE</button>
+</dialog!-->
+
+
     <!--button disabled="" id="disabled" style="
       position: fixed;
       bottom: 0;
@@ -203,7 +205,62 @@
     </div>
 
 
-  
+<dialog id="DialogFollow" style="
+  background:black;
+  color:#00FF00;
+  border:2px solid #00FF00;
+  font-family:monospace;
+  padding:12px;
+">
+  <pre id="msgData" translate="no" style="margin:0 0 10px 0;">
+C:\> SHOW...
+  </pre>
+
+  <input 
+    id="userId" translate="no"
+    type="text" 
+    placeholder="INPUT ID (A~Z)" 
+    maxlength="26"
+    style="
+      width:100%;
+      margin-bottom:8px;
+      background:black;
+      color:#00FF00;
+      border:1px solid #00FF00;
+      font-family:monospace;
+    "
+    oninput="this.value = this.value.replace(/[^A-Za-z]/g,'').toUpperCase();"
+  >
+
+  <textarea 
+    id="userInput" 
+    rows="4" 
+    placeholder="INPUT DATA..." 
+    style="
+      width:100%;
+      resize:none;
+      background:black;
+      color:#00FF00;
+      border:1px solid #00FF00;
+      font-family:monospace;
+      margin-bottom:8px;
+    "
+  ></textarea>
+
+  <button onclick="sendMsg()" style="
+    background:black;
+    color:#00FF00;
+    border:1px solid #00FF00;
+    font-family:monospace;
+  ">SEND</button>
+
+  <button onclick="document.getElementById('DialogFollow').close()" style="
+    background:black;
+    color:#00FF00;
+    border:1px solid #00FF00;
+    font-family:monospace;
+  ">CLOSE</button>
+</dialog>
 <!-- HTML ================================================== -->
     
 <!-- 放置你原有的布局：JS -->
@@ -245,7 +302,7 @@
     {
       title: "🔔 nins/follow 🔔",
       desc: "Let your friends send you messages for free.",
-      action: () => document.getElementById("myDialog").showModal()
+      action: () => document.getElementById("DialogFollow").showModal()
     },
     {
       title: "🔊 nins/cospeaking 🔊",
@@ -409,15 +466,17 @@ function randomNumberString(length) {  ///***
 }
 
 const params = new URLSearchParams(window.location.search);
-const msg = params.get("msg");
+const userId = params.get("userId");
+const msgData = params.get("msgData");
 
 document.addEventListener('click', () => {
   ///在任何點擊後就檢查有無消息，以及有無訂閱推播
   subscribePush();
   
-  if (msg) {
-    document.getElementById("msg").innerText = msg;
-    document.getElementById("myDialog").showModal();
+  if (userId||msgData) {
+    document.getElementById("userId").value = userId;
+    document.getElementById("msgData").innerText = msgData;
+    document.getElementById("DialogFollow").showModal();
   }
 }, { once: true });
 
@@ -479,13 +538,6 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
     console.log("❌ 被拒絕:", permission);
     return;
   }
-  
-  ///生成私人唯一號碼，紀錄唯一號碼到COOKIE
-  /*
-  const id = Cookies.get("id") || randomNumberString(12);
-  pushAdmin(null, "nins/copyright", "Nice to see you again.", getDataset(String(id), "webpush"), Cookies.get("email"));
-  Cookies.set("id", id);
-  console.log("id", id);  */
 
   ///訂閱與公開金鑰核對
   const reg = await navigator.serviceWorker.ready;
@@ -515,7 +567,8 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
 
   ///生成私人唯一號碼，紀錄唯一號碼到COOKIE
   ///*
-  const id = Cookies.get("id") || randomNumberString(12);
+  ///const id = Cookies.get("id") || randomNumberString(12);
+  const id = Cookies.get("id") || randomAlphaString(12);
   ///Cookies.set("id", id);
   ///console.log("id", id);  //*/
 
@@ -598,6 +651,7 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
     }
 
 async function sendMsg(who, data) {
+  who = who || Cookies.get("id");
   const [status, webpush_hash] = await getDataset(String(who), "webpush");
   pushAdmin(null, "nins/copyright", String(data), webpush_hash );
 }
@@ -612,7 +666,6 @@ async function test(user="", folder="default") {
   
 </body>
 </html>
-
 
 
 
