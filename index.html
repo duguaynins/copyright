@@ -693,6 +693,9 @@ async function showId(who, data) {
   navigator.clipboard.writeText(url);  ///COPY_URL
 }
 async function resetId(who, data) {
+  const result = confirm("delete?");
+  if (!result) { return; }
+  ///if (result) { return; }
   Cookies.set("id", "");
   window.location.href = window.location.href;
 }
