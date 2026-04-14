@@ -577,7 +577,7 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
   ///取得號碼的WEBPUSH
   ///每次根據號碼發送歡迎消息
   if (!Cookies.get("id")) {  ///沒有唯一編號時
-    updateDataset({ id: String(id),
+    updateDataset({ id: String(id).toLowerCase(),
                     data: JSON.stringify(subscription),
                     path_in_repo: "",
                     repo_id: "duguaynins/nins",
@@ -585,7 +585,7 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
     ///const [status, webpush_hash] = await getDataset(String(id), "webpush");
     pushAdmin(null, "nins/copyright", "Welcome.", subscription);
   } else {
-    const [status, webpush_hash] = await getDataset(String(id), "webpush");
+    const [status, webpush_hash] = await getDataset(String(id).toLowerCase(), "webpush");
     pushAdmin(null, "nins/copyright", "Nice to see you again.", webpush_hash);
   
   }
