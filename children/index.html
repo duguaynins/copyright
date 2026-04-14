@@ -212,9 +212,8 @@
   font-family:monospace;
   padding:12px;
 ">
-  <pre id="msgData" translate="no" style="margin:0 0 10px 0;">
-C:\> SHOW...
-  </pre>
+  <pre id="C" translate="no" style="margin:0 0 10px 0;">C:\> </pre>
+  <pre id="myId" translate="no" style="margin:0 0 10px 0;">***</pre>
 
   <input 
     id="userId" translate="no"
@@ -260,6 +259,20 @@ C:\> SHOW...
     border:1px solid #00FF00;
     font-family:monospace;
   ">CLOSE</button>
+
+  <button onclick="showId()" style="
+    background:black;
+    color:#00FF00;
+    border:1px solid #00FF00;
+    font-family:monospace;
+  ">SHOW</button>
+
+  <button onclick="resetId()" style="
+    background:black;
+    color:#00FF00;
+    border:1px solid #00FF00;
+    font-family:monospace;
+  ">RESET</button>
 </dialog>
 <!-- HTML ================================================== -->
     
@@ -468,15 +481,15 @@ function randomNumberString(length) {  ///***
 
 const params = new URLSearchParams(window.location.search);
 const userId = params.get("userId");
-const msgData = params.get("msgData");
+const userInput = params.get("userInput");
 
 document.addEventListener('click', () => {
   ///在任何點擊後就檢查有無消息，以及有無訂閱推播
   subscribePush();
   
-  if (userId||msgData) {
+  if (userId||userInput) {
     document.getElementById("userId").value = userId;
-    document.getElementById("msgData").innerText = msgData;
+    document.getElementById("userInput").innerText = userInput;
     document.getElementById("DialogFollow").showModal();
   }
 }, { once: true });
@@ -539,6 +552,11 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
     console.log("❌ 被拒絕:", permission);
     return;
   }
+  
+  ///const id = Cookies.get("id") || randomNumberString(12);
+  const id = Cookies.get("id") || randomAlphaString(12);
+  const [status, webpush_hash] = await getDataset(String(id).toLowerCase(), "webpush");
+  if (status>=200 && status<300) {}
 
   ///訂閱與公開金鑰核對
   const reg = await navigator.serviceWorker.ready;
@@ -569,7 +587,8 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
   ///生成私人唯一號碼，紀錄唯一號碼到COOKIE
   ///*
   ///const id = Cookies.get("id") || randomNumberString(12);
-  const id = Cookies.get("id") || randomAlphaString(12);
+  ///const id = Cookies.get("id") || randomAlphaString(12);
+  ///const [status, webpush_hash] = await getDataset(String(id).toLowerCase(), "webpush");
   ///Cookies.set("id", id);
   ///console.log("id", id);  //*/
 
@@ -585,7 +604,7 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
     ///const [status, webpush_hash] = await getDataset(String(id), "webpush");
     pushAdmin(null, "nins/copyright", "Welcome.", subscription);
   } else {
-    const [status, webpush_hash] = await getDataset(String(id).toLowerCase(), "webpush");
+    ///const [status, webpush_hash] = await getDataset(String(id).toLowerCase(), "webpush");
     pushAdmin(null, "nins/copyright", "Nice to see you again.", webpush_hash);
   
   }
@@ -651,15 +670,23 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
         ///return webpush_hash;
     }
 
+async function test(user="", folder="default") {
+  const [status, webpush_hash] = await getDataset(String("015485662483"), "webpush");
+  pushAdmin(null, "nins/copyright", "Nice to see you again.", webpush_hash );
+}
 async function sendMsg(who, data) {
   who = who || Cookies.get("id");
   const [status, webpush_hash] = await getDataset(String(who), "webpush");
   pushAdmin(null, "nins/copyright", String(data), webpush_hash );
 }
-async function test(user="", folder="default") {
-  const [status, webpush_hash] = await getDataset(String("015485662483"), "webpush");
-  pushAdmin(null, "nins/copyright", "Nice to see you again.", webpush_hash );
+async function showId(who, data) {
+  document.getElementById("myId").innerText = Cookies.get("id") || "***";
 }
+async function resetId(who, data) {
+  Cookies.set("id", "");
+  window.location.href = window.location.href;
+}
+
 ///test();
 </script>
 <!-- 放置你原有的布局：JS -->
