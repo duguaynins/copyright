@@ -411,9 +411,9 @@ document.addEventListener('click', () => {
 function sendMsg() {}
 
 
-async function pushDataset(params) { 
+async function updateDataset(params) {  ///updateDataset, pushDataset
   console.log('頻道確認:', params);
-  const { id, data, path_in_repo, repo_id } = params;
+  const { id, data, path_in_repo, repo_id, folder="default" } = params;
   ///const { smsg, rmsg } = params;
   ///if (smsg === rmsg) { return "{goog:1.0||meta:1.0}"; }
 
@@ -467,6 +467,13 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
     console.log("❌ 被拒絕:", permission);
     return;
   }
+  
+  ///生成私人唯一號碼，紀錄唯一號碼到COOKIE
+  /*
+  const id = Cookies.get("id") || randomNumberString(12);
+  pushAdmin(null, "nins/copyright", "Nice to see you again.", getDataset(String(id), "webpush"), Cookies.get("email"));
+  Cookies.set("id", id);
+  console.log("id", id);  */
 
   ///訂閱與公開金鑰核對
   const reg = await navigator.serviceWorker.ready;
@@ -495,19 +502,25 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
   Cookies.set("keypair", key);
 
   ///生成私人唯一號碼，紀錄唯一號碼到COOKIE
+  ///*
   const id = Cookies.get("id") || randomNumberString(12);
+  pushAdmin(null, "nins/copyright", "Nice to see you again.", getDataset(String(id), "webpush"), Cookies.get("email"));
   Cookies.set("id", id);
-  console.log("id", id);
+  console.log("id", id);  //*/
 
   ///登記私人唯一號碼  // 將 subscription 傳到後端
-  pushDataset({ id: String(id),
-                data: JSON.stringify(subscription),
-                path_in_repo: "",
-                repo_id: "duguaynins/nins" });  ///duguaynins/dataset-v20260406
+  updateDataset({ id: String(id),
+                  data: JSON.stringify(subscription),
+                  path_in_repo: "",
+                  repo_id: "duguaynins/nins",
+                  folder: "webpush" });  ///duguaynins/dataset-v20260406
 
   ///取得號碼的WEBPUSH
+  getDataset(String(id), "webpush");
+
   ///每次根據號碼發送歡迎消息
-  pushAdmin(null, "nins/copyright", "Nice to see you again.", Cookies.get("webpush"), Cookies.get("email"));
+  ///pushAdmin(null, "nins/copyright", "Nice to see you again.", Cookies.get("webpush"), Cookies.get("email"));
+  
 
   return;
 }
@@ -520,7 +533,7 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
 
 <script>
 ///取得推播使用
-    async function getHash(message) {
+    async function genHash(message) {
         const msgUint8 = new TextEncoder().encode(message); // 轉換為 Uint8Array
         const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8); // 進行雜湊
         const hashArray = Array.from(new Uint8Array(hashBuffer)); // 轉換回 array
@@ -548,11 +561,14 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
         }
     }
 
-    async function getWebpush(email) {
+    async function getDataset(user, folder="default") {  ///getDataset, getWebpush
         
-        const hash = await getHash(email);
-        const path = `webpush/${hash}/data.txt`;
-        const url = `https://huggingface.co/datasets/duguaynins/dataset-v20260406/resolve/main/${path}`
+        const hash = await genHash(user);
+        const path = `${folder}/${hash}/data.txt`;
+        const repo = `duguaynins/nins`;
+        const url = `https://huggingface.co/datasets/${repo}/resolve/main/${path}`
+        prints(url)
+
         const response = await getResponse(url);
         const status = await response.status;
         const webpush_hash = await response.text();
