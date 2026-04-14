@@ -215,8 +215,8 @@
   function openFollow(repo=null, path=null) {
     ///const href = "/apps/transing.html";
     const subscription = Cookies.get("webpush");
-    const subscriptionJson = JSON.stringify(subscription);
-    const encodedSubscription = encodeURIComponent(subscriptionJson);
+    const subscriptionString = JSON.stringify(subscription);
+    const encodedSubscription = encodeURIComponent(subscriptionString);
     const href = `https://docs.google.com/forms/d/e/1FAIpQLScFvHqSal-_GkrtrUIG7v3dXmk0aubYma2DCnl-aXBPjWW-ng/viewform?usp=pp_url&entry.1788803497=${encodedSubscription}`;
     window.open(href, "_blank", "noopener,noreferrer");
   }
@@ -496,35 +496,38 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
   })
   console.log(subscription.toJSON()); console.log(JSON.stringify(subscription));
 
-  const subscriptionJson = JSON.stringify(subscription);
-  const encodedSubscription = encodeURIComponent(subscriptionJson);
-  Cookies.set("webpush", subscriptionJson);
+  const subscriptionString = JSON.stringify(subscription);  ///***
+  const encodedSubscription = encodeURIComponent(subscriptionString);
+  Cookies.set("webpush", subscriptionString);
   Cookies.set("keypair", key);
 
   ///生成私人唯一號碼，紀錄唯一號碼到COOKIE
   ///*
   const id = Cookies.get("id") || randomNumberString(12);
-  Cookies.set("id", id);
-  console.log("id", id);  //*/
+  ///Cookies.set("id", id);
+  ///console.log("id", id);  //*/
 
   ///登記私人唯一號碼  // 將 subscription 傳到後端
-  if (Cookies.get("id")) {
+  ///取得號碼的WEBPUSH
+  ///每次根據號碼發送歡迎消息
+  if (!Cookies.get("id")) {
     updateDataset({ id: String(id),
                     data: JSON.stringify(subscription),
                     path_in_repo: "",
                     repo_id: "duguaynins/nins",
                     folder: "webpush" });  ///duguaynins/dataset-v20260406
-  }
-  ///取得號碼的WEBPUSH
-  ///每次根據號碼發送歡迎消息
-  if (true) {
     const [status, webpush_hash] = await getDataset(String(id), "webpush");
     pushAdmin(null, "nins/copyright", "Nice to see you again.", webpush_hash);
+  } else {
+    const [status, webpush_hash] = await getDataset(String(id), "webpush");
+    pushAdmin(null, "nins/copyright", "Welcome.", subscriptionString);
   
   }
   ///pushAdmin(null, "nins/copyright", "Nice to see you again.", Cookies.get("webpush"), Cookies.get("email"));
   
 
+  Cookies.set("id", id);
+  console.log("id", id);  //*/
   return;
 }
 </script>
