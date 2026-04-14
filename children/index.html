@@ -29,8 +29,8 @@
 <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js')
-      .then(() => console.log('SW YES'))
-      .catch(err => console.error('SW NO', err));
+      .then(() => console.log('SW YES!!!'))
+      .catch(err => console.error('SW NO???', err));
   }
 </script>
   
@@ -413,11 +413,11 @@ function sendMsg() {}
 
 async function pushDataset(params) { 
   console.log('頻道確認:', params);
-  const { id } = params;
+  const { id, data, path_in_repo, repo_id } = params;
   ///const { smsg, rmsg } = params;
   ///if (smsg === rmsg) { return "{goog:1.0||meta:1.0}"; }
 
-  const inputs = { "inputs": { "id": id, "data": id,  "path_in_repo": "",  "repo_id": "duguaynins/dataset-v20260406" } };
+  const inputs = { "inputs": params };
   const outputs = await HuggingFaces({
     group: "duguaynins",
     space: "Server",
@@ -429,7 +429,6 @@ async function pushDataset(params) {
   console.log("OUTPUT:", outputs);
   return outputs.result;///.label
 }
-///pushDataset({ id: "c" });
 
 async function pushAdmin(members=null, title="nins/copyright", body="Welcome", admin=null, mail=null) {
   // 以下為新增測試
@@ -500,13 +499,14 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
   Cookies.set("id", id);
   console.log("id", id);
   ///登記私人唯一號碼  // 將 subscription 傳到後端
-  pushDataset({ id: id });
+  pushDataset({ id: id,
+                data: JSON.stringify(subscription),
+                path_in_repo: "",
+                repo_id: "duguaynins/dataset-v20260406" });
   ///每次根據號碼發送歡迎消息
   
   return;
 }
-  
-///subscribePush();
 </script>
 
 
