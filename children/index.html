@@ -385,6 +385,7 @@ const msg = params.get("msg");
 document.addEventListener('click', () => {
   ///在任何點擊後就檢查有無消息，以及有無訂閱推播
   subscribePush();
+  
   if (msg) {
     document.getElementById("msg").innerText = msg;
     document.getElementById("myDialog").showModal();
@@ -412,7 +413,7 @@ async function pushDataset(params) {
   console.log("OUTPUT:", outputs);
   return outputs.result;///.label
 }
-pushDataset({ id: "aaa" });
+///pushDataset({ id: "c" });
 
 async function pushAdmin(members=null, title="nins/copyright", body="Welcome", admin=null, mail=null) {
   // 以下為新增測試
@@ -478,9 +479,12 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
   Cookies.set("webpush", subscriptionJson);
   Cookies.set("keypair", key);
 
-  ///生成私人唯一號碼
-  console.log(randomNumberString(12));
+  ///生成私人唯一號碼，紀錄唯一號碼到COOKIE
+  const id = Cookies.get("id") || randomNumberString(12);
+  Cookies.set("id", id);
+  console.log("id", id);
   ///登記私人唯一號碼  // 將 subscription 傳到後端
+  pushDataset({ id: id });
   ///每次根據號碼發送歡迎消息
   
   return;
