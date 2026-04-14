@@ -685,7 +685,7 @@ async function sendMsg(who, data) {
 }
 async function showId(who, data) {
   document.getElementById("myId").innerText = Cookies.get("id") || "***";
-  document.getElementById("userId").innerText = Cookies.get("id") || "***";  ///TEST
+  document.getElementById("userId").value = Cookies.get("id") || "***";  ///TEST
   ///document.getElementById("userId").focus();
   ///await navigator.clipboard.readText();
   const url = `https://copyright.nins.cc/?beta=&userId=${Cookies.get("id") || "xxxx"}`;
