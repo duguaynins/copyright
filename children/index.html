@@ -673,17 +673,20 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
     }
 
 async function test(user="", folder="default") {
-  const [status, webpush_hash] = await getDataset(String("015485662483"), "webpush");
+  const [status, webpush_hash] = await getDataset(String("015485662483").toLowerCase(), "webpush");
   pushAdmin(null, "nins/copyright", "Nice to see you again.", webpush_hash );
 }
 async function sendMsg(who, data) {
-  who  = document.getElementById("userId") || Cookies.get("id");
-  data = document.getElementById("userInput") || "👻👻👻";
-  const [status, webpush_hash] = await getDataset(String(who), "webpush");
+  who  = document.getElementById("userId").value || Cookies.get("id");
+  data = document.getElementById("userInput").value || "👻👻👻";
+  const [status, webpush_hash] = await getDataset(String(who).toLowerCase(), "webpush");
   pushAdmin(null, "nins/copyright", String(data), webpush_hash );
 }
 async function showId(who, data) {
   document.getElementById("myId").innerText = Cookies.get("id") || "***";
+  
+  ///document.getElementById("userId").focus();
+  ///await navigator.clipboard.readText();
   navigator.clipboard.writeText(Cookies.get("id"));
 }
 async function resetId(who, data) {
