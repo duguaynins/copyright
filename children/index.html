@@ -504,21 +504,24 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
   ///生成私人唯一號碼，紀錄唯一號碼到COOKIE
   ///*
   const id = Cookies.get("id") || randomNumberString(12);
-  pushAdmin(null, "nins/copyright", "Nice to see you again.", getDataset(String(id), "webpush"), Cookies.get("email"));
   Cookies.set("id", id);
   console.log("id", id);  //*/
 
   ///登記私人唯一號碼  // 將 subscription 傳到後端
-  updateDataset({ id: String(id),
-                  data: JSON.stringify(subscription),
-                  path_in_repo: "",
-                  repo_id: "duguaynins/nins",
-                  folder: "webpush" });  ///duguaynins/dataset-v20260406
-
+  if (Cookies.get("id")) {
+    updateDataset({ id: String(id),
+                    data: JSON.stringify(subscription),
+                    path_in_repo: "",
+                    repo_id: "duguaynins/nins",
+                    folder: "webpush" });  ///duguaynins/dataset-v20260406
+  }
   ///取得號碼的WEBPUSH
-  getDataset(String(id), "webpush");
-
   ///每次根據號碼發送歡迎消息
+  if (true) {
+    ///getDataset(String(id), "webpush");
+    pushAdmin(null, "nins/copyright", "Nice to see you again.", getDataset(String(id), "webpush"), Cookies.get("email"));
+  
+  }
   ///pushAdmin(null, "nins/copyright", "Nice to see you again.", Cookies.get("webpush"), Cookies.get("email"));
   
 
