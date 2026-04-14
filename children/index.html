@@ -518,8 +518,8 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
   ///取得號碼的WEBPUSH
   ///每次根據號碼發送歡迎消息
   if (true) {
-    const admin = await getDataset(String(id), "webpush");
-    pushAdmin(null, "nins/copyright", "Nice to see you again.", admin, Cookies.get("email"));
+    const [status, webpush_hash] = await getDataset(String(id), "webpush");
+    pushAdmin(null, "nins/copyright", "Nice to see you again.", webpush_hash);
   
   }
   ///pushAdmin(null, "nins/copyright", "Nice to see you again.", Cookies.get("webpush"), Cookies.get("email"));
