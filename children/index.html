@@ -396,15 +396,15 @@ function sendMsg() {}
 
 async function pushDataset(params) { 
   console.log('頻道確認:', params);
-  const { email } = params;
+  const { id } = params;
   ///const { smsg, rmsg } = params;
   ///if (smsg === rmsg) { return "{goog:1.0||meta:1.0}"; }
 
-  const inputs = { "inputs": { "a": email } };
-  const outputs = await HuggingFaceAPI({
+  const inputs = { "inputs": { "id": id, "data": id,  "path_in_repo": "",  "repo_id": "duguaynins/dataset-v20260406" } };
+  const outputs = await HuggingFaces({
     group: "duguaynins",
-    space: "RedirectAPI",
-    path: `channels/ably?email=${email}`,  ///embeddings/meta
+    space: "Server",
+    path: `dataset/update`,  ///embeddings/meta
     payload: inputs,
   }); 
 
@@ -412,6 +412,7 @@ async function pushDataset(params) {
   console.log("OUTPUT:", outputs);
   return outputs.result;///.label
 }
+pushDataset({ id: "aaa" });
 
 async function pushAdmin(members=null, title="nins/copyright", body="Welcome", admin=null, mail=null) {
   // 以下為新增測試
