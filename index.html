@@ -717,12 +717,12 @@ async function sendMsg(who, data) {
   pushAdmin(null, "nins/copyright", String(data), webpush_hash );
 }
 async function showId() {
-  document.getElementById("myId").innerText = Cookies.get("id") || "***";
-  document.getElementById("userId").value = Cookies.get("id") || "***";  ///TEST
-  document.getElementById("userInput").value = `${Cookies.get("id")} >>> ` || "👻👻👻 >>> ";
+  const url = `https://copyright.nins.cc/?beta=&userId=${Cookies.get("id") || "xxxx"}`;
+  document.getElementById("myId").innerText = Cookies.get("id") || "xxxx";
+  //document.getElementById("userId").value = Cookies.get("id") || "xxxx";  ///TEST
+  document.getElementById("userInput").value = `${Cookies.get("id")} >>> ${url}` || "👻👻👻 >>> ";
   ///document.getElementById("userId").focus();
   ///await navigator.clipboard.readText();
-  const url = `https://copyright.nins.cc/?beta=&userId=${Cookies.get("id") || "xxxx"}`;
   ///navigator.clipboard.writeText(Cookies.get("id"));  ///COPY_ID
   navigator.clipboard.writeText(url);  ///COPY_URL
 }
