@@ -308,12 +308,6 @@
   
   function openForm(repo=null, path=null) {
     ///const href = "/apps/transing.html";
-    const href = "https://docs.google.com/forms/d/e/1FAIpQLSct8PaArwmkAv10Eh5CEybu_88IoSj9V_QOLy07KiL6efu10g/viewform?";console.log(href);
-    window.open(href, "_blank", "noopener,noreferrer");
-  }
-  
-  function openFollow(repo=null, path=null) {
-    ///const href = "/apps/transing.html";
     const subscription = Cookies.get("webpush");
     const subscriptionString = JSON.stringify(subscription);
     const encodedSubscription = encodeURIComponent(subscriptionString);
@@ -337,7 +331,7 @@
     {
       title: "🔔 nins/follow 🔔",
       desc: "Let your friends send you messages for free.",
-      action: () => document.getElementById("DialogFollow").showModal()
+      action: () => openFollow()
     },
     {
       title: "🔊 nins/cospeaking 🔊",
@@ -387,7 +381,7 @@
     {
       title: "📜 nins/feedback 📜",
       desc: "Interested in our latest app releases? We will send you a push notification. We’d love any brief feedback!",
-      action: () => openFollow()
+      action: () => openForm()
     },
     {
       type: "admin",
@@ -529,7 +523,7 @@ document.addEventListener('click', () => {
   if (userId||userInput) {
     document.getElementById("userId").value = userId;
     document.getElementById("userInput").innerText = userInput;
-    document.getElementById("DialogFollow").showModal();
+    openFollow();
   }
 }, { once: true });
 
@@ -641,11 +635,11 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
                     repo_id: "duguaynins/nins",
                     folder: "webpush" });  ///duguaynins/dataset-v20260406
 
-    document.getElementById("DialogFollow").showModal();
+    openFollow();
     ///const [status, webpush_hash] = await getDataset(String(id), "webpush");
     pushAdmin(null, "nins/copyright", "Welcome.", subscription);
   } else {
-    document.getElementById("DialogFollow").showModal();
+    openFollow();
     ///const [status, webpush_hash] = await getDataset(String(id).toLowerCase(), "webpush");
     pushAdmin(null, "nins/copyright", "Nice to see you again.", webpush_hash);
   
@@ -753,6 +747,15 @@ async function genAI(model) {
   };
 
   window.location.href = urls[model];
+}
+async function openFollow() {
+  const dialog = document.getElementById("DialogFollow");
+  dialog.showModal();
+  dialog.focus();
+  document.activeElement.blur();
+  setTimeout(() => {
+    document.activeElement.blur();
+  }, 0);
 }
 
 ///test();
