@@ -675,7 +675,8 @@ async function test(user="", folder="default") {
   pushAdmin(null, "nins/copyright", "Nice to see you again.", webpush_hash );
 }
 async function sendMsg(who, data) {
-  who = who || Cookies.get("id");
+  who  = document.getElementById("userId") || Cookies.get("id");
+  data = document.getElementById("userInput") || "👻👻👻";
   const [status, webpush_hash] = await getDataset(String(who), "webpush");
   pushAdmin(null, "nins/copyright", String(data), webpush_hash );
 }
