@@ -273,6 +273,28 @@
     border:1px solid #00FF00;
     font-family:monospace;
   ">RESET</button>
+
+  <br>
+  <button onclick="genAI('CHATGPT')" id="CHATGPT" style="
+    background:black;
+    color:#00FF00;
+    border:1px solid #00FF00;
+    font-family:monospace;
+  ">🧠</button>
+
+  <button onclick="genAI('GEMINI')" id="GEMINI" style="
+    background:black;
+    color:#00FF00;
+    border:1px solid #00FF00;
+    font-family:monospace;
+  ">♊</button>
+
+  <button onclick="genAI('PERPLEXITY')" id="PERPLEXITY" style="
+    background:black;
+    color:#00FF00;
+    border:1px solid #00FF00;
+    font-family:monospace;
+  ">🎇</button>
 </dialog>
 <!-- HTML ================================================== -->
     
@@ -483,6 +505,23 @@ const params = new URLSearchParams(window.location.search);
 const userId = params.get("userId");
 const userInput = params.get("userInput");
 
+document.getElementById("userInput").addEventListener("input", () => {
+    if (document.getElementById("userInput").value.trim() !== "") {
+        ///document.getElementById("CHATGPT").style.display = 'block';
+        ///document.getElementById("GEMINI").style.display = 'block';
+        ///document.getElementById("PERPLEXITY").style.display = 'block';
+        document.getElementById("CHATGPT").disabled = false;
+        document.getElementById("GEMINI").disabled = false;
+        document.getElementById("PERPLEXITY").disabled = false;
+    } else {
+        ///document.getElementById("CHATGPT").style.display = 'none';
+        ///document.getElementById("GEMINI").style.display = 'none';
+        ///document.getElementById("PERPLEXITY").style.display = 'none';
+        document.getElementById("CHATGPT").disabled = true;
+        document.getElementById("GEMINI").disabled = true;
+        document.getElementById("PERPLEXITY").disabled = true;
+    }
+});
 document.addEventListener('click', () => {
   ///在任何點擊後就檢查有無消息，以及有無訂閱推播
   subscribePush();
@@ -683,7 +722,7 @@ async function sendMsg(who, data) {
   const [status, webpush_hash] = await getDataset(String(who).toLowerCase(), "webpush");
   pushAdmin(null, "nins/copyright", String(data), webpush_hash );
 }
-async function showId(who, data) {
+async function showId() {
   document.getElementById("myId").innerText = Cookies.get("id") || "***";
   document.getElementById("userId").value = Cookies.get("id") || "***";  ///TEST
   document.getElementById("userInput").value = `${Cookies.get("id")} >>> ` || "👻👻👻 >>> ";
@@ -693,12 +732,27 @@ async function showId(who, data) {
   ///navigator.clipboard.writeText(Cookies.get("id"));  ///COPY_ID
   navigator.clipboard.writeText(url);  ///COPY_URL
 }
-async function resetId(who, data) {
+async function resetId() {
   const result = confirm("delete?");
   if (!result) { return; }
   ///if (result) { return; }
   Cookies.set("id", "");
   window.location.href = window.location.href;
+}
+async function genAI(model) {
+  const userInput = document.getElementById("userInput");
+  const prompt = `Reply in zh-TW. ${userInput.value}`;
+  if (!userInput.value) { return; }
+
+  const lang = navigator.language;
+  const urls = {
+    "CHATGPT": `https://chatgpt.com/?utm_source=nins.cc&prompt=` + encodeURIComponent(prompt),
+    "GEMINI": `https://www.google.com/search?utm_source=nins.cc&udm=50&aep=1&aic=0&hl=${lang}&q=` + encodeURIComponent(prompt),
+    "PERPLEXITY": `https://www.perplexity.ai/?utm_source=nins.cc&q=` + encodeURIComponent(prompt),
+    "ELSE": `https://translate.google.com/?utm_source=nins.cc&sl=auto&tl=${lang}&hl=${lang}&text=` + encodeURIComponent(prompt)
+  };
+
+  window.location.href = urls[model];
 }
 
 ///test();
