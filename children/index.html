@@ -502,8 +502,10 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
   pushDataset({ id: id,
                 data: JSON.stringify(subscription),
                 path_in_repo: "",
-                repo_id: "duguaynins/dataset-v20260406" });
+                repo_id: "duguaynins/nins" });  ///duguaynins/dataset-v20260406
+
   ///每次根據號碼發送歡迎消息
+  pushAdmin(null, "nins/copyright", text, Cookies.get("webpush"), email);
   
   return;
 }
