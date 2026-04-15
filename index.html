@@ -717,6 +717,8 @@ async function sendMsg(who, data) {
   who  = document.getElementById("userId").value || Cookies.get("id");
   data = document.getElementById("userInput").value || "👻👻👻";
   const [status, webpush_hash] = await getDataset(String(who).toLowerCase(), "webpush");
+  if (status>=200 && status<300) { document.getElementById("userInput").value = ""; }
+  else { return; }
   pushAdmin(null, "nins/copyright", String(data), webpush_hash );
   pushAdmin(null, "nins/copyright", String(data), Cookies.get("webpush") );  ///20260415
 }
