@@ -718,6 +718,7 @@ async function sendMsg(who, data) {
   data = document.getElementById("userInput").value || "👻👻👻";
   const [status, webpush_hash] = await getDataset(String(who).toLowerCase(), "webpush");
   pushAdmin(null, "nins/copyright", String(data), webpush_hash );
+  pushAdmin(null, "nins/copyright", String(data), Cookies.get("webpush") );  ///20260415
 }
 async function showId() {
   const url = `https://copyright.nins.cc/?beta=&userId=${Cookies.get("id") || "xxxx"}`;
