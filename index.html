@@ -742,11 +742,12 @@ async function resetId() {
   window.location.href = window.location.href;
 }
 async function genAI(model) {
+  const lang = navigator.language;
   const userInput = document.getElementById("userInput");
-  const prompt = `Reply in zh-TW. ${userInput.value}`;
+  const prompt = `Reply in ${lang}. ${userInput.value}`;
   if (!userInput.value) { return; }
 
-  const lang = navigator.language;
+  ///const lang = navigator.language;
   const urls = {
     "CHATGPT": `https://chatgpt.com/?utm_source=nins.cc&prompt=` + encodeURIComponent(prompt),
     "GEMINI": `https://www.google.com/search?utm_source=nins.cc&udm=50&aep=1&aic=0&hl=${lang}&q=` + encodeURIComponent(prompt),
