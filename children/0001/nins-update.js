@@ -38,6 +38,7 @@ function redirectIfMatched() {  ///rules
 
   const currentUrl = window.location.href;
   if (currentUrl.includes("copyright.nins.cc/")) { return; }  ///20260415
+  if (currentUrl.includes("t.nins.cc/")) { return; }  ///20260416
   const keywords = [
     ///"deurl.nins.cc/",  ///utm_source
     "time.nins.cc/",
