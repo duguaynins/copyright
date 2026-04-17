@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title translate="no">nins/research</title>
+</head>
+<body>
+<script src="https://copyright.nins.cc/children/0001/nins-update.js"></script>
+<script>
+  // 👇 你的「未編碼原始字串」
+  const raw = `
+"{
+🕑2026-04-12T14:26:13.484Z+08:00
+（👂il:en👂sl:ja👂tl:ja🧠AI:O♊AI:G）
+（ 👁️奧德麗男爵的第一任妻子是瓊·莫蒂默，她是羅傑·莫蒂默的女兒。👄auto ）
+（ 👻Baron Audrey's first wife was Joan Mortimer, the daughter of Roger Mortimer.👄en ）
+（ 🔣オードリー男爵の最初の妻は、ロジャー・モーティマーの娘ジョアン・モーティマーでした。👄ja ）
+（ 🤖オードリー男爵の最初の妻は、ロジャー・モーティマーの娘ジョアン・モーティマーでした。👄ja ）
+（🎯{goog:0.924||meta:0.8684}📏ds:en&ja）
+🕛...
+}"
+  `;
+
+  // 👇 必須 encode
+  const encoded = encodeURIComponent(raw.trim());
+
+  // 👇 填入 Google Form
+  const url = "https://docs.google.com/forms/d/e/1FAIpQLSd7o8Opz2GE4ZFA1eP-9uE8jwC20eKRFvPoaJUByHJRVes6yg/viewform"
+            + "?usp=pp_url"
+            + "&entry.1551501466=" + encoded;
+
+  // 👇 自動跳轉
+  window.location.href = url;
+</script>
+</body>
+</html>
