@@ -578,7 +578,7 @@ async function pushAdmin(members=null, title="nins/copyright", body="Welcome", a
 async function subscribePush() {  // 用戶透過此方法完成訂閱推播
   
   const dialog = document.getElementById("DialogFollow");
-  dialog.showModal();
+  ///dialog.showModal();  ///20260417
   
   ///檢查通知權
   const permission = await Notification.requestPermission();
