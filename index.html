@@ -5,6 +5,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -302,6 +303,7 @@
  
 <script>  // main.js
   function openApp(repo, path="", dir="/children/", file="") {
+    if (!repo) { return; }  ///20260418
     const href = "https://" + repo + ".nins.cc" + path;console.log(href);  ///https?
     window.open(href, "_blank", "noopener,noreferrer");
   }
@@ -343,13 +345,13 @@
       title: "🔐 nins/encoding 🔐",
       desc: "Enter content and get barcode.",
       tags: ["🔥", "BETA"],
-      action: () => openApp('encoding')
+      action: () => openApp('')  ///encoding
     },
     {
       title: "🔓 nins/decoding 🔓",
       desc: "Use the camera to decode a 2D code.",
       tags: ["🔥", "BETA"],
-      action: () => openApp('decoding')
+      action: () => openApp('')  ///decoding
     },
     {
       title: "🧭 nins/uris 🧭",
