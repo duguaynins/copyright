@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="© 2024 NINS (by JPGT). COGENERATING SYSTEM." />
+  <title translate="no">nins / cogenerating.sys</title>
+
+  <style>
+    :root {
+      --dos-bg: #000000;
+      --dos-fg: #00ff66;
+      --dos-fg-dim: #4dbd74;
+      --dos-border: #00ff66;
+    }
+
+    * { box-sizing: border-box; }
+
+    /* CRT 掃描線與閃爍特效 */
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--dos-bg);
+      color: var(--dos-fg);
+      font-family: "Courier New", Consolas, Monaco, monospace;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(rgba(255,255,255,0.03) 0px, transparent 1px, transparent 3px);
+      z-index: 9999;
+      opacity: 0.2;
+    }
+
+    .screen {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 15px;
+      animation: flicker 0.15s infinite;
+    }
+
+    /* 頂部資訊列 */
+    .topbar {
+      border: 2px solid var(--dos-border);
+      padding: 10px 15px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      background: rgba(0, 255, 102, 0.05);
+    }
+
+    /* 全展開面板佈局 [根據使用者偏好修改] */
+    .dos-panel {
+      border: 1px solid var(--dos-border);
+      padding: 15px;
+      margin-bottom: 15px;
+      background: rgba(0, 255, 102, 0.02);
+    }
+
+    .panel-label {
+      color: var(--dos-fg-dim);
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    /* 針對行動裝置優化的輸入區 */
+    .input-field {
+      width: 100%;
+      background: rgba(0, 255, 102, 0.1);
+      border: 1px solid var(--dos-border);
+      color: var(--dos-fg);
+      padding: 12px;
+      font-family: inherit;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      background: transparent;
+      color: var(--dos-fg);
+      border: 1px solid var(--dos-border);
+      padding: 12px 20px;
+      cursor: pointer;
+      font-family: inherit;
+      text-transform: uppercase;
+      width: 100%;
+    }
+
+    .btn:hover {
+      background: var(--dos-fg);
+      color: #000;
+    }
+
+    /* 對話顯示區 - 永遠全展開 [根據使用者偏好修改] */
+    #output_display {
+      height: 400px;
+      overflow-y: auto;
+      border: 1px dashed var(--dos-border);
+      padding: 10px;
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 10px;
+    }
+
+    .msg-entry {
+      border-bottom: 1px solid rgba(0, 255, 102, 0.2);
+      padding-bottom: 5px;
+    }
+
+    .blink::after { content: "_"; animation: blink-anim 1s step-start infinite; }
+    @keyframes blink-anim { 50% { opacity: 0; } }
+    @keyframes flicker { 0% { opacity: 0.98; } 100% { opacity: 1; } }
+
+    @media (min-width: 600px) {
+      .btn { width: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="screen">
+    <div class="topbar">
+      <span>© NINS / COGENERATING.SYS</span>
+      <span>NODE: DUGUAYNINS</span>
+    </div>
+
+    <div class="dos-panel">
+      <span class="panel-label">C:\> CONFIG_AI_ROLE_SETTINGS</span>
+      <input id="input_sys" class="input-field" type="text" placeholder="INPUT ROLE SETTINGS...">
+    </div>
+
+    <div class="dos-panel">
+      <span class="panel-label">C:\> DATA_STREAM_MONITOR</span>
+      <div id="output_display">
+        <div class="msg-entry">SYSTEM_READY. START DISCUSSION... <span class="blink"></span></div>
+      </div>
+    </div>
+
+    <div class="dos-panel">
+      <span class="panel-label">C:\> TERMINAL_INPUT</span>
+      <input id="input_msg" class="input-field" type="text" placeholder="ENTER MESSAGE...">
+      <button class="btn" id="input_msgbtn" onclick="send()">[ ENTER ] SEND_AND_RECEIVE</button>
+    </div>
+
+    <div style="text-align: center; font-size: 0.7rem; color: var(--dos-fg-dim);">
+      BY SENDING DATA, YOU AGREE TO ALL NINS PROTOCOLS.
+    </div>
+  </div>
+
+  <script type="module">
+    // ... 原本的 Gradio Client 與 generate 邏輯 ...
+  </script>
+
+</body>
+</html>
