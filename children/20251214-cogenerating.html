@@ -321,7 +321,7 @@ async function generate(params) {
   const inputs = { "inputs": {models:models, system:sys, user:usr} }
   const outputs = await HuggingFaceAPI({
     group: "duguaynins",
-    space: "RedirectAPI",  ///MultipleLLMs
+    space: "Server",  ///MultipleLLMs  ///RedirectAPI
     path: "generate/llms",  ////run/predict, api/predict, predict, /queue/join
     payload: inputs,
   }); 
