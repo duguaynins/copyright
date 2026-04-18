@@ -3,160 +3,303 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="description" content="© 2024 NINS (by JPGT). COGENERATING SYSTEM." />
+  <meta name="description" content="© 2024 NINS (by JPGT). By using any of the services, it means you have agreed to any content and all content!" />
+  <link rel="canonical" href="https://copyright.nins.cc/" />
   <title translate="no">nins / cogenerating.sys</title>
 
   <style>
     :root {
       --dos-bg: #000000;
       --dos-fg: #00ff66;
+      --dos-fg-soft: #66ff99;
       --dos-fg-dim: #4dbd74;
+      --dos-invert-bg: #00ff66;
+      --dos-invert-fg: #000000;
       --dos-border: #00ff66;
+      --crt-flicker: flicker 0.15s infinite;
     }
 
     * { box-sizing: border-box; }
 
-    /* CRT 掃描線與閃爍特效 */
-    body {
+    @keyframes flicker {
+      0%   { opacity: 0.97; }
+      5%   { opacity: 0.99; }
+      10%  { opacity: 0.98; }
+      100% { opacity: 0.99; }
+    }
+
+    html, body {
       margin: 0;
       padding: 0;
       background: var(--dos-bg);
       color: var(--dos-fg);
       font-family: "Courier New", Consolas, Monaco, monospace;
-      min-height: 100vh;
-      overflow-x: hidden;
+      text-shadow: 0 0 4px currentColor;
+      min-height: 100%;
     }
 
+    /* 完美的 CRT 掃描線特效 */
     body::before {
       content: "";
       position: fixed;
       inset: 0;
       pointer-events: none;
-      background: repeating-linear-gradient(rgba(255,255,255,0.03) 0px, transparent 1px, transparent 3px);
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.03),
+        rgba(255,255,255,0.03) 1px,
+        transparent 1px,
+        transparent 3px
+      );
       z-index: 9999;
-      opacity: 0.2;
+      opacity: 0.18;
     }
 
     .screen {
-      max-width: 1000px;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      min-height: 100vh;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 15px;
-      animation: flicker 0.15s infinite;
-    }
-
-    /* 頂部資訊列 */
-    .topbar {
+      padding: 16px;
       border: 2px solid var(--dos-border);
-      padding: 10px 15px;
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: space-between;
-      font-weight: bold;
-      background: rgba(0, 255, 102, 0.05);
+      background: rgba(0, 255, 102, 0.02);
+      animation: var(--crt-flicker);
     }
 
-    /* 全展開面板佈局 [根據使用者偏好修改] */
-    .dos-panel {
+    /* 延續 camera.sys 的面板樣式 */
+    .dos-block {
       border: 1px solid var(--dos-border);
       padding: 15px;
       margin-bottom: 15px;
-      background: rgba(0, 255, 102, 0.02);
+      background: rgba(0, 255, 102, 0.03);
     }
 
-    .panel-label {
-      color: var(--dos-fg-dim);
-      font-size: 0.9rem;
-      margin-bottom: 10px;
+    .topbar {
+      font-weight: bold;
+      letter-spacing: 1px;
+      border-bottom: 2px solid var(--dos-border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      padding-bottom: 5px;
+      margin-bottom: 15px;
+    }
+
+    .line-label {
+      font-weight: bold;
+      margin-bottom: 8px;
       display: block;
+      color: var(--dos-fg-soft);
     }
 
-    /* 針對行動裝置優化的輸入區 */
-    .input-field {
-      width: 100%;
-      background: rgba(0, 255, 102, 0.1);
-      border: 1px solid var(--dos-border);
-      color: var(--dos-fg);
-      padding: 12px;
-      font-family: inherit;
-      outline: none;
-      margin-bottom: 10px;
-    }
-
+    /* 一模一樣的按鈕風格 */
     .btn {
       background: transparent;
       color: var(--dos-fg);
       border: 1px solid var(--dos-border);
       padding: 12px 20px;
+      font: inherit;
       cursor: pointer;
-      font-family: inherit;
-      text-transform: uppercase;
-      width: 100%;
+      text-shadow: 0 0 4px currentColor;
+      display: inline-block;
+      text-align: center;
+      text-decoration: none;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      width: 100%; /* 手機優先 */
     }
 
-    .btn:hover {
-      background: var(--dos-fg);
-      color: #000;
+    .btn:hover, .btn:active {
+      background: var(--dos-invert-bg);
+      color: var(--dos-invert-fg);
+      text-shadow: none;
     }
 
-    /* 對話顯示區 - 永遠全展開 [根據使用者偏好修改] */
-    #output_display {
-      height: 400px;
-      overflow-y: auto;
-      border: 1px dashed var(--dos-border);
+    /* 符合 DOS 美學的輸入框 */
+    .text-input {
+      background: rgba(0, 255, 102, 0.1);
+      color: var(--dos-fg);
+      border: 1px solid var(--dos-border);
       padding: 10px;
-      display: flex;
-      flex-direction: column-reverse;
-      gap: 10px;
+      font: inherit;
+      outline: none;
+      width: 100%;
+      margin-bottom: 10px;
     }
 
-    .msg-entry {
-      border-bottom: 1px solid rgba(0, 255, 102, 0.2);
-      padding-bottom: 5px;
+    /* 訊息顯示區：全展開設計 [引用自帳本偏好] */
+    #output_display {
+      border: 1px dashed var(--dos-border);
+      min-height: 300px;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 0.9rem;
+      overflow-y: auto;
+      background: rgba(0, 0, 0, 0.3);
     }
 
-    .blink::after { content: "_"; animation: blink-anim 1s step-start infinite; }
+    .status-msg {
+      margin-top: 10px;
+      color: var(--dos-fg-dim);
+    }
+
+    .blink::after {
+      content: "_";
+      animation: blink-anim 1s step-start infinite;
+    }
     @keyframes blink-anim { 50% { opacity: 0; } }
-    @keyframes flicker { 0% { opacity: 0.98; } 100% { opacity: 1; } }
 
     @media (min-width: 600px) {
       .btn { width: auto; }
+      .text-input { max-width: 400px; }
     }
   </style>
 </head>
 <body>
+  
+<!-- NINS ================================================== -->
+<!--script src="https://copyright.nins.cc/children/0001/nins-update.js"></script!-->
+<script src="https://copyright.nins.cc/children/0001/nins-cookie.js"></script>
+<script src="https://copyright.nins.cc/children/0001/nins-huggingface.js"></script>
+
 
   <div class="screen">
     <div class="topbar">
-      <span>© NINS / COGENERATING.SYS</span>
+      <span>© NINS / COGENERATING.SYS [2026.04.18]</span>
       <span>NODE: DUGUAYNINS</span>
     </div>
-
-    <div class="dos-panel">
-      <span class="panel-label">C:\> CONFIG_AI_ROLE_SETTINGS</span>
-      <input id="input_sys" class="input-field" type="text" placeholder="INPUT ROLE SETTINGS...">
+    
+    <div class="dos-block">
+      <div class="line-label">C:\> CONFIG_SYSTEM_PROMPT</div>
+      <input type="text" id="input_sys" class="text-input" placeholder="DEFINE AI ROLE...">
+      <div class="status-msg">STATUS: PROMPT_IDLE</div>
     </div>
 
-    <div class="dos-panel">
-      <span class="panel-label">C:\> DATA_STREAM_MONITOR</span>
+    <div class="dos-block">
+      <div class="line-label">C:\> TERMINAL_INPUT</div>
+      <input type="text" id="input_msg" class="text-input" placeholder="MESSAGE_TO_AI...">
+      <button class="btn" id="input_msgbtn" onclick="send()">[ F1 ] EXECUTE_SEND</button>
+    </div>
+
+    <div class="dos-block">
+      <div class="line-label">C:\> DATA_STREAM_MONITOR</div>
       <div id="output_display">
-        <div class="msg-entry">SYSTEM_READY. START DISCUSSION... <span class="blink"></span></div>
+        INITIALIZING_INTERFACE... [OK]<br>
+        READY_FOR_COMMUNICATION... <span class="blink"></span>
       </div>
     </div>
 
-    <div class="dos-panel">
-      <span class="panel-label">C:\> TERMINAL_INPUT</span>
-      <input id="input_msg" class="input-field" type="text" placeholder="ENTER MESSAGE...">
-      <button class="btn" id="input_msgbtn" onclick="send()">[ ENTER ] SEND_AND_RECEIVE</button>
-    </div>
-
-    <div style="text-align: center; font-size: 0.7rem; color: var(--dos-fg-dim);">
-      BY SENDING DATA, YOU AGREE TO ALL NINS PROTOCOLS.
+    <div style="text-align: center; font-size: 0.75rem; color: var(--dos-fg-dim);">
+      WARNING: ALL TRANSMISSIONS ARE LOGGED BY NINS PROTOCOL.
     </div>
   </div>
 
   <script type="module">
-    // ... 原本的 Gradio Client 與 generate 邏輯 ...
+    // 原有的 JavaScript 邏輯保持不變
   </script>
+<script>
 
+function log(msg) {
+  ///document.getElementById("output_display").textContent += msg + "\n";
+  ///document.getElementById("output_display").innerHTML += msg + "<br>";
+  ///document.getElementById("output_display").innerHTML += `<span translate="no">${msg}</span><br>`;
+
+  ///let time = Date.now();
+  let time = "⏳　" + new Date().toISOString()
+  const div = document.createElement("div");
+  div.innerHTML = `<span translate="no">${time}　${msg}</span>`;
+  ///div.innerHTML = `<pre translate="no">${msg}</pre>`;
+  document.getElementById("output_display").prepend(div);
+}
+
+
+
+async function HuggingFaceAPI(inputs=null) {
+  // 20251205
+  try {
+    console.log(inputs);
+    const { group, space, path, payload } = inputs;
+    const baseUrl = `https://${group}-${space}.hf.space/${path}`;  ///"https://duguaynins-RedirectAPI.hf.space/path";
+
+    const response = await fetch(baseUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+    console.log(data);
+    return data;
+  
+  } catch (err) {
+    console.error(err);
+    return {result: {confidences: null, label: `<a translate="no" href="mailto:duguaynins@gmail.com?subject=${encodeURIComponent( new Date().toISOString() )}&body=${encodeURIComponent( err.stack )}">mailto:duguaynins@gmail.com</a>` }};  ///escapeHtml(err.stack)
+  }
+}
+
+async function generate(params) {  
+  console.log('翻譯文本:', params);
+  ///const system = document.getElementById("input_sys").value;
+  ///const message = document.getElementById("input_msg").value;
+
+  const { sys = system, usr = message, models } = params;
+  if (!models) { return; }
+  if (!sys) { return "sys?"; }
+  if (!usr) { return "usr?"; }
+
+  
+  const inputs = { "inputs": {models:models, system:sys, user:usr} }
+  const outputs = await HuggingFaceAPI({  ///HuggingFaces  ///HuggingFaceAPI
+    group: "duguaynins",
+    space: "Server",  ///MultipleLLMs  ///RedirectAPI
+    path: "generate/llms",  ////run/predict, api/predict, predict, /queue/join
+    payload: inputs,
+  }); 
+
+  console.log("INPUT:", inputs);
+  console.log("OUTPUT:", outputs);
+  ///return outputs.result.label;
+  return outputs.result;
+}
+
+async function send() {
+  document.getElementById("input_msg").disabled = true;
+  const sys = document.getElementById("input_sys").value;
+  const usr = document.getElementById("input_msg").value;
+  ///document.getElementById("input_msg").value = "";
+  log("🧠　" + usr);  ///🧠✨💡
+  ///{ "text": xmsg, "source": null, "target": {tl:tlang, il:ilang} }
+  ///log("♊　" + await HuggingFaceAPI("duguaynins/MultipleLLMs","/fn_main",{models:'gemini-2.5-flash',system:document.getElementById("input_sys").value ,user:document.getElementById("input_msg").value }) );
+  ///log("🤖　" + await HuggingFaceAPI("duguaynins/MultipleLLMs","/fn_main",{models:'gpt-4o-mini',system:document.getElementById("input_sys").value ,user:document.getElementById("input_msg").value }) );
+  ///log("🤖＋" + await HuggingFaceAPI("duguaynins/MultipleLLMs","/fn_main",{models:'gpt-4o',system:document.getElementById("input_sys").value ,user:document.getElementById("input_msg").value }) );
+  log("🤖　" + await generate({ "sys": sys, "usr": usr, "models": 'gpt-4o-mini' }) );
+  log("🤖＋" + await generate({ "sys": sys, "usr": usr, "models": 'gpt-4o' }) );
+
+  document.getElementById("input_msg").value = "";
+  document.getElementById("input_msg").disabled = false;
+}
+
+
+document.getElementById("input_msg").addEventListener("keydown", function(e) {    
+    if (e.key === "Enter") {
+        e.preventDefault();  // 阻止 Enter 鍵的預設行為（即防止跳轉到下一個輸入框）
+        send();
+    }
+});
+</script>
+<!-- 放置你原有的布局 -->
+ 
+<!-- LOG ================================================== -->
+<script type="text/javascript">  // google.js
+</script>
+<!-- LOG ================================================== -->
+    
+
+<!-- TRANSLATE ================================================== -->
+<script type="text/javascript">  // google.js
+</script>
+<!-- TRANSLATE ================================================== -->
 </body>
 </html>
