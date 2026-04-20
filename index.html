@@ -336,6 +336,33 @@
       action: () => openFollow()
     },
     {
+      title: "🧿 nins/deurl 🧿",
+      desc: "Check a link’s destination here first, and don’t walk straight through the door into trouble.",
+      subDesc: "Feel free to apply! no sensitive info needed.",
+      tags: ["👻", "⭐"],
+      action: () => openApp('deurl')
+    },
+    {
+      title: "🧭 nins/uris 🧭",
+      desc: "Quickly create your own contact URL in HTTPS. Give a \"Vivre Card/Soul Paper\" to everything that matters!",
+      subDesc: "Feel free to apply! no sensitive info needed.",
+      tags: ["🎄", "⭐"],
+      action: () => openApp('uris')
+    },
+    {
+      title: "🔣 nins/transing 🔣",
+      desc: "Use chat channels to easily start communicating with anyone.",
+      subDesc: "Feel free to apply! no sensitive info needed.",
+      tags: ["👻", "⭐"],
+      action: () => openApp('transing')
+    },
+    {
+      title: "🖥️ nins/sys 🖥️",
+      desc: "DOS system. All the everyday little tools are in this old system.",
+      tags: ["👻", "⭐"],
+      action: () => openApp('x')
+    },
+    {
       title: "🔊 nins/cospeaking 🔊",
       desc: "Romanized spelling for all languages.",
       tags: ["🔥", "BETA"],
@@ -352,33 +379,6 @@
       desc: "Use the camera to decode a 2D code.",
       tags: ["🔥", "BETA"],
       action: () => openApp('')  ///decoding
-    },
-    {
-      title: "🧭 nins/uris 🧭",
-      desc: "Quickly create your own contact URL in HTTPS. Give a \"Vivre Card/Soul Paper\" to everything that matters!",
-      subDesc: "Feel free to apply! no sensitive info needed.",
-      tags: ["🎄", "⭐"],
-      action: () => openApp('uris')
-    },
-    {
-      title: "🧿 nins/deurl 🧿",
-      desc: "Check a link’s destination here first, and don’t walk straight through the door into trouble.",
-      subDesc: "Feel free to apply! no sensitive info needed.",
-      tags: ["👻", "⭐"],
-      action: () => openApp('deurl')
-    },
-    {
-      title: "🔣 nins/transing 🔣",
-      desc: "Use chat channels to easily start communicating with anyone.",
-      subDesc: "Feel free to apply! no sensitive info needed.",
-      tags: ["👻", "⭐"],
-      action: () => openApp('transing')
-    },
-    {
-      title: "🖥️ nins/sys 🖥️",
-      desc: "DOS system. All the everyday little tools are in this old system.",
-      tags: ["👻", "⭐"],
-      action: () => openApp('x')
     },
     {
       title: "📜 nins/feedback 📜",
@@ -401,7 +401,7 @@
   // 2. 修改後的渲染函式 (改為 async)
   async function renderFeatures() {
     const container = document.getElementById('feature-container');
-    const delay = 220; // ⬅️ 這裡設定每個項目之間要間隔幾毫秒 (例如 1000ms = 1秒)
+    const delay = 220; // ⬅️ 這裡設定每個項目之間要間隔延遲幾毫秒 (例如 1000ms = 1秒)
 
     for (const item of features) {
       const div = document.createElement('div');
@@ -434,10 +434,20 @@
       container.appendChild(div);
 
       // 4. 自動滾動到這個新元素
-      div.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'end'  ///center, end
-      });
+      if (false) {   ///true
+        div.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'end'  ///center, end
+        });
+      }
+
+      // 4. 自動滾動到這個新元素，但互動時不滾動畫面
+      if (autoScroll) {  ///20260420
+        div.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'end'
+        });
+      }
 
       // 5. ⬅️ 關鍵：等待一段時間後再跑下一次迴圈
       await sleep(delay);
@@ -771,10 +781,33 @@ async function openFollow() {
 
 ///test();
 </script>
+
+
+<script>
+let isUserInteracting = false;
+let autoScroll = true;
+
+// 手機觸控
+window.addEventListener('touchstart', () => {
+  isUserInteracting = true; autoScroll = false;
+});
+
+window.addEventListener('touchend', () => {
+  isUserInteracting = false;
+});
+
+// 電腦滑鼠
+window.addEventListener('mousedown', () => {
+  isUserInteracting = true; autoScroll = false;
+});
+
+window.addEventListener('mouseup', () => {
+  isUserInteracting = false;
+});
+</script>
 <!-- 放置你原有的布局：JS -->
 
   
 </body>
 </html>
-
 
