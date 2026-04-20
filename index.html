@@ -733,7 +733,7 @@ async function sendMsg(who, data) {
   if (status>=200 && status<300) { document.getElementById("userInput").value = ""; }
   else { return; }
   const title = "nins/©";  ///nins/copyright
-  const body = String(data);
+  const body = String(`${Cookies.get("id")} >>> ${data}`);
   pushAdmin(null, title, body, webpush_hash );
   pushAdmin(null, title, body, Cookies.get("webpush") );  ///20260415
 }
@@ -741,8 +741,9 @@ async function showId() {
   const url = `https://copyright.nins.cc/?beta=&userId=${Cookies.get("id") || "xxxx"}`;
   document.getElementById("myId").innerText = Cookies.get("id") || "xxxx";
   //document.getElementById("userId").value = Cookies.get("id") || "xxxx";  ///TEST
-  document.getElementById("userInput").value = `${Cookies.get("id")} >>> ${url}` || "👻👻👻 >>> ";
+  ///document.getElementById("userInput").value = `${Cookies.get("id")} >>> ${url}` || "👻👻👻 >>> ";
   ///document.getElementById("userId").focus();
+
   ///await navigator.clipboard.readText();
   ///navigator.clipboard.writeText(Cookies.get("id"));  ///COPY_ID
   navigator.clipboard.writeText(url);  ///COPY_URL
