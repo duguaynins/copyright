@@ -509,7 +509,7 @@ function randomNumberString(length) {  ///***
 }
 
 const params = new URLSearchParams(window.location.search);
-const userId = params.get("userId");
+const userId = params.get("userId") || "duguaynins@gmail.com";
 const userInput = params.get("userInput");
 
 document.getElementById("userInput").addEventListener("input", () => {
