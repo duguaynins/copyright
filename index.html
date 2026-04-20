@@ -219,8 +219,8 @@
   <input 
     id="userId" translate="no"
     type="text" 
-    placeholder="INPUT ID (A~Z)" 
-    maxlength="26"
+    placeholder="INPUT USER ID" 
+    maxlength="50"
     style="
       width:100%;
       margin-bottom:8px;
@@ -229,8 +229,8 @@
       border:1px solid #00FF00;
       font-family:monospace;
     "
-    oninput="this.value = this.value.replace(/[^A-Za-z]/g,'').toUpperCase();"
   >
+  <!--input oninput="this.value = this.value.replace(/[^A-Za-z]/g,'').toUpperCase();" !-->
 
   <textarea 
     id="userInput" 
