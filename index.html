@@ -213,7 +213,7 @@
   font-family:monospace;
   padding:12px;
 ">
-  <pre id="C" translate="no" style="margin:0 0 10px 0;" onclick="resetId()">C:\> </pre>
+  <pre id="C" translate="no" style="margin:0 0 10px 0;" onclick="resetId(false)">C:\> </pre>
   <pre id="myId" translate="no" style="margin:0 0 10px 0;">***</pre>
 
   <input 
@@ -746,7 +746,8 @@ async function showId() {
   ///navigator.clipboard.writeText(Cookies.get("id"));  ///COPY_ID
   navigator.clipboard.writeText(url);  ///COPY_URL
 }
-async function resetId() {
+async function resetId(switchs=true) {
+  if (!switchs) { return; }
   const result = confirm("delete?");
   if (!result) { return; }
   ///if (result) { return; }
@@ -788,22 +789,26 @@ let isUserInteracting = false;
 let autoScroll = true;
 
 // 手機觸控
-window.addEventListener('touchstart', () => {
-  isUserInteracting = true; autoScroll = false;
-});
+document.addEventListener('click', () => {
+  ///console.log('整個頁面任意點擊，只觸發一次');
+  
+  window.addEventListener('touchstart', () => {
+    isUserInteracting = true; autoScroll = false;
+  });
 
-window.addEventListener('touchend', () => {
-  isUserInteracting = false;
-});
+  window.addEventListener('touchend', () => {
+    isUserInteracting = false;
+  });
 
-// 電腦滑鼠
-window.addEventListener('mousedown', () => {
-  isUserInteracting = true; autoScroll = false;
-});
+  // 電腦滑鼠
+  window.addEventListener('mousedown', () => {
+    isUserInteracting = true; autoScroll = false;
+  });
 
-window.addEventListener('mouseup', () => {
-  isUserInteracting = false;
-});
+  window.addEventListener('mouseup', () => {
+    isUserInteracting = false;
+  });
+}, { once: true });
 </script>
 <!-- 放置你原有的布局：JS -->
 
