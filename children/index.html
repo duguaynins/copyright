@@ -5,6 +5,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head translate="yes">
@@ -212,14 +213,14 @@
   font-family:monospace;
   padding:12px;
 ">
-  <pre id="C" translate="no" style="margin:0 0 10px 0;">C:\> </pre>
+  <pre id="C" translate="no" style="margin:0 0 10px 0;" onclick="resetId(false)">C:\> </pre>
   <pre id="myId" translate="no" style="margin:0 0 10px 0;">***</pre>
 
   <input 
     id="userId" translate="no"
     type="text" 
-    placeholder="INPUT ID (A~Z)" 
-    maxlength="26"
+    placeholder="INPUT ID..." 
+    maxlength="50"
     style="
       width:100%;
       margin-bottom:8px;
@@ -228,8 +229,9 @@
       border:1px solid #00FF00;
       font-family:monospace;
     "
-    oninput="this.value = this.value.replace(/[^A-Za-z]/g,'').toUpperCase();"
+    value="duguaynins@gmail.com"
   >
+  <!--input oninput="this.value = this.value.replace(/[^A-Za-z]/g,'').toUpperCase();" !-->
 
   <textarea 
     id="userInput" 
@@ -273,6 +275,28 @@
     border:1px solid #00FF00;
     font-family:monospace;
   ">RESET</button>
+
+  <!--br!-->
+  <button onclick="genAI('CHATGPT')" id="CHATGPT" style="
+    background:black;
+    color:#00FF00;
+    border:1px solid #00FF00;
+    font-family:monospace;
+  ">🧠</button>
+
+  <button onclick="genAI('GEMINI')" id="GEMINI" style="
+    background:black;
+    color:#00FF00;
+    border:1px solid #00FF00;
+    font-family:monospace;
+  ">♊</button>
+
+  <button onclick="genAI('PERPLEXITY')" id="PERPLEXITY" style="
+    background:black;
+    color:#00FF00;
+    border:1px solid #00FF00;
+    font-family:monospace;
+  ">🎇</button>
 </dialog>
 <!-- HTML ================================================== -->
     
@@ -280,17 +304,12 @@
  
 <script>  // main.js
   function openApp(repo, path="", dir="/children/", file="") {
+    if (!repo) { return; }  ///20260418
     const href = "https://" + repo + ".nins.cc" + path;console.log(href);  ///https?
     window.open(href, "_blank", "noopener,noreferrer");
   }
   
   function openForm(repo=null, path=null) {
-    ///const href = "/apps/transing.html";
-    const href = "https://docs.google.com/forms/d/e/1FAIpQLSct8PaArwmkAv10Eh5CEybu_88IoSj9V_QOLy07KiL6efu10g/viewform?";console.log(href);
-    window.open(href, "_blank", "noopener,noreferrer");
-  }
-  
-  function openFollow(repo=null, path=null) {
     ///const href = "/apps/transing.html";
     const subscription = Cookies.get("webpush");
     const subscriptionString = JSON.stringify(subscription);
@@ -311,29 +330,18 @@
       desc: "By using any of the services, it means you have agreed to any content and all content!",
       subDesc: "👻👻👻 © 2024 NINS (by JPGT). 👻👻👻",
       style: "background:#444444; color:white;"
-    },
+    },/*
     {
       title: "🔔 nins/follow 🔔",
       desc: "Let your friends send you messages for free.",
-      action: () => document.getElementById("DialogFollow").showModal()
-    },
+      action: () => openFollow()
+    },*/
     {
-      title: "🔊 nins/cospeaking 🔊",
-      desc: "Romanized spelling for all languages.",
-      tags: ["🔥", "BETA"],
-      action: () => openApp('cospeaking')
-    },
-    {
-      title: "🔐 nins/encoding 🔐",
-      desc: "Enter content and get barcode.",
-      tags: ["🔥", "BETA"],
-      action: () => openApp('encoding')
-    },
-    {
-      title: "🔓 nins/decoding 🔓",
-      desc: "Use the camera to decode a 2D code.",
-      tags: ["🔥", "BETA"],
-      action: () => openApp('decoding')
+      title: "🧿 nins/deurl 🧿",
+      desc: "Check a link’s destination here first, and don’t walk straight through the door into trouble.",
+      subDesc: "Feel free to apply! no sensitive info needed.",
+      tags: ["👻", "⭐"],
+      action: () => openApp('deurl')
     },
     {
       title: "🧭 nins/uris 🧭",
@@ -341,13 +349,6 @@
       subDesc: "Feel free to apply! no sensitive info needed.",
       tags: ["🎄", "⭐"],
       action: () => openApp('uris')
-    },
-    {
-      title: "🧿 nins/deurl 🧿",
-      desc: "Check a link’s destination here first, and don’t walk straight through the door into trouble.",
-      subDesc: "Feel free to apply! no sensitive info needed.",
-      tags: ["👻", "⭐"],
-      action: () => openApp('deurl')
     },
     {
       title: "🔣 nins/transing 🔣",
@@ -363,9 +364,27 @@
       action: () => openApp('x')
     },
     {
+      title: "🔊 nins/cospeaking 🔊",
+      desc: "Romanized spelling for all languages.",
+      tags: ["🔥", "BETA"],
+      action: () => openApp('cospeaking')
+    },
+    {
+      title: "🔐 nins/encoding 🔐",
+      desc: "Enter content and get barcode.",
+      tags: ["🔥", "BETA"],
+      action: () => openApp('')  ///encoding
+    },
+    {
+      title: "🔓 nins/decoding 🔓",
+      desc: "Use the camera to decode a 2D code.",
+      tags: ["🔥", "BETA"],
+      action: () => openApp('')  ///decoding
+    },
+    {
       title: "📜 nins/feedback 📜",
       desc: "Interested in our latest app releases? We will send you a push notification. We’d love any brief feedback!",
-      action: () => openFollow()
+      action: () => openForm()
     },
     {
       type: "admin",
@@ -383,7 +402,7 @@
   // 2. 修改後的渲染函式 (改為 async)
   async function renderFeatures() {
     const container = document.getElementById('feature-container');
-    const delay = 220; // ⬅️ 這裡設定每個項目之間要間隔幾毫秒 (例如 1000ms = 1秒)
+    const delay = 220; // ⬅️ 這裡設定每個項目之間要間隔延遲幾毫秒 (例如 1000ms = 1秒)
 
     for (const item of features) {
       const div = document.createElement('div');
@@ -416,10 +435,20 @@
       container.appendChild(div);
 
       // 4. 自動滾動到這個新元素
-      div.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'end'  ///center, end
-      });
+      if (false) {   ///true
+        div.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'end'  ///center, end
+        });
+      }
+
+      // 4. 自動滾動到這個新元素，但互動時不滾動畫面
+      if (autoScroll) {  ///20260420
+        div.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'end'
+        });
+      }
 
       // 5. ⬅️ 關鍵：等待一段時間後再跑下一次迴圈
       await sleep(delay);
@@ -480,9 +509,26 @@ function randomNumberString(length) {  ///***
 }
 
 const params = new URLSearchParams(window.location.search);
-const userId = params.get("userId");
+const userId = params.get("userId") || "duguaynins@gmail.com";
 const userInput = params.get("userInput");
 
+document.getElementById("userInput").addEventListener("input", () => {
+    if (document.getElementById("userInput").value.trim() !== "") {
+        ///document.getElementById("CHATGPT").style.display = 'block';
+        ///document.getElementById("GEMINI").style.display = 'block';
+        ///document.getElementById("PERPLEXITY").style.display = 'block';
+        document.getElementById("CHATGPT").disabled = false;
+        document.getElementById("GEMINI").disabled = false;
+        document.getElementById("PERPLEXITY").disabled = false;
+    } else {
+        ///document.getElementById("CHATGPT").style.display = 'none';
+        ///document.getElementById("GEMINI").style.display = 'none';
+        ///document.getElementById("PERPLEXITY").style.display = 'none';
+        document.getElementById("CHATGPT").disabled = true;
+        document.getElementById("GEMINI").disabled = true;
+        document.getElementById("PERPLEXITY").disabled = true;
+    }
+});
 document.addEventListener('click', () => {
   ///在任何點擊後就檢查有無消息，以及有無訂閱推播
   subscribePush();
@@ -490,7 +536,7 @@ document.addEventListener('click', () => {
   if (userId||userInput) {
     document.getElementById("userId").value = userId;
     document.getElementById("userInput").innerText = userInput;
-    document.getElementById("DialogFollow").showModal();
+    ///openFollow();  ///20260423
   }
 }, { once: true });
 
@@ -543,6 +589,9 @@ async function pushAdmin(members=null, title="nins/copyright", body="Welcome", a
 }
 
 async function subscribePush() {  // 用戶透過此方法完成訂閱推播
+  
+  const dialog = document.getElementById("DialogFollow");
+  ///dialog.showModal();  ///20260417
   
   ///檢查通知權
   const permission = await Notification.requestPermission();
@@ -602,11 +651,11 @@ async function subscribePush() {  // 用戶透過此方法完成訂閱推播
                     repo_id: "duguaynins/nins",
                     folder: "webpush" });  ///duguaynins/dataset-v20260406
 
-    document.getElementById("DialogFollow").showModal();
+    ///openFollow();  ///20260419
     ///const [status, webpush_hash] = await getDataset(String(id), "webpush");
     pushAdmin(null, "nins/copyright", "Welcome.", subscription);
   } else {
-    document.getElementById("DialogFollow").showModal();
+    ///openFollow();  ///20260419
     ///const [status, webpush_hash] = await getDataset(String(id).toLowerCase(), "webpush");
     pushAdmin(null, "nins/copyright", "Nice to see you again.", webpush_hash);
   
@@ -681,37 +730,90 @@ async function sendMsg(who, data) {
   who  = document.getElementById("userId").value || Cookies.get("id");
   data = document.getElementById("userInput").value || "👻👻👻";
   const [status, webpush_hash] = await getDataset(String(who).toLowerCase(), "webpush");
-  pushAdmin(null, "nins/copyright", String(data), webpush_hash );
+  if (status>=200 && status<300) { document.getElementById("userInput").value = ""; }
+  else { return; }
+  const title = "nins/©";  ///nins/copyright
+  const body = String(`${Cookies.get("id")} >>> ${data}`);
+  pushAdmin(null, title, body, webpush_hash );
+  pushAdmin(null, title, body, Cookies.get("webpush") );  ///20260415
 }
-async function showId(who, data) {
-  document.getElementById("myId").innerText = Cookies.get("id") || "***";
-  
+async function showId() {
+  const url = `https://copyright.nins.cc/?beta=&userId=${Cookies.get("id") || "xxxx"}`;
+  document.getElementById("myId").innerText = Cookies.get("id") || "xxxx";
+  //document.getElementById("userId").value = Cookies.get("id") || "xxxx";  ///TEST
+  ///document.getElementById("userInput").value = `${Cookies.get("id")} >>> ${url}` || "👻👻👻 >>> ";
   ///document.getElementById("userId").focus();
+
   ///await navigator.clipboard.readText();
-  navigator.clipboard.writeText(Cookies.get("id"));
+  ///navigator.clipboard.writeText(Cookies.get("id"));  ///COPY_ID
+  navigator.clipboard.writeText(url);  ///COPY_URL
 }
-async function resetId(who, data) {
+async function resetId(switchs=true) {
+  if (!switchs) { return; }
+  const result = confirm("delete?");
+  if (!result) { return; }
+  ///if (result) { return; }
   Cookies.set("id", "");
   window.location.href = window.location.href;
 }
+async function genAI(model) {
+  const lang = navigator.language;
+  const userInput = document.getElementById("userInput");
+  const prompt = `Reply in ${lang}. ${userInput.value}`;
+  if (!userInput.value) { return; }
+
+  ///const lang = navigator.language;
+  const urls = {
+    "CHATGPT": `https://chatgpt.com/?utm_source=nins.cc&prompt=` + encodeURIComponent(prompt),
+    "GEMINI": `https://www.google.com/search?utm_source=nins.cc&udm=50&aep=1&aic=0&hl=${lang}&q=` + encodeURIComponent(prompt),
+    "PERPLEXITY": `https://www.perplexity.ai/?utm_source=nins.cc&q=` + encodeURIComponent(prompt),
+    "ELSE": `https://translate.google.com/?utm_source=nins.cc&sl=auto&tl=${lang}&hl=${lang}&text=` + encodeURIComponent(prompt)
+  };
+
+  window.location.href = urls[model];
+}
+async function openFollow() {
+  const dialog = document.getElementById("DialogFollow");
+  dialog.showModal();
+  dialog.focus();
+  document.activeElement.blur();
+  setTimeout(() => {
+    document.activeElement.blur();
+  }, 0);
+}
 
 ///test();
+</script>
+
+
+<script>
+let isUserInteracting = false;
+let autoScroll = true;
+
+// 手機觸控
+document.addEventListener('click', () => {
+  ///console.log('整個頁面任意點擊，只觸發一次');
+  
+  window.addEventListener('touchstart', () => {
+    isUserInteracting = true; autoScroll = false;
+  });
+
+  window.addEventListener('touchend', () => {
+    isUserInteracting = false;
+  });
+
+  // 電腦滑鼠
+  window.addEventListener('mousedown', () => {
+    isUserInteracting = true; autoScroll = false;
+  });
+
+  window.addEventListener('mouseup', () => {
+    isUserInteracting = false;
+  });
+}, { once: true });
 </script>
 <!-- 放置你原有的布局：JS -->
 
   
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
