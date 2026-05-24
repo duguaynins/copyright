@@ -27,13 +27,14 @@
     "url": "https://copyright.nins.cc/"
   }
 </script>  
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#010101">
 <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js')
-      .then(() => console.log('SW YES!!!'))
-      .catch(err => console.error('SW NO???', err));
-  }
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js');
+}
 </script>
+
   
 
 
