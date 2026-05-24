@@ -14,7 +14,6 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   console.log('Service Worker fetch');
   event.respondWith(
-    fetch(event.request) // 直接走網路
-      .catch(() => caches.match(event.request)) // 網路失敗時才用快取
+    fetch(event.request)
   );
 });
