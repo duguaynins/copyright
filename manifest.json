@@ -1,6 +1,6 @@
 {
-  "name": "nins/copyright",
-  "short_name": "nins/©",
+  "name": "nins-copyright",
+  "short_name": "nins-©",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
