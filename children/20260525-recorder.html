@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>nins / RECORDER.SYS</title>
+
+<style>
+body{
+    background:#fff;
+    color:#000;
+    font-family:"Courier New", monospace;
+    margin:0;
+    padding:30px;
+}
+
+.window{
+    width:500px;
+    max-width:90%;
+    margin:auto;
+    border:3px solid #000;
+}
+
+.titlebar{
+    background:#000;
+    color:#fff;
+    padding:8px;
+    font-weight:bold;
+}
+
+.content{
+    padding:20px;
+}
+
+.line{
+    border-top:2px solid #000;
+    margin:15px 0;
+}
+
+button{
+    background:#fff;
+    color:#000;
+    border:2px solid #000;
+    padding:8px 18px;
+    font-family:inherit;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#000;
+    color:#fff;
+}
+
+button:disabled{
+    opacity:.4;
+}
+
+audio{
+    width:100%;
+    border:2px solid #000;
+    margin-top:15px;
+}
+
+a{
+    display:inline-block;
+    margin-top:15px;
+    color:#000;
+    border:2px solid #000;
+    padding:8px 12px;
+    text-decoration:none;
+}
+
+a:hover{
+    background:#000;
+    color:#fff;
+}
+
+.status{
+    margin-bottom:15px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="window">
+
+<div class="titlebar">
+NINS / RECORDER.SYS
+</div>
+
+<div class="content">
+
+<div class="status" id="status">
+ADMIN: DUGUAYNINS
+</div>
+
+<div class="line"></div>
+
+<button id="startBtn">
+[ REC ]
+</button>
+
+<button id="stopBtn" disabled>
+[ STOP ]
+</button>
+
+<div class="line"></div>
+
+<audio id="audioPlayer" controls></audio>
+
+<br>
+
+<a id="downloadLink" style="display:none">
+DOWNLOAD FILE
+</a>
+
+</div>
+</div>
+
+<script>
+
+let recorder;
+let chunks=[];
+
+const startBtn=document.getElementById("startBtn");
+const stopBtn=document.getElementById("stopBtn");
+const audio=document.getElementById("audioPlayer");
+const status=document.getElementById("status");
+const download=document.getElementById("downloadLink");
+
+startBtn.onclick=async()=>{
+
+try{
+
+const stream=
+await navigator.mediaDevices.getUserMedia({
+audio:true
+});
+
+chunks=[];
+
+recorder=
+new MediaRecorder(stream);
+
+recorder.ondataavailable=e=>{
+chunks.push(e.data);
+};
+
+recorder.onstop=()=>{
+
+const blob=
+new Blob(chunks,{
+type:"audio/webm"
+});
+
+const url=
+URL.createObjectURL(blob);
+
+audio.src=url;
+
+download.href=url;
+download.download="recording.webm";
+download.style.display="inline-block";
+
+status.innerText=
+"STATUS: SAVED";
+
+};
+
+recorder.start();
+
+status.innerText=
+"STATUS: RECORDING...";
+
+startBtn.disabled=true;
+stopBtn.disabled=false;
+
+}catch(e){
+
+status.innerText=
+"ERROR: MICROPHONE ACCESS";
+
+}
+
+};
+
+stopBtn.onclick=()=>{
+
+recorder.stop();
+
+startBtn.disabled=false;
+stopBtn.disabled=true;
+
+status.innerText=
+"STATUS: STOPPED";
+
+};
+
+</script>
+
+</body>
+</html>
