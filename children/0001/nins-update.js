@@ -42,12 +42,12 @@ function redirectIfMatched() {  ///rules
   if (currentUrl.includes("t.nins.cc/")) { return; }  ///20260416
   const keywords = [
     ///"deurl.nins.cc/",  ///utm_source
-    "time.nins.cc/",
+    ///"time.nins.cc/",
     "uris.nins.cc/",
     "transing.nins.cc/",
     "translate.nins.cc/",
     ///"t.nins.cc/",
-    "nins.cc/",  //20260410_2352
+    ///"nins.cc/",  //20260410_2352
     ///"Users",
   ];
 
